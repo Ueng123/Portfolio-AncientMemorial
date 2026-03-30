@@ -1,8 +1,11 @@
-멀꼬라봐
-# 이쁘냐??
-내가 좀 이뻐 ㅋ
+# UENG PORTFOLIO #1
+A first portfolio that will submit to `청강문화산업대학교`.
+
+GENRE : `SOLO-SideView-Roguelike`\
+GAME_NAME : `Ancient_Memorial`
+
+THIS PROJECT WAS MADEN ABOUT `n`MONTHS\
+COMMENT :
 ```
-그러니까 여자들이 뻑이가는거 아니겟어??
+comment will filled when project fully well-maden.
 ```
-<b>그<i></b>러<b>니</i>까</b>
-## 말좀 잘들어 ㅋ
