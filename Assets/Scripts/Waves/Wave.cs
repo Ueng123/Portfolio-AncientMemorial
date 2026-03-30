@@ -9,7 +9,7 @@ namespace AncientMemorial.Waves {
 		public TaskList         waveTasks;
 		
 		[SerializeReference] [SubclassSelector]
-		public WaveEndCondition endCondition;
+		public WaveCondition[] condition;
 
 		public bool instantNextWave;
 

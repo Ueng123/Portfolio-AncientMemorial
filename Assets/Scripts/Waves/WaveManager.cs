@@ -31,12 +31,6 @@ namespace AncientMemorial.Waves {
 		}
 
 		public void EndWave() {
-			
-			if (currentWave.instantNextWave) {
-				NextWave();
-				return;
-			}
-			
 			Crystal crystal = GameManager.instance.Crystal;
 			
 			crystal.ChangeInteractText(currentWave.crystalInteractText);
@@ -51,9 +45,12 @@ namespace AncientMemorial.Waves {
 			if (!currentWave) NextWave();
 			
 			timeElapsed += Time.deltaTime;
-			
-			if (currentWave.endCondition == null) return;
-			if (currentWave.endCondition.Check()) EndWave();
+
+			foreach (WaveCondition condition in currentWave.condition) {
+				if (condition.Check()) {
+					condition.taskToDo.ExecuteTasks(this);
+				}
+			}
 		}
 
 		public override void ManagerFixedUpdate() {
