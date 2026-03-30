@@ -614,19 +614,14 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 4511242991858876496
+      - rid: 4511243024775774280
   crystalModel: {fileID: 1501743933}
   references:
     version: 2
     RefIds:
-    - rid: 4511242991858876496
-      type: {class: ShowTitle, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
-      data:
-        title: TALK TALK!
-        mainText: "\uBA38\u3153\uD558\uB7EC \uC608\uAE30\uD558\uB178 <u><b>\uD0A4\uAC00
-          \uD06C\uC9C0\uB3C4 \uC54A</u></b>\uC744\uAC70 \uAC16\uB2E4\uAC00"
-        subText: "\uAC4D <color=#fe5>MAMBO</color>\uB098 \uC678\uCCD0"
-        speed: 0.25
+    - rid: 4511243024775774280
+      type: {class: NextWave, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
+      data: 
 --- !u!4 &185566329
 Transform:
   m_ObjectHideFlags: 0
@@ -2924,6 +2919,25 @@ MonoBehaviour:
       m_Flags: 0
     actionType: 6
     inputType: 0
+  - inputAction:
+      m_Name: Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 2f31ccdb-a5cc-4d03-ac87-3e37139a4cb7
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 13bc5fa1-58b5-427c-8f73-d89a1254bc40
+        m_Path: <Keyboard>/q
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input
+        m_Flags: 0
+      m_Flags: 0
+    actionType: 6
+    inputType: 0
 --- !u!1 &1128546542
 GameObject:
   m_ObjectHideFlags: 0
@@ -3963,6 +3977,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - {fileID: 11400000, guid: 4dee80f61aa9ea844840b81fb2fc2044, type: 2}
+  - {fileID: 11400000, guid: 5c5f5cdd47fba3c4b81b494f5330341c, type: 2}
   currentWave: {fileID: 0}
   timeElapsed: 0
 --- !u!1 &1401290527
