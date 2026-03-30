@@ -1,0 +1,5 @@
+﻿namespace AncientMemorial.Entities {
+	public enum EntityType {
+		Player
+	}
+}
