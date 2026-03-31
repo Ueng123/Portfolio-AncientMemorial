@@ -36,10 +36,10 @@ namespace AncientMemorial.Entities {
 
 		// ANIMATOR //
 		private static readonly int  CROSSBOW = Animator.StringToHash("crossbow");
-		private                 bool holdingCrossbow = true;
+		private                 bool holdingCrossbow = false;
 		
 		private static readonly int  MOVING = Animator.StringToHash("moving");
-		private                 bool isMoving;
+		private                 bool isMoving = false;
 		
 		private static readonly int  FALLING = Animator.StringToHash("falling");
 		
@@ -96,6 +96,7 @@ namespace AncientMemorial.Entities {
 			if (InputManager.inputData[InputActionType.Move].valueF != 0.0f)
 				SendEvent(EventType.Entity_Behaviour_Move, new EventValueData<float>(InputManager.inputData[InputActionType.Move].valueF));
 			
+			// InteractTryInfo 필요없을뜻
 			if (InputManager.inputData[InputActionType.Interact].pressType == InputPressType.Down)
 				SendEvent(EventType.Interact_Start, new EventValueData<InteractTryInfo>(new InteractTryInfo() {
 					objectToInteract = targetInteraction,
@@ -107,10 +108,13 @@ namespace AncientMemorial.Entities {
 					objectToInteract = targetInteraction,
 					byInput          = true
 				}));
+			
+			if (InputManager.inputData[InputActionType.HoldWeapon].pressType = InputPressType.Down) {
+				ToggleCrossbow();
 		}
 
-		public void AddTempHandOffset(float initialOffset, float targetOffset, float duration) {
-			
+		public void SetHandOffset(float offset, float speed) {
+				// 구현
 		}
 
 		// EVENT BEHAVIOUR //
@@ -124,7 +128,7 @@ namespace AncientMemorial.Entities {
 		private void Attack() {
 			if (stopped) return;
 			
-			AddTempHandOffset(20, 0, 1);
+			SetHandOffset(20, 0.1f);
 		}
 
 		private void ToggleCrossbow() {
