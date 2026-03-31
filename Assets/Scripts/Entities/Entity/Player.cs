@@ -131,10 +131,6 @@ namespace AncientMemorial.Entities {
 			SetHandOffset(20, 0.1f);
 		}
 
-		private void ToggleCrossbow() {
-			holdingCrossbow = !holdingCrossbow;
-		}
-
 		private void Interact() {
 			// 일단만들긴했는데뭔가여기서할게없달까약간이런게있어야겠다생각은했는데막상만들고나니까이게하는짓이없는데미래지향적인지성의보유자인본
 			// 인은일단남겨놓고나중에여길수정하는방향으로띵킹을함으로써이제남들과는차별점이있다는것을알수있다능*찡긋*
