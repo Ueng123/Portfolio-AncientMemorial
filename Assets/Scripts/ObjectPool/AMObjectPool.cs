@@ -7,13 +7,16 @@ namespace AncientMemorial.ObjectPool {
 		[SerializeField]
 		private GameObject[]                               prefabs;
 		private Dictionary<string, ObjectPool<GameObject>> pools;
+		private Dictionary<string, Transform>              roots;
 
 		public override void Initialize() {
 			pools = new Dictionary<string, ObjectPool<GameObject>>();
+			roots = new Dictionary<string, Transform>             ();
 			
 			foreach (GameObject prefab in prefabs) {
-				Transform newRoot = new GameObject($"{prefab.name} root").transform;
-				newRoot.parent = transform;
+				Transform newRoot  = new GameObject($"{prefab.name} root").transform;
+				roots[prefab.name] = newRoot;
+				newRoot.parent     = transform;
 				
 				pools[prefab.name] = new ObjectPool<GameObject>(
 						createFunc: () => {
@@ -62,6 +65,8 @@ namespace AncientMemorial.ObjectPool {
 			if (time > 0) return;
 
 			obj.SetActive(false);
+			
+			obj.transform.SetParent(roots[obj.name]);
 			pools[obj.name].Release(obj);
 		}
 		

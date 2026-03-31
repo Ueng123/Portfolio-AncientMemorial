@@ -14,16 +14,10 @@ namespace AncientMemorial.Projectiles {
 		
 		protected abstract void OnCollideObject(AMObject obj);
 
-		protected abstract void OnCollideMap();
-
 		protected override void FixedRoutine() { }
 
 		protected void OnTriggerEnter2D(Collider2D other) {
-			if (other.gameObject.CompareTag("Map")) {
-				OnCollideMap();
-				return;
-			}
-
+			Debug.Log(other.gameObject.name);
 			
 			Entity   entity = other.GetComponent<Entity>();
 			if (entity) {
@@ -32,7 +26,7 @@ namespace AncientMemorial.Projectiles {
 			}
 			
 			AMObject obj    = other.GetComponent<AMObject>();
-			if (obj) OnCollideObject(entity);
+			if (obj) OnCollideObject(obj);
 		}
 
 		public override    void OnEvent(Event e) { }

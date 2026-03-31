@@ -29,14 +29,7 @@ namespace AncientMemorial.Waves {
 			currentWave = waveQueue.Dequeue();
 			currentWave.waveTasks.ExecuteTasks(this);
 		}
-
-		public void EndWave() {
-			Crystal crystal = GameManager.instance.Crystal;
-			
-			crystal.ChangeInteractText(currentWave.crystalInteractText);
-			crystal.interactable = true;
-		}
-
+		
 		public void GameEnd() {
 			Debug.Log("Game End WOW!!!!");
 		}
@@ -46,7 +39,7 @@ namespace AncientMemorial.Waves {
 			
 			timeElapsed += Time.deltaTime;
 
-			foreach (WaveCondition condition in currentWave.condition) {
+			foreach (WaveCondition condition in currentWave.conditions) {
 				if (condition.Check()) {
 					condition.taskToDo.ExecuteTasks(this);
 				}

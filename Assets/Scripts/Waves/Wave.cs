@@ -8,12 +8,7 @@ namespace AncientMemorial.Waves {
 		[SerializeField]                        
 		public TaskList         waveTasks;
 		
-		// 이름 복수형으로
 		[SerializeReference] [SubclassSelector]
-		public WaveCondition[] condition;
-
-		public bool instantNextWave;
-
-		public string crystalInteractText;
+		public WaveCondition[] conditions;
 	}
 }

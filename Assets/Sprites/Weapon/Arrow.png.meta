@@ -103,12 +103,12 @@ TextureImporter:
       name: Arrow_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 16
-        height: 16
+        x: 2
+        y: 7
+        width: 12
+        height: 3
       alignment: 9
-      pivot: {x: 0.5, y: 0.53125}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

@@ -1,20 +1,23 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AncientMemorial.Events;
 using AncientMemorial.Events.EventDatas;
 using AncientMemorial.Inputs;
 using AncientMemorial.Interactions;
+using AncientMemorial.Weapons;
 using UnityEngine;
 using Event = AncientMemorial.Events.Event;
 using EventType = AncientMemorial.Events.EventType;
 
 namespace AncientMemorial.Entities {
 	public class Player : Entity {
-
+		
 		[Header("Hand")]
-		public  GameObject           hand;
-		private SpriteRenderer       handSprite;
+		public  GameObject     hand;
+		public  Weapon         weapon;
+		private SpriteRenderer handSprite;
 		
 		private float handRotOffset;
 		private float handRotOffsetSpeed;
@@ -36,7 +39,7 @@ namespace AncientMemorial.Entities {
 
 		// ANIMATOR //
 		private static readonly int  CROSSBOW = Animator.StringToHash("crossbow");
-		private                 bool holdingCrossbow = false;
+		private                 bool holdingCrossbow = true;
 		
 		private static readonly int  MOVING = Animator.StringToHash("moving");
 		private                 bool isMoving = false;
@@ -53,7 +56,7 @@ namespace AncientMemorial.Entities {
 
 			// var portfolio = "FUCKING SHIT";
 			
-			isMoving = (moveVec != Vector2.zero);
+			isMoving = (moveDir != 0);
 			
 			if (isGround) {
 				rigidbody2D.linearVelocity = moveVec;
@@ -91,7 +94,13 @@ namespace AncientMemorial.Entities {
 				SendEvent(EventType.Entity_Behaviour_Jump);
 			
 			if (InputManager.inputData[InputActionType.MouseLClick].pressType == InputPressType.Down)
-				SendEvent(EventType.Entity_Behaviour_Attack);
+				SendEvent(EventType.Entity_Behaviour_Primary);
+			
+			if (InputManager.inputData[InputActionType.MouseRClick].pressType == InputPressType.Down)
+				SendEvent(EventType.Entity_Behaviour_ChargeStart);
+			
+			if (InputManager.inputData[InputActionType.MouseRClick].pressType == InputPressType.Up)
+				SendEvent(EventType.Entity_Behaviour_ChargeEnd);
 			
 			if (InputManager.inputData[InputActionType.Move].valueF != 0.0f)
 				SendEvent(EventType.Entity_Behaviour_Move, new EventValueData<float>(InputManager.inputData[InputActionType.Move].valueF));
@@ -108,13 +117,11 @@ namespace AncientMemorial.Entities {
 					objectToInteract = targetInteraction,
 					byInput          = true
 				}));
-			
-			if (InputManager.inputData[InputActionType.HoldWeapon].pressType = InputPressType.Down) {
-				ToggleCrossbow();
 		}
 
-		public void SetHandOffset(float offset, float speed) {
-				// 구현
+		public void SetHandOffset(float offset, float speed = 0) {
+			handRotOffset = offset;
+			handRotOffsetSpeed = (speed==0)?handRotOffsetSpeed:speed;
 		}
 
 		// EVENT BEHAVIOUR //
@@ -125,15 +132,26 @@ namespace AncientMemorial.Entities {
 			rigidbody2D.AddForce(Vector2.up * entityStat.JumpPower, ForceMode2D.Impulse);
 		}
 		
-		private void Attack() {
+		private void PrimaryAttack() {
 			if (stopped) return;
 			
-			SetHandOffset(20, 0.1f);
+			SetHandOffset(20, 5f);
 		}
-
+		
+		private void ChargeStart() {
+			if (stopped) return;
+			
+			
+		}
+		
+		private void ChargeEnd() {
+			if (stopped) return;
+			
+			
+		}
+		
 		private void Interact() {
-			// 일단만들긴했는데뭔가여기서할게없달까약간이런게있어야겠다생각은했는데막상만들고나니까이게하는짓이없는데미래지향적인지성의보유자인본
-			// 인은일단남겨놓고나중에여길수정하는방향으로띵킹을함으로써이제남들과는차별점이있다는것을알수있다능*찡긋*
+			// 일단만들긴했는데뭔가여기서할게없달까약간이런게있어야겠다생각은했는데막상만들고나니까이게하는짓이없음
 		}
 
 		private void SetArm() {
@@ -219,8 +237,16 @@ namespace AncientMemorial.Entities {
 					AddProcessToFixedUpdate(Jump);
 					break;
 				
-				case EventType.Entity_Behaviour_Attack:
-					Attack();
+				case EventType.Entity_Behaviour_Primary:
+					PrimaryAttack();
+					break;
+				
+				case EventType.Entity_Behaviour_ChargeStart:
+					ChargeStart();
+					break;
+				
+				case EventType.Entity_Behaviour_ChargeEnd:
+					ChargeStart();
 					break;
 				
 				case EventType.Interact_Start:
