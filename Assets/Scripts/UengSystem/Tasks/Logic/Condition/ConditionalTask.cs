@@ -6,8 +6,6 @@ namespace UengSystem.Tasks.Logic {
 	public class ConditionalTask : TaskComponent {
 		[SerializeReference] [SubclassSelector]
 		public UCondition condition;
-
-		[SerializeReference] [SubclassSelector]
 		public Task task;
 		
 		[HideInInspector]

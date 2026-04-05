@@ -5,22 +5,10 @@ namespace AncientMemorial.Interactions {
 
 		public GameObject crystalModel;
 		
-		public override void OnInteractStart() {
-		}
+		protected override void OnInteractStart() { }
 
-		public override void OnCancel() {
-		}
+		protected override void OnCancel() { }
 
-		public override void Interact() {
-			
-		}
-
-		public override void OnTarget() {
-			base.OnTarget();
-		}
-
-		public override void OnUnTarget() {
-			base.OnUnTarget();
-		}
+		protected override void OnInteract() { }
 	}
 }

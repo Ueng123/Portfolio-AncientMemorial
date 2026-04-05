@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace UengSystem.UI.UButtons {
 	[Serializable]
-	public class UButton : UIComponent {
+	public class UButton : UUIComponent {
 		private Button button;
 		public  bool   clicked;
 		
@@ -11,6 +11,9 @@ namespace UengSystem.UI.UButtons {
 			clicked = true;
 		}
 
-		public override void Initialize() { button.onClick.AddListener(OnButtonClicked); }
+		public override void Initialize() {
+			button = GetComponent<Button>();
+			button.onClick.AddListener(OnButtonClicked);
+		}
 	}
 }

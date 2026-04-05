@@ -164,7 +164,7 @@ namespace AncientMemorial.Entities {
 			handRotOffset = (Mathf.Abs(handRotOffset) <= 0.001f)?0:Mathf.Lerp(handRotOffset, 0, handRotOffsetSpeed * Time.deltaTime);
 
 			hand.transform.localPosition = handPos;
-			hand.transform.localRotation = Quaternion.Euler(0, 0, degH + offset);
+			hand.transform.localRotation = Quaternion.Euler(0, 0, degH + offset*Mathf.Sign(dM.x));
 			hand.SetActive(holdingCrossbow);
 		}
 

@@ -7,18 +7,10 @@ using UnityEngine;
 namespace UengSystem.Tasks.Logic.String {
 	[Serializable]
 	public class UString {
-		[SerializeReference]
-		public List<UStringComponent> strings;
-		private static StringBuilder stringBuilder = new StringBuilder();
+		public UStringListItem[] strings;
 		
 		public string GetText() {
-			stringBuilder.Clear();
-			
-			foreach (UStringComponent component in strings) {
-				stringBuilder.Append(component.GetText());
-			}
-			
-			return stringBuilder.ToString();
+			return strings.Aggregate("", (current, item) => current + item.component.GetText());
 		}
 	}
 }

@@ -13,8 +13,8 @@ using Events_EventType = UengSystem.Events.EventType;
 namespace UengSystem.Objects {
 	public abstract class UObject : MonoBehaviour, IObjectPoolable, IEventAgent, IStoppable, IInitializable, ITaskable {
 
-		private static Dictionary<string,      UObject > IDTable       = new ();
-		private static Dictionary<string, List<UObject>> CategoryTable = new ();
+		private static readonly Dictionary<string,      UObject > IDTable       = new ();
+		private static readonly Dictionary<string, List<UObject>> CategoryTable = new ();
 		
 		// Instance Variables //
 		[Header("Identify")] 
@@ -62,8 +62,8 @@ namespace UengSystem.Objects {
 		}
 
 		[Header("Get/Release FX")]
-		public Sprite       whiteSpawnSprite;
-		public Sprite       colorSpawnSprite;
+		public Sprite whiteSpawnSprite;
+		public Sprite colorSpawnSprite;
 		
 		// IStoppable Variables //
 		public  bool            stopped { get; set; }
@@ -76,11 +76,11 @@ namespace UengSystem.Objects {
 		[HideInInspector] public     SpriteRenderer spriteRenderer;
 		[HideInInspector] public     Animator       animator;
 
-		public static UObject GetAMObject(string id) {
+		public static UObject GetUObject(string id) {
 			return IDTable[id];
 		}
 		
-		public static List<UObject> GetAMObjects(string category) {
+		public static List<UObject> GetUObjects(string category) {
 			return CategoryTable[category];
 		}
 		

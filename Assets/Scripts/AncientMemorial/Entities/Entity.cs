@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using AncientMemorial.Buffs;
 using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
@@ -16,7 +15,6 @@ namespace AncientMemorial.Entities {
 		public Team       team;
 		
 		public EntityStat entityStat;
-		public BuffList   buffList;
 
 		public  bool    isGround;
 		private Vector2 groundBoxOffset;
@@ -42,8 +40,6 @@ namespace AncientMemorial.Entities {
 			groundBoxOffset = entityData.groundBoxOffset;
 			groundBoxSize   = entityData.groundBoxSize;
 			
-			buffList = new BuffList();
-			
 			base.Initialize();
 		}
 
@@ -51,24 +47,15 @@ namespace AncientMemorial.Entities {
 			entityStat = null;
 			entityData = default;
 			
-			// 버프 초기화
-			buffList.RemoveAllBuffs();
-			
 			base.Uninitialize();
 		}
 
 		// UPDATE ROUTINE //
 		
 		protected override void EarlyRoutine() {
-			// BUFF
-			buffList.Routine();
-			
-			// ARTIFACT
-			
 		}
 
 		public override void OnEvent(Events_Event e) {
-			buffList.OnEvent(e);
 		}
 
 		protected override void LateRoutine() {

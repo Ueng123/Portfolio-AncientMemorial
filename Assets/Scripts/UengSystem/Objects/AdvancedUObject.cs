@@ -9,7 +9,7 @@ using Events_Event = UengSystem.Events.Event;
 namespace UengSystem.Objects {
 	public abstract class AdvancedUObject : UObject {
 
-		public static BufferedList<AdvancedUObject> AdvancedInstances = new ();
+		public static readonly BufferedList<AdvancedUObject> Instances = new ();
 		
 		private List<Action>[] processToUpdate;
 		private List<Action>[] processToFixedUpdate;
@@ -24,15 +24,15 @@ namespace UengSystem.Objects {
 			for (int i = 0; i < updatePhaseCount; i++) {
 				GameManager.instance.currentUpdatePhase = i;
 				
-				AdvancedInstances.Apply();
-				foreach (AdvancedUObject ins in AdvancedInstances) {
+				Instances.Apply();
+				foreach (AdvancedUObject ins in Instances) {
 					ins.updatePhaseRoutines[i].Invoke();
 				}
 			}
 		}
 		
 		public static void LateUpdateRoutine() {
-			foreach (AdvancedUObject ins in AdvancedInstances) {
+			foreach (AdvancedUObject ins in Instances) {
 				ins.LateRoutine();
 			}
 		}
@@ -41,8 +41,8 @@ namespace UengSystem.Objects {
 			for (int i = 0; i < fixedUpdatePhaseCount; i++) {
 				GameManager.instance.currentFixedUpdatePhase = i;
 				
-				AdvancedInstances.Apply();
-				foreach (AdvancedUObject ins in AdvancedInstances) {
+				Instances.Apply();
+				foreach (AdvancedUObject ins in Instances) {
 					ins.fixedUpdatePhaseRoutine[i].Invoke();
 				}
 			}
@@ -52,7 +52,7 @@ namespace UengSystem.Objects {
 			List<Events_Event> events = EventManager.instance.GetEvents();
 			
 			foreach (Events_Event e in events) {
-				foreach (AdvancedUObject ins in AdvancedInstances) {
+				foreach (AdvancedUObject ins in Instances) {
 					ins.OnEvent(e);
 				}
 			}
@@ -125,13 +125,13 @@ namespace UengSystem.Objects {
 		}
 
 		public override void Release(float time) {
-			AdvancedInstances.Remove(this);
+			Instances.Remove(this);
 			
 			base.Release(time);
 		}
 
 		public override void Initialize() {
-			AdvancedInstances.Add(this);
+			Instances.Add(this);
 			Resume();
 		}
 

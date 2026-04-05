@@ -9,7 +9,12 @@ namespace UengSystem.Objects {
 		public string ID;
 		public string Category;
 		
-		public void Start() {
+		private bool initialized = false;
+		
+		public void Update() {
+			if (initialized) return;
+			initialized = true;
+			
 			script = GetComponent<AdvancedUObject>();
 			
 			if (!InitialObject) return;

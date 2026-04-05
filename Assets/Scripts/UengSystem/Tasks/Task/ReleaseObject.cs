@@ -11,7 +11,7 @@ namespace UengSystem.Tasks {
 		public UString ID;
 		
 		public override void Execute(ITaskable self) {
-			UObjectPool.instance.Release(UObject.GetAMObject(ID.GetText()).gameObject, releaseTime);
+			UObjectPool.instance.Release(UObject.GetUObject(ID.GetText()).gameObject, releaseTime);
 		}
 	}
 }
