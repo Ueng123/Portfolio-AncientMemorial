@@ -11,10 +11,12 @@ namespace UengSystem.UI {
 		
 		private static readonly Dictionary<string, List<UUI>> UCategoryTable = new ();
 		private static readonly int                           Close          = Animator.StringToHash("Close");
+		private static readonly int                           Open           = Animator.StringToHash("Open");
 
 		// Instance Variables //
 		[Header("Identify")] 
-		private string _UCategory;
+		public  UCanvas canvas;
+		private string  _UCategory;
 
 		public string UCategory {
 			get => _UCategory;
@@ -76,6 +78,7 @@ namespace UengSystem.UI {
 		public override void OnRelease() { OnClose(); }
 
 		protected override IEnumerator SpawnFX(float duration) {
+			animator.SetTrigger(Open);
 			yield return new WaitForSeconds(duration);
 			Initialize();
 		}
@@ -83,7 +86,7 @@ namespace UengSystem.UI {
 		public override    IEnumerator ReleaseFX(float duration) {
 			animator.SetTrigger(Close);
 			yield return new WaitForSeconds(duration);
-			UObjectPool.instance.Release(gameObject, -1);
+			UUIManager.instance.Close(gameObject, true);
 		}
 	}
 }

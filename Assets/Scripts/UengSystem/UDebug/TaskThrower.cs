@@ -4,7 +4,7 @@ using UengSystem.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace UengSystem.AMDebug {
+namespace UengSystem.UDebug {
 	public class TaskThrower : Manager<TaskThrower> {
 
 		[FormerlySerializedAs("task")] [SerializeReference] [SubclassSelector]

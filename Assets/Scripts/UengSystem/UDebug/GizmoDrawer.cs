@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UengSystem.AMDebug {
+namespace UengSystem.UDebug {
 	public class GizmoDrawer : MonoBehaviour {
 		
 		[Header("Basic Settings")]

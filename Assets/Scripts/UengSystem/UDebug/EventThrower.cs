@@ -6,7 +6,7 @@ using UnityEngine;
 using Events_Event = UengSystem.Events.Event;
 using Events_EventType = UengSystem.Events.EventType;
 
-namespace UengSystem.AMDebug {
+namespace UengSystem.UDebug {
 	public class EventThrower : Manager<EventThrower> {
 		public Events_EventType   eventType;
 		public UObject    sender;

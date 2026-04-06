@@ -139,7 +139,7 @@ namespace UengSystem.Objects {
 				StartCoroutine(SpawnFX(time));
 			}
 		}
-
+		
 		public virtual void Release(float time) {
 			Stop();
 

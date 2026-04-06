@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UengSystem.AMDebug {
+namespace UengSystem.UDebug {
 	public class GizmoBoxDrawer : GizmoDrawer {
 
 		[Header("Box Setting")]

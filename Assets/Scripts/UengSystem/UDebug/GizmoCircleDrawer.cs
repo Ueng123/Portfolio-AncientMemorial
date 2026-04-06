@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UengSystem.AMDebug {
+namespace UengSystem.UDebug {
 	public class GizmoCircleDrawer : GizmoDrawer {
 		
 		[Header("Circle Settings")]

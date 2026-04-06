@@ -25,11 +25,10 @@ namespace AncientMemorial.Interactions {
 
 		[Header("Interaction")]
 		public bool    interactable;
-		public float   timeToInteract;
-		public float   cooldownToInteract;
-		public Canvas  canvas;
-		public UUI     interactUI;
-		public UString initialText;
+		public float  timeToInteract;
+		public float  cooldownToInteract;
+		public Canvas canvas;
+		public UString InteractText;
 		
 		public Task onInteract;
 		public Task onCancel;
@@ -79,8 +78,7 @@ namespace AncientMemorial.Interactions {
 		}
 
 		public void ChangeInteractText(UString newText) {
-			UTextAction text = (UTextAction)interactUI.GetAction("TextLabel");
-			text.SetText(newText);
+			InteractText = newText;
 		}
 
 		public float GetProgress() => interactAction.GetProgress();
@@ -95,8 +93,6 @@ namespace AncientMemorial.Interactions {
 									  SendEvent(UengSystem.Events.EventType.Interact_Stop);
 								  },
 								  Cancel);
-			
-			ChangeInteractText(initialText);
 			
 			base.OnFirstGet();
 		}
