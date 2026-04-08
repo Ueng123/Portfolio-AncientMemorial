@@ -2900,8 +2900,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabData:
   - prefab: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
-    openTime: 0.5
-    closeTime: 0.5
+    openTime: 0.1
+    closeTime: 0.1
 --- !u!1 &1302823173
 GameObject:
   m_ObjectHideFlags: 0
