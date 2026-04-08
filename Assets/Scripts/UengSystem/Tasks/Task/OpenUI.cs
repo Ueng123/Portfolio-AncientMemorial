@@ -19,8 +19,8 @@ namespace UengSystem.Tasks {
 			GameObject ui  = UUIManager.instance.Open(TargetUUI.name, canvas);
 			UUI        uui = ui.GetComponent<UUI>();
 
-			if (ID       !=null) uui.ID        = ID.GetText();
-			if (Category !=null) uui.UCategory = Category.GetText();
+			if (ID.GetText()       != "") uui.ID        = ID.GetText();
+			if (Category.GetText() != "") uui.UCategory = Category.GetText();
 		}
 	}
 }

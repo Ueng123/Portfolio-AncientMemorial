@@ -25,10 +25,11 @@ namespace UengSystem.Objects {
 			get => _ID;
 			set {
 				if (value == null) {
-					if (_ID != null) {
-						IDTable[_ID] = null;
-                        _ID = null;
-					}
+					if (_ID == null) return;
+					
+					IDTable[_ID] = null;
+					_ID          = null;
+					
 					return;
 				}
 				
@@ -43,13 +44,13 @@ namespace UengSystem.Objects {
 			get => _Category;
 			set {
 				if (value == null) {
-					if (_Category != null) {
-						CategoryTable[_Category].Remove(this);
-	                    if (CategoryTable[_Category].Count == 0) CategoryTable.Remove(_Category);
-	                    
-	                    _Category = null;
-					}
+					if (_Category == null) return;
 					
+					CategoryTable[_Category].Remove(this);
+					if (CategoryTable[_Category].Count == 0) CategoryTable.Remove(_Category);
+	                    
+					_Category = null;
+
 					return;
 				}
 				
@@ -128,7 +129,6 @@ namespace UengSystem.Objects {
 
 		public virtual void OnFirstGet() {}
 		public virtual void Get(float time) {
-			Stop();
 			OnGet();
 			
 			if (time == 0) {
@@ -141,8 +141,6 @@ namespace UengSystem.Objects {
 		}
 		
 		public virtual void Release(float time) {
-			Stop();
-
 			switch (time) {
 				case < 0:
 					Uninitialize();
@@ -166,6 +164,8 @@ namespace UengSystem.Objects {
 		public virtual void OnRelease() {}
 
 		protected virtual IEnumerator SpawnFX(float duration) {
+			Stop();
+			
 			foreach (Collider2D c in GetComponents<Collider2D>()) {
 				c.enabled = false;
 			}
@@ -196,11 +196,14 @@ namespace UengSystem.Objects {
 			foreach (Collider2D c in GetComponents<Collider2D>()) {
 				c.enabled = true;
 			}
-			
+
+			Resume();
 			Initialize();
 		}
 
 		public virtual IEnumerator ReleaseFX(float duration) {
+			Stop();
+			
 			foreach (Collider2D c in GetComponents<Collider2D>()) {
 				c.enabled = false;
 			}
@@ -223,6 +226,7 @@ namespace UengSystem.Objects {
 				yield return null;
 			}
 
+			Resume();
 			spriteRenderer.color = oldColor;
 			UObjectPool.instance.Release(gameObject, -1);
 		}

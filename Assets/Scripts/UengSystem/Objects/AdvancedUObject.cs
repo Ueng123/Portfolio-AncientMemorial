@@ -130,13 +130,8 @@ namespace UengSystem.Objects {
 			base.Release(time);
 		}
 
-		public override void Initialize() {
-			Instances.Add(this);
-			Resume();
-		}
+		public override void Initialize() { Instances.Add(this); }
 
-		public override void Uninitialize() {
-			Resume();
-		}
+		public override void Uninitialize() { }
 	}
 }

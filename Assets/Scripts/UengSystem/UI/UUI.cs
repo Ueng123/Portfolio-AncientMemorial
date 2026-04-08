@@ -12,11 +12,16 @@ namespace UengSystem.UI {
 		private static readonly Dictionary<string, List<UUI>> UCategoryTable = new ();
 		private static readonly int                           Close          = Animator.StringToHash("Close");
 		private static readonly int                           Open           = Animator.StringToHash("Open");
-
+		
 		// Instance Variables //
 		[Header("Identify")] 
 		public  UCanvas canvas;
-		private string  _UCategory;
+
+		protected RectTransform rectTransform;
+		private   string        _UCategory;
+
+		public Vector2 initialPosition;
+		public Vector3 initialScale;
 
 		public string UCategory {
 			get => _UCategory;
@@ -52,7 +57,11 @@ namespace UengSystem.UI {
 				action.action.component.Initialize();
 				actionDict[action.key] = action.action;
 			}
+			rectTransform = GetComponent<RectTransform>();
 			base.Initialize();
+			
+			rectTransform.anchoredPosition = initialPosition;
+			rectTransform.localScale       = initialScale;
 		}
 
 		public static UUI GetUUI(string id) => GetUObject(id) as UUI;
@@ -73,12 +82,11 @@ namespace UengSystem.UI {
 				action.Routine(this);
 			}
 		}
-
-		public override void OnGet() { OnOpen(); }
+		
+		public override void OnGet()     { OnOpen(); }
 		public override void OnRelease() { OnClose(); }
 
 		protected override IEnumerator SpawnFX(float duration) {
-			animator.SetTrigger(Open);
 			yield return new WaitForSeconds(duration);
 			Initialize();
 		}
