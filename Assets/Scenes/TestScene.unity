@@ -395,7 +395,7 @@ MonoBehaviour:
   interactable: 1
   timeToInteract: 2
   cooldownToInteract: 3
-  canvas: {fileID: 308883124}
+  canvas: {fileID: 308883125}
   InteractText:
     strings: []
   onInteract:
@@ -419,7 +419,7 @@ MonoBehaviour:
     - time: 0
       tasks:
       - rid: 6576058220649644106
-      - rid: 6576058247804616775
+      - rid: 6576058358272884832
   onUnTarget:
     tasks:
     - time: 0
@@ -488,21 +488,6 @@ MonoBehaviour:
     - rid: 6576058220649644113
       type: {class: NextWave, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
       data: 
-    - rid: 6576058247804616775
-      type: {class: OpenUI, ns: UengSystem.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
-        canvas: {fileID: 308883125}
-        ID:
-          strings:
-          - component:
-              rid: 6576058247804616777
-        Category:
-          strings: []
-    - rid: 6576058247804616777
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.String, asm: Assembly-CSharp}
-      data:
-        Text: InteractUI
     - rid: 6576058247804616778
       type: {class: CloseUI, ns: UengSystem.Tasks, asm: Assembly-CSharp}
       data:
@@ -511,6 +496,21 @@ MonoBehaviour:
           - component:
               rid: 6576058247804616779
     - rid: 6576058247804616779
+      type: {class: UPureString, ns: UengSystem.Tasks.Logic.String, asm: Assembly-CSharp}
+      data:
+        Text: InteractUI
+    - rid: 6576058358272884832
+      type: {class: OpenInteractUI, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
+        canvas: {fileID: 308883125}
+        ID:
+          strings:
+          - component:
+              rid: 6576058358272884833
+        Category:
+          strings: []
+    - rid: 6576058358272884833
       type: {class: UPureString, ns: UengSystem.Tasks.Logic.String, asm: Assembly-CSharp}
       data:
         Text: InteractUI
@@ -786,6 +786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44952bba3d4d4bfc8230a7ef4d55eda3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UUIList: []
 --- !u!1 &322624906
 GameObject:
   m_ObjectHideFlags: 0

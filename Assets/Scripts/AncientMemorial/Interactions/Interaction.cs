@@ -27,7 +27,7 @@ namespace AncientMemorial.Interactions {
 		public bool    interactable;
 		public float  timeToInteract;
 		public float  cooldownToInteract;
-		public Canvas canvas;
+		public UCanvas canvas;
 		public UString InteractText;
 		
 		public Task onInteract;

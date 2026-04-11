@@ -37,7 +37,7 @@ namespace UengSystem.UI {
 					actionOnRelease: (obj) => {  },
 					actionOnDestroy: Destroy,
 					collectionCheck: true,
-					defaultCapacity: 0,
+					defaultCapacity: 1,
 					maxSize: 100
 				); 
 			}

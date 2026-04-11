@@ -141,6 +141,9 @@ namespace UengSystem.Objects {
 		}
 		
 		public virtual void Release(float time) {
+			ID       = null;
+			Category = null;
+			
 			switch (time) {
 				case < 0:
 					Uninitialize();
@@ -148,13 +151,9 @@ namespace UengSystem.Objects {
 				case 0:
 					OnRelease();
 					Uninitialize();
-					ID       = null;
-					Category = null;
 					break;
 				default:
 					OnRelease();
-					ID       = null;
-					Category = null;
 					StartCoroutine(ReleaseFX(time));
 					break;
 			}

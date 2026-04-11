@@ -52,26 +52,14 @@ namespace UengSystem.UI {
 		protected abstract void OnOpen();
 		protected abstract void OnClose();
 
-		public override void Initialize() {
-			foreach (UUIActionListItem action in actions) {
-				action.action.component.Initialize();
-				actionDict[action.key] = action.action;
-			}
-			rectTransform = GetComponent<RectTransform>();
-			base.Initialize();
-			
-			rectTransform.anchoredPosition = initialPosition;
-			rectTransform.localScale       = initialScale;
-		}
-
 		public static UUI GetUUI(string id) => GetUObject(id) as UUI;
 		
 		public static List<UUI> GetUUIs(string category) {
 			return UCategoryTable[category];
 		}
 
-		public UUIAction GetAction(string key) {
-			if (actionDict.TryGetValue(key, out UUIAction action)) return action;
+		public T GetAction<T>(string key) where T : UUIAction {
+			if (actionDict.TryGetValue(key, out UUIAction action)) return (T)action;
 			else throw new KeyNotFoundException(key);
 		}
 
@@ -82,9 +70,27 @@ namespace UengSystem.UI {
 				action.Routine(this);
 			}
 		}
-		
-		public override void OnGet()     { OnOpen(); }
-		public override void OnRelease() { OnClose(); }
+
+		public override void OnGet() {
+			foreach (UUIActionListItem action in actions) {
+				action.action.component.Initialize();
+				actionDict[action.key] = action.action;
+				Debug.Log(action.key + " initialized");
+			}
+			
+			rectTransform = GetComponent<RectTransform>();
+			base.Initialize();
+			
+			rectTransform.anchoredPosition = initialPosition;
+			rectTransform.localScale       = initialScale;
+			
+			OnOpen();
+		}
+
+		public override void OnRelease() {
+			UCategory = null;
+			OnClose();
+		}
 
 		protected override IEnumerator SpawnFX(float duration) {
 			yield return new WaitForSeconds(duration);

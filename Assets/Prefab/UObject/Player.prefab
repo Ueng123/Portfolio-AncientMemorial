@@ -136,7 +136,8 @@ MonoBehaviour:
     AttackSpeed: 0
   isGround: 0
   hand: {fileID: 5996376916057825341}
-  maxInteractableDistance: 2
+  weapon: {fileID: 0}
+  maxInteractableDistance: 1
 --- !u!95 &3425632738243857007
 Animator:
   serializedVersion: 7
@@ -238,7 +239,7 @@ MonoBehaviour:
   pos: {x: 0, y: 0}
   rot: 0
   color: {r: 1, g: 0, b: 0, a: 1}
-  radius: 1.5
+  radius: 1
   segments: 32
 --- !u!50 &95774169548804461
 Rigidbody2D:
