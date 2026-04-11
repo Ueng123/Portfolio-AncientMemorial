@@ -30,7 +30,11 @@ namespace UengSystem.UI {
 							
 						IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
 						script.OnFirstGet();
-							
+						
+						UUI uiScript = obj.GetComponent<UUI>();
+						uiScript.OnGet();
+						
+						obj.SetActive(false);
 						return obj;
 					},
 					actionOnGet: (obj) => {  },
@@ -39,32 +43,40 @@ namespace UengSystem.UI {
 					collectionCheck: true,
 					defaultCapacity: 1,
 					maxSize: 100
-				); 
+				);
+
+				GameObject obj = pools[data.prefab.name].Get();
+				pools[data.prefab.name].Release(obj);
 			}
 		}
 
 		public GameObject Open(string key, UCanvas canvas) {
 			GameObject      obj    = pools[key].Get();
-			IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
+			UUI script = obj.GetComponent<UUI>();
 
 			obj.transform.SetParent(canvas.transform);
 
 			float openTime = prefabData.FirstOrDefault((data) => data.prefab.name == obj.name)!.openTime;
 			
 			script.Get(openTime);
+			script.OnOpen();
+			
 			obj.SetActive(true);
 			
 			return obj;
 		}
 
 		public void Close(GameObject obj, bool finalRelease = false) {
-			IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
+			UUI script = obj.GetComponent<UUI>();
 
 			float closeTime = prefabData.FirstOrDefault((data) => data.prefab.name == obj.name)!.closeTime;
 			
 			script.Release((finalRelease)?-1:closeTime);
 
-			if (!finalRelease) return;
+			if (!finalRelease) {
+				script.OnOpen();
+				return;
+			}
 
 			obj.SetActive(false);
 			

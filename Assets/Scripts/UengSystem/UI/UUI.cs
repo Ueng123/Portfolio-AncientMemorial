@@ -49,8 +49,8 @@ namespace UengSystem.UI {
 		public UUIActionListItem[] actions;
 		private Dictionary<string, UUIAction> actionDict = new();
 
-		protected abstract void OnOpen();
-		protected abstract void OnClose();
+		public abstract void OnOpen();
+		public abstract void OnClose();
 
 		public static UUI GetUUI(string id) => GetUObject(id) as UUI;
 		
@@ -71,25 +71,24 @@ namespace UengSystem.UI {
 			}
 		}
 
+		public override void Initialize() {
+			base.Initialize();
+		}
+
 		public override void OnGet() {
 			foreach (UUIActionListItem action in actions) {
 				action.action.component.Initialize();
 				actionDict[action.key] = action.action;
-				Debug.Log(action.key + " initialized");
 			}
 			
 			rectTransform = GetComponent<RectTransform>();
-			base.Initialize();
 			
 			rectTransform.anchoredPosition = initialPosition;
 			rectTransform.localScale       = initialScale;
-			
-			OnOpen();
 		}
 
 		public override void OnRelease() {
 			UCategory = null;
-			OnClose();
 		}
 
 		protected override IEnumerator SpawnFX(float duration) {

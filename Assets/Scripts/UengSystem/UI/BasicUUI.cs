@@ -12,8 +12,8 @@
 		protected override void FixedRoutine() {
 		}
 
-		protected override void OnOpen() { }
+		public override void OnOpen() { }
 
-		protected override void OnClose() { }
+		public override void OnClose() { }
 	}
 }
