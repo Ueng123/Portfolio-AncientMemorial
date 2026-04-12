@@ -48,12 +48,6 @@ namespace AncientMemorial.Objects {
 
 			if (t > t_s) {
 				GameObject spawnEffect = UObjectPool.instance.Get("SpawnParticle", transform.position);
-				
-				DelayedAction act = new (5, () => {
-					UObjectPool.instance.Release(spawnEffect);
-				});
-
-				act.Execute();
 				UObjectPool.instance.Release(gameObject);
 				return;
 			}

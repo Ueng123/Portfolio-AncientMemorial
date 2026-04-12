@@ -96,7 +96,7 @@ namespace UengSystem.UI {
 			Initialize();
 		}
 
-		public override    IEnumerator ReleaseFX(float duration) {
+		public override IEnumerator ReleaseFX(float duration) {
 			animator.SetTrigger(Close);
 			yield return new WaitForSeconds(duration);
 			UUIManager.instance.Close(gameObject, true);

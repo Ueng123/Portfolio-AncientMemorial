@@ -3,16 +3,21 @@ using AncientMemorial.Interactions;
 using AncientMemorial.Weapons;
 using UengSystem.Events.EventDatas;
 using UengSystem.Inputs;
+using UengSystem.ObjectPool;
+using UengSystem.Utility;
 using UnityEngine;
+using UnityEngineInternal;
 using Events_Event = UengSystem.Events.Event;
+using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
 	public class Player : Entity {
 		
 		[Header("Hand")]
 		public  GameObject     hand;
-		public  Weapon         weapon;
+		public  GameObject     handW;
 		private SpriteRenderer handSprite;
+		private SpriteRenderer handWSprite;
 		
 		private float handRotOffset;
 		private float handRotOffsetSpeed;
@@ -48,8 +53,6 @@ namespace AncientMemorial.Entities {
 			float moveDir = InputManager.inputData[InputActionType.Move].valueF;
 			
 			Vector2 moveVec = new (moveDir * entityStat.MoveSpeed, rigidbody2D.linearVelocity.y);
-
-			// var portfolio = "FUCKING SHIT";
 			
 			isMoving = (moveDir != 0);
 			
@@ -126,23 +129,48 @@ namespace AncientMemorial.Entities {
 			
 			rigidbody2D.AddForce(Vector2.up * entityStat.JumpPower, ForceMode2D.Impulse);
 		}
+
+		private float primaryAttackCooldownTime => entityStat.AttackSpeed/2.5f;
+		private bool  primaryAttackAble     = true;
+		private DelayedAction PrimaryAttackCoolDown => new (primaryAttackCooldownTime, () => primaryAttackAble = true);
 		
 		private void PrimaryAttack() {
 			if (stopped) return;
+			if (!primaryAttackAble) return;
+
+			primaryAttackAble = false;
+			PrimaryAttackCoolDown.Execute();
 			
 			SetHandOffset(20, 5f);
+		}
+
+		private bool  chargeComplete = false;
+		private float ChargeTime     => 2.5f / ((entityStat.AttackSpeed-1)*0.3f+1);
+		private float chargeProgress => (ChargeAttack!=null)?(ChargeAttack.Executing ? ChargeAttack.GetProgress() : (chargeComplete ? 1 : 0)):0;
+		private DelayedAction ChargeAttack = null;
+
+		private void ChargeAttackAction() {
+			chargeComplete = true;
+
+			GameObject obj = UObjectPool.instance.Get("FullChargeEffect", hand.transform.position);
+			obj.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360f));
 		}
 		
 		private void ChargeStart() {
 			if (stopped) return;
+			chargeComplete = false;
 			
-			
+			ChargeAttack = new DelayedAction(ChargeTime, ChargeAttackAction);
+			ChargeAttack.Execute();
 		}
 		
 		private void ChargeEnd() {
-			if (stopped) return;
+			if (stopped) { return; }
 			
+			SetHandOffset(30*chargeProgress, 5f);
 			
+			ChargeAttack.Cancel();
+			chargeComplete = false;
 		}
 		
 		private void Interact() {
@@ -163,7 +191,10 @@ namespace AncientMemorial.Entities {
 
 			handRotOffset = (Mathf.Abs(handRotOffset) <= 0.001f)?0:Mathf.Lerp(handRotOffset, 0, handRotOffsetSpeed * Time.deltaTime);
 
-			hand.transform.localPosition = handPos;
+			float randomDeg = Random.Range(0, 360f);
+			
+			hand.transform.localPosition = handPos + new Vector2(Mathf.Cos(randomDeg), Mathf.Sin(randomDeg)) *
+										   (chargeProgress * 0.05f);
 			hand.transform.localRotation = Quaternion.Euler(0, 0, degH + offset*Mathf.Sign(dM.x));
 			hand.SetActive(holdingCrossbow);
 		}
@@ -177,7 +208,11 @@ namespace AncientMemorial.Entities {
 			animator.speed = entityStat.MoveSpeed/3;
 			
 			spriteRenderer.flipX = InputManager.inputData[InputActionType.MousePosition].valueV.x < transform.position.x;
-			handSprite.flipY     = InputManager.inputData[InputActionType.MousePosition].valueV.x < transform.position.x;
+			handSprite.flipY = handWSprite.flipY = InputManager.inputData[InputActionType.MousePosition].valueV.x < transform.position.x;
+
+			const float n      = 250;
+			float       aValue = (Mathf.Pow(n, chargeProgress) - 1) / (n - 1);
+			handWSprite.color = new Color(1, 1, 1, aValue);
 		}
 		
 		// OVERRIDING //
@@ -205,7 +240,11 @@ namespace AncientMemorial.Entities {
 		
 		public override void Initialize() {
 			hand.SetActive(true);
+			handW.SetActive(true);
+			
 			handSprite = hand.GetComponent<SpriteRenderer>();
+			handWSprite = handW.GetComponent<SpriteRenderer>();
+			
 			team       = Team.Player;
 			
 			base.Initialize();
@@ -241,7 +280,7 @@ namespace AncientMemorial.Entities {
 					break;
 				
 				case UengSystem.Events.EventType.Entity_Behaviour_ChargeEnd:
-					ChargeStart();
+					ChargeEnd();
 					break;
 				
 				case UengSystem.Events.EventType.Interact_Start:
