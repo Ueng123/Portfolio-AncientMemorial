@@ -1,5 +1,5 @@
 ﻿using System;
-using UengSystem.Tasks.Logic.String;
+using UengSystem.Tasks.Logic.UValues.UStrings;
 using UnityEngine;
 
 namespace UengSystem.Tasks {
@@ -8,7 +8,7 @@ namespace UengSystem.Tasks {
 		public UString text;
 		
 		public override void Execute(ITaskable self) {
-			Debug.Log(text.GetText());
+			Debug.Log(text.getValue);
 		}
 	}
 }

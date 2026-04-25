@@ -1,7 +1,7 @@
 ﻿using System;
 using AncientMemorial.Interactions;
 using UengSystem.Tasks;
-using UengSystem.Tasks.Logic.String;
+using UengSystem.Tasks.Logic.UValues.UStrings;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
@@ -23,8 +23,8 @@ namespace AncientMemorial.Tasks {
 			((InteractProgressValue)uui.GetAction<USliderAction>("Bar").value).obj = (Interaction)self;
 			uui.GetAction<UTextAction>("TextLabel").SetText(((Interaction)self).InteractText);
 			
-			if (ID       !=null) uui.ID        = ID.GetText();
-			if (Category !=null) uui.UCategory = Category.GetText();
+			if (ID       !=null) uui.ID        = ID.getValue;
+			if (Category !=null) uui.UCategory = Category.getValue;
 		}
 	}
 }

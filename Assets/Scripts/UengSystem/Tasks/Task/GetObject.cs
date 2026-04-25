@@ -1,7 +1,7 @@
 ﻿using System;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.Tasks.Logic.String;
+using UengSystem.Tasks.Logic.UValues.UStrings;
 using UnityEngine;
 
 namespace UengSystem.Tasks {
@@ -18,8 +18,8 @@ namespace UengSystem.Tasks {
 			GameObject obj = UObjectPool.instance.Get(TargetObject.name, position, spawnTime);
 			UObject amobj = obj.GetComponent<UObject>();
 
-			if (ID       !=null) amobj.ID       = ID.GetText();
-			if (Category !=null) amobj.Category = Category.GetText();
+			if (ID       !=null) amobj.ID       = ID.getValue;
+			if (Category !=null) amobj.Category = Category.getValue;
 		}
 	}
 }

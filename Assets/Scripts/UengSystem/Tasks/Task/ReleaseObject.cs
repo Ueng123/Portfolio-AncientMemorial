@@ -1,7 +1,7 @@
 ﻿using System;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.Tasks.Logic.String;
+using UengSystem.Tasks.Logic.UValues.UStrings;
 
 namespace UengSystem.Tasks {
 	[Serializable]
@@ -11,11 +11,11 @@ namespace UengSystem.Tasks {
 		public UString ID;
 		
 		public override void Execute(ITaskable self) {
-			if (ID.GetText() == "this") {
+			if (ID.getValue == "this") {
 				UObjectPool.instance.Release((self as UObject)?.gameObject, releaseTime);
 			}
 			else {
-				UObjectPool.instance.Release(UObject.GetUObject(ID.GetText()).gameObject, releaseTime);
+				UObjectPool.instance.Release(UObject.GetUObject(ID.getValue).gameObject, releaseTime);
 			}
 		}
 	}

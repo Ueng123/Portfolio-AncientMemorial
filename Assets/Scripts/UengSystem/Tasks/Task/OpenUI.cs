@@ -1,7 +1,7 @@
 ﻿using System;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.Tasks.Logic.String;
+using UengSystem.Tasks.Logic.UValues.UStrings;
 using UengSystem.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,8 +19,8 @@ namespace UengSystem.Tasks {
 			GameObject ui  = UUIManager.instance.Open(TargetUUI.name, canvas);
 			UUI        uui = ui.GetComponent<UUI>();
 
-			if (ID.GetText()       != "") uui.ID        = ID.GetText();
-			if (Category.GetText() != "") uui.UCategory = Category.GetText();
+			if (ID.getValue       != "") uui.ID        = ID.getValue;
+			if (Category.getValue != "") uui.UCategory = Category.getValue;
 		}
 	}
 }

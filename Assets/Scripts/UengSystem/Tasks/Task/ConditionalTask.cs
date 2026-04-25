@@ -1,11 +1,13 @@
 ﻿using System;
+using UengSystem.Tasks.Logic.UValues;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace UengSystem.Tasks.Logic {
+namespace UengSystem.Tasks {
 	[Serializable]
 	public class ConditionalTask : TaskComponent {
-		[SerializeReference] [SubclassSelector]
-		public UCondition condition;
+		[FormerlySerializedAs("condition")] [SerializeReference] [SubclassSelector]
+		public UValue<bool> boolean;
 		public Task task;
 		
 		[HideInInspector]
@@ -13,7 +15,7 @@ namespace UengSystem.Tasks.Logic {
 		public bool detectOnce;
 		
 		public override void Execute(ITaskable self) {
-			bool result = condition.Check();
+			bool result = boolean.getValue;
 			if (result) {
 				if (detectOnce && isTrue) return;
 				task.Execute(self);

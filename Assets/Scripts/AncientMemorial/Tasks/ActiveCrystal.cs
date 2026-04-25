@@ -2,7 +2,7 @@
 using AncientMemorial.Interactions;
 using UengSystem.Managers;
 using UengSystem.Tasks;
-using UengSystem.Tasks.Logic.String;
+using UengSystem.Tasks.Logic.UValues.UStrings;
 
 namespace AncientMemorial.Tasks {
 	[Serializable]

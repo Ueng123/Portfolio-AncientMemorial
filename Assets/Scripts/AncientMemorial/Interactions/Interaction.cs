@@ -6,7 +6,7 @@ using TMPro;
 using UengSystem.Events.EventDatas;
 using UengSystem.Objects;
 using UengSystem.Tasks;
-using UengSystem.Tasks.Logic.String;
+using UengSystem.Tasks.Logic.UValues.UStrings;
 using UengSystem.UI;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
