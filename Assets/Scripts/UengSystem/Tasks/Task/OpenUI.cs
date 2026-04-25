@@ -1,6 +1,7 @@
 ﻿using System;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
+using UengSystem.Tasks.Logic.UValues;
 using UengSystem.Tasks.Logic.UValues.UStrings;
 using UengSystem.UI;
 using UnityEngine;
@@ -11,16 +12,16 @@ namespace UengSystem.Tasks {
 	public class OpenUI : TaskComponent {
 		public GameObject TargetUUI;
 		public UCanvas    canvas;
-
-		public UString ID;
-		public UString Category;
+		
+		[SerializeReference][SubclassSelector] public UValue<string> ID;
+		[SerializeReference][SubclassSelector] public UValue<string> Category;
 		
 		public override void Execute(ITaskable self) {
 			GameObject ui  = UUIManager.instance.Open(TargetUUI.name, canvas);
 			UUI        uui = ui.GetComponent<UUI>();
 
-			if (ID.getValue       != "") uui.ID        = ID.getValue;
-			if (Category.getValue != "") uui.UCategory = Category.getValue;
+			if (ID.value       != "") uui.ID        = ID.getValue;
+			if (Category.value != "") uui.UCategory = Category.getValue;
 		}
 	}
 }

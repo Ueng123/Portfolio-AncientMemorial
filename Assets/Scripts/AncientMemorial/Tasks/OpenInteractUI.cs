@@ -1,7 +1,8 @@
 ﻿using System;
 using AncientMemorial.Interactions;
 using UengSystem.Tasks;
-using UengSystem.Tasks.Logic.UValues.UStrings;
+using UengSystem.Tasks.Logic.UValues;
+using UengSystem.Tasks.Logic.UValues.UColors;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
@@ -13,14 +14,13 @@ namespace AncientMemorial.Tasks {
 		public GameObject TargetUUI;
 		public UCanvas    canvas;
 
-		public UString ID;
-		public UString Category;
+		[SerializeReference][SubclassSelector] public UValue<string> ID;
+		[SerializeReference][SubclassSelector] public UValue<string> Category;
 		
 		public override void Execute(ITaskable self) {
 			GameObject ui  = UUIManager.instance.Open(TargetUUI.name, canvas);
 			UUI        uui = ui.GetComponent<UUI>();
 			
-			((InteractProgressValue)uui.GetAction<USliderAction>("Bar").value).obj = (Interaction)self;
 			uui.GetAction<UTextAction>("TextLabel").SetText(((Interaction)self).InteractText);
 			
 			if (ID       !=null) uui.ID        = ID.getValue;

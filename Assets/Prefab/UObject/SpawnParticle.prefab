@@ -4922,10 +4922,9 @@ MonoBehaviour:
       data:
         releaseTime: 0
         ID:
-          strings:
-          - component:
-              rid: 6576058381926924363
-    - rid: 6576058381926924363
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.String, asm: Assembly-CSharp}
+          rid: 6576058669838631016
+    - rid: 6576058669838631016
+      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
+        valueCache: 
         Text: this

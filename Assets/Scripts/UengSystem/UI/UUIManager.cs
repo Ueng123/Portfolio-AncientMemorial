@@ -44,9 +44,6 @@ namespace UengSystem.UI {
 					defaultCapacity: 1,
 					maxSize: 100
 				);
-
-				GameObject obj = pools[data.prefab.name].Get();
-				pools[data.prefab.name].Release(obj);
 			}
 		}
 

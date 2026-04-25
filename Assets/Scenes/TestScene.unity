@@ -396,8 +396,6 @@ MonoBehaviour:
   timeToInteract: 2
   cooldownToInteract: 3
   canvas: {fileID: 308883125}
-  InteractText:
-    strings: []
   onInteract:
     tasks:
     - time: 0
@@ -411,7 +409,7 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 6576058358272884832
+      - rid: 6576058669838631022
   onUnTarget:
     tasks:
     - time: 0
@@ -428,28 +426,34 @@ MonoBehaviour:
       type: {class: CloseUI, ns: UengSystem.Tasks, asm: Assembly-CSharp}
       data:
         ID:
-          strings:
-          - component:
-              rid: 6576058247804616779
-    - rid: 6576058247804616779
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.String, asm: Assembly-CSharp}
+          rid: 6576058669838631003
+    - rid: 6576058669838631003
+      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
+        valueCache: 
+        isValueCached: 0
         Text: InteractUI
-    - rid: 6576058358272884832
+    - rid: 6576058669838631022
       type: {class: OpenInteractUI, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
       data:
         TargetUUI: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
         canvas: {fileID: 308883125}
         ID:
-          strings:
-          - component:
-              rid: 6576058358272884833
+          rid: 6576058669838631024
         Category:
-          strings: []
-    - rid: 6576058358272884833
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.String, asm: Assembly-CSharp}
+          rid: 6576058669838631025
+    - rid: 6576058669838631024
+      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
+        valueCache: 
+        isValueCached: 0
         Text: InteractUI
+    - rid: 6576058669838631025
+      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        valueCache: 
+        isValueCached: 0
+        Text: 
 --- !u!4 &185566329
 Transform:
   m_ObjectHideFlags: 0
@@ -3055,8 +3059,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - {fileID: 11400000, guid: 4dee80f61aa9ea844840b81fb2fc2044, type: 2}
-  - {fileID: 11400000, guid: 5c5f5cdd47fba3c4b81b494f5330341c, type: 2}
+  - {fileID: 11400000, guid: 71e1ef7c4794ada4eab7f4ecc75553db, type: 2}
+  - {fileID: 11400000, guid: 71e1ef7c4794ada4eab7f4ecc75553db, type: 2}
   currentWave: {fileID: 0}
   timeElapsed: 0
 --- !u!1 &1401290527

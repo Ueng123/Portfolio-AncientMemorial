@@ -4,7 +4,12 @@ using UnityEngine;
 namespace UengSystem.Tasks.Logic.UValues.UStrings {
 	[Serializable]
 	public class UNumberString : UValue<string> {
-		public override bool getIsDynamic => number.getIsDynamic;
+		public override bool getIsDynamic {
+			get {
+				number.parent = this;
+				return number.isDynamic;
+			}
+		}
 		
 		[SerializeReference][SubclassSelector]
 		public UValue<float> number;

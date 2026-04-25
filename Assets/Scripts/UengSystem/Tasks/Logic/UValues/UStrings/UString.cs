@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UengSystem.Tasks.Logic.UValues.UStrings {
 	[Serializable]
 	public class UString : UValue<string> {
-		public override bool getIsDynamic { 
+		public override bool getIsDynamic {
 			get {
 				bool result = false;
 				
@@ -21,6 +21,6 @@ namespace UengSystem.Tasks.Logic.UValues.UStrings {
 		[SerializeReference][SubclassSelector]
 		public UValue<string>[] strings;
 		
-		public override string getValue => strings.Aggregate("", (current, item) => current + item.getValue);
+		public override string getValue => strings.Aggregate("", (current, item) => current + item.value);
 	}
 }

@@ -4,7 +4,14 @@ using UnityEngine;
 namespace UengSystem.Tasks.Logic.UValues.UColors {
 	[Serializable]
 	public class UNumberColor : UValue<Color> {
-		public override bool getIsDynamic => true;
+		public override bool getIsDynamic { 
+			get {
+				r.parent = this;
+				g.parent = this;
+				b.parent = this;
+				return r.isDynamic || g.isDynamic || b.isDynamic || a.isDynamic;
+			}
+		}
 		
 		[SerializeReference] [SubclassSelector]
 		public UValue<float> r;
@@ -14,7 +21,10 @@ namespace UengSystem.Tasks.Logic.UValues.UColors {
 		
 		[SerializeReference] [SubclassSelector]
 		public UValue<float> b;
+		
+		[SerializeReference] [SubclassSelector]
+		public UValue<float> a;
 
-		public override Color getValue => new (r.getValue, g.getValue, b.getValue);
+		public override Color getValue => new (r.value, g.value, b.value, a.value);
 	}
 }

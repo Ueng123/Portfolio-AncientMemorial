@@ -6,6 +6,7 @@ using TMPro;
 using UengSystem.Events.EventDatas;
 using UengSystem.Objects;
 using UengSystem.Tasks;
+using UengSystem.Tasks.Logic.UValues;
 using UengSystem.Tasks.Logic.UValues.UStrings;
 using UengSystem.UI;
 using UengSystem.UI.UTexts;
@@ -25,10 +26,10 @@ namespace AncientMemorial.Interactions {
 
 		[Header("Interaction")]
 		public bool    interactable;
-		public float  timeToInteract;
-		public float  cooldownToInteract;
-		public UCanvas canvas;
-		public UString InteractText;
+		public float          timeToInteract;
+		public float          cooldownToInteract;
+		public UCanvas        canvas;
+		public UValue<string> InteractText;
 		
 		public Task onInteract;
 		public Task onCancel;
@@ -77,7 +78,7 @@ namespace AncientMemorial.Interactions {
 			return true;
 		}
 
-		public void ChangeInteractText(UString newText) {
+		public void ChangeInteractText(UValue<string> newText) {
 			InteractText = newText;
 		}
 

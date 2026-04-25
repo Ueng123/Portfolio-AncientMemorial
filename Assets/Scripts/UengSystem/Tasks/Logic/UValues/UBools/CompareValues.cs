@@ -8,7 +8,7 @@ namespace UengSystem.Tasks.Logic.UValues.UBools {
 			get {
 				A.parent = this;
 				B.parent = this;
-				return A.getIsDynamic || B.getIsDynamic;
+				return A.isDynamic || B.isDynamic;
 			}
 		}
 		
@@ -21,11 +21,11 @@ namespace UengSystem.Tasks.Logic.UValues.UBools {
 		public CompareType compareType;
 
 		public override bool getValue => compareType switch {
-				CompareType.Greater        => A.getValue >  B.getValue,
-				CompareType.Equal          => Mathf.Approximately(A.getValue, B.getValue),
-				CompareType.Less           => A.getValue <  B.getValue,
-				CompareType.GreaterOrEqual => A.getValue >= B.getValue,
-				CompareType.LessOrEqual    => A.getValue <= B.getValue,
+				CompareType.Greater        => A.value >  B.value,
+				CompareType.Equal          => Mathf.Approximately(A.value, B.value),
+				CompareType.Less           => A.value <  B.value,
+				CompareType.GreaterOrEqual => A.value >= B.value,
+				CompareType.LessOrEqual    => A.value <= B.value,
 				_                          => throw new ArgumentOutOfRangeException()
 			};
 	}

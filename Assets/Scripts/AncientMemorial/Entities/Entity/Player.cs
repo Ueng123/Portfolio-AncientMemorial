@@ -145,7 +145,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		private bool  chargeComplete = false;
-		private float ChargeTime     => 2.5f / ((entityStat.AttackSpeed-1)*0.3f+1);
+		private float ChargeTime     => 1.25f / ((entityStat.AttackSpeed-1)*0.3f+1);
 		private float chargeProgress => (ChargeAttack!=null)?(ChargeAttack.Executing ? ChargeAttack.GetProgress() : (chargeComplete ? 1 : 0)):0;
 		private DelayedAction ChargeAttack = null;
 

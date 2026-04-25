@@ -10,7 +10,7 @@ namespace AncientMemorial.Interactions {
 		public override bool getIsDynamic => true;
 
 		[Header("id or obj")] [SerializeReference] [SubclassSelector]
-		public UString id;
+		public UValue<string> id;
 
 		public Interaction obj;
 
@@ -23,7 +23,8 @@ namespace AncientMemorial.Interactions {
 				}
 
 				if (id != null) {
-					result = (UObject.GetUObject(id.getValue) as Interaction)?.GetProgress();
+					Debug.Log(id.value);
+					result = (UObject.GetUObject(id.value) as Interaction)?.GetProgress();
 				}
 
 				if (result != null) return (float) result;

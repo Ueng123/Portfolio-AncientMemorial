@@ -64,6 +64,7 @@ namespace UengSystem.UI {
 		}
 
 		// FUCK NAZETE WORK 안함 REALLY YAMA ROTATING FUCK
+		// Done :_)
 		protected override void Routine() {
 			foreach (UUIAction action in actionDict.Values) {
 				action.Routine(this);
