@@ -126,11 +126,15 @@ namespace UengSystem.Objects {
 
 		public override void Release(float time) {
 			Instances.Remove(this);
+			Debug.Log($"[UObject] Instance {gameObject.name} Removed");
 			
 			base.Release(time);
 		}
 
-		public override void Initialize() { Instances.Add(this); }
+		public override void Initialize() {
+			Instances.Add(this);
+			Debug.Log($"[UObject] Instance {gameObject.name} Added");
+		}
 
 		public override void Uninitialize() { }
 	}

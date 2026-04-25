@@ -63,16 +63,11 @@ namespace UengSystem.UI {
 			else throw new KeyNotFoundException(key);
 		}
 
+		// FUCK NAZETE WORK 안함 REALLY YAMA ROTATING FUCK
 		protected override void Routine() {
-			Debug.Log("HELLO :) I AM FUCKING HANDSOMEGUY DO U KNOW TAHT MAMERL IS FUCING SHORT????");
-			
 			foreach (UUIAction action in actionDict.Values) {
 				action.Routine(this);
 			}
-		}
-
-		public override void Initialize() {
-			base.Initialize();
 		}
 
 		public override void OnGet() {
@@ -94,6 +89,7 @@ namespace UengSystem.UI {
 		protected override IEnumerator SpawnFX(float duration) {
 			yield return new WaitForSeconds(duration);
 			Initialize();
+			Debug.Log("SpawnFX Done");
 		}
 
 		public override IEnumerator ReleaseFX(float duration) {
