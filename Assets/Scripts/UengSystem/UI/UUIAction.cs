@@ -1,5 +1,5 @@
 ﻿using System;
-using UengSystem.Tasks;
+using UengSystem.Logic.Tasks;
 
 namespace UengSystem.UI {
 	[Serializable]

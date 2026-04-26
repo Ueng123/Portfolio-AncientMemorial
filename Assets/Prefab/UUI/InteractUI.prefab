@@ -131,72 +131,130 @@ MonoBehaviour:
         component: {fileID: 2131951806108181785}
         setValue: 1
         value:
-          rid: 6576058200125079635
+          rid: 6576058688792690783
         useValue: 0
         task:
           rid: -2
         setColor: 1
         color:
-          rid: 6576058669838630989
+          rid: 6576058688792690781
     - rid: 6576058200125079634
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 7193954444277158016}
-    - rid: 6576058200125079635
-      type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
-      data:
-        valueCache: 0
-        isValueCached: 0
-        id:
-          rid: 6576058669838631020
-        obj: {fileID: 0}
-    - rid: 6576058669838630989
-      type: {class: UNumberColor, ns: UengSystem.Tasks.Logic.UValues.UColors, asm: Assembly-CSharp}
+    - rid: 6576058688792690781
+      type: {class: UNumberColor, ns: UengSystem.Logic.UValues.UColors, asm: Assembly-CSharp}
       data:
         valueCache: {r: 0, g: 0, b: 0, a: 0}
         isValueCached: 0
         r:
-          rid: 6576058669838630993
+          rid: 6576058688792690789
         g:
-          rid: 6576058669838630994
+          rid: 6576058688792690790
         b:
-          rid: 6576058669838630995
+          rid: 6576058688792690791
         a:
-          rid: 6576058669838630996
-    - rid: 6576058669838630993
-      type: {class: UPureNumber, ns: UengSystem.Tasks.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+          rid: 6576058688792690792
+    - rid: 6576058688792690783
+      type: {class: UBasicCubicBezierValue, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
       data:
         valueCache: 0
         isValueCached: 0
-        number: 1
-    - rid: 6576058669838630994
-      type: {class: UPureNumber, ns: UengSystem.Tasks.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+        startSlope:
+          rid: 6576058688792690784
+        endSlope:
+          rid: 6576058688792690785
+        T:
+          rid: 6576058688792690786
+    - rid: 6576058688792690784
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
       data:
         valueCache: 0
         isValueCached: 0
-        number: 1
-    - rid: 6576058669838630995
-      type: {class: UPureNumber, ns: UengSystem.Tasks.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+        number: 0.1
+    - rid: 6576058688792690785
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
       data:
         valueCache: 0
         isValueCached: 0
-        number: 1
-    - rid: 6576058669838630996
+        number: 0.2
+    - rid: 6576058688792690786
       type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
       data:
         valueCache: 0
         isValueCached: 0
-        id:
-          rid: 6576058669838631021
-        obj: {fileID: 0}
-    - rid: 6576058669838631020
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        interactObject:
+          rid: 6576058688792690787
+    - rid: 6576058688792690787
+      type: {class: UObjectByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        ID:
+          rid: 6576058688792690788
+    - rid: 6576058688792690788
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         valueCache: 
         isValueCached: 0
         Text: Crystal
-    - rid: 6576058669838631021
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
+    - rid: 6576058688792690789
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+      data:
+        valueCache: 0
+        isValueCached: 0
+        number: 1
+    - rid: 6576058688792690790
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+      data:
+        valueCache: 0
+        isValueCached: 0
+        number: 1
+    - rid: 6576058688792690791
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+      data:
+        valueCache: 0
+        isValueCached: 0
+        number: 1
+    - rid: 6576058688792690792
+      type: {class: UBasicCubicBezierValue, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+      data:
+        valueCache: 0
+        isValueCached: 0
+        startSlope:
+          rid: 6576058688792690793
+        endSlope:
+          rid: 6576058688792690794
+        T:
+          rid: 6576058688792690795
+    - rid: 6576058688792690793
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+      data:
+        valueCache: 0
+        isValueCached: 0
+        number: 0.1
+    - rid: 6576058688792690794
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UNumbers, asm: Assembly-CSharp}
+      data:
+        valueCache: 0
+        isValueCached: 0
+        number: 0.1
+    - rid: 6576058688792690795
+      type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
+      data:
+        valueCache: 0
+        isValueCached: 0
+        interactObject:
+          rid: 6576058688792690796
+    - rid: 6576058688792690796
+      type: {class: UObjectByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        ID:
+          rid: 6576058688792690797
+    - rid: 6576058688792690797
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         valueCache: 
         isValueCached: 0

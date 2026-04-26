@@ -1,6 +1,6 @@
 ﻿using System;
 using AncientMemorial.Waves;
-using UengSystem.Tasks;
+using UengSystem.Logic.Tasks;
 
 namespace AncientMemorial.Tasks {
 	[Serializable]

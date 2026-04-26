@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
+using UengSystem.Logic.Tasks;
 using UengSystem.Managers;
-using UengSystem.Tasks;
-using UengSystem.Tasks.Logic;
-using UengSystem.Tasks.Logic.UValues.UBools;
 using UnityEngine;
 
 namespace AncientMemorial.Waves {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using UengSystem.Logic.Tasks;
 using UengSystem.Objects;
-using UengSystem.Tasks;
 using UnityEngine;
 
 namespace UengSystem.Managers {

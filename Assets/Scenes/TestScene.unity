@@ -409,51 +409,39 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 6576058669838631022
+      - rid: -2
   onUnTarget:
     tasks:
     - time: 0
       tasks:
-      - rid: 6576058247804616778
+      - rid: 6576058688792690803
   crystalModel: {fileID: 1501743933}
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 6576058220649644113
       type: {class: NextWave, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
       data: 
-    - rid: 6576058247804616778
-      type: {class: CloseUI, ns: UengSystem.Tasks, asm: Assembly-CSharp}
+    - rid: 6576058688792690803
+      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
+        TargetUUI:
+          rid: 6576058688792690805
+    - rid: 6576058688792690805
+      type: {class: UUIByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        valueCache: {fileID: 0}
+        isValueCached: 0
         ID:
-          rid: 6576058669838631003
-    - rid: 6576058669838631003
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 6576058688792690806
+    - rid: 6576058688792690806
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         valueCache: 
         isValueCached: 0
         Text: InteractUI
-    - rid: 6576058669838631022
-      type: {class: OpenInteractUI, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
-        canvas: {fileID: 308883125}
-        ID:
-          rid: 6576058669838631024
-        Category:
-          rid: 6576058669838631025
-    - rid: 6576058669838631024
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        valueCache: 
-        isValueCached: 0
-        Text: InteractUI
-    - rid: 6576058669838631025
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        valueCache: 
-        isValueCached: 0
-        Text: 
 --- !u!4 &185566329
 Transform:
   m_ObjectHideFlags: 0
@@ -4035,7 +4023,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

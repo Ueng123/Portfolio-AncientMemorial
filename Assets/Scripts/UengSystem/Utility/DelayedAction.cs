@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using UengSystem.Managers;
 using UnityEngine;
 
 namespace UengSystem.Utility {

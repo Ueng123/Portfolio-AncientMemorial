@@ -1,7 +1,6 @@
 ﻿using System;
+using UengSystem.Logic.UValues;
 using UengSystem.Objects;
-using UengSystem.Tasks.Logic.UValues;
-using UengSystem.Tasks.Logic.UValues.UStrings;
 using UnityEngine;
 
 namespace AncientMemorial.Interactions {
@@ -9,25 +8,18 @@ namespace AncientMemorial.Interactions {
 	public class InteractProgressValue : UValue<float> {
 		public override bool getIsDynamic => true;
 
-		[Header("id or obj")] [SerializeReference] [SubclassSelector]
-		public UValue<string> id;
-
-		public Interaction obj;
+		[SerializeReference] [SubclassSelector]
+		public UValue<UObject> interactObject;
 
 		public override float getValue {
 			get {
-				float ? result = null;
+				float? result = null;
 
-				if (obj) {
-					result = obj.GetProgress();
+				if (interactObject != null) {
+					result = (interactObject.value as Interaction)?.GetProgress();
 				}
 
-				if (id != null) {
-					Debug.Log(id.value);
-					result = (UObject.GetUObject(id.value) as Interaction)?.GetProgress();
-				}
-
-				if (result != null) return (float) result;
+				if (result != null) return (float)result;
 				else throw new Exception();
 			}
 		}

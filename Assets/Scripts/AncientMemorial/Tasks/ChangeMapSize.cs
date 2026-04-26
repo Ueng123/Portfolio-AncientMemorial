@@ -1,6 +1,6 @@
 ﻿using System;
 using AncientMemorial.Map;
-using UengSystem.Tasks;
+using UengSystem.Logic.Tasks;
 using UnityEngine;
 
 namespace AncientMemorial.Tasks {

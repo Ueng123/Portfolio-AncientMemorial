@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using AncientMemorial.Entities;
 using TMPro;
 using UengSystem.Events.EventDatas;
+using UengSystem.Logic.Tasks;
+using UengSystem.Logic.UValues;
 using UengSystem.Objects;
-using UengSystem.Tasks;
-using UengSystem.Tasks.Logic.UValues;
-using UengSystem.Tasks.Logic.UValues.UStrings;
 using UengSystem.UI;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
@@ -29,7 +28,6 @@ namespace AncientMemorial.Interactions {
 		public float          timeToInteract;
 		public float          cooldownToInteract;
 		public UCanvas        canvas;
-		public UValue<string> InteractText;
 		
 		public Task onInteract;
 		public Task onCancel;
@@ -76,10 +74,6 @@ namespace AncientMemorial.Interactions {
 			if (distance > player.maxInteractableDistance) return false;
 			
 			return true;
-		}
-
-		public void ChangeInteractText(UValue<string> newText) {
-			InteractText = newText;
 		}
 
 		public float GetProgress() => interactAction.GetProgress();

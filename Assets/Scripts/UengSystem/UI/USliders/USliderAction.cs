@@ -1,8 +1,6 @@
 ﻿using System;
-using UengSystem.Tasks;
-using UengSystem.Tasks.Logic;
-using UengSystem.Tasks.Logic.UValues;
-using UengSystem.Tasks.Logic.UValues.UBools;
+using UengSystem.Logic.Tasks;
+using UengSystem.Logic.UValues;
 using UnityEngine;
 
 namespace UengSystem.UI.USliders {

@@ -1,6 +1,6 @@
-﻿using UengSystem.Managers;
+﻿using UengSystem.Logic.Tasks;
+using UengSystem.Managers;
 using UengSystem.Objects;
-using UengSystem.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 

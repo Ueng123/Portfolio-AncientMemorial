@@ -1,7 +1,7 @@
 ﻿using System;
 using AncientMemorial.Cameras;
 using AncientMemorial.Map;
-using UengSystem.Tasks;
+using UengSystem.Logic.Tasks;
 
 namespace AncientMemorial.Tasks {
 	[Serializable]

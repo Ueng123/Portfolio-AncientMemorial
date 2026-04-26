@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UengSystem.Events.EventDatas;
-using UengSystem.Tasks;
+using UengSystem.Logic.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 

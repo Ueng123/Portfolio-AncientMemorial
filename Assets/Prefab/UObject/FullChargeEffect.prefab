@@ -4913,19 +4913,16 @@ MonoBehaviour:
     tasks:
     - time: 1
       tasks:
-      - rid: 6576058381926924360
+      - rid: 6576058688792690800
   references:
     version: 2
     RefIds:
-    - rid: 6576058381926924360
-      type: {class: ReleaseObject, ns: UengSystem.Tasks, asm: Assembly-CSharp}
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6576058688792690800
+      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
-        ID:
-          rid: 6576058669838631027
-    - rid: 6576058669838631027
-      type: {class: UPureString, ns: UengSystem.Tasks.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        valueCache: 
-        isValueCached: 0
-        Text: this
+        releaseThis: 1
+        Object:
+          rid: -2
