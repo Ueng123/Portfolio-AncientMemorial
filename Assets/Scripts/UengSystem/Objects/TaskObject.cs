@@ -1,4 +1,4 @@
-﻿using UengSystem.Tasks;
+﻿using UengSystem.Logic.Tasks;
 
 namespace UengSystem.Objects {
 	public class TaskObject : BasicUObject {
