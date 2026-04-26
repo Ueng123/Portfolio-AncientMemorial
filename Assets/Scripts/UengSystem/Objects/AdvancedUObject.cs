@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UengSystem.Events;
 using UengSystem.Managers;
 using UengSystem.Utility;
 using UnityEngine;
-using Events_Event = UengSystem.Events.Event;
+using Event = UengSystem.Events.Event;
 
 namespace UengSystem.Objects {
 	public abstract class AdvancedUObject : UObject {
@@ -49,11 +50,15 @@ namespace UengSystem.Objects {
 		}
 
 		public static void EventRoutine() {
-			List<Events_Event> events = EventManager.instance.GetEvents();
-			
-			foreach (Events_Event e in events) {
-				foreach (AdvancedUObject ins in Instances) {
-					ins.OnEvent(e);
+			for (int i = 0; i < EventManager.instance.events.Count; i++) {
+				List<Event> events = EventManager.instance.GetEvents(i);
+				Debug.Log($"i = {i}; events = [ {events.Aggregate("", (c, e) => c+e.type)} ]");
+				if (events.Count == 0) continue;
+				
+				foreach (Event e in events) {
+					foreach (AdvancedUObject ins in Instances) {
+						ins.OnEvent(e);
+					}
 				}
 			}
 		}
@@ -62,7 +67,7 @@ namespace UengSystem.Objects {
 		protected abstract void Routine();
 		protected abstract void LateRoutine();
 		protected abstract void FixedRoutine();
-		public    override void OnEvent(Events_Event e) { }
+		public    override void OnEvent(Event e) { }
 		
 		// Process System //
 		

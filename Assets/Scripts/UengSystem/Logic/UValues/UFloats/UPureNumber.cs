@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UengSystem.Logic.UValues.UNumbers {
+namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UPureNumber : UValue<float> {
 		public override bool getIsDynamic => false;

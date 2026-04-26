@@ -85,7 +85,7 @@ namespace AncientMemorial.Interactions {
 				new DelayedAction(timeToInteract,
 								  () => {
 									  Interact();
-									  SendEvent(UengSystem.Events.EventType.Interact_Stop);
+									  SendEvent(UengSystem.Events.EventType.Interact_Stop, 4);
 								  },
 								  Cancel);
 			

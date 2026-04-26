@@ -7,14 +7,21 @@ using UnityEngine;
 namespace UengSystem.UI.UTexts {
 	[Serializable]
 	public class UTextAction : UUIAction {
-		public void SetText(UValue<string> newText, float duration) {
-			string currText = ((UText)component).GetValue();
-			
-			((UText)component).SetValue(newText.value);
-			
-			new DelayedAction(duration, () => ((UText)component).SetValue(currText)).Execute();
-		}
+
+		[SerializeReference] [SubclassSelector]
+		public UValue<string> text;
 		
-		public override void Routine(ITaskable self) { }
+		public void SetText(UValue<string> newText, float duration) {
+			UValue<string> oldText = text;
+
+			text = newText;
+
+			DelayedAction act = new DelayedAction(duration, () => text = oldText);
+			act.Execute();
+		}
+
+		public override void Routine(ITaskable self) {
+			((UText)component).SetValue(text.value);
+		}
 	}
 }

@@ -1,10 +1,8 @@
 ﻿using System;
 using UengSystem.Managers;
-using UengSystem.Objects;
-using UengSystem.UI;
 using UnityEngine;
 
-namespace UengSystem.Logic.UValues.UColors {
+namespace UengSystem.Logic.UValues.UStrings {
 	[Serializable]
 	public class UStringFromVariable : UValue<string> {
 		public override bool getIsDynamic => true;

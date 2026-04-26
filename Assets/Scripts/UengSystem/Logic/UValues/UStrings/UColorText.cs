@@ -8,7 +8,7 @@ namespace UengSystem.Logic.UValues.UStrings {
 			get {
 				text.parent  = this;
 				color.parent = this;
-				return text.isDynamic || color.isDynamic;
+				return text.isDynamicAuto || color.isDynamicAuto;
 			}
 		}
 		

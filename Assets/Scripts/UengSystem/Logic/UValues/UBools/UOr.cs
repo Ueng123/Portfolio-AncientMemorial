@@ -8,7 +8,7 @@ namespace UengSystem.Logic.UValues.UBools {
 			get {
 				A.parent = this;
 				B.parent = this;
-				return A.isDynamic || B.isDynamic;
+				return A.isDynamicAuto || B.isDynamicAuto;
 			}
 		}
 		

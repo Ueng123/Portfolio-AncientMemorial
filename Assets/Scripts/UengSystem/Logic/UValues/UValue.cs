@@ -8,12 +8,17 @@ namespace UengSystem.Logic.UValues {
 		
 		public abstract bool  getIsDynamic { get; }
 		public          bool? isDynamicCache;
-		public          bool  isDynamic {
+		public          bool  isDynamicAuto {
 			get {
 				isDynamicCache ??= getIsDynamic;
 				return (bool)isDynamicCache;
 			}
 		}
+
+		[Header("UValue Property")]
+		public DynamicType dynamicType;
+
+		public bool isDynamic => dynamicType == DynamicType.Auto?isDynamicAuto:dynamicType == DynamicType.Dynamic;
 		
 		public abstract          T    getValue     { get; }
 		[HideInInspector] public T    valueCache;

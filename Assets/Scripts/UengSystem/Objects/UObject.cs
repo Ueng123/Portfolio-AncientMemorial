@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using AncientMemorial.Objects;
 using UengSystem.Events;
 using UengSystem.Events.EventDatas;
 using UengSystem.Logic.Tasks;
@@ -61,11 +63,12 @@ namespace UengSystem.Objects {
 				_Category = value;
 			}
 		}
-
-		[Header("Get/Release FX")]
+		
 		public Sprite whiteSpawnSprite;
 		public Sprite colorSpawnSprite;
-		
+		public bool   _gettable;
+		public bool   gettable { get => _gettable; set => _gettable = value; }
+
 		// IStoppable Variables //
 		public  bool            stopped { get; set; }
 		private Vector2         oldLinearVelocity;
@@ -86,8 +89,8 @@ namespace UengSystem.Objects {
 		}
 		
 		// IEventAgent Method //
-		public void SendEvent(Events_EventType type, EventData data = default) {
-			EventManager.instance.AddEvent(new Events_Event(type, this, data));
+		public void SendEvent(Events_EventType type, int layer, EventData data = default) {
+			EventManager.instance.AddEvent(new Events_Event(type, this, data), layer);
 		}
 
 		public virtual void OnEvent(Events_Event e) {}
@@ -130,31 +133,34 @@ namespace UengSystem.Objects {
 		public virtual void OnFirstGet() {}
 		public virtual void Get(float time) {
 			OnGet();
+			Initialize();
+			if (time == 0) return;
+			gameObject.SetActive(true);
 			
-			if (time == 0) {
-				Initialize();
-			}
-			else {
-				gameObject.SetActive(true);
-				StartCoroutine(SpawnFX(time));
-			}
+			GameObject spawnFX = UObjectPool.instance.Get("SpawnEffectHelper", transform.position);
+			spawnFX.GetComponent<SpawnEffectHelper>().t_s = time;
+			StartCoroutine(SpawnFX(time));
 		}
 		
 		public virtual void Release(float time) {
-			ID       = null;
-			Category = null;
+			gettable = false;
+			ID        = null;
+			Category  = null;
 			
 			switch (time) {
 				case < 0:
 					Uninitialize();
+					gettable = true;
 					break;
 				case 0:
 					OnRelease();
 					Uninitialize();
+					gettable = true;
 					break;
 				default:
 					OnRelease();
-					StartCoroutine(ReleaseFX(time));
+					if (gameObject.activeSelf) StartCoroutine(ReleaseFX(time));
+					else UObjectPool.instance.Release(gameObject, -1);
 					break;
 			}
 		}
@@ -162,6 +168,7 @@ namespace UengSystem.Objects {
 		public virtual void OnGet() {}
 		public virtual void OnRelease() {}
 
+		protected Coroutine GetProcess;
 		protected virtual IEnumerator SpawnFX(float duration) {
 			Stop();
 			
@@ -200,7 +207,8 @@ namespace UengSystem.Objects {
 			Initialize();
 		}
 
-		public virtual IEnumerator ReleaseFX(float duration) {
+		protected Coroutine releaseProcess;
+		protected virtual IEnumerator ReleaseFX(float duration) {
 			Stop();
 			
 			foreach (Collider2D c in GetComponents<Collider2D>()) {

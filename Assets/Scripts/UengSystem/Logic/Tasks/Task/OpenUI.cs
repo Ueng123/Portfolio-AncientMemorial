@@ -13,7 +13,7 @@ namespace UengSystem.Logic.Tasks {
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
 		
 		public override void Execute(ITaskable self) {
-			GameObject ui  = UUIManager.instance.Open(TargetUUI.name, canvas);
+			GameObject ui  = UUIObjectPool.instance.Open(TargetUUI.name, canvas);
 			UUI        uui = ui.GetComponent<UUI>();
 
 			if (ID.value       != "") uui.ID        = ID.getValue;

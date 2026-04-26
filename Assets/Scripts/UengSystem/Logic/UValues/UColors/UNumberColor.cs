@@ -9,7 +9,7 @@ namespace UengSystem.Logic.UValues.UColors {
 				r.parent = this;
 				g.parent = this;
 				b.parent = this;
-				return r.isDynamic || g.isDynamic || b.isDynamic || a.isDynamic;
+				return r.isDynamicAuto || g.isDynamicAuto || b.isDynamicAuto || a.isDynamicAuto;
 			}
 		}
 		

@@ -8,7 +8,7 @@ namespace UengSystem.Logic.UValues.UObjects {
 		public override bool getIsDynamic {
 			get {
 				ID.parent = this;
-				return ID.isDynamic;
+				return ID.isDynamicAuto;
 			}
 		}
 		

@@ -9,7 +9,7 @@ namespace AncientMemorial.Entities {
 		public override bool getIsDynamic {
 			get {
 				ID.parent = this;
-				return ID.isDynamic;
+				return ID.isDynamicAuto;
 			}
 		}
 		

@@ -28,7 +28,7 @@ namespace UengSystem.Managers {
 		}
 		
 		public static void ClearFramePerLists() {
-			EventManager.instance.events.Clear();
+			EventManager.instance.RemoveAllEvents();
 			Interaction.InteractableInteractions.Clear();
 		}
 		

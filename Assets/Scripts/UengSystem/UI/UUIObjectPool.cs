@@ -8,7 +8,7 @@ using UnityEngine.Pool;
 using UnityEngine.Serialization;
 
 namespace UengSystem.UI {
-	public class UUIManager : Manager<UUIManager> {
+	public class UUIObjectPool : Manager<UUIObjectPool> {
 		[FormerlySerializedAs("prefabs")] [SerializeField]
 		private UUIPrefabItem[]                            prefabData;
 		private Dictionary<string, ObjectPool<GameObject>> pools;
@@ -48,6 +48,8 @@ namespace UengSystem.UI {
 		}
 
 		public GameObject Open(string key, UCanvas canvas) {
+			Debug.Log($"[UI OPEN] canvas : {canvas.gameObject.name}, key : {key}");
+			
 			GameObject      obj    = pools[key].Get();
 			UUI script = obj.GetComponent<UUI>();
 
@@ -64,21 +66,20 @@ namespace UengSystem.UI {
 		}
 
 		public void Close(GameObject obj, bool finalRelease = false) {
+			Debug.Log($"[UI CLOSE] canvas : {obj.transform.parent.name}, key : {obj.name}, finalRelease : {finalRelease}");
+			if (!finalRelease) pools[obj.name].Release(obj);
+
 			UUI script = obj.GetComponent<UUI>();
 
 			float closeTime = prefabData.FirstOrDefault((data) => data.prefab.name == obj.name)!.closeTime;
 			
-			script.Release((finalRelease)?-1:closeTime);
+			script.Release(finalRelease?-1:closeTime);
 
-			if (!finalRelease) {
-				script.OnOpen();
-				return;
-			}
+			if (!finalRelease) return;
 
+			script.OnClose();
 			obj.SetActive(false);
-			
 			obj.transform.SetParent(roots[obj.name]);
-			pools[obj.name].Release(obj);
 		}
 		
 		public override void ManagerUpdate() {  }

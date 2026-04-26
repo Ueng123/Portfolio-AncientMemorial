@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace UengSystem.Logic.UValues.UNumbers {
+namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UMax : UValue<float> {
 		public override bool getIsDynamic {

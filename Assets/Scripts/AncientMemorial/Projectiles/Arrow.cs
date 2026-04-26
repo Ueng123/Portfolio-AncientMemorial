@@ -31,7 +31,7 @@ namespace AncientMemorial.Projectiles {
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner.team == entity.team) return;
 			
-			SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, new EntityHitData(owner, entity, this));
+			SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, 10, new EntityHitData(owner, entity, this));
 		}
 		
 		protected override void OnCollideObject(UObject obj) {

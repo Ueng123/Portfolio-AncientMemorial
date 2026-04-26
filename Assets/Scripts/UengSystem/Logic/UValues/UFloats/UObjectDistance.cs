@@ -2,7 +2,7 @@
 using UengSystem.Objects;
 using UnityEngine;
 
-namespace UengSystem.Logic.UValues.UNumbers {
+namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UObjectDistance : UValue<float> {
 		public override bool getIsDynamic => true;

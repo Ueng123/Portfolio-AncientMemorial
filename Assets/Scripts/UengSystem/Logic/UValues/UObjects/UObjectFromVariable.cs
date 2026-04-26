@@ -3,7 +3,7 @@ using UengSystem.Managers;
 using UengSystem.Objects;
 using UnityEngine;
 
-namespace UengSystem.Logic.UValues.UColors {
+namespace UengSystem.Logic.UValues.UObjects {
 	[Serializable]
 	public class UObjectFromVariable : UValue<UObject> {
 		public override bool getIsDynamic => true;

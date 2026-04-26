@@ -7,7 +7,7 @@ using UengSystem.ObjectPool;
 using UengSystem.Utility;
 using UnityEngine;
 using UnityEngineInternal;
-using Events_Event = UengSystem.Events.Event;
+using Event = UengSystem.Events.Event;
 using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
@@ -30,8 +30,8 @@ namespace AncientMemorial.Entities {
 			set {
 				if (_targetInteraction == value) return;
 				
-				if (_targetInteraction) SendEvent(UengSystem.Events.EventType.Interact_Untarget, new EventValueData<Interaction>(_targetInteraction));
-				if (value)              SendEvent(UengSystem.Events.EventType.Interact_Target  , new EventValueData<Interaction>(value));
+				if (_targetInteraction) SendEvent(UengSystem.Events.EventType.Interact_Untarget, 2, new EventValueData<Interaction>(_targetInteraction));
+				if (value)              SendEvent(UengSystem.Events.EventType.Interact_Target  , 3, new EventValueData<Interaction>(value));
 				
 				_targetInteraction = value;
 			}
@@ -89,29 +89,29 @@ namespace AncientMemorial.Entities {
 
 		private void GetInput() {
 			if (InputManager.inputData[InputActionType.Jump].pressType == InputPressType.Down && isGround)
-				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Jump);
+				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Jump, 3);
 			
 			if (InputManager.inputData[InputActionType.MouseLClick].pressType == InputPressType.Down)
-				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Primary);
+				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Primary, 3);
 			
 			if (InputManager.inputData[InputActionType.MouseRClick].pressType == InputPressType.Down)
-				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_ChargeStart);
+				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_ChargeStart, 3);
 			
 			if (InputManager.inputData[InputActionType.MouseRClick].pressType == InputPressType.Up)
-				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_ChargeEnd);
+				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_ChargeEnd, 3);
 			
 			if (InputManager.inputData[InputActionType.Move].valueF != 0.0f)
-				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Move, new EventValueData<float>(InputManager.inputData[InputActionType.Move].valueF));
+				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Move, 3, new EventValueData<float>(InputManager.inputData[InputActionType.Move].valueF));
 			
 			// InteractTryInfo 필요없을뜻
 			if (InputManager.inputData[InputActionType.Interact].pressType == InputPressType.Down)
-				SendEvent(UengSystem.Events.EventType.Interact_Start, new EventValueData<InteractTryInfo>(new InteractTryInfo() {
+				SendEvent(UengSystem.Events.EventType.Interact_Start, 3, new EventValueData<InteractTryInfo>(new InteractTryInfo() {
 					objectToInteract = targetInteraction,
 					byInput          = true
 				}));
 			
 			if (InputManager.inputData[InputActionType.Interact].pressType == InputPressType.Up)
-				SendEvent(UengSystem.Events.EventType.Interact_Cancel, new EventValueData<InteractTryInfo>(new InteractTryInfo() {
+				SendEvent(UengSystem.Events.EventType.Interact_Cancel, 2, new EventValueData<InteractTryInfo>(new InteractTryInfo() {
 					objectToInteract = targetInteraction,
 					byInput          = true
 				}));
@@ -263,7 +263,7 @@ namespace AncientMemorial.Entities {
 			SetVisual();
 		}
 
-		public override void OnEvent(Events_Event e) {
+		public override void OnEvent(Event e) {
 			base.OnEvent(e);
 
 			switch (e.type) {

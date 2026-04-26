@@ -13,6 +13,8 @@ namespace UengSystem.UDebug {
 		[SerializeReference][SubclassSelector]
 		public EventData   eventData;
 
+		public int layer;
+		
 		public bool send;
 
 
@@ -22,7 +24,7 @@ namespace UengSystem.UDebug {
 			
 			if (eventData == null || sender) return;
 			Events_Event e = new (eventType, sender, eventData);
-			EventManager.instance.AddEvent(e);
+			EventManager.instance.AddEvent(e, layer);
 		}
 
 		public override void ManagerFixedUpdate() { }

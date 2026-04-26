@@ -10,7 +10,7 @@ namespace UengSystem.Logic.Tasks {
 		[SerializeReference][SubclassSelector] public UValue<UUI> TargetUUI;
 		
 		public override void Execute(ITaskable self) {
-			UUIManager.instance.Close(TargetUUI.value.gameObject);
+			UUIObjectPool.instance.Close(TargetUUI.value.gameObject);
 		}
 	}
 }

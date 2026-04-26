@@ -1,14 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UengSystem.Logic.UValues.UNumbers {
+namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UDiv : UValue<float> {
 		public override bool getIsDynamic { 
 			get {
 				A.parent = this;
 				B.parent = this;
-				return A.isDynamic || B.isDynamic;
+				return A.isDynamicAuto || B.isDynamicAuto;
 			}
 		}
 		

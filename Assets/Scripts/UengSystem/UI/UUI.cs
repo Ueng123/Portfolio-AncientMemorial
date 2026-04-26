@@ -83,20 +83,56 @@ namespace UengSystem.UI {
 			rectTransform.localScale       = initialScale;
 		}
 
+		public override void Get(float time) {
+			OnGet();
+			if (time == 0) return;
+			gameObject.SetActive(true);
+			StartCoroutine(SpawnFX(time));
+		}
+		
+		public override void Release(float time) {
+			
+			gettable = false;
+			ID        = null;
+			Category  = null;
+			
+			switch (time) {
+				case < 0:
+					Uninitialize();
+					gettable = true;
+					break;
+				case 0:
+					Instances.Remove(this);
+					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
+					
+					OnRelease();
+					Uninitialize();
+					gettable = true;
+					break;
+				default:
+					Instances.Remove(this);
+					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
+					
+					OnRelease();
+					StartCoroutine(ReleaseFX(time));
+					break;
+			}
+		}
+		
 		public override void OnRelease() {
 			UCategory = null;
 		}
-
+		
 		protected override IEnumerator SpawnFX(float duration) {
 			yield return new WaitForSeconds(duration);
 			Initialize();
 			Debug.Log("SpawnFX Done");
 		}
 
-		public override IEnumerator ReleaseFX(float duration) {
+		protected override IEnumerator ReleaseFX(float duration) {
 			animator.SetTrigger(Close);
 			yield return new WaitForSeconds(duration);
-			UUIManager.instance.Close(gameObject, true);
+			UUIObjectPool.instance.Close(gameObject, true);
 		}
 	}
 }

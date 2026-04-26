@@ -2,7 +2,7 @@
 using UengSystem.Managers;
 using UnityEngine;
 
-namespace UengSystem.Logic.UValues.UColors {
+namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UFloatFromVariable : UValue<float> {
 		public override bool getIsDynamic => true;

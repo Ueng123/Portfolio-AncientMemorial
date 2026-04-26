@@ -2,7 +2,7 @@
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.Logic.UValues.UNumbers {
+namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UBasicCubicBezierValue : UValue<float> {
 		public override bool getIsDynamic {

@@ -1,10 +1,9 @@
 ﻿using System;
 using UengSystem.Managers;
-using UengSystem.Objects;
 using UengSystem.UI;
 using UnityEngine;
 
-namespace UengSystem.Logic.UValues.UColors {
+namespace UengSystem.Logic.UValues.UObjects {
 	[Serializable]
 	public class UUIFromVariable : UValue<UUI> {
 		public override bool getIsDynamic => true;

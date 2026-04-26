@@ -255,6 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -341,6 +342,253 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -10}
+--- !u!1 &139513967
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 139513971}
+  - component: {fileID: 139513970}
+  - component: {fileID: 139513969}
+  - component: {fileID: 139513968}
+  m_Layer: 0
+  m_Name: Crystal (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!95 &139513968
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139513967}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: da8a24f62477f8c41a22e62977e56969, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &139513969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139513967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463a4df1b258d7d4cacf1bdc5a52bdfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitialObject: 1
+  ID: Crystal2222
+  Category: IMPORTANT
+--- !u!114 &139513970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139513967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7ac5e57ea33a84aabdecec5514fdcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  _gettable: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  interactable: 1
+  timeToInteract: 2
+  cooldownToInteract: 3
+  canvas: {fileID: 284292981}
+  onInteract:
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 6576058220649644113
+  onCancel:
+    tasks: []
+  onInteractStart:
+    tasks: []
+  onTarget:
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 6576058688792690850
+      - rid: 6576058688792690866
+      - rid: 6576058688792690818
+  onUnTarget:
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 6576058688792690803
+  crystalModel: {fileID: 1907933563}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6576058220649644113
+      type: {class: NextWave, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
+      data: 
+    - rid: 6576058688792690803
+      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI:
+          rid: 6576058688792690805
+    - rid: 6576058688792690805
+      type: {class: UUIByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        ID:
+          rid: 6576058697792356432
+    - rid: 6576058688792690818
+      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
+        canvas: {fileID: 284292981}
+        ID:
+          rid: 6576058697792356423
+        Category:
+          rid: 6576058688792690820
+    - rid: 6576058688792690820
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: 
+    - rid: 6576058688792690850
+      type: {class: SetUObjectVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        key:
+          rid: 6576058688792690851
+        value:
+          rid: 6576058688792690852
+    - rid: 6576058688792690851
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: InteractTargetObject
+    - rid: 6576058688792690852
+      type: {class: UObjectByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        ID:
+          rid: 6576058688792690854
+    - rid: 6576058688792690854
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: Crystal2222
+    - rid: 6576058688792690866
+      type: {class: SetUStringVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        key:
+          rid: 6576058697792356431
+        value:
+          rid: 6576058688792690874
+    - rid: 6576058688792690874
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: "111111\uC544\uC73C\uC544\uC73C\uC544\uC73C\uC544\uC73C\uC544\uC73C"
+    - rid: 6576058697792356423
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 6576058697792356426
+        - rid: 6576058697792356425
+    - rid: 6576058697792356425
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: InteractUI
+    - rid: 6576058697792356426
+      type: {class: UObjectID, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        obj: {fileID: 139513970}
+    - rid: 6576058697792356431
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: InteractUIText
+    - rid: 6576058697792356432
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 6576058697792356433
+        - rid: 6576058697792356434
+    - rid: 6576058697792356433
+      type: {class: UObjectID, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        obj: {fileID: 139513970}
+    - rid: 6576058697792356434
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: InteractUI
+--- !u!4 &139513971
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139513967}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.2, y: 1.65, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1907933565}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &185566326
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,10 +637,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
-  interactable: 1
+  interactable: 0
   timeToInteract: 2
   cooldownToInteract: 3
   canvas: {fileID: 308883125}
@@ -409,7 +658,9 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: -2
+      - rid: 6576058688792690850
+      - rid: 6576058688792690866
+      - rid: 6576058688792690818
   onUnTarget:
     tasks:
     - time: 0
@@ -419,8 +670,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 6576058220649644113
       type: {class: NextWave, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
       data: 
@@ -432,13 +681,120 @@ MonoBehaviour:
     - rid: 6576058688792690805
       type: {class: UUIByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
       data:
+        dynamicType: 0
         valueCache: {fileID: 0}
         isValueCached: 0
         ID:
-          rid: 6576058688792690806
-    - rid: 6576058688792690806
+          rid: 6576058697792356432
+    - rid: 6576058688792690818
+      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
+        canvas: {fileID: 308883125}
+        ID:
+          rid: 6576058697792356423
+        Category:
+          rid: 6576058688792690820
+    - rid: 6576058688792690820
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: 
+    - rid: 6576058688792690850
+      type: {class: SetUObjectVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        key:
+          rid: 6576058688792690851
+        value:
+          rid: 6576058688792690852
+    - rid: 6576058688792690851
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: InteractTargetObject
+    - rid: 6576058688792690852
+      type: {class: UObjectByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        ID:
+          rid: 6576058688792690854
+    - rid: 6576058688792690854
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: Crystal
+    - rid: 6576058688792690866
+      type: {class: SetUStringVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        key:
+          rid: 6576058697792356431
+        value:
+          rid: 6576058688792690874
+    - rid: 6576058688792690874
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: "\uC73C2\uC73C2\uC73C2\uC73C2\uC73C2\uC73C2"
+    - rid: 6576058697792356423
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 6576058697792356426
+        - rid: 6576058697792356425
+    - rid: 6576058697792356425
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: InteractUI
+    - rid: 6576058697792356426
+      type: {class: UObjectID, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        obj: {fileID: 185566328}
+    - rid: 6576058697792356431
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: InteractUIText
+    - rid: 6576058697792356432
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 6576058697792356433
+        - rid: 6576058697792356434
+    - rid: 6576058697792356433
+      type: {class: UObjectID, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        obj: {fileID: 185566328}
+    - rid: 6576058697792356434
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
         valueCache: 
         isValueCached: 0
         Text: InteractUI
@@ -512,6 +868,121 @@ Transform:
   - {fileID: 1711970890}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &284292976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 284292977}
+  - component: {fileID: 284292980}
+  - component: {fileID: 284292979}
+  - component: {fileID: 284292978}
+  - component: {fileID: 284292981}
+  m_Layer: 5
+  m_Name: Canvas222222
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &284292977
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284292976}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.0052083335, y: 0.0052083335, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1907933565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1.2}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &284292978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284292976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &284292979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284292976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &284292980
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284292976}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &284292981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284292976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44952bba3d4d4bfc8230a7ef4d55eda3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UUIList: []
 --- !u!1 &286793672
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,7 +1085,7 @@ GameObject:
   - component: {fileID: 308883122}
   - component: {fileID: 308883125}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Canvas1111
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1068,6 +1539,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1404,6 +1876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1595,6 +2068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1781,6 +2255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -2467,6 +2942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -2673,6 +3149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -2780,6 +3257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -2831,6 +3309,90 @@ MonoBehaviour:
   - prefab: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
     openTime: 0.1
     closeTime: 0.1
+--- !u!1 &1293462072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1293462073}
+  - component: {fileID: 1293462074}
+  m_Layer: 0
+  m_Name: Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1293462073
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293462072}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.0027264545, w: 0.9999963}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1907933565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1293462074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293462072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 2
+  m_LightType: 3
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.75
+  m_Color: {r: 0.36320752, g: 0.7807885, b: 1, a: 1}
+  m_Intensity: 5
+  m_LightVolumeIntensity: 1
+  m_LightVolumeEnabled: 0
+  m_ApplyToSortingLayers: 00000000
+  m_LightCookieSprite: {fileID: 0}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowsEnabled: 1
+  m_ShadowIntensity: 0.75
+  m_ShadowSoftness: 0.3
+  m_ShadowSoftnessFalloffIntensity: 0.5
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_LocalBounds:
+    m_Center: {x: 0, y: -0.00000011920929, z: 0}
+    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 4.5
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
 --- !u!1 &1302823173
 GameObject:
   m_ObjectHideFlags: 0
@@ -3048,7 +3610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - {fileID: 11400000, guid: 71e1ef7c4794ada4eab7f4ecc75553db, type: 2}
-  - {fileID: 11400000, guid: 71e1ef7c4794ada4eab7f4ecc75553db, type: 2}
+  - {fileID: 11400000, guid: 32f6970b93a9126458ba76f312821802, type: 2}
   currentWave: {fileID: 0}
   timeElapsed: 0
 --- !u!1 &1401290527
@@ -3649,6 +4211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -3832,6 +4395,7 @@ MonoBehaviour:
   sender: {fileID: 0}
   eventData:
     rid: -2
+  layer: 0
   send: 0
   references:
     version: 2
@@ -4340,6 +4904,95 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1907933563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1907933565}
+  - component: {fileID: 1907933564}
+  m_Layer: 0
+  m_Name: Crystal_Model
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &1907933564
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907933563}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -10
+  m_Sprite: {fileID: 5293031974318352618, guid: e1a1fb6a99dd94348a00a12a35813a1e, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.9375, y: 1.8125}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1907933565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907933563}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1293462073}
+  - {fileID: 284292977}
+  m_Father: {fileID: 139513971}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1942305750
 GameObject:
   m_ObjectHideFlags: 0
@@ -4477,6 +5130,7 @@ MonoBehaviour:
   - {fileID: 687731306740388291, guid: 4ab3e44ae6393ec4d81be59c50cd64e0, type: 3}
   - {fileID: 5201704342810090500, guid: d06489f9130e3b7468fdf755d0c45800, type: 3}
   - {fileID: 1107742639573374473, guid: 5d37aa3d9cb13a44db40a2cee320cda5, type: 3}
+  - {fileID: 4635000916490808900, guid: 6adab4252b8c10e4eaaa772d9f4ab2ae, type: 3}
 --- !u!1 &1988160301
 GameObject:
   m_ObjectHideFlags: 0
@@ -4629,6 +5283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -4904,4 +5559,5 @@ SceneRoots:
   - {fileID: 1797831991}
   - {fileID: 108502715}
   - {fileID: 185566329}
+  - {fileID: 139513971}
   - {fileID: 1794307682}

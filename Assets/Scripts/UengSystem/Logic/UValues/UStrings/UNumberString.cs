@@ -7,7 +7,7 @@ namespace UengSystem.Logic.UValues.UStrings {
 		public override bool getIsDynamic {
 			get {
 				number.parent = this;
-				return number.isDynamic;
+				return number.isDynamicAuto;
 			}
 		}
 		
