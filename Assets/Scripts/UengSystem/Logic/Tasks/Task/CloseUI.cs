@@ -1,16 +1,29 @@
 ﻿using System;
 using UengSystem.Logic.UValues;
+using UengSystem.Logic.UValues.UObjects;
 using UengSystem.UI;
 using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {
 	[Serializable]
 	public class CloseUI : TaskComponent {
-		
+
+		public                                        bool        closeThis;
 		[SerializeReference][SubclassSelector] public UValue<UUI> TargetUUI;
 		
 		public override void Execute(ITaskable self) {
-			UUIObjectPool.instance.Close(TargetUUI.value.gameObject);
+			UUI target = closeThis? (UUI)self : TargetUUI.value;
+			
+			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			Debug.Log($" >>> Given Data\n"                      +
+					  $" > TargetUUI : {target.name}\n"         +
+					  $" > --- TargetUUI DATA ---\n"            +
+					  $" > --- ID = {target.ID}\n"              +
+					  $" > --- Category = {target.Category}\n"  +
+					  $" > --- canvas = {target.canvas.name}\n" +
+					  $"");
+			
+			UUIObjectPool.instance.Close(target.gameObject);
 		}
 	}
 }

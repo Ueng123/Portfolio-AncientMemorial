@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AncientMemorial.Objects;
+using JetBrains.Annotations;
 using UengSystem.Managers;
 using UengSystem.ObjectPool;
+using UengSystem.UI.UUIQueues;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Serialization;
 
 namespace UengSystem.UI {
 	public class UUIObjectPool : Manager<UUIObjectPool> {
-		[FormerlySerializedAs("prefabs")] [SerializeField]
+		[SerializeField]
 		private UUIPrefabItem[]                            prefabData;
 		private Dictionary<string, ObjectPool<GameObject>> pools;
 		private Dictionary<string, Transform>              roots;
-
+		private Dictionary<string, UUIQueue>               uuiQueue;
+		
 		public override void Initialize() {
 			pools = new Dictionary<string, ObjectPool<GameObject>>();
 			roots = new Dictionary<string, Transform>             ();
@@ -48,8 +51,6 @@ namespace UengSystem.UI {
 		}
 
 		public GameObject Open(string key, UCanvas canvas) {
-			Debug.Log($"[UI OPEN] canvas : {canvas.gameObject.name}, key : {key}");
-			
 			GameObject      obj    = pools[key].Get();
 			UUI script = obj.GetComponent<UUI>();
 
@@ -58,15 +59,14 @@ namespace UengSystem.UI {
 			float openTime = prefabData.FirstOrDefault((data) => data.prefab.name == obj.name)!.openTime;
 			
 			script.Get(openTime);
+			script.canvas = canvas;
 			script.OnOpen();
 			
 			obj.SetActive(true);
 			
 			return obj;
 		}
-
 		public void Close(GameObject obj, bool finalRelease = false) {
-			Debug.Log($"[UI CLOSE] canvas : {obj.transform.parent.name}, key : {obj.name}, finalRelease : {finalRelease}");
 			if (!finalRelease) pools[obj.name].Release(obj);
 
 			UUI script = obj.GetComponent<UUI>();
@@ -81,8 +81,17 @@ namespace UengSystem.UI {
 			obj.SetActive(false);
 			obj.transform.SetParent(roots[obj.name]);
 		}
+
+		public void AddUUIQueue(string key, UUIQueueItem queueItem) {
+			uuiQueue[key] ??= new UUIQueue();
+			uuiQueue[key].queue.Enqueue(queueItem);
+		}
 		
-		public override void ManagerUpdate() {  }
+		public override void ManagerUpdate() {
+			foreach (string key in uuiQueue.Keys) {
+				uuiQueue[key].GetNextQueue();
+			}
+		}
 		public override void ManagerFixedUpdate() {  }
 	}
 }

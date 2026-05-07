@@ -6,10 +6,12 @@ using UengSystem.Logic.UValues;
 using UengSystem.Objects;
 using UengSystem.UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UengSystem.Managers {
 	public class GameManager : Manager<GameManager> {
-		public Crystal Crystal;
+		public                                  Crystal Crystal;
+		[FormerlySerializedAs("canvas")] public UCanvas mainCanvas;
 		
 		public Color spawnColor;
 		

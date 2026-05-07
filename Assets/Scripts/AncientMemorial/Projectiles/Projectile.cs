@@ -14,6 +14,10 @@ namespace AncientMemorial.Projectiles {
 		protected abstract void OnCollideObject(UObject obj);
 
 		protected override void FixedRoutine() { }
+		
+		public override    void OnGet() { }
+
+		public override    void OnRelease() { }
 
 		protected void OnTriggerEnter2D(Collider2D other) {
 			Debug.Log(other.gameObject.name);

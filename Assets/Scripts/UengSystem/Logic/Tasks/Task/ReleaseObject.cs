@@ -15,12 +15,17 @@ namespace UengSystem.Logic.Tasks {
 		[SerializeReference][SubclassSelector] public UValue<UObject> TargetObject;
 		
 		public override void Execute(ITaskable self) {
-			if (releaseThis) {
-				UObjectPool.instance.Release((self as UObject)?.gameObject, releaseTime);
-			}
-			else {
-				UObjectPool.instance.Release(TargetObject.value.gameObject, releaseTime);
-			}
+			UObject target = releaseThis?(UObject)self:TargetObject.value;
+			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			Debug.Log($" >>> Given Data\n"                     +
+					  $" > releaseThis = {releaseThis}\n"      +
+					  $" > TargetObject = {target.name}\n"     +
+					  $" > --- TargetUUI DATA ---\n"           +
+					  $" > --- ID = {target.ID}\n"             +
+					  $" > --- Category = {target.Category}\n" +
+					  $"");
+		
+			UObjectPool.instance.Release(target.gameObject, releaseTime);
 		}
 	}
 }

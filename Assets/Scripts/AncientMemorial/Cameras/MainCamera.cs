@@ -55,5 +55,12 @@ namespace AncientMemorial.Cameras {
 		}
 
 		protected override void FixedRoutine() { }
+		public override    void OnGet() {
+			
+		}
+
+		public override    void OnRelease() {
+			
+		}
 	}
 }

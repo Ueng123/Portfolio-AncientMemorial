@@ -7,5 +7,7 @@
 		Move,
 		Jump,
 		Interact,
+		Enter,
+		Quit,
 	}
 }

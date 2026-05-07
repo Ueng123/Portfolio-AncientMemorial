@@ -8,7 +8,9 @@ using UengSystem.Events.EventDatas;
 using UengSystem.Logic.Tasks;
 using UengSystem.Managers;
 using UengSystem.ObjectPool;
+using UengSystem.Utility;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Events_Event = UengSystem.Events.Event;
 using Events_EventType = UengSystem.Events.EventType;
 
@@ -131,18 +133,40 @@ namespace UengSystem.Objects {
 		}
 
 		public virtual void OnFirstGet() {}
+
+		public DelayedAction spawnFXCache = null;
 		public virtual void Get(float time) {
 			OnGet();
-			Initialize();
-			if (time == 0) return;
-			gameObject.SetActive(true);
+			if (time == 0) {
+				Initialize();
+				return;
+			}
 			
+			gameObject.SetActive(true);
 			GameObject spawnFX = UObjectPool.instance.Get("SpawnEffectHelper", transform.position);
 			spawnFX.GetComponent<SpawnEffectHelper>().t_s = time;
-			StartCoroutine(SpawnFX(time));
+			
+			PrepareSpawnFX();
+			Coroutine spawnCoroutine = StartCoroutine(SpawnFX(time));
+			
+			spawnFXCache = new DelayedAction(time,
+											 () => {
+												 FinishSpawnFX();
+												 spawnFXCache = null;
+											 },
+											 () => {
+												 StopCoroutine(spawnCoroutine);
+												 FinishSpawnFX();
+												 spawnFXCache = null;
+											 });
+
+			spawnFXCache.Execute();
 		}
 		
+		public DelayedAction despawnFXCache = null;
 		public virtual void Release(float time) {
+			spawnFXCache?.Cancel();
+			
 			gettable = false;
 			ID        = null;
 			Category  = null;
@@ -159,45 +183,47 @@ namespace UengSystem.Objects {
 					break;
 				default:
 					OnRelease();
-					if (gameObject.activeSelf) StartCoroutine(ReleaseFX(time));
-					else UObjectPool.instance.Release(gameObject, -1);
+					StartCoroutine(DespawnFX(time));
 					break;
 			}
 		}
-		
-		public virtual void OnGet() {}
-		public virtual void OnRelease() {}
 
-		protected Coroutine GetProcess;
-		protected virtual IEnumerator SpawnFX(float duration) {
+		private Color colorBeforeSpawnFX;
+		protected virtual void PrepareSpawnFX() {
 			Stop();
 			
 			foreach (Collider2D c in GetComponents<Collider2D>()) {
 				c.enabled = false;
 			}
 			
-			Color spawnColor = GameManager.instance.spawnColor;
-			Color oldColor   = spriteRenderer.color;
-			float elapsed    = 0f;
-
 			spriteRenderer.sprite = whiteSpawnSprite??spriteRenderer.sprite;
+			colorBeforeSpawnFX    = spriteRenderer.color;
+		}
+		
+		protected virtual IEnumerator SpawnFX(float duration) {
+			
+			float elapsed    = 0f;
 			
 			while (elapsed < duration) {
 				elapsed += Time.deltaTime;
 				float t = elapsed / duration;
 
-				Color color = new (Mathf.Lerp(spawnColor.r, 1, t),
-								   Mathf.Lerp(spawnColor.g, 1, t),
-								   Mathf.Lerp(spawnColor.b, 1, t),
-								   Mathf.Lerp(0, 1, t));
+				Color color = new (Mathf.Lerp(GameManager.instance.spawnColor.r, 1, t),
+								   Mathf.Lerp(GameManager.instance.spawnColor.g, 1, t),
+								   Mathf.Lerp(GameManager.instance.spawnColor.b, 1, t),
+								   Mathf.Lerp(0,                                 1, t));
 
 				spriteRenderer.color = color;
 
 				yield return null;
 			}
+		}
+
+		protected virtual void FinishSpawnFX() {
+			Debug.Log("Finish spawning FX");
 			
 			spriteRenderer.sprite = colorSpawnSprite??spriteRenderer.sprite;
-			spriteRenderer.color  = oldColor;
+			spriteRenderer.color  = colorBeforeSpawnFX;
 
 			foreach (Collider2D c in GetComponents<Collider2D>()) {
 				c.enabled = true;
@@ -207,17 +233,18 @@ namespace UengSystem.Objects {
 			Initialize();
 		}
 
-		protected Coroutine releaseProcess;
-		protected virtual IEnumerator ReleaseFX(float duration) {
+		private Color colorBeforeDespawnFX;
+		protected virtual void PrepareDespawnFX() {
 			Stop();
 			
 			foreach (Collider2D c in GetComponents<Collider2D>()) {
 				c.enabled = false;
 			}
 			
-			Color spawnColor = GameManager.instance.spawnColor;
-			Color oldColor   = spriteRenderer.color;
-			
+			colorBeforeDespawnFX   = spriteRenderer.color;
+		}
+		
+		protected virtual IEnumerator DespawnFX(float duration) {
 			float elapsed    = 0f;
 
 			spriteRenderer.sprite = whiteSpawnSprite??spriteRenderer.sprite;
@@ -226,7 +253,10 @@ namespace UengSystem.Objects {
 				elapsed += Time.deltaTime;
 				float t = elapsed / duration;
 
-				Color color = new (spawnColor.r, spawnColor.g, spawnColor.b, Mathf.Lerp(1, 0, t));
+				Color color = new (GameManager.instance.spawnColor.r,
+								   GameManager.instance.spawnColor.g,
+								   GameManager.instance.spawnColor.b,
+								   Mathf.Lerp(1, 0, t));
 
 				spriteRenderer.color = color;
 
@@ -234,9 +264,12 @@ namespace UengSystem.Objects {
 			}
 
 			Resume();
-			spriteRenderer.color = oldColor;
+			spriteRenderer.color = colorBeforeDespawnFX;
 			UObjectPool.instance.Release(gameObject, -1);
 		}
+		
+		public virtual void OnGet()     {}
+		public virtual void OnRelease() {}
 		
 		public abstract void Initialize();
 		public abstract void Uninitialize();

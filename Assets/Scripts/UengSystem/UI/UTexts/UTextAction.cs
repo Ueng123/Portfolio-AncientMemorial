@@ -20,6 +20,11 @@ namespace UengSystem.UI.UTexts {
 			act.Execute();
 		}
 
+		public override void Initialize(ITaskable self) {
+			component.Initialize();
+			((UText)component).SetValue(text.value);
+		}
+
 		public override void Routine(ITaskable self) {
 			((UText)component).SetValue(text.value);
 		}

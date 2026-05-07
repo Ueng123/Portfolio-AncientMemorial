@@ -6,6 +6,7 @@ using UengSystem.Managers;
 using UengSystem.Utility;
 using UnityEngine;
 using Event = UengSystem.Events.Event;
+using EventType = UengSystem.Events.EventType;
 
 namespace UengSystem.Objects {
 	public abstract class AdvancedUObject : UObject {
@@ -52,7 +53,7 @@ namespace UengSystem.Objects {
 		public static void EventRoutine() {
 			for (int i = 0; i < EventManager.instance.events.Count; i++) {
 				List<Event> events = EventManager.instance.GetEvents(i);
-				Debug.Log($"i = {i}; events = [ {events.Aggregate("", (c, e) => c+e.type)} ]");
+				//Debug.Log($"i = {i}; events = [ {events.Aggregate("", (c, e) => c+e.type)} ]");
 				if (events.Count == 0) continue;
 				
 				foreach (Event e in events) {

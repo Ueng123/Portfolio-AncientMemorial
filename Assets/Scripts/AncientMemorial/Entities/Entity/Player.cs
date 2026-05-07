@@ -3,6 +3,9 @@ using AncientMemorial.Interactions;
 using AncientMemorial.Weapons;
 using UengSystem.Events.EventDatas;
 using UengSystem.Inputs;
+using UengSystem.Logic.Tasks;
+using UengSystem.Logic.UValues.UFloats;
+using UengSystem.Managers;
 using UengSystem.ObjectPool;
 using UengSystem.Utility;
 using UnityEngine;
@@ -23,17 +26,26 @@ namespace AncientMemorial.Entities {
 		private float handRotOffsetSpeed;
 
 		[Header("Interaction")]
-		public  float       maxInteractableDistance;
-		private Interaction _targetInteraction;
+		public  float maxInteractableDistance;
+		private bool targetInteractChangeable = true;
+		private Interaction   _targetInteraction;
 		private Interaction targetInteraction {
 			get => _targetInteraction;
 			set {
 				if (_targetInteraction == value) return;
-				
-				if (_targetInteraction) SendEvent(UengSystem.Events.EventType.Interact_Untarget, 2, new EventValueData<Interaction>(_targetInteraction));
-				if (value)              SendEvent(UengSystem.Events.EventType.Interact_Target  , 3, new EventValueData<Interaction>(value));
-				
-				_targetInteraction = value;
+				if (!targetInteractChangeable) return;
+
+				targetInteractChangeable = false;
+				new DelayedAction(0.1f, () => { targetInteractChangeable = true; }).Execute();
+
+				if (_targetInteraction) {
+					SendEvent(UengSystem.Events.EventType.Interact_Untarget, 2, new EventValueData<Interaction>(_targetInteraction));
+					_targetInteraction = null;
+				}
+				else {
+					SendEvent(UengSystem.Events.EventType.Interact_Target  , 3, new EventValueData<Interaction>(value));
+					_targetInteraction = value;
+				}
 			}
 		}
 
@@ -77,19 +89,20 @@ namespace AncientMemorial.Entities {
 				float mDistSQR    = (iPos - mPos).sqrMagnitude;
 				float pDistSQR    = (iPos - pPos).sqrMagnitude;
 				float cMinDistSQR = (mDistSQR < pDistSQR) ? mDistSQR : pDistSQR;
-				
-				if (cMinDistSQR < minDistSQR) {
-					minDistSQR     = cMinDistSQR;
-					minInteraction = interaction;
-				}
+
+				if (!(cMinDistSQR < minDistSQR)) continue;
+				minDistSQR     = cMinDistSQR;
+				minInteraction = interaction;
 			}
 
 			targetInteraction = minInteraction;
 		}
 
 		private void GetInput() {
-			if (InputManager.inputData[InputActionType.Jump].pressType == InputPressType.Down && isGround)
+			if (InputManager.inputData[InputActionType.Jump].pressType == InputPressType.Down && isGround) {
 				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Jump, 3);
+				Debug.Log("JUMP DETECTED");
+			}
 			
 			if (InputManager.inputData[InputActionType.MouseLClick].pressType == InputPressType.Down)
 				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Primary, 3);
@@ -130,25 +143,29 @@ namespace AncientMemorial.Entities {
 			rigidbody2D.AddForce(Vector2.up * entityStat.JumpPower, ForceMode2D.Impulse);
 		}
 
-		private float primaryAttackCooldownTime => entityStat.AttackSpeed/2.5f;
-		private bool  primaryAttackAble     = true;
-		private DelayedAction PrimaryAttackCoolDown => new (primaryAttackCooldownTime, () => primaryAttackAble = true);
+		[Header("Attack Tasks")]
+		public Task primaryAttackTask;
+		public Task ChargeAttackTask;
 		
+		private float         primaryAttackCooldownTime => entityStat.AttackSpeed/2.5f;
+		private bool          primaryAttackAble     = true;
+		private DelayedAction PrimaryAttackCoolDown => new (primaryAttackCooldownTime, () => primaryAttackAble = true);
 		private void PrimaryAttack() {
 			if (stopped) return;
 			if (!primaryAttackAble) return;
 
 			primaryAttackAble = false;
 			PrimaryAttackCoolDown.Execute();
+
+			primaryAttackTask.Execute(this);
 			
 			SetHandOffset(20, 5f);
 		}
-
+		
 		private bool  chargeComplete = false;
 		private float ChargeTime     => 1.25f / ((entityStat.AttackSpeed-1)*0.3f+1);
 		private float chargeProgress => (ChargeAttack!=null)?(ChargeAttack.Executing ? ChargeAttack.GetProgress() : (chargeComplete ? 1 : 0)):0;
 		private DelayedAction ChargeAttack = null;
-
 		private void ChargeAttackAction() {
 			chargeComplete = true;
 
@@ -168,6 +185,9 @@ namespace AncientMemorial.Entities {
 			if (stopped) { return; }
 			
 			SetHandOffset(30*chargeProgress, 5f);
+
+			GameManager.UValueFloatVariables["chargeProgress"] = new UPureNumber {number = chargeProgress};
+			ChargeAttackTask.Execute(this);
 			
 			ChargeAttack.Cancel();
 			chargeComplete = false;
@@ -264,8 +284,6 @@ namespace AncientMemorial.Entities {
 		}
 
 		public override void OnEvent(Event e) {
-			base.OnEvent(e);
-
 			switch (e.type) {
 				case UengSystem.Events.EventType.Entity_Behaviour_Jump:
 					AddProcessToFixedUpdate(Jump);

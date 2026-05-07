@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: -8273167077936856854, guid: 8775ba85134c8b54d9c4e03bbb4a2d55, type: 3}
   colorSpawnSprite: {fileID: -5234093536402097629, guid: df85dd46955e52340a68a01f1f5c8a3c, type: 3}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -138,6 +139,37 @@ MonoBehaviour:
   hand: {fileID: 5996376916057825341}
   handW: {fileID: 3949054270572486947}
   maxInteractableDistance: 2
+  primaryAttackTask:
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 2446785154401960016
+  ChargeAttackTask:
+    tasks: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2446785154401960016
+      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 0}
+        position: {x: 0, y: 0}
+        spawnTime: 0
+        ID:
+          rid: -2
+        Category:
+          rid: 2446785154401960018
+    - rid: 2446785154401960018
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: -2
+        - rid: -2
 --- !u!95 &3425632738243857007
 Animator:
   serializedVersion: 7

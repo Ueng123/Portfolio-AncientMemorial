@@ -73,7 +73,7 @@ namespace UengSystem.UI {
 
 		public override void OnGet() {
 			foreach (UUIActionListItem action in actions) {
-				action.action.component.Initialize();
+				action.action.Initialize(this);
 				actionDict[action.key] = action.action;
 			}
 			
@@ -114,7 +114,7 @@ namespace UengSystem.UI {
 					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
 					
 					OnRelease();
-					StartCoroutine(ReleaseFX(time));
+					StartCoroutine(DespawnFX(time));
 					break;
 			}
 		}
@@ -126,10 +126,9 @@ namespace UengSystem.UI {
 		protected override IEnumerator SpawnFX(float duration) {
 			yield return new WaitForSeconds(duration);
 			Initialize();
-			Debug.Log("SpawnFX Done");
 		}
 
-		protected override IEnumerator ReleaseFX(float duration) {
+		protected override IEnumerator DespawnFX(float duration) {
 			animator.SetTrigger(Close);
 			yield return new WaitForSeconds(duration);
 			UUIObjectPool.instance.Close(gameObject, true);

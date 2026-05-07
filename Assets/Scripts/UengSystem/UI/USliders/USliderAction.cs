@@ -17,7 +17,11 @@ namespace UengSystem.UI.USliders {
 		public bool setColor;
 		[SerializeReference][SubclassSelector]
 		public UValue<Color> color;
-		
+
+		public override void Initialize(ITaskable self) {
+			component.Initialize();
+		}
+
 		public override void Routine(ITaskable self) {
 			if (setValue) ((USlider)component).SetValue(value.value);
 			if (useValue) task.Execute(self);

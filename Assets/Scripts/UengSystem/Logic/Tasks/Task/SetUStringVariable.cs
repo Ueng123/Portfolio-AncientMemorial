@@ -13,6 +13,12 @@ namespace UengSystem.Logic.Tasks {
 		public UValue<string> value;
 		
 		public override void Execute(ITaskable self) {
+			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			Debug.Log($" >>> Given Data\n"          +
+					  $" > key   = {key.value}\n"   +
+					  $" > value = {value.value}\n" +
+					  $"");
+
 			GameManager.UValueStringVariables[key.value] = value;
 		}
 	}

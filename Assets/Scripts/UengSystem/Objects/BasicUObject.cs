@@ -11,6 +11,10 @@ namespace UengSystem.Objects {
 			animator       = GetComponent<Animator>();
 		}
 
+		public override void OnGet() { }
+
+		public override void OnRelease() { }
+
 		public override void Initialize() { Resume(); }
 
 		public override void Uninitialize() { Resume(); }

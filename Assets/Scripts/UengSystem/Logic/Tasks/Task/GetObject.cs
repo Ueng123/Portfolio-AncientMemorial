@@ -7,19 +7,28 @@ using UnityEngine;
 namespace UengSystem.Logic.Tasks {
 	[Serializable]
 	public class GetObject : TaskComponent {
-		public GameObject TargetObject;
-		public Vector2    position;
-		public float      spawnTime;
+		public                                        GameObject      TargetObject;
+		[SerializeReference][SubclassSelector] public UValue<Vector2> position;
+		[SerializeReference][SubclassSelector] public UValue<float>   spawnTime;
 		
 		[SerializeReference][SubclassSelector] public UValue<string> ID;
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
 		
-		public override void Execute(ITaskable self) {
-			GameObject obj = UObjectPool.instance.Get(TargetObject.name, position, spawnTime);
-			UObject amobj = obj.GetComponent<UObject>();
+		public override void Execute(ITaskable self) { 
+			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			Debug.Log($" >>> Given Data\n"                       +
+					  $" > ID = {ID.value}\n"                    + 
+					  $" > Category = {Category.value}\n"        + 
+					  $" > targetPrefab = {TargetObject.name}\n" + 
+					  $" > position = {position}\n"              + 
+					  $" > duration = {spawnTime.value}\n"           + 
+					  $"");
+			
+			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime.value);
+			UObject    uobj = obj.GetComponent<UObject>();
 
-			if (ID       !=null) amobj.ID       = ID.getValue;
-			if (Category !=null) amobj.Category = Category.getValue;
+			if (ID       !=null) uobj.ID       = ID.getValue;
+			if (Category !=null) uobj.Category = Category.getValue;
 		}
 	}
 }

@@ -10,10 +10,21 @@ namespace UengSystem.UI.UButtons {
 		public InputPressType  pressType;
 		public Task            task;
 
+		public override void Initialize(ITaskable self) {
+			component?.Initialize();
+		}
+
+		private bool doTask = false;
 		public override void Routine(ITaskable self) {
-			if (!button.clicked && InputManager.inputData[actionType].pressType != pressType) return;
+			doTask = InputManager.inputData[actionType].pressType == pressType;
 			
-			button.clicked = false;
+			if (button) {
+				doTask         = doTask || button.clicked;
+				button.clicked = false;
+			}
+
+			if (!doTask) return;
+			
 			task.Execute(self);
 		}
 	}

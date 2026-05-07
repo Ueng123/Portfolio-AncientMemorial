@@ -151,6 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -270,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -283,17 +285,74 @@ MonoBehaviour:
   - key: TopTitle
     action:
       rid: 6576058688792690817
+  - key: Close2
+    action:
+      rid: 2446785154401960041
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2446785154401960019
+      type: {class: UStringFromVariable, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        varID:
+          rid: 2446785154401960022
+    - rid: 2446785154401960020
+      type: {class: UStringFromVariable, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        varID:
+          rid: 2446785154401960021
+    - rid: 2446785154401960021
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: AnnounceUITopTitle
+    - rid: 2446785154401960022
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: AnnounceUIInsideTitle
+    - rid: 2446785154401960041
+      type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
+      data:
+        component: {fileID: 0}
+        button: {fileID: 0}
+        actionType: 8
+        pressType: 0
+        task:
+          tasks:
+          - time: 0
+            tasks:
+            - rid: 2446785154401960042
+    - rid: 2446785154401960042
+      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 1
+        TargetUUI:
+          rid: -2
     - rid: 6576058688792690816
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 1744346307858358292}
+        text:
+          rid: 2446785154401960019
     - rid: 6576058688792690817
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 4626480128364574658}
+        text:
+          rid: 2446785154401960020
 --- !u!1 &6817783773246402970
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,6 +610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}

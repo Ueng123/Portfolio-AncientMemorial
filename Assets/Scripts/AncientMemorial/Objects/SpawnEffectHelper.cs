@@ -86,6 +86,10 @@ namespace AncientMemorial.Objects {
 
 		public override    void OnEvent(Event e) { }
 
+		public override void OnGet() { }
+
+		public override void OnRelease() { }
+
 		public override void Initialize() {
 
 			t   = 0;

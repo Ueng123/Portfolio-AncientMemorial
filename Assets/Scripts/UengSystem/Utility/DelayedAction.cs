@@ -25,7 +25,11 @@ namespace UengSystem.Utility {
 
 		public void Execute() {
 			if (Executing) return;
-
+			if (delay == 0) {
+				actionToDelay();
+				return;
+			}
+			
 			executeStartTime = Time.time;
 			
 			process = coroutineRunner.StartCoroutine(ExecuteCoroutine());
