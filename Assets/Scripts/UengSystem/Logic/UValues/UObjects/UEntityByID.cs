@@ -1,11 +1,11 @@
 ﻿using System;
-using UengSystem.Logic.UValues;
+using AncientMemorial.Entities;
 using UengSystem.Objects;
 using UnityEngine;
 
-namespace AncientMemorial.Entities {
+namespace UengSystem.Logic.UValues.UObjects {
 	[Serializable]
-	public class EntityByID : UValue<Entity> {
+	public class UEntityByID : UValue<Entity> {
 		public override bool getIsDynamic {
 			get {
 				ID.parent = this;

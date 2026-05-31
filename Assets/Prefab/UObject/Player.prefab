@@ -112,6 +112,13 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GetTask:
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 2446785244063596653
+  ReleaseTask:
+    tasks: []
   entityType: 0
   entityData:
     entityType: 0
@@ -143,33 +150,869 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 2446785154401960016
+      - rid: 2446785244063596676
+      - rid: 2446785244063596621
+      - rid: 2446785244063596660
   ChargeAttackTask:
-    tasks: []
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 2446785244063596673
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 2446785154401960016
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 2446785244063596621
+      type: {class: ConfigureRigidbody, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
-        TargetObject: {fileID: 0}
-        position: {x: 0, y: 0}
-        spawnTime: 0
-        ID:
+        throwErrorIfNoRigidbody: 0
+        obj:
+          rid: 2446785244063596622
+        changeVelocity: 1
+        velocity:
+          rid: 2446785244063596646
+        addForce: 0
+        force:
           rid: -2
-        Category:
-          rid: 2446785154401960018
-    - rid: 2446785154401960018
+    - rid: 2446785244063596622
+      type: {class: UObjectByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        ID:
+          rid: 2446785244063596623
+    - rid: 2446785244063596623
       type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         valueCache: 
         isValueCached: 0
         strings:
-        - rid: -2
-        - rid: -2
+        - rid: 2446785244063596626
+        - rid: 2446785244063596625
+    - rid: 2446785244063596625
+      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        number:
+          rid: 2446785244063596627
+    - rid: 2446785244063596626
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrow
+    - rid: 2446785244063596627
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596628
+    - rid: 2446785244063596628
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596646
+      type: {class: UVecMult, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        A:
+          rid: 2446785244063596665
+        B:
+          rid: 2446785244063596652
+    - rid: 2446785244063596652
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 10
+    - rid: 2446785244063596653
+      type: {class: SetUFloatVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        key:
+          rid: 2446785244063596654
+        value:
+          rid: 2446785244063596655
+    - rid: 2446785244063596654
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596655
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 0
+    - rid: 2446785244063596660
+      type: {class: AddUFloatVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        key:
+          rid: 2446785244063596661
+        value:
+          rid: 2446785244063596664
+    - rid: 2446785244063596661
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596664
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 1
+    - rid: 2446785244063596665
+      type: {class: UNormalized, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        vector:
+          rid: 2446785244063596666
+    - rid: 2446785244063596666
+      type: {class: UVecSub, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        A:
+          rid: 2446785244063596667
+        B:
+          rid: 2446785244063596668
+    - rid: 2446785244063596667
+      type: {class: UMousePosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+    - rid: 2446785244063596668
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 2446785244063596671
+    - rid: 2446785244063596671
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596673
+      type: {class: ConditionalTask, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        boolean:
+          rid: 2446785244063596674
+        taskOnTrue:
+          tasks:
+          - time: 0
+            tasks:
+            - rid: 2446785244063596700
+            - rid: 2446785244063596702
+            - rid: 2446785244063596703
+        taskOnFalse:
+          tasks:
+          - time: 0
+            tasks:
+            - rid: 2446785244063596695
+            - rid: 2446785244063596698
+            - rid: 2446785244063596699
+        type: 0
+    - rid: 2446785244063596674
+      type: {class: CompareNumbers, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        A:
+          rid: 2446785244063596692
+        B:
+          rid: 2446785244063596693
+        uCompareType: 1
+    - rid: 2446785244063596676
+      type: {class: GetProjectiles, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 5201704342810090500, guid: d06489f9130e3b7468fdf755d0c45800, type: 3}
+        position:
+          rid: 2446785244063596677
+        spawnTime:
+          rid: 2446785244063596678
+        ID:
+          rid: 2446785244063596679
+        Category:
+          rid: 2446785244063596680
+        damage:
+          rid: 2446785244063596686
+        owner:
+          rid: 2446785244063596690
+    - rid: 2446785244063596677
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 2446785244063596681
+    - rid: 2446785244063596678
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 0
+    - rid: 2446785244063596679
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 2446785244063596682
+        - rid: 2446785244063596683
+    - rid: 2446785244063596680
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: Projectile
+    - rid: 2446785244063596681
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596682
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrow
+    - rid: 2446785244063596683
+      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        number:
+          rid: 2446785244063596684
+    - rid: 2446785244063596684
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596685
+    - rid: 2446785244063596685
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596686
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 1
+    - rid: 2446785244063596690
+      type: {class: UEntityByUObject, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj:
+          rid: 2446785244063596691
+    - rid: 2446785244063596691
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596692
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596694
+    - rid: 2446785244063596693
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 1
+    - rid: 2446785244063596694
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: chargeProgress
+    - rid: 2446785244063596695
+      type: {class: GetProjectiles, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 5201704342810090500, guid: d06489f9130e3b7468fdf755d0c45800, type: 3}
+        position:
+          rid: 2446785244063596761
+        spawnTime:
+          rid: 2446785244063596763
+        ID:
+          rid: 2446785244063596765
+        Category:
+          rid: 2446785244063596770
+        damage:
+          rid: 2446785244063596772
+        owner:
+          rid: 2446785244063596788
+    - rid: 2446785244063596698
+      type: {class: ConfigureRigidbody, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        throwErrorIfNoRigidbody: 0
+        obj:
+          rid: 2446785244063596790
+        changeVelocity: 1
+        velocity:
+          rid: 2446785244063596777
+        addForce: 0
+        force:
+          rid: -2
+    - rid: 2446785244063596699
+      type: {class: AddUFloatVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        key:
+          rid: 2446785244063596759
+        value:
+          rid: 2446785244063596760
+    - rid: 2446785244063596700
+      type: {class: GetProjectiles, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 487523599562734646, guid: 052275cd63cc1a94aa29e1bc1c249a8b, type: 3}
+        position:
+          rid: 2446785244063596704
+        spawnTime:
+          rid: 2446785244063596706
+        ID:
+          rid: 2446785244063596708
+        Category:
+          rid: 2446785244063596712
+        damage:
+          rid: 2446785244063596713
+        owner:
+          rid: 2446785244063596714
+    - rid: 2446785244063596702
+      type: {class: ConfigureRigidbody, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        throwErrorIfNoRigidbody: 0
+        obj:
+          rid: 2446785244063596733
+        changeVelocity: 1
+        velocity:
+          rid: 2446785244063596739
+        addForce: 0
+        force:
+          rid: -2
+    - rid: 2446785244063596703
+      type: {class: AddUFloatVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        key:
+          rid: 2446785244063596757
+        value:
+          rid: 2446785244063596758
+    - rid: 2446785244063596704
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 2446785244063596705
+    - rid: 2446785244063596705
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596706
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 0
+    - rid: 2446785244063596708
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 2446785244063596709
+        - rid: 2446785244063596721
+    - rid: 2446785244063596709
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrow
+    - rid: 2446785244063596712
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: Projectile
+    - rid: 2446785244063596713
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 3
+    - rid: 2446785244063596714
+      type: {class: UEntityByUObject, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj:
+          rid: 2446785244063596715
+    - rid: 2446785244063596715
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596721
+      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        number:
+          rid: 2446785244063596722
+    - rid: 2446785244063596722
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596723
+    - rid: 2446785244063596723
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596733
+      type: {class: UObjectByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        ID:
+          rid: 2446785244063596734
+    - rid: 2446785244063596734
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 2446785244063596735
+        - rid: 2446785244063596736
+    - rid: 2446785244063596735
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrow
+    - rid: 2446785244063596736
+      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        number:
+          rid: 2446785244063596737
+    - rid: 2446785244063596737
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596738
+    - rid: 2446785244063596738
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596739
+      type: {class: UVecMult, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        A:
+          rid: 2446785244063596740
+        B:
+          rid: 2446785244063596756
+    - rid: 2446785244063596740
+      type: {class: UNormalized, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        vector:
+          rid: 2446785244063596744
+    - rid: 2446785244063596744
+      type: {class: UVecSub, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        A:
+          rid: 2446785244063596745
+        B:
+          rid: 2446785244063596748
+    - rid: 2446785244063596745
+      type: {class: UMousePosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+    - rid: 2446785244063596748
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 2446785244063596749
+    - rid: 2446785244063596749
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596756
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 8
+    - rid: 2446785244063596757
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596758
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 1
+    - rid: 2446785244063596759
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596760
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 1
+    - rid: 2446785244063596761
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 2446785244063596762
+    - rid: 2446785244063596762
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596763
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 0
+    - rid: 2446785244063596765
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 2446785244063596766
+        - rid: 2446785244063596767
+    - rid: 2446785244063596766
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrow
+    - rid: 2446785244063596767
+      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        number:
+          rid: 2446785244063596768
+    - rid: 2446785244063596768
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596769
+    - rid: 2446785244063596769
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
+    - rid: 2446785244063596770
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: Projectile
+    - rid: 2446785244063596772
+      type: {class: UMult, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        A:
+          rid: 2446785244063596773
+        B:
+          rid: 2446785244063596775
+    - rid: 2446785244063596773
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596776
+    - rid: 2446785244063596775
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 2.5
+    - rid: 2446785244063596776
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: chargeProgress
+    - rid: 2446785244063596777
+      type: {class: UVecMult, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        A:
+          rid: 2446785244063596782
+        B:
+          rid: 2446785244063596778
+    - rid: 2446785244063596778
+      type: {class: UMult, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        A:
+          rid: 2446785244063596779
+        B:
+          rid: 2446785244063596780
+    - rid: 2446785244063596779
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596781
+    - rid: 2446785244063596780
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 7
+    - rid: 2446785244063596781
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: chargeProgress
+    - rid: 2446785244063596782
+      type: {class: UNormalized, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        vector:
+          rid: 2446785244063596783
+    - rid: 2446785244063596783
+      type: {class: UVecSub, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        A:
+          rid: 2446785244063596784
+        B:
+          rid: 2446785244063596785
+    - rid: 2446785244063596784
+      type: {class: UMousePosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+    - rid: 2446785244063596785
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 2446785244063596786
+    - rid: 2446785244063596786
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596788
+      type: {class: UEntityByUObject, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj:
+          rid: 2446785244063596789
+    - rid: 2446785244063596789
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 5116697356408343239}
+    - rid: 2446785244063596790
+      type: {class: UObjectByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        ID:
+          rid: 2446785244063596791
+    - rid: 2446785244063596791
+      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        strings:
+        - rid: 2446785244063596792
+        - rid: 2446785244063596794
+    - rid: 2446785244063596792
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrow
+    - rid: 2446785244063596794
+      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        number:
+          rid: 2446785244063596795
+    - rid: 2446785244063596795
+      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        varID:
+          rid: 2446785244063596796
+    - rid: 2446785244063596796
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: PlayerArrowID
 --- !u!95 &3425632738243857007
 Animator:
   serializedVersion: 7

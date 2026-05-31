@@ -1,0 +1,20 @@
+﻿{
+    "Name" : "",
+    "HP" : ,
+    "MoveSpeed" : ,
+    "JumpPower" : ,
+    "AttackSpeed" : ,
+    "GroundBoxOffsetX" : ,
+    "GroundBoxOffsetY" : ,
+    "GroundBoxSizeX" : ,
+    "GroundBoxSizeY" : ,
+}
+
+파일제목 : 엔티티 타입(지금이거만지고있을김주경등은새로파일만들일없음)
+Name : 체력바 위에 뜰 몹 이름
+HP : 최대체력
+MoveSpeed : 이속, 초당 몇 가는지(유니티 단위)
+JumpPower : 점프력 나타내는 측도
+AttackSpeed : 공격 빈도 (초당 몇번)
+GroundBoxOffset[X/Y] : 바닥 감지하는 영역 위치(스프라이트 중앙 기준)
+GroundBoxSize[X/Y] : 바닥 감지하는 영역 크기(영역 위치를 중앙으로 함)

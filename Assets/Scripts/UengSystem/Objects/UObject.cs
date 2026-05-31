@@ -65,11 +65,37 @@ namespace UengSystem.Objects {
 				_Category = value;
 			}
 		}
-		
+
+		public ExclusiveAction _currentExclusiveAction;
+		public ExclusiveAction currentExclusiveAction {
+			get {
+				if (_currentExclusiveAction is { executing: false }) _currentExclusiveAction = null;
+				return _currentExclusiveAction;
+			}
+			
+			set {
+				// 수박맛있다
+				if (_currentExclusiveAction == null) {
+					_currentExclusiveAction = value;
+					value?.Execute();
+				}
+				else {
+					_currentExclusiveAction.Cancel();
+
+					float delay = _currentExclusiveAction.changeDelay;
+					new DelayedAction(delay, () => {
+						_currentExclusiveAction = value;
+						value?.Execute();
+					}).Execute();
+				}
+			}
+		}
+
 		public Sprite whiteSpawnSprite;
 		public Sprite colorSpawnSprite;
 		public bool   _gettable;
-		public bool   gettable { get => _gettable; set => _gettable = value; }
+		public bool   gettable   { get => _gettable; set => _gettable = value; }
+		public bool   isReleased { get;              set; }
 
 		// IStoppable Variables //
 		public  bool            stopped { get; set; }
@@ -85,11 +111,19 @@ namespace UengSystem.Objects {
 		public static UObject GetUObject(string id) {
 			return IDTable[id];
 		}
-		
+
 		public static List<UObject> GetUObjects(string category) {
 			return CategoryTable[category];
 		}
-		
+
+		public static bool UObjectExists(string id) {
+			return IDTable.ContainsKey(id) && IDTable[id];
+		}
+
+		public static bool UObjectsExist(string category) {
+			return CategoryTable.ContainsKey(category) && IDTable[category];
+		}
+
 		// IEventAgent Method //
 		public void SendEvent(Events_EventType type, int layer, EventData data = default) {
 			EventManager.instance.AddEvent(new Events_Event(type, this, data), layer);
@@ -135,9 +169,11 @@ namespace UengSystem.Objects {
 		public virtual void OnFirstGet() {}
 
 		public DelayedAction spawnFXCache = null;
+		public Task          GetTask;
+		
 		public virtual void Get(float time) {
-			OnGet();
 			if (time == 0) {
+				OnGet();
 				Initialize();
 				return;
 			}
@@ -161,9 +197,13 @@ namespace UengSystem.Objects {
 											 });
 
 			spawnFXCache.Execute();
+
+			OnGet();
 		}
 		
 		public DelayedAction despawnFXCache = null;
+		public Task          ReleaseTask;
+		
 		public virtual void Release(float time) {
 			spawnFXCache?.Cancel();
 			
@@ -183,12 +223,15 @@ namespace UengSystem.Objects {
 					break;
 				default:
 					OnRelease();
+					
+					PrepareDespawnFX();
 					StartCoroutine(DespawnFX(time));
+					
 					break;
 			}
 		}
 
-		private Color colorBeforeSpawnFX;
+		protected Color colorBeforeSpawnFX;
 		protected virtual void PrepareSpawnFX() {
 			Stop();
 			
@@ -233,7 +276,7 @@ namespace UengSystem.Objects {
 			Initialize();
 		}
 
-		private Color colorBeforeDespawnFX;
+		protected Color colorBeforeDespawnFX;
 		protected virtual void PrepareDespawnFX() {
 			Stop();
 			
@@ -267,9 +310,15 @@ namespace UengSystem.Objects {
 			spriteRenderer.color = colorBeforeDespawnFX;
 			UObjectPool.instance.Release(gameObject, -1);
 		}
-		
-		public virtual void OnGet()     {}
-		public virtual void OnRelease() {}
+
+		public virtual void OnGet() {
+			GetTask.Execute(this);
+		}
+
+		public virtual void OnRelease() {
+			ReleaseTask.Execute(this);
+			currentExclusiveAction?.Cancel();
+		}
 		
 		public abstract void Initialize();
 		public abstract void Uninitialize();

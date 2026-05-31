@@ -6,7 +6,8 @@ using Events_Event = UengSystem.Events.Event;
 namespace AncientMemorial.Projectiles {
 	public abstract class Projectile : AdvancedUObject {
 
-		public Entity     owner;
+		public Entity owner;
+		public float  damage;
 		
 		// will invoke on pi-hitted entity
 		protected abstract void OnCollideEntity(Entity entity);
@@ -14,10 +15,6 @@ namespace AncientMemorial.Projectiles {
 		protected abstract void OnCollideObject(UObject obj);
 
 		protected override void FixedRoutine() { }
-		
-		public override    void OnGet() { }
-
-		public override    void OnRelease() { }
 
 		protected void OnTriggerEnter2D(Collider2D other) {
 			Debug.Log(other.gameObject.name);

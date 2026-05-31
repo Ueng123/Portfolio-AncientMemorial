@@ -6,8 +6,14 @@ namespace AncientMemorial.Entities {
 	public record EntityData {
 		public EntityType entityType;
 		public string     name;
-		public EntityStat baseStat;
-		public Vector2    groundBoxOffset;
-		public Vector2    groundBoxSize;
+		public float      hp;
+		public float      moveSpeed;
+		public float      jumpPower;
+		public float      attackSpeed;
+		public float      attackDamage;
+		public float      groundBoxOffsetX;
+		public float      groundBoxOffsetY;
+		public float      groundBoxSizeX;
+		public float      groundBoxSizeY;
 	}
 }

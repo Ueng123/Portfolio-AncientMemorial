@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using UengSystem.Managers;
 using UengSystem.Objects;
@@ -30,16 +31,31 @@ namespace AncientMemorial.Entities {
 		protected abstract void Death();
 		
 		// ETC. Override //
-
+		
 		public override void Initialize() {
-			entityData = DataStorage.instance.Entities
-									.FirstOrDefault(e => e.entityType == entityType);
+			string path = Path.Combine(Application.streamingAssetsPath, $"EntityData/{entityType}.json");
+			if (!File.Exists(path)) {
+				Debug.LogError($"NO FILE FOUND : [{entityType}] BRO;((((");
+				return;
+			}
+			string jsonText = File.ReadAllText(path);
 			
-			if (entityData == null) { throw new NullReferenceException("NO ENTITY DATA BRUH ;;;"); }
+			entityData = JsonUtility.FromJson<EntityData>(jsonText);
 			
-			entityStat      = entityData.baseStat.newInstance();
-			groundBoxOffset = entityData.groundBoxOffset;
-			groundBoxSize   = entityData.groundBoxSize;
+			entityStat      = new EntityStat(
+				entityData.hp,
+				entityData.moveSpeed,
+				entityData.jumpPower,
+				entityData.attackSpeed
+			);
+			groundBoxOffset = new Vector2(
+				entityData.groundBoxOffsetX,
+				entityData.groundBoxOffsetY
+			);
+			groundBoxSize   = new Vector2(
+				entityData.groundBoxSizeX,
+				entityData.groundBoxSizeY
+			);
 			
 			base.Initialize();
 		}

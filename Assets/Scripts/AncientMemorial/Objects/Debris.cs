@@ -9,9 +9,13 @@ namespace AncientMemorial.Objects {
 		protected override void LateRoutine() { }
 
 		protected override void FixedRoutine() { }
-		
-		public override    void OnGet() { }
 
-		public override    void OnRelease() { }
+		public override void OnGet() {
+			base.OnGet();
+		}
+
+		public override void OnRelease() {
+			base.OnRelease();
+		}
 	}
 }

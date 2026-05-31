@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6998117716528119785}
   - component: {fileID: 4205551853173257532}
   - component: {fileID: 8618322824938421791}
-  - component: {fileID: 6840638681628726039}
+  - component: {fileID: 801352012111384311}
   m_Layer: 0
   m_Name: FullChargeEffect
   m_TagString: Untagged
@@ -4892,7 +4892,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6840638681628726039
+--- !u!114 &801352012111384311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4901,28 +4901,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1107742639573374473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0dc79ecad9642d3bb0f0c88609bfe91, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bd49957cbe6d0d4f9c21e9dc231e1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
+  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
-  task:
+  GetTask:
     tasks:
     - time: 1
       tasks:
-      - rid: 6576058688792690800
+      - rid: 2446785313502134345
+  ReleaseTask:
+    tasks: []
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 6576058688792690800
+    - rid: 2446785313502134345
       type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
         releaseThis: 1
-        Object:
+        TargetObject:
           rid: -2

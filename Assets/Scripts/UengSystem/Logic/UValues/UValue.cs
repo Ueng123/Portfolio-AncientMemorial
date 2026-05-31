@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UengSystem.Logic.UValues {
 	[Serializable]
-	public abstract class UValue<T> : IUValue {
+	public abstract class UValue<T> : IUValue, ISerializationCallbackReceiver { // ISerializ... : 런타임에서 캐싱이 되면 그게 초기화 안됨.
 		public IUValue parent;
 		
 		public abstract bool  getIsDynamic { get; }
@@ -35,9 +35,16 @@ namespace UengSystem.Logic.UValues {
 		}
 		
 		public void ResetCache() {
-			isValueCached  = true;
+			isValueCached  = false;
 			isDynamicCache = null;
 			parent?.ResetCache();
+		}
+
+		public void OnBeforeSerialize() { }
+
+		public void OnAfterDeserialize() {
+			isValueCached  = false;
+			isDynamicCache = null;
 		}
 	}
 }

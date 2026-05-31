@@ -91,11 +91,7 @@ namespace AncientMemorial.Interactions {
 			
 			base.OnFirstGet();
 		}
-
-		public override void OnGet() { }
-
-		public override void OnRelease() { }
-
+		
 		// UPDATE ROUTINE //
 
 		protected override void EarlyRoutine() {

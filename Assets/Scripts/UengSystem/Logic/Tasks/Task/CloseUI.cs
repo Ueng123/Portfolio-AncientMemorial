@@ -22,7 +22,11 @@ namespace UengSystem.Logic.Tasks {
 					  $" > --- Category = {target.Category}\n"  +
 					  $" > --- canvas = {target.canvas.name}\n" +
 					  $"");
-			
+
+			if (target.isReleased) {
+				Debug.LogWarning($"[TaskLog : {GetType()}] Object given is released already");
+				return;
+			}
 			UUIObjectPool.instance.Close(target.gameObject);
 		}
 	}

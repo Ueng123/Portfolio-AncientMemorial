@@ -12,14 +12,12 @@ using UnityEngine.Serialization;
 namespace UengSystem.UI {
 	public class UUIObjectPool : Manager<UUIObjectPool> {
 		[SerializeField]
-		private UUIPrefabItem[]                            prefabData;
-		private Dictionary<string, ObjectPool<GameObject>> pools;
-		private Dictionary<string, Transform>              roots;
-		private Dictionary<string, UUIQueue>               uuiQueue;
+		public UUIPrefabItem[]                            prefabData;
+		private readonly Dictionary<string, ObjectPool<GameObject>> pools    = new ();
+		private readonly Dictionary<string, Transform>              roots    = new ();
+		private readonly Dictionary<string, UUIQueue>               uuiQueue = new ();
 		
 		public override void Initialize() {
-			pools = new Dictionary<string, ObjectPool<GameObject>>();
-			roots = new Dictionary<string, Transform>             ();
 			
 			foreach (UUIPrefabItem data in prefabData) {
 				Transform newRoot  = new GameObject($"{data.prefab.name} root").transform;
@@ -63,7 +61,8 @@ namespace UengSystem.UI {
 			script.OnOpen();
 			
 			obj.SetActive(true);
-			
+
+			script.isReleased = false;
 			return obj;
 		}
 		public void Close(GameObject obj, bool finalRelease = false) {
@@ -80,16 +79,18 @@ namespace UengSystem.UI {
 			script.OnClose();
 			obj.SetActive(false);
 			obj.transform.SetParent(roots[obj.name]);
+			
+			script.isReleased = true;
 		}
 
 		public void AddUUIQueue(string key, UUIQueueItem queueItem) {
-			uuiQueue[key] ??= new UUIQueue();
+			if (!uuiQueue.ContainsKey(key)) uuiQueue.Add(key, new UUIQueue());
 			uuiQueue[key].queue.Enqueue(queueItem);
 		}
 		
 		public override void ManagerUpdate() {
 			foreach (string key in uuiQueue.Keys) {
-				uuiQueue[key].GetNextQueue();
+				uuiQueue[key].GetNextQueue(key);
 			}
 		}
 		public override void ManagerFixedUpdate() {  }

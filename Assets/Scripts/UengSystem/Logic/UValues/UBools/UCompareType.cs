@@ -1,5 +1,5 @@
 ﻿namespace UengSystem.Logic.UValues.UBools {
-	public enum CompareType {
+	public enum UCompareType {
 		Greater,
 		Equal,
 		Less,

@@ -14,7 +14,7 @@ using Event = UengSystem.Events.Event;
 using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
-	public class Player : Entity {
+	public class Player : LivingEntity {
 		
 		[Header("Hand")]
 		public  GameObject     hand;
@@ -182,7 +182,8 @@ namespace AncientMemorial.Entities {
 		}
 		
 		private void ChargeEnd() {
-			if (stopped) { return; }
+			if (stopped) return;
+			if (chargeProgress <= 0.2f) return;
 			
 			SetHandOffset(30*chargeProgress, 5f);
 
@@ -240,10 +241,12 @@ namespace AncientMemorial.Entities {
 		public override void OnGet() {
 			if (player) throw new InvalidOperationException("ALREADY PLAYER EXIST WHY U TRYING TO MAKE SAME PEOPLE AGAIN 🥀🥀");
 			player = this;
+			base.OnGet();
 		}
 
 		public override void OnRelease() {
 			player = null;
+			base.OnRelease();
 		}
 		
 		public override void Get(float     time) {

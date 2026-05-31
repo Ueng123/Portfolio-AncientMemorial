@@ -1,3 +1,3 @@
 ﻿namespace UengSystem.UI.UUIQueues {
-	public record UUIQueueItem(float duration, UUIQueueData data);
+	public record UUIQueueItem(float marginFront, float marginBack, float duration, UUIQueueData data);
 }

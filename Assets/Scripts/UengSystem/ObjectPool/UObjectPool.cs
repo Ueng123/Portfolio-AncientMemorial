@@ -13,7 +13,7 @@ namespace UengSystem.ObjectPool {
 		private GameObject[]                               prefabs;
 		private Dictionary<string, ObjectPool<GameObject>> pools;
 		private Dictionary<string, Transform>              roots;
-
+		
 		public override void Initialize() {
 			pools = new Dictionary<string, ObjectPool<GameObject>>();
 			roots = new Dictionary<string, Transform>             ();
@@ -68,12 +68,13 @@ namespace UengSystem.ObjectPool {
 			foreach (GameObject releaseObj in willReleaseObjects) {
 				pools[key].Release(releaseObj);
 			}
-
+			
 			obj.transform.position = position;
 			
 			script.Get(time);
 			obj.SetActive(true);
 			
+			script.isReleased = false;
 			return obj;
 		}
 
@@ -81,6 +82,7 @@ namespace UengSystem.ObjectPool {
 			IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
 
 			script.Release(time);
+			
 
 			if (time > 0) return;
 
@@ -88,6 +90,8 @@ namespace UengSystem.ObjectPool {
 			
 			obj.transform.SetParent(roots[obj.name]);
 			pools[obj.name].Release(obj);
+			
+			script.isReleased = true;
 		}
 		
 		public override void ManagerUpdate()      { }
