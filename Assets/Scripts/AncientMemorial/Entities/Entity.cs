@@ -41,20 +41,22 @@ namespace AncientMemorial.Entities {
 			string jsonText = File.ReadAllText(path);
 			
 			entityData = JsonUtility.FromJson<EntityData>(jsonText);
-			
+
+			name = entityData.Name;
 			entityStat      = new EntityStat(
-				entityData.hp,
-				entityData.moveSpeed,
-				entityData.jumpPower,
-				entityData.attackSpeed
+				entityData.HP,
+				entityData.MoveSpeed,
+				entityData.JumpPower,
+				entityData.AttackSpeed,
+				entityData.AttackDamage
 			);
 			groundBoxOffset = new Vector2(
-				entityData.groundBoxOffsetX,
-				entityData.groundBoxOffsetY
+				entityData.GroundBoxOffsetX,
+				entityData.GroundBoxOffsetY
 			);
 			groundBoxSize   = new Vector2(
-				entityData.groundBoxSizeX,
-				entityData.groundBoxSizeY
+				entityData.GroundBoxSizeX,
+				entityData.GroundBoxSizeY
 			);
 			
 			base.Initialize();

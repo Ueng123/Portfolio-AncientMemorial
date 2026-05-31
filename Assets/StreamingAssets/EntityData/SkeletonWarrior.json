@@ -1,13 +1,12 @@
 ﻿{
-  "SkeletonWarrior" : {
-    "Name" : "칼든 샌즈",
-    "HP" : 3,
-    "MoveSpeed" : 1.7,
-    "JumpPower" : 3,
-    "AttackSpeed" : 0.3,
-    "GroundBoxOffsetX" : 0,
-    "GroundBoxOffsetY" : 0,
-    "GroundBoxSizeX" : 0,
-    "GroundBoxSizeY" : 0
-  }
+  "Name" : "칼든 샌즈",
+  "HP" : 3,
+  "MoveSpeed" : 1.7,
+  "JumpPower" : 3,
+  "AttackSpeed" : 0.3,
+  "AttackDamage" : 1,
+  "GroundBoxOffsetX" : 0,
+  "GroundBoxOffsetY" : 0,
+  "GroundBoxSizeX" : 0,
+  "GroundBoxSizeY" : 0
 }

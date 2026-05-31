@@ -1,19 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AncientMemorial.Entities {
 	[Serializable]
 	public record EntityData {
-		public EntityType entityType;
-		public string     name;
-		public float      hp;
-		public float      moveSpeed;
-		public float      jumpPower;
-		public float      attackSpeed;
-		public float      attackDamage;
-		public float      groundBoxOffsetX;
-		public float      groundBoxOffsetY;
-		public float      groundBoxSizeX;
-		public float      groundBoxSizeY;
+		public string Name;
+		public float  HP;
+		public float  MoveSpeed;
+		public float  JumpPower;
+		public float  AttackSpeed;
+		public float  AttackDamage;
+		public float  GroundBoxOffsetX;
+		public float  GroundBoxOffsetY;
+		public float  GroundBoxSizeX;
+		public float  GroundBoxSizeY;
 	}
 }

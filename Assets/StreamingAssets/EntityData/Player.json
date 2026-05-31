@@ -1,14 +1,12 @@
 ﻿{
-  "Player" : {
-    "Name" : "플레이어",
-    "HP" : 10,
-    "MoveSpeed" : 3,
-    "JumpPower" : 5,
-    "AttackSpeed" : 1,
-    "AttackDamage" : 1,
-    "GroundBoxOffsetX" : 0,
-    "GroundBoxOffsetY" : -0.75,
-    "GroundBoxSizeX" : 0.43,
-    "GroundBoxSizeY" : 0.025
-  }
+  "Name" : "플레이어",
+  "HP" : 10,
+  "MoveSpeed" : 3,
+  "JumpPower" : 5,
+  "AttackSpeed" : 1,
+  "AttackDamage" : 1,
+  "GroundBoxOffsetX" : 0,
+  "GroundBoxOffsetY" : -0.75,
+  "GroundBoxSizeX" : 0.43,
+  "GroundBoxSizeY" : 0.025
 }
