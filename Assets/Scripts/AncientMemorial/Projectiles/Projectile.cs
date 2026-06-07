@@ -17,7 +17,8 @@ namespace AncientMemorial.Projectiles {
 		protected override void FixedRoutine() { }
 
 		protected void OnTriggerEnter2D(Collider2D other) {
-			Debug.Log(other.gameObject.name);
+			//Debug.Log(other.gameObject.name);
+			if (isReleased) return;
 			
 			Entity   entity = other.GetComponent<Entity>();
 			if (entity) {

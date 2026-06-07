@@ -3,6 +3,7 @@ using UengSystem.Managers;
 using UengSystem.Objects;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UObject = UengSystem.Objects.UObject;
 
 namespace UengSystem.UDebug {
 	public class TaskThrower : Manager<TaskThrower> {
@@ -11,7 +12,7 @@ namespace UengSystem.UDebug {
 		public TaskComponent taskComponent;
 
 		public UObject self;
-		public bool     execute;
+		public bool    execute;
 
 
 		public override void ManagerUpdate() {

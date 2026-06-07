@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using AncientMemorial.Cameras;
+using AncientMemorial.Entities;
 using AncientMemorial.Interactions;
 using UengSystem.Events;
 using UengSystem.Inputs;
@@ -10,8 +12,9 @@ using UnityEngine.Serialization;
 
 namespace UengSystem.Managers {
 	public class GameManager : Manager<GameManager> {
-		public                                  Crystal Crystal;
-		[FormerlySerializedAs("canvas")] public UCanvas mainCanvas;
+		public Crystal    Crystal;
+		public UCanvas    mainCanvas;
+		public MainCamera mainCamera;
 		
 		public Color spawnColor;
 		
@@ -26,7 +29,7 @@ namespace UengSystem.Managers {
 		public static Dictionary<string, UValue<UUI    >> UValueUUIVariables     = new ();
 		
 		public static void ApplyStaticBufferedLists() {
-			// NOTHING HERE YET :)
+			Entity.entities.Apply();
 		}
 		
 		public static void ClearFramePerLists() {
@@ -58,7 +61,7 @@ namespace UengSystem.Managers {
 			AdvancedUObject.FixedUpdateRoutine();
 		}
 		
-		public override void ManagerUpdate()      {  }
-		public override void ManagerFixedUpdate() {  }
+		public override void ManagerUpdate()      { }
+		public override void ManagerFixedUpdate() { }
 	}
 }

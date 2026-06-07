@@ -15,14 +15,14 @@ namespace UengSystem.Logic.Tasks {
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
 		
 		public override void Execute(ITaskable self) { 
-			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
-			Debug.Log($" >>> Given Data\n"                       +
-					  $" > ID = {ID.value}\n"                    + 
-					  $" > Category = {Category.value}\n"        + 
-					  $" > targetPrefab = {TargetObject.name}\n" + 
-					  $" > position = {position}\n"              + 
-					  $" > duration = {spawnTime.value}\n"           + 
-					  $"");
+			// Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			// Debug.Log($" >>> Given Data\n"                       +
+			// 		  $" > ID = {ID.value}\n"                    + 
+			// 		  $" > Category = {Category.value}\n"        + 
+			// 		  $" > targetPrefab = {TargetObject.name}\n" + 
+			// 		  $" > position = {position.value}\n"              + 
+			// 		  $" > duration = {spawnTime.value}\n"           + 
+			// 		  $"");
 			
 			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime.value);
 			UObject    uobj = obj.GetComponent<UObject>();

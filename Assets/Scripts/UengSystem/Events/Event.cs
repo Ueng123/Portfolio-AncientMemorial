@@ -1,4 +1,4 @@
-﻿using UengSystem.Events.EventDatas;
+﻿using UengSystem.Events;
 
 namespace UengSystem.Events {
 	public record Event(EventType type, IEventAgent sender, EventData data);

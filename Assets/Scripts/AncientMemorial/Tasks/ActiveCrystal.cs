@@ -3,6 +3,7 @@ using AncientMemorial.Interactions;
 using UengSystem.Logic.Tasks;
 using UengSystem.Logic.UValues;
 using UengSystem.Managers;
+using UengSystem.Objects;
 using UnityEngine;
 
 namespace AncientMemorial.Tasks {

@@ -5,8 +5,8 @@ using UnityEngine.UI;
 namespace UengSystem.UI.USliders {
 	[Serializable]
 	public class USlider : UUIComponent {
-		private Slider slider;
-		private Image sliderFillImage;
+		protected Slider slider;
+		protected Image sliderFillImage;
 
 		public override void Initialize() {
 			slider          = GetComponent<Slider>();
@@ -14,7 +14,7 @@ namespace UengSystem.UI.USliders {
 		}
 		
 		public float GetValue()            => slider.value;
-		public void  SetValue(float value) => slider.value = value;
+		public virtual void  SetValue(float value) => slider.value = value;
 
 		public Color GetColor()            => sliderFillImage.color;
 		public void  SetColor(Color color) => sliderFillImage.color = color;

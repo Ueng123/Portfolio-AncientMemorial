@@ -2,6 +2,7 @@
 using UengSystem.Logic.UValues;
 using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Managers;
+using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {

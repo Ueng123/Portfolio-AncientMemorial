@@ -2,7 +2,7 @@
 
 namespace UengSystem.Objects {
 	public class UObjectHelper : MonoBehaviour {
-		private AdvancedUObject script;
+		private UObject script;
 		
 		[Header("InitialObject")]
 		public bool   InitialObject;
@@ -15,7 +15,7 @@ namespace UengSystem.Objects {
 			if (initialized) return;
 			initialized = true;
 			
-			script = GetComponent<AdvancedUObject>();
+			script = GetComponent<UObject>();
 			
 			if (!InitialObject) return;
 			script.OnFirstGet();

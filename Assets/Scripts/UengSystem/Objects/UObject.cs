@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using AncientMemorial.Objects;
 using UengSystem.Events;
-using UengSystem.Events.EventDatas;
 using UengSystem.Logic.Tasks;
 using UengSystem.Managers;
 using UengSystem.ObjectPool;
@@ -77,6 +76,7 @@ namespace UengSystem.Objects {
 				// 수박맛있다
 				if (_currentExclusiveAction == null) {
 					_currentExclusiveAction = value;
+					Debug.Log($"{name}'s ExclusiveAction is set to {value}");
 					value?.Execute();
 				}
 				else {
@@ -129,7 +129,7 @@ namespace UengSystem.Objects {
 			EventManager.instance.AddEvent(new Events_Event(type, this, data), layer);
 		}
 
-		public virtual void OnEvent(Events_Event e) {}
+		public virtual void OnEvent(Events_Event e) { }
 
 		// IStoppable Method //
 		public void Stop() {
@@ -178,7 +178,6 @@ namespace UengSystem.Objects {
 				return;
 			}
 			
-			gameObject.SetActive(true);
 			GameObject spawnFX = UObjectPool.instance.Get("SpawnEffectHelper", transform.position);
 			spawnFX.GetComponent<SpawnEffectHelper>().t_s = time;
 			
@@ -197,7 +196,6 @@ namespace UengSystem.Objects {
 											 });
 
 			spawnFXCache.Execute();
-
 			OnGet();
 		}
 		
@@ -205,6 +203,7 @@ namespace UengSystem.Objects {
 		public Task          ReleaseTask;
 		
 		public virtual void Release(float time) {
+			if (isReleased) return;
 			spawnFXCache?.Cancel();
 			
 			gettable = false;
@@ -312,11 +311,11 @@ namespace UengSystem.Objects {
 		}
 
 		public virtual void OnGet() {
-			GetTask.Execute(this);
+			GetTask.Execute(this, this);
 		}
 
 		public virtual void OnRelease() {
-			ReleaseTask.Execute(this);
+			ReleaseTask.Execute(this, this);
 			currentExclusiveAction?.Cancel();
 		}
 		

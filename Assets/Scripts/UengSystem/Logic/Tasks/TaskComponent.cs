@@ -1,4 +1,5 @@
 ﻿using System;
+using UengSystem.Objects;
 
 namespace UengSystem.Logic.Tasks {
 	[Serializable]

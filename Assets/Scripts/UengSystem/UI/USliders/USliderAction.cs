@@ -1,6 +1,7 @@
 ﻿using System;
 using UengSystem.Logic.Tasks;
 using UengSystem.Logic.UValues;
+using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.UI.USliders {
@@ -18,11 +19,11 @@ namespace UengSystem.UI.USliders {
 		[SerializeReference][SubclassSelector]
 		public UValue<Color> color;
 
-		public override void Initialize(ITaskable self) {
+		public override void Initialize(UObject self) {
 			component.Initialize();
 		}
 
-		public override void Routine(ITaskable self) {
+		public override void Routine(UObject self) {
 			if (setValue) ((USlider)component).SetValue(value.value);
 			if (useValue) task.Execute(self);
 			if (setColor) ((USlider)component).SetColor(color.value);

@@ -22,7 +22,7 @@ namespace UengSystem.Utility {
 			this.onCancel        = onCancel;
 			this.onDone          = onDone;
 			this.coroutineRunner = coroutineRunner ?? GlobalCoroutineManager.instance;
-			this.changeDelay    = changeDelay;
+			this.changeDelay     = changeDelay;
 		}
 
 		public void Execute() {

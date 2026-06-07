@@ -23,7 +23,7 @@ namespace UengSystem.Utility {
 			this.coroutineRunner = coroutineRunner ?? GlobalCoroutineManager.instance;
 		}
 
-		public void Execute() {
+		public void Execute(bool delayInRealTime = false) {
 			if (Executing) return;
 			if (delay == 0) {
 				actionToDelay();
@@ -32,7 +32,7 @@ namespace UengSystem.Utility {
 			
 			executeStartTime = Time.time;
 			
-			process = coroutineRunner.StartCoroutine(ExecuteCoroutine());
+			process = coroutineRunner.StartCoroutine(ExecuteCoroutine(delayInRealTime));
 			Executing = true;
 		}
 
@@ -50,8 +50,8 @@ namespace UengSystem.Utility {
 			return (Time.time - executeStartTime) / delay;
 		}
 
-		private IEnumerator ExecuteCoroutine() {
-			yield return new WaitForSeconds(delay);
+		private IEnumerator ExecuteCoroutine(bool delayInRealTime = false) {
+			yield return (delayInRealTime)? new WaitForSecondsRealtime(delay) : new WaitForSeconds(delay);
 			
 			actionToDelay.Invoke();
 			Executing = false;

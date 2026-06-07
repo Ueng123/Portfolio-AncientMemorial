@@ -2,6 +2,8 @@
 using AncientMemorial.Cameras;
 using AncientMemorial.Map;
 using UengSystem.Logic.Tasks;
+using UengSystem.Managers;
+using UengSystem.Objects;
 using UnityEngine;
 
 namespace AncientMemorial.Tasks {
@@ -25,8 +27,17 @@ namespace AncientMemorial.Tasks {
 					  $" > Align Type X = {TargetAlignTypeX}\n"          +
 					  $" > Align Type Y = {TargetAlignTypeY}\n"          +
 					  $"");
-			
-			MapManager.instance.CamLensOffset = TargetCamLensOffset;
+
+			if (changeLensOffset) {
+				MapManager.instance.CamLensOffset = TargetCamLensOffset;
+			}
+			if (changeCameraAlign) {
+				GameManager.instance.mainCamera.AlignTypeX = TargetAlignTypeX;
+				GameManager.instance.mainCamera.AlignTypeY = TargetAlignTypeY;
+			}
+			if (changeCameraSizing) {
+				GameManager.instance.mainCamera.SizingType = SizingType;
+			}
 		}
 	}
 }

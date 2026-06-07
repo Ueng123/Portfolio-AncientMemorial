@@ -1,6 +1,7 @@
 ﻿using System;
 using UengSystem.Inputs;
 using UengSystem.Logic.Tasks;
+using UengSystem.Objects;
 
 namespace UengSystem.UI.UButtons {
 	[Serializable]
@@ -10,12 +11,12 @@ namespace UengSystem.UI.UButtons {
 		public InputPressType  pressType;
 		public Task            task;
 
-		public override void Initialize(ITaskable self) {
+		public override void Initialize(UObject self) {
 			component?.Initialize();
 		}
 
 		private bool doTask = false;
-		public override void Routine(ITaskable self) {
+		public override void Routine(UObject self) {
 			doTask = InputManager.inputData[actionType].pressType == pressType;
 			
 			if (button) {

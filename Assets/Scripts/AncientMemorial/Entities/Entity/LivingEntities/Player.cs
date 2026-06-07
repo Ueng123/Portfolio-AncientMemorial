@@ -1,12 +1,12 @@
 ﻿using System;
 using AncientMemorial.Interactions;
-using AncientMemorial.Weapons;
-using UengSystem.Events.EventDatas;
+using AncientMemorial.Projectiles;
+using UengSystem.Events;
 using UengSystem.Inputs;
 using UengSystem.Logic.Tasks;
 using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Managers;
-using UengSystem.ObjectPool;
+using UengSystem.ObjectPool; 
 using UengSystem.Utility;
 using UnityEngine;
 using UnityEngineInternal;
@@ -14,7 +14,7 @@ using Event = UengSystem.Events.Event;
 using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
-	public class Player : LivingEntity {
+	public class Player : Entity {
 		
 		[Header("Hand")]
 		public  GameObject     hand;
@@ -64,7 +64,7 @@ namespace AncientMemorial.Entities {
 			
 			float moveDir = InputManager.inputData[InputActionType.Move].valueF;
 			
-			Vector2 moveVec = new (moveDir * entityStat.MoveSpeed, rigidbody2D.linearVelocity.y);
+			Vector2 moveVec = new (moveDir * entityStat.moveSpeed, rigidbody2D.linearVelocity.y);
 			
 			isMoving = (moveDir != 0);
 			
@@ -97,11 +97,14 @@ namespace AncientMemorial.Entities {
 
 			targetInteraction = minInteraction;
 		}
-
+		
 		private void GetInput() {
-			if (InputManager.inputData[InputActionType.Jump].pressType == InputPressType.Down && isGround) {
+			if (InputManager.inputData[InputActionType.Jump].pressType == InputPressType.Down
+				&& (isGround || unGroundedTimer.Check(1.5f))
+				&& jumpCount!=0) {
+				
+				jumpCount-=1;
 				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Jump, 3);
-				Debug.Log("JUMP DETECTED");
 			}
 			
 			if (InputManager.inputData[InputActionType.MouseLClick].pressType == InputPressType.Down)
@@ -140,18 +143,20 @@ namespace AncientMemorial.Entities {
 		private void Jump() {
 			if (stopped) return;
 			
-			rigidbody2D.AddForce(Vector2.up * entityStat.JumpPower, ForceMode2D.Impulse);
+			rigidbody2D.AddForce(Vector2.up * entityStat.jumpPower, ForceMode2D.Impulse);
 		}
 
 		[Header("Attack Tasks")]
 		public Task primaryAttackTask;
 		public Task ChargeAttackTask;
 		
-		private float         primaryAttackCooldownTime => entityStat.AttackSpeed/2.5f;
+		// L CLICK
+		private float         primaryAttackCooldownTime => entityStat.attackSpeed/2.5f;
 		private bool          primaryAttackAble     = true;
 		private DelayedAction PrimaryAttackCoolDown => new (primaryAttackCooldownTime, () => primaryAttackAble = true);
 		private void PrimaryAttack() {
 			if (stopped) return;
+			if (ChargeAttack is { Executing: true } || chargeComplete) return;
 			if (!primaryAttackAble) return;
 
 			primaryAttackAble = false;
@@ -162,8 +167,10 @@ namespace AncientMemorial.Entities {
 			SetHandOffset(20, 5f);
 		}
 		
+		// R CLICK
 		private bool  chargeComplete = false;
-		private float ChargeTime     => 1.25f / ((entityStat.AttackSpeed-1)*0.3f+1);
+		private bool  chargeAble = true;
+		private float ChargeTime     => 1.25f / ((entityStat.attackSpeed-1)*0.3f+1);
 		private float chargeProgress => (ChargeAttack!=null)?(ChargeAttack.Executing ? ChargeAttack.GetProgress() : (chargeComplete ? 1 : 0)):0;
 		private DelayedAction ChargeAttack = null;
 		private void ChargeAttackAction() {
@@ -174,6 +181,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		private void ChargeStart() {
+			if (!chargeAble) return;
 			if (stopped) return;
 			chargeComplete = false;
 			
@@ -182,9 +190,17 @@ namespace AncientMemorial.Entities {
 		}
 		
 		private void ChargeEnd() {
+			if (!chargeAble) return;
 			if (stopped) return;
-			if (chargeProgress <= 0.2f) return;
-			
+			if (chargeProgress <= 0.2f) {
+				
+				ChargeAttack.Cancel();
+				chargeComplete = false;
+				new DelayedAction(0.2f, () => chargeAble = true).Execute();
+				
+				return;
+			}
+
 			SetHandOffset(30*chargeProgress, 5f);
 
 			GameManager.UValueFloatVariables["chargeProgress"] = new UPureNumber {number = chargeProgress};
@@ -192,10 +208,9 @@ namespace AncientMemorial.Entities {
 			
 			ChargeAttack.Cancel();
 			chargeComplete = false;
-		}
-		
-		private void Interact() {
-			// 일단만들긴했는데뭔가여기서할게없달까약간이런게있어야겠다생각은했는데막상만들고나니까이게하는짓이없음
+			
+			chargeAble     = false;
+			new DelayedAction(0.2f, () => chargeAble = true).Execute();
 		}
 
 		private void SetArm() {
@@ -226,7 +241,7 @@ namespace AncientMemorial.Entities {
 			animator.SetBool(CROSSBOW, holdingCrossbow);
 			animator.SetBool(MOVING,   isMoving);
 			animator.SetBool(FALLING,  !isGround);
-			animator.speed = entityStat.MoveSpeed/3;
+			animator.speed = entityStat.moveSpeed/3;
 			
 			spriteRenderer.flipX = InputManager.inputData[InputActionType.MousePosition].valueV.x < transform.position.x;
 			handSprite.flipY = handWSprite.flipY = InputManager.inputData[InputActionType.MousePosition].valueV.x < transform.position.x;
@@ -268,13 +283,25 @@ namespace AncientMemorial.Entities {
 			handSprite = hand.GetComponent<SpriteRenderer>();
 			handWSprite = handW.GetComponent<SpriteRenderer>();
 			
-			team       = Team.Player;
+			team = Team.Player;
 			
 			base.Initialize();
 		}
 
 		protected override void EarlyRoutine() {
 			GetInput();
+		}
+		
+		public override void OnHit(Entity attacker, float damage, Vector2? pushDir) {
+			entityStat.hp -= damage;
+		}
+		
+		public override void OnHit(Projectile attacker, float damage, Vector2? pushDir) {
+			entityStat.hp -= damage;
+		}
+		
+		public override void OnHit(float damage, Vector2? pushDir) {
+			entityStat.hp -= damage;
 		}
 
 		protected override void Routine() {
@@ -287,6 +314,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		public override void OnEvent(Event e) {
+			base.OnEvent(e);
 			switch (e.type) {
 				case UengSystem.Events.EventType.Entity_Behaviour_Jump:
 					AddProcessToFixedUpdate(Jump);
@@ -303,13 +331,11 @@ namespace AncientMemorial.Entities {
 				case UengSystem.Events.EventType.Entity_Behaviour_ChargeEnd:
 					ChargeEnd();
 					break;
-				
-				case UengSystem.Events.EventType.Interact_Start:
-					Interact();
-					break;
 			}
 		}
-		
-		protected override void Death() { }
+
+		protected override void Death() {
+			// 연출 하고 게임 오버 넣기
+		}
 	}
 }

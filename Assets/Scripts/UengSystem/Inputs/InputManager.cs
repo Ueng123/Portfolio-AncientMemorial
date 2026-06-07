@@ -49,16 +49,21 @@ namespace UengSystem.Inputs {
 				
 				switch (action.inputType) {
 					case InputType.Button:
-						bool valueB = Mathf.Approximately(action.inputAction.ReadValue<float>(), 1);
+						bool Now = Mathf.Approximately(action.inputAction.ReadValue<float>(), 1);
+						bool Pre = currInput.valueB;
+						
+						// 시점     | 현프레임 | 전프레임 | InputPressType
+						// 눌림여부  |   O     |   O    |  Hold
+						// 눌림여부  |   O     |   X    |  Down
+						// 눌림여부  |   X     |   O    |  Up
+						// 눌림여부  |   X     |   X    |  None
 
-						currInput.pressType = valueB ? 
-																  (currInput.valueB?
-																	   InputPressType.Hold:
-																	   InputPressType.Down): 
-																  (currInput.valueB? 
-																	   InputPressType.Up:
-																	   InputPressType.None);
-						currInput.valueB = valueB;
+						if (Now  && Pre)  currInput.pressType = InputPressType.Hold;
+						if (Now  && !Pre) currInput.pressType = InputPressType.Down;
+						if (!Now && Pre)  currInput.pressType = InputPressType.Up;
+						if (!Now && !Pre) currInput.pressType = InputPressType.None;
+						
+						currInput.valueB = Now;
 						
 						//Debug.Log($"{action.actionType} ({action.inputType}) = {valueB}");
 						

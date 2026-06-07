@@ -1,6 +1,7 @@
 ﻿using System;
 using AncientMemorial.Waves;
 using UengSystem.Logic.Tasks;
+using UengSystem.Objects;
 using UnityEngine;
 
 namespace AncientMemorial.Tasks {

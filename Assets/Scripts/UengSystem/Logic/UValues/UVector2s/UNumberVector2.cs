@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace UengSystem.Logic.UValues.UVector2s {
+	[Serializable]
 	public class UNumberVector2 : UValue<Vector2> {
 		public override bool getIsDynamic {
 			get {

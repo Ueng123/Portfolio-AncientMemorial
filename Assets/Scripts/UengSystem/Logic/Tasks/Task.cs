@@ -1,4 +1,6 @@
 ﻿using System;
+using UengSystem.Managers;
+using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
 
@@ -10,9 +12,10 @@ namespace UengSystem.Logic.Tasks {
 		private DelayedAction[] delayedActions;
 		private Coroutine       runningTask;
 		
-		public void Execute(ITaskable self) {
-			delayedActions = new DelayedAction[tasks.Length];
-
+		public void Execute(ITaskable self, MonoBehaviour coroutineRunner = null) {
+			delayedActions  =   new DelayedAction[tasks.Length];
+			coroutineRunner ??= GlobalCoroutineManager.instance;
+			
 			int i = 0;
 			foreach (TaskListItem task in tasks) {
 				DelayedAction action = new DelayedAction(
@@ -21,8 +24,8 @@ namespace UengSystem.Logic.Tasks {
 						foreach (TaskComponent t in task.tasks) {
 							t.Execute(self);
 						}
-					}
-				);
+					},
+					coroutineRunner:coroutineRunner);
 
 				action.Execute();
 				

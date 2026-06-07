@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using AncientMemorial.Entities;
 using TMPro;
-using UengSystem.Events.EventDatas;
+using UengSystem.Events;
 using UengSystem.Logic.Tasks;
 using UengSystem.Logic.UValues;
 using UengSystem.Objects;
@@ -57,12 +57,16 @@ namespace AncientMemorial.Interactions {
 			OnInteract();
 		}
 
-		protected virtual void OnTarget() {
+		protected abstract void OnTarget();
+		protected virtual void Targetted() {
 			onTarget.Execute(this);
+			OnTarget();
 		}
 
-		protected virtual void OnUnTarget() {
+		protected abstract void OnUnTarget();
+		protected virtual void Untargetted() {
 			onUnTarget.Execute(this);
+			OnUnTarget();
 		}
 		
 		protected virtual bool CheckInteractable() {
@@ -120,14 +124,14 @@ namespace AncientMemorial.Interactions {
 				}
 				case UengSystem.Events.EventType.Interact_Target: {
 					if (((EventValueData<Interaction>)e.data).value == this) {
-						OnTarget();
+						Targetted();
 					}
 
 					break;
 				}
 				case UengSystem.Events.EventType.Interact_Untarget: {
 					if (((EventValueData<Interaction>)e.data).value == this) {
-						OnUnTarget();
+						Untargetted();
 						interactAction.Cancel();
 					}
 

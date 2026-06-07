@@ -1,5 +1,6 @@
 ﻿using System;
 using UengSystem.Logic.UValues;
+using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {

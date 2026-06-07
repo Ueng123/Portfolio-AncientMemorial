@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UengSystem.Events.EventDatas;
+using UengSystem.Events;
 
 namespace UengSystem.Events {
 	public interface IEventAgent {

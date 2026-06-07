@@ -49,6 +49,8 @@ namespace UengSystem.UI {
 		}
 
 		public GameObject Open(string key, UCanvas canvas) {
+			Debug.Log("[FUCK] UUI OPENNING");
+			
 			GameObject      obj    = pools[key].Get();
 			UUI script = obj.GetComponent<UUI>();
 
@@ -65,9 +67,8 @@ namespace UengSystem.UI {
 			script.isReleased = false;
 			return obj;
 		}
+		
 		public void Close(GameObject obj, bool finalRelease = false) {
-			if (!finalRelease) pools[obj.name].Release(obj);
-
 			UUI script = obj.GetComponent<UUI>();
 
 			float closeTime = prefabData.FirstOrDefault((data) => data.prefab.name == obj.name)!.closeTime;
@@ -75,12 +76,14 @@ namespace UengSystem.UI {
 			script.Release(finalRelease?-1:closeTime);
 
 			if (!finalRelease) return;
-
+			Debug.Log("[FUCK] UUI CLOSED");
+			
 			script.OnClose();
 			obj.SetActive(false);
 			obj.transform.SetParent(roots[obj.name]);
 			
 			script.isReleased = true;
+			pools[obj.name].Release(obj);
 		}
 
 		public void AddUUIQueue(string key, UUIQueueItem queueItem) {

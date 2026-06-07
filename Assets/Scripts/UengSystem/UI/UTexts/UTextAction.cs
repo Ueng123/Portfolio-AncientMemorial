@@ -1,6 +1,7 @@
 ﻿using System;
 using UengSystem.Logic.Tasks;
 using UengSystem.Logic.UValues;
+using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
 
@@ -20,12 +21,12 @@ namespace UengSystem.UI.UTexts {
 			act.Execute();
 		}
 
-		public override void Initialize(ITaskable self) {
+		public override void Initialize(UObject self) {
 			component.Initialize();
 			((UText)component).SetValue(text.value);
 		}
 
-		public override void Routine(ITaskable self) {
+		public override void Routine(UObject self) {
 			((UText)component).SetValue(text.value);
 		}
 	}

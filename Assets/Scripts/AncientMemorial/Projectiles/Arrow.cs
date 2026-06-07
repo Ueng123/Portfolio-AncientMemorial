@@ -1,5 +1,6 @@
 ﻿using AncientMemorial.Entities;
-using UengSystem.Events.EventDatas;
+using AncientMemorial.Objects;
+using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.Utility;
@@ -16,15 +17,17 @@ namespace AncientMemorial.Projectiles {
 			trailRenderer = GetComponent<TrailRenderer>();
 		}
 
-		private void Break() {
+		private void Break(Transform parent = null, bool isEntity = false) {
 			GameObject obj  = UObjectPool.instance.Get("ArrowDebris", transform.position);
-			obj.transform.rotation = transform.rotation;
+			if (parent) {
+				if (isEntity) parent.GetComponent<Entity>().debrisAttached.Add(obj.GetComponent<Debris>());
+				obj.transform.SetParent(parent, true);
+			}
 			
-			UObjectPool.instance.Release(gameObject);
-		}
-
-		private void Hit() {
-			// GET() HIT EFFECT
+			new DelayedAction(10, () => UObjectPool.instance.Release(obj), () => { }, obj.GetComponent<UObject>())
+				.Execute();
+			
+			obj.transform.rotation = transform.rotation;
 			UObjectPool.instance.Release(gameObject);
 		}
 
@@ -47,12 +50,20 @@ namespace AncientMemorial.Projectiles {
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner && owner.team == entity.team) return;
 			
-			SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, 10, new EntityHitData(owner, entity, this));
+			SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, 10, new EntityHitData(
+						  null,
+						  this,
+						  entity,
+						  damage*owner.entityStat.attackDamage,
+						  new Vector2(entity.transform.position.x - transform.position.x, 0).normalized
+					  ));
+			
+			Break(entity.transform, true);
 		}
 		
 		protected override void OnCollideObject(UObject obj) {
 			if (obj.GetComponent<ProjectileBrokeable>()) {
-				Break();
+				Break(obj.transform);
 			}
 		}
 	}

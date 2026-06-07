@@ -27,7 +27,7 @@ namespace AncientMemorial.Waves {
 			timeElapsed = 0;
 			
 			currentWave = waveQueue.Dequeue();
-			currentWave.waveTasks.Execute(this);
+			currentWave.waveTasks.Execute(GlobalCoroutineManager.instance);
 		}
 		
 		public void GameEnd() {

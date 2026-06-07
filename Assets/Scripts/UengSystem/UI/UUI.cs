@@ -111,6 +111,7 @@ namespace UengSystem.UI {
 					break;
 				default:
 					Instances.Remove(this);
+					gameObject.SetActive(true);
 					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
 					
 					OnRelease();

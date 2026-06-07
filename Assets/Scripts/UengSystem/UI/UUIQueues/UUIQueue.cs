@@ -28,8 +28,8 @@ namespace UengSystem.UI.UUIQueues {
 			new DelayedAction(data.openTime + 0.05f,
 							  new WaitAction(
 								  () => !UObject.UObjectExists(key),
-								  new DelayedAction(data.closeTime + item.marginFront + 0.01f,
-													() => { canDoNext = true; }).Execute,
+								  () => new DelayedAction(data.closeTime + item.marginFront + 0.01f,
+													() => { canDoNext = true; }).Execute(),
 								  () => {
 									  if (uui.isReleased) return;
 									  UUIObjectPool.instance.Close(ui);

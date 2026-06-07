@@ -71,8 +71,8 @@ namespace UengSystem.ObjectPool {
 			
 			obj.transform.position = position;
 			
-			script.Get(time);
 			obj.SetActive(true);
+			script.Get(time);
 			
 			script.isReleased = false;
 			return obj;
@@ -82,16 +82,13 @@ namespace UengSystem.ObjectPool {
 			IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
 
 			script.Release(time);
-			
-
 			if (time > 0) return;
-
+			
+			script.isReleased = true;
 			obj.SetActive(false);
 			
 			obj.transform.SetParent(roots[obj.name]);
 			pools[obj.name].Release(obj);
-			
-			script.isReleased = true;
 		}
 		
 		public override void ManagerUpdate()      { }
