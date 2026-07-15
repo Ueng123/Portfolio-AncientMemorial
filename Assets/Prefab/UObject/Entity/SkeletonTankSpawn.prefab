@@ -1,0 +1,351 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4788814849041825566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5941759500623026564}
+  - component: {fileID: 2242984205342149301}
+  m_Layer: 0
+  m_Name: Model
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5941759500623026564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4788814849041825566}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8389630711020916827}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2242984205342149301
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4788814849041825566}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -1887030001, guid: a9c39de998e662949ad1c229db7fd571, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &8858349818350000186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8389630711020916827}
+  - component: {fileID: 8395103775922144453}
+  - component: {fileID: 3112584255930846486}
+  m_Layer: 0
+  m_Name: SkeletonTankSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8389630711020916827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858349818350000186}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.416, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5941759500623026564}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &8395103775922144453
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858349818350000186}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bfd4e8cc273ab4248ac086dbeb9399a4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3112584255930846486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858349818350000186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd49957cbe6d0d4f9c21e9dc231e1f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteSpawnSprite: {fileID: -1887030001, guid: a9c39de998e662949ad1c229db7fd571, type: 3}
+  colorSpawnSprite: {fileID: -1887030001, guid: a9c39de998e662949ad1c229db7fd571, type: 3}
+  _gettable: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GetTask:
+    tasks:
+    - time: 4
+      tasks:
+      - rid: 8722662590740168846
+    - time: 4
+      tasks:
+      - rid: 8722662590740168846
+    - time: 8
+      tasks:
+      - rid: 8722662590740168846
+    - time: 8
+      tasks:
+      - rid: 8722662590740168846
+    - time: 12
+      tasks:
+      - rid: 8722662442491445355
+      - rid: 8722662442491445410
+  ReleaseTask:
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 8722662442491445356
+      - rid: 8722662442491445363
+    - time: 0
+      tasks:
+      - rid: 8722662442491445363
+    - time: 0
+      tasks:
+      - rid: 8722662442491445363
+    - time: 0
+      tasks:
+      - rid: 8722662442491445363
+    - time: 0
+      tasks:
+      - rid: 8722662442491445363
+    - time: 0
+      tasks:
+      - rid: 8722662442491445363
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 8722662442491445355
+      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        releaseTime: 0
+        releaseThis: 1
+        TargetObject:
+          rid: -2
+    - rid: 8722662442491445356
+      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 8283520507714977903, guid: d035da750255c1b489c7f46ec6210e58, type: 3}
+        position:
+          rid: 8722662442491445358
+        spawnTime:
+          rid: 8722662442491445360
+        ID:
+          rid: 8722662442491445361
+        Category:
+          rid: 8722662442491445362
+    - rid: 8722662442491445358
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 8722662442491445359
+    - rid: 8722662442491445359
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 3112584255930846486}
+    - rid: 8722662442491445360
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 0.01
+    - rid: 8722662442491445361
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: 
+    - rid: 8722662442491445362
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: Entity
+    - rid: 8722662442491445363
+      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
+        position:
+          rid: 8722662442491445365
+        spawnTime:
+          rid: 8722662442491445395
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 8722662442491445365
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 8722662442491445366
+    - rid: 8722662442491445366
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 3112584255930846486}
+    - rid: 8722662442491445395
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 0
+    - rid: 8722662442491445410
+      type: {class: CameraShakeLerp, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        intensity:
+          rid: 8722662442491445411
+        speed:
+          rid: 8722662442491445412
+    - rid: 8722662442491445411
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 2
+    - rid: 8722662442491445412
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 5
+    - rid: 8722662590740168846
+      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
+        position:
+          rid: 8722662590740168847
+        spawnTime:
+          rid: 8722662590740168848
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 8722662590740168847
+      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {x: 0, y: 0}
+        isValueCached: 0
+        targetObject:
+          rid: 8722662590740168849
+    - rid: 8722662590740168848
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 0
+        isValueCached: 0
+        number: 0
+    - rid: 8722662590740168849
+      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: {fileID: 0}
+        isValueCached: 0
+        obj: {fileID: 3112584255930846486}

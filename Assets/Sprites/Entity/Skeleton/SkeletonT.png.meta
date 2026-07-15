@@ -1,0 +1,435 @@
+fileFormatVersion: 2
+guid: 240e0ee2da17df749802711e142f5da1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6380232630893654169
+    second: SkeletonB_0
+  - first:
+      213: 7929186291901280909
+    second: SkeletonB_1
+  - first:
+      213: -1995340536043823812
+    second: SkeletonB_2
+  - first:
+      213: 3019577073770240727
+    second: SkeletonB_3
+  - first:
+      213: 1166132331807548679
+    second: SkeletonB_4
+  - first:
+      213: -3167612040974926903
+    second: SkeletonB_5
+  - first:
+      213: -2727663531916664643
+    second: SkeletonB_6
+  - first:
+      213: -1134538335006493935
+    second: SkeletonB_7
+  - first:
+      213: -8593994842754256587
+    second: SkeletonB_8
+  - first:
+      213: -3187521081817805159
+    second: SkeletonB_9
+  - first:
+      213: 8785479436110988910
+    second: SkeletonB_10
+  - first:
+      213: -845990588213087953
+    second: SkeletonB_11
+  - first:
+      213: 4445202231835134498
+    second: SkeletonB_12
+  - first:
+      213: -7761834323732410954
+    second: SkeletonB_13
+  - first:
+      213: 8769119205847115055
+    second: SkeletonB_14
+  - first:
+      213: -3385691158167805430
+    second: SkeletonB_15
+  - first:
+      213: 7194466635942061414
+    second: SkeletonB_16
+  - first:
+      213: -2358467248107135115
+    second: SkeletonB_17
+  - first:
+      213: 6223369264302497707
+    second: SkeletonB_18
+  - first:
+      213: 6853865254367000515
+    second: SkeletonB_19
+  - first:
+      213: -1094470291809367662
+    second: SkeletonB_20
+  - first:
+      213: 3588432583050075730
+    second: SkeletonB_21
+  - first:
+      213: -7406339304674792581
+    second: SkeletonB_22
+  - first:
+      213: -8893714208563602887
+    second: SkeletonB_23
+  - first:
+      213: 2653058161205884191
+    second: SkeletonB_24
+  - first:
+      213: -6732954214827310754
+    second: SkeletonB_25
+  - first:
+      213: 1139520754945458620
+    second: SkeletonB_26
+  - first:
+      213: -2713081030504223428
+    second: SkeletonB_27
+  - first:
+      213: -7917302850244629964
+    second: SkeletonB_28
+  - first:
+      213: -6118591494455600961
+    second: SkeletonB_29
+  - first:
+      213: -4107218299700517829
+    second: SkeletonB_30
+  - first:
+      213: 7057965432364467790
+    second: SkeletonB_31
+  - first:
+      213: -6256409340978582599
+    second: SkeletonB_32
+  - first:
+      213: -3050475840489461085
+    second: SkeletonB_33
+  - first:
+      213: -456410792670591767
+    second: SkeletonB_34
+  - first:
+      213: -8050695557627178455
+    second: SkeletonB_35
+  - first:
+      213: 6666291338506887365
+    second: SkeletonB_36
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 12
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SkeletonB_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76f4a33e93cd477a0800000000000000
+      internalID: -6380232630893654169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonB_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d823caefbe02a0e60800000000000000
+      internalID: 7929186291901280909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonB_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3d9b2faa502f44e0800000000000000
+      internalID: -1995340536043823812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonB_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7da1df5a951b7e920800000000000000
+      internalID: 3019577073770240727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonB_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e36c88caf88064c44bdd121b28f2de9e
+      internalID: 1166132331807548679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonB_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4121204c898f25343965bf6031ec1587
+      internalID: -3167612040974926903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonB_6
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fcf4f31e02106a4f90553b377ca1332
+      internalID: -2727663531916664643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonB_7
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04a70540d817cf441bb21b302a533f44
+      internalID: -1134538335006493935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonB_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4daae0c0eaf18d045872a98871809dfe
+      internalID: 1465677868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: b03517f6c7073ee43a588be557fe45b5
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SkeletonB_0: -6380232630893654169
+      SkeletonB_1: 7929186291901280909
+      SkeletonB_2: -1995340536043823812
+      SkeletonB_3: 3019577073770240727
+      SkeletonB_4: 1166132331807548679
+      SkeletonB_5: -3167612040974926903
+      SkeletonB_6: -2727663531916664643
+      SkeletonB_7: -1134538335006493935
+      SkeletonB_8: 1465677868
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
