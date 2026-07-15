@@ -104,6 +104,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -155,7 +156,15 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GetTask:
+    tasks: []
+  ReleaseTask:
+    tasks: []
   parent: {fileID: 7315208830347232079}
+  text: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4147965585229853653
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +256,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 21e8cf48e96d417499fdce5bdc8ebdd8, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -275,6 +284,10 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GetTask:
+    tasks: []
+  ReleaseTask:
+    tasks: []
   canvas: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
@@ -285,9 +298,12 @@ MonoBehaviour:
   - key: TopTitle
     action:
       rid: 6576058688792690817
-  - key: Close2
+  - key: Close1
     action:
       rid: 2446785154401960041
+  - key: Close2
+    action:
+      rid: 8985605036668878962
   references:
     version: 2
     RefIds:
@@ -327,20 +343,13 @@ MonoBehaviour:
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
         component: {fileID: 0}
-        button: {fileID: 0}
-        actionType: 8
+        actionType: 9
         pressType: 0
-        task:
+        taskOnClicked:
           tasks:
           - time: 0
             tasks:
-            - rid: 2446785154401960042
-    - rid: 2446785154401960042
-      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        closeThis: 1
-        TargetUUI:
-          rid: -2
+            - rid: 8985605036668878961
     - rid: 6576058688792690816
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
@@ -353,6 +362,29 @@ MonoBehaviour:
         component: {fileID: 4626480128364574658}
         text:
           rid: 2446785154401960020
+    - rid: 8985605036668878961
+      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 0
+        TargetUUI:
+          rid: -2
+    - rid: 8985605036668878962
+      type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
+      data:
+        component: {fileID: 0}
+        actionType: 8
+        pressType: 0
+        taskOnClicked:
+          tasks:
+          - time: 0
+            tasks:
+            - rid: 8985605036668878963
+    - rid: 8985605036668878963
+      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 0
+        TargetUUI:
+          rid: -2
 --- !u!1 &6817783773246402970
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,6 +581,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -614,4 +647,12 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GetTask:
+    tasks: []
+  ReleaseTask:
+    tasks: []
   parent: {fileID: 7315208830347232079}
+  text: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
