@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UengSystem.Managers;
+using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.Utility {
@@ -10,30 +11,35 @@ namespace UengSystem.Utility {
 		public  float         delay;
 		private Action        actionToDelay;
 		private Action        actionOnCancel;
-		private MonoBehaviour coroutineRunner;
-
+		private UObject       coroutineRunner;
+		private bool          isUObjectDelayed;
+		
 		public bool Executing;
 
 		private Coroutine process;
 
-		public DelayedAction(float delay, Action actionToDelay, Action actionOnCancel = null, MonoBehaviour coroutineRunner = null) {
+		public DelayedAction(float delay, Action actionToDelay, Action actionOnCancel = null, UObject coroutineRunner = null) {
 			this.delay = delay;
 			this.actionToDelay = actionToDelay;
 			this.actionOnCancel = actionOnCancel;
-			this.coroutineRunner = coroutineRunner ?? GlobalCoroutineManager.instance;
+			this.coroutineRunner = coroutineRunner ?? GlobalCoroutineRunner.instance;
 		}
 
-		public void Execute(bool delayInRealTime = false) {
-			if (Executing) return;
+		public DelayedAction Execute(bool delayInRealTime = false) {
+			if (Executing) {
+				return this;
+			}
 			if (delay == 0) {
 				actionToDelay();
-				return;
+				return this;
 			}
 			
 			executeStartTime = Time.time;
 			
 			process = coroutineRunner.StartCoroutine(ExecuteCoroutine(delayInRealTime));
 			Executing = true;
+			
+			return this;
 		}
 
 		public void Cancel() {

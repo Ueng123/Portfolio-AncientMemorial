@@ -24,10 +24,10 @@ namespace AncientMemorial.Interactions {
 		public DelayedAction interactAction;
 
 		[Header("Interaction")]
-		public bool    interactable;
-		public float          timeToInteract;
-		public float          cooldownToInteract;
-		public UCanvas        canvas;
+		public bool     interactable;
+		public  float   timeToInteract;
+		public  float   cooldownToInteract;
+		public  UCanvas canvas;
 		
 		public Task onInteract;
 		public Task onCancel;
@@ -85,14 +85,7 @@ namespace AncientMemorial.Interactions {
 		// ETC. Override //
 
 		public override void OnFirstGet() {
-			interactAction =
-				new DelayedAction(timeToInteract,
-								  () => {
-									  Interact();
-									  SendEvent(UengSystem.Events.EventType.Interact_Stop, 4);
-								  },
-								  Cancel);
-			
+			interactAction = new DelayedAction(timeToInteract, () => { Interact(); SendEvent(UengSystem.Events.EventType.Interact_Stop, 4); }, Cancel, this);
 			base.OnFirstGet();
 		}
 		
@@ -102,7 +95,7 @@ namespace AncientMemorial.Interactions {
 			if (CheckInteractable()) InteractableInteractions.Add(this);
 		}
 
-		protected override void Routine() {  }
+		protected override void Routine() { }
 
 		public override void OnEvent(Events_Event e) {
 			switch (e.type) {

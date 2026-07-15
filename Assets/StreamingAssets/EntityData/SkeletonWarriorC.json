@@ -1,0 +1,18 @@
+﻿{
+  "Name" : "기억속 스켈레톤",
+  "HP" : 6,
+  "MoveSpeed" : 1,
+  "JumpPower" : 2,
+  "AttackCooldown" : 7,
+  "AttackSpeed" : 1,
+  "AttackDamage" : 2,
+  "InvincibleTime" : 1,
+  "GroundBoxOffsetX" : 0,
+  "GroundBoxOffsetY" : -0.5,
+  "GroundBoxSizeX" : 0.36,
+  "GroundBoxSizeY" : 0.025,
+  "AggroThreshold" : 1,
+  "AggroCoefficient" : {
+    "Player" : 6
+  }
+}

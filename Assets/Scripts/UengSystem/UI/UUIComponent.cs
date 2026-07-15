@@ -6,6 +6,6 @@ namespace UengSystem.UI {
 	[Serializable]
 	public abstract class UUIComponent : BasicUObject {
 		[Header("UI Component")]
-		public UUI    parent;
+		public UUI parent;
 	}
 }

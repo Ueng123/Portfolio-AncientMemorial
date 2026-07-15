@@ -19,18 +19,24 @@ namespace UengSystem.Logic.Tasks {
 		[SerializeReference] [SubclassSelector]
 		public UValue<Vector2> force;
 		
+		public bool addTorque;
+		[SerializeReference] [SubclassSelector]
+		public UValue<float> torque;
+		
 		public override void Execute(ITaskable self) {
 			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
 			Debug.Log($" >>> Given Data\n"                                        +
 					  $" > obj = {obj.value.name}\n"                              +
 					  (changeVelocity ? $" > velocity = {velocity.value}\n" : "") + 
 					  (addForce       ? $" > force    = {force.value}\n"    : "") +
+					  (addTorque      ? $" > torque   = {torque.value}\n"   : "") +
 					  $"");
 			
 			if (!obj.value.rigidbody2D && throwErrorIfNoRigidbody) throw new NullReferenceException("No rigidbody found");
 			
 			if (changeVelocity) obj.value.rigidbody2D.linearVelocity = velocity.value;
-			if (addForce) obj.value.rigidbody2D.AddForce(force.value);
+			if (addForce) obj.value.rigidbody2D.AddForce(force.value, ForceMode2D.Impulse);
+			if (addTorque) obj.value.rigidbody2D.AddTorque(torque.value);
 		}
 	}
 }

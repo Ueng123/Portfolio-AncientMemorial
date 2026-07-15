@@ -1,8 +1,8 @@
-﻿using System;
+﻿using UengSystem.UI.USliders;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UengSystem.UI.USliders {
+namespace AncientMemorial.UI {
 	public class EntityHealth : USlider {
 		public Slider subSlider;
 		public Image  background;
@@ -19,7 +19,7 @@ namespace UengSystem.UI.USliders {
 
 		public override void SetValue(float value) {
 			slider.value    = value;
-			subSlider.value = Mathf.Lerp(subSlider.value, value, (value==0?25f:5f)*Time.deltaTime);
+			subSlider.value = Mathf.Lerp(subSlider.value, value, (value==0?25f:5f)*DeltaTime);
 		}
 	}
 }

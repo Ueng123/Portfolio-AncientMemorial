@@ -21,8 +21,8 @@ namespace UengSystem.Objects {
 			script.OnFirstGet();
 			script.OnGet();
 			script.Initialize();
-			script.ID = ID;
-			script.Category = Category;
+			if (ID       != "") script.ID       = ID;
+			if (Category != "") script.Category = Category;
 		}
 	}
 }

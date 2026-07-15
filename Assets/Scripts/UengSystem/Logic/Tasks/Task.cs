@@ -12,13 +12,15 @@ namespace UengSystem.Logic.Tasks {
 		private DelayedAction[] delayedActions;
 		private Coroutine       runningTask;
 		
-		public void Execute(ITaskable self, MonoBehaviour coroutineRunner = null) {
+		public void Execute(ITaskable self, UObject coroutineRunner = null) {
+			if (tasks.Length == 0) return;
+			
 			delayedActions  =   new DelayedAction[tasks.Length];
-			coroutineRunner ??= GlobalCoroutineManager.instance;
+			coroutineRunner ??= GlobalCoroutineRunner.instance;
 			
 			int i = 0;
 			foreach (TaskListItem task in tasks) {
-				DelayedAction action = new DelayedAction(
+				DelayedAction action = new (
 					task.time,
 					() => {
 						foreach (TaskComponent t in task.tasks) {

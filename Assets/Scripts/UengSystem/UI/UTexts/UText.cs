@@ -1,10 +1,12 @@
 ﻿using System;
 using TMPro;
+using UnityEngine;
 
 namespace UengSystem.UI.UTexts {
 	[Serializable]
 	public class UText : UUIComponent {
-		private TMP_Text text;
+		[HideInInspector]
+		public TMP_Text text;
 
 		public override void Initialize() {
 			text = GetComponent<TMP_Text>();

@@ -177,7 +177,7 @@ MonoBehaviour:
         dynamicType: 0
         valueCache: 
         isValueCached: 0
-        Text: "\uC6B0\uC5E5\uC740\uC2E0\uC774\uBA70\uB204\uAD6C\uB3C4\uC774\uC5D0\uB300\uD55C\uC774\uC758\uC81C\uAE30\uB97C\uD560\uC218\uC5C6\uB2E4"
+        Text: 
     - rid: 8722662273157431416
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
@@ -461,7 +461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAC1C\uD654 E.G.O.::\uC0AD\uC74C [\uB9C8\uBA5C]"
+  m_text: "\u25A0\u25A1\u25A0\u25A1 \u25A0\u25A1"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f29fa83ee46a96a4b810b91002a82fc9, type: 2}
   m_sharedMaterial: {fileID: 4143440930881732704, guid: f29fa83ee46a96a4b810b91002a82fc9, type: 2}
@@ -488,8 +488,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 48
+  m_fontSizeBase: 48
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -569,6 +569,7 @@ MonoBehaviour:
   ReleaseTask:
     tasks: []
   parent: {fileID: 7811576881407057780}
+  text: {fileID: 0}
   references:
     version: 2
     RefIds: []

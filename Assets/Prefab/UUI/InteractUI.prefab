@@ -111,6 +111,10 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GetTask:
+    tasks: []
+  ReleaseTask:
+    tasks: []
   canvas: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
@@ -148,8 +152,7 @@ MonoBehaviour:
     - rid: 6576058688792690781
       type: {class: UNumberColor, ns: UengSystem.Logic.UValues.UColors, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: {r: 0, g: 0, b: 0, a: 0}
         isValueCached: 0
         r:
@@ -163,32 +166,28 @@ MonoBehaviour:
     - rid: 6576058688792690826
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: 1
     - rid: 6576058688792690827
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: 1
     - rid: 6576058688792690828
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: 1
     - rid: 6576058688792690831
       type: {class: UBasicCubicBezierValue, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         startSlope:
@@ -200,24 +199,21 @@ MonoBehaviour:
     - rid: 6576058688792690832
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: 0.2
     - rid: 6576058688792690833
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: 0.2
     - rid: 6576058688792690834
       type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         interactObject:
@@ -225,8 +221,7 @@ MonoBehaviour:
     - rid: 6576058688792690839
       type: {class: UObjectFromVariable, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
       data:
-        useDynamicB: 1
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: {fileID: 0}
         isValueCached: 0
         varID:
@@ -234,16 +229,14 @@ MonoBehaviour:
     - rid: 6576058688792690841
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 
         isValueCached: 0
         Text: InteractTargetObject
     - rid: 6576058688792690842
       type: {class: UBasicCubicBezierValue, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         startSlope:
@@ -255,24 +248,21 @@ MonoBehaviour:
     - rid: 6576058688792690843
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: 0.1
     - rid: 6576058688792690844
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: 0.1
     - rid: 6576058688792690845
       type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 0
         isValueCached: 0
         interactObject:
@@ -280,8 +270,7 @@ MonoBehaviour:
     - rid: 6576058688792690846
       type: {class: UObjectFromVariable, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: {fileID: 0}
         isValueCached: 0
         varID:
@@ -289,8 +278,7 @@ MonoBehaviour:
     - rid: 6576058688792690856
       type: {class: UStringFromVariable, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
-        useDynamicB: 1
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 
         isValueCached: 0
         varID:
@@ -298,16 +286,14 @@ MonoBehaviour:
     - rid: 6576058688792690859
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 
         isValueCached: 0
         Text: InteractTargetObject
     - rid: 6576058688792690860
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
-        useDynamicB: 0
-        isDynamicB: 0
+        dynamicType: 0
         valueCache: 
         isValueCached: 0
         Text: InteractUIText
@@ -323,7 +309,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 6fb01124a0dd5ec49846f4585444fdd7, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -552,7 +538,14 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GetTask:
+    tasks: []
+  ReleaseTask:
+    tasks: []
   parent: {fileID: 2071304622024838995}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6183591649005410717
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +615,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '-'
+  m_text: "\uC751\uC560\uB294 \uC9C4\uB9AC\uB2E4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f29fa83ee46a96a4b810b91002a82fc9, type: 2}
   m_sharedMaterial: {fileID: 4143440930881732704, guid: f29fa83ee46a96a4b810b91002a82fc9, type: 2}
@@ -725,7 +718,15 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GetTask:
+    tasks: []
+  ReleaseTask:
+    tasks: []
   parent: {fileID: 2071304622024838995}
+  text: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &7368629668651625422
 GameObject:
   m_ObjectHideFlags: 0

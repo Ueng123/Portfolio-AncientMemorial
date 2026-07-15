@@ -1,13 +1,16 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace UengSystem.UI.UButtons {
 	[Serializable]
 	public class UButton : UUIComponent {
-		private Button button;
-		public  bool   clicked;
+		[HideInInspector]
+		public Button button;
+		[HideInInspector]
+		public bool   clicked;
 		
-		public void OnButtonClicked() {
+		public virtual void OnButtonClicked() {
 			clicked = true;
 		}
 

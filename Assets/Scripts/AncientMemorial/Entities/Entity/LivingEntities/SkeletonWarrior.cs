@@ -1,13 +1,22 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
+using AncientMemorial.Cameras;
 using AncientMemorial.Map;
+using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
+using JetBrains.Annotations;
 using UengSystem.Events;
+using UengSystem.Logic.UValues.UFloats;
+using UengSystem.Logic.UValues.UStrings;
+using UengSystem.Managers;
 using UengSystem.ObjectPool;
+using UengSystem.Objects;
+using UengSystem.UI;
+using UengSystem.UI.UTexts;
 using UengSystem.Utility;
-using Unity.Mathematics.Geometry;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
+using Vector2 = UnityEngine.Vector2;
 
 namespace AncientMemorial.Entities {
 	public class SkeletonWarrior : Enemy {
@@ -16,61 +25,50 @@ namespace AncientMemorial.Entities {
 		private static readonly int attack   = Animator.StringToHash("attacking");
 		private static readonly int moving   = Animator.StringToHash("moving");
 		private static readonly int backward = Animator.StringToHash("backward");
+		private static readonly int Landing  = Animator.StringToHash("landing");
 
 		public SpriteRenderer gumgiObject;
 
 		private         float oldAnimSpeed;
 		private         int   attackAnimation;
-		private const   float attackLength = 0.9165f;
+		private const   float attackLength = 1.833f;
 
 		public override void OnStunStart() { }
 
 		public override void OnStunEnd() {
-			
 			currentExclusiveAction = FindingAggro;
 		}
 
+		private DelayedAction attackDelayedAction;
 		protected override IEnumerator AttackEnumerator() {
+			bool    isFlipped = (int)Mathf.Sign(aggroEntity.transform.position.x - transform.position.x) == -1;
+			
 			rigidbody2D.linearVelocity = new Vector2(0, rigidbody2D.linearVelocity.y);
 			
-			bool    isFlipped = (int)Mathf.Sign(aggroEntity.transform.position.x - transform.position.x) == -1;
-			Vector2 gumgiPos  = new(0.393f * (isFlipped ? -1 : 1), -0.155f);
-			Vector2 gumgiSize = new(0.66f, 0.09f);
-			
 			oldAnimSpeed = animator.speed;
-			
 			animator.speed  = entityStat.attackSpeed;
-			attackAnimation = isFlipped ? attackF : attackB;
 			
+			attackAnimation = isFlipped ? attackF : attackB;
 			animator.SetBool(attackAnimation, true);
+			animator.SetBool(moving, false);
+			animator.SetTrigger(attack);
+
+			Vector2 hitboxPos  = (Vector2)transform.position + new Vector2(0.393f * (isFlipped ? -1 : 1), -0.155f);
+			Vector2 hitboxSize = new(0.88f, 0.31f);
+			attackDelayedAction = AttackArea(1, (attackLength * 6f)/(entityStat.attackSpeed * 11f), hitboxPos, hitboxSize, 0, 1, false, true);
+			yield return new WaitForSeconds(attackLength/entityStat.attackSpeed);
+			
+			animator.speed = oldAnimSpeed;
+			animator.SetBool(attackAnimation, false);
 			animator.SetTrigger(attack);
 			
-			yield return new WaitForSeconds((attackLength * 6f)/(entityStat.attackSpeed * 11f));
-
-			Collider2D[] hitColliders = Physics2D.OverlapBoxAll(gumgiPos + (Vector2)transform.position, gumgiSize, 0f);
-			foreach (Collider2D hit in hitColliders) {
-				if (!hit.CompareTag("Entity")) continue;
-				Entity entity = hit.GetComponent<Entity>();
-
-				if (entity == this) continue;
-				if (!aggroC1.Keys.ToList().Contains(entity.entityType)) continue;
-				
-				Debug.Log($"[HIT EVENT] SendingEvent : {entity}");
-				SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, 10, new EntityHitData(
-							  this,
-							  null,
-							  entity,
-							  entityStat.attackDamage,
-							  new Vector2(entity.transform.position.x - transform.position.x, 0).normalized
-						  ));
-			}
-			
-			yield return new WaitForSeconds((attackLength * 5)/(entityStat.attackSpeed * 11f));
+			yield return new WaitForSeconds((attackLength * 2)/(entityStat.attackSpeed * 11f));
 		}
 
 		protected override void OnAttackDone() {
 			animator.speed = oldAnimSpeed;
 			animator.SetBool(attackAnimation, false);
+			animator.SetTrigger(attack);
 			
 			state                  = EnemyState.Alert;
 			currentExclusiveAction = FindingAggro;
@@ -79,12 +77,20 @@ namespace AncientMemorial.Entities {
 		protected override void OnAttackCancel() {
 			animator.speed = oldAnimSpeed;
 			animator.SetBool(attackAnimation, false);
+			animator.SetTrigger(attack);
+
+			attackDelayedAction.Cancel();
 			
 			state                  = EnemyState.Alert;
 			currentExclusiveAction = FindingAggro;
 		}
 
+		private int mi = 0;
 		private void Move(float targetPositionX) {
+			animator.SetBool(Falling, !isGround);
+			
+			if (!isGround) return;
+			
 			if (aggroEntity) {
 				// (+) : 이 엔티티가 타겟엔티티보다 <-에 있음
 				int signE = (int)Mathf.Sign(aggroEntity.transform.position.x - transform.position.x);
@@ -100,14 +106,14 @@ namespace AncientMemorial.Entities {
 				animator.SetBool(moving,   movingB);
 				animator.SetBool(backward, backwardB);
 			
-				if (movingB) animator.speed = GetVelocityScale(targetPositionX) * (backwardB ? 1.5f : 1);
+				if (movingB) animator.speed = entityStat.moveSpeed * (backwardB ? 1.5f : 1);
 				else animator.speed         = 1;
 			
 				// 안움직일 경우 거르기
 				if (!movingB) return;
-			
-				Vector2 velocity = new (GetVelocityScale(targetPositionX) * signT, rigidbody2D.linearVelocity.y);
-				rigidbody2D.linearVelocity = velocity;
+				
+				rigidbody2D.linearVelocityX = entityStat.moveSpeed * signT;
+				// Debug.Log($"[Entity Velocity] HE IS MOVING {mi++}");
 			}
 			else {
 				// (+) : 이 엔티티가 타켓위치보다 <-에 있음
@@ -121,14 +127,14 @@ namespace AncientMemorial.Entities {
 				animator.SetBool(moving,   movingB);
 				animator.SetBool(backward, false);
 			
-				if (movingB) animator.speed = GetVelocityScale(targetPositionX);
+				if (movingB) animator.speed = entityStat.moveSpeed;
 				else animator.speed         = 1;
 			
 				// 안움직일 경우 거르기
 				if (!movingB) return;
-			
-				Vector2 velocity = new (GetVelocityScale(targetPositionX) * signT, rigidbody2D.linearVelocity.y);
-				rigidbody2D.linearVelocity = velocity;
+				
+				rigidbody2D.linearVelocityX = entityStat.moveSpeed * signT;
+				// Debug.Log($"[Entity Velocity] HE IS MOVING {mi++}");
 			}
 		}
 
@@ -150,34 +156,36 @@ namespace AncientMemorial.Entities {
 			state = EnemyState.Alert;
 		}
 		
-		private readonly StopWatch _velocityRefresh = new ();
-		private          float     _velocityScale   = -1;
-		private float GetVelocityScale(float targetPositionX) {
-			if (_velocityScale >= 0 && _velocityRefresh.Check(0.1f)) return _velocityScale;
-			
-			float vM = entityStat.moveSpeed;
-			float vm = entityStat.moveSpeed / 2;
-			float x  = transform.position.x;
+		// private readonly StopWatch _velocityRefresh = new ();
+		// private          float     _velocityScale   = -1;
+		// private float GetVelocityScale(float targetPositionX) {
+		// 	if (_velocityScale >= 0 && _velocityRefresh.Check(0.1f)) return _velocityScale;
+		// 	
+		// 	float vM = entityStat.moveSpeed;
+		// 	float vm = entityStat.moveSpeed / 2;
+		// 	float x  = transform.position.x;
+		//
+		// 	float w = -Mathf.Pow(Mathf.Abs((x - targetPositionX)), 3);
+		// 	_velocityScale = vm - (vM - vm) * (Mathf.Exp(w) - 1);
+		// 	_velocityRefresh.Tick();
+		// 	
+		// 	return _velocityScale;
+		// }
 
-			float w = -Mathf.Pow(Mathf.Abs((x - targetPositionX)), 3);
-			_velocityScale = vm - (vM - vm) * (Mathf.Exp(w) - 1);
-			_velocityRefresh.Tick();
-			
-			return _velocityScale;
-		}
-
-		private const float         moveTargetDistance   = 2.5f;
-		private const float         moveAllowMargin      = 0.2f;
+		private const float         moveTargetDistance   = 3f;
+		private const float         moveAllowMargin      = 1f;
 		private const float         moveTargetDistanceRM = 0.75f;
-		private       float         moveTargetDistanceRV = 0f;
+		private       float         moveTargetDistanceRV;
 		private       DelayedAction currAlertDA;
 		public override void AlertRoutine() {
 			if (!aggroEntity) {
 				state = EnemyState.Wander;
 				return;
 			}
+			
 			if (attackable) {
 				state = EnemyState.AttackReady;
+				attackableDistRV = Random.Range(-attackableDistRM, attackableDistRM);
 				return;
 			}
 
@@ -194,15 +202,56 @@ namespace AncientMemorial.Entities {
 			Move(targetPositionX);
 		}
 		
-		private readonly float attackableDist = 1f;
+		private readonly float attackableDist = 0.9f;
+		private          float attackableDistRM = 0.2f;
+		private          float attackableDistRV;
 		public override void       AttackReadyRoutine() {
+			if (!aggroEntity) {
+				state = EnemyState.Wander;
+				return;
+			}
+			
 			float targetPositionX = aggroEntity.transform.position.x;
-			if (Mathf.Abs(targetPositionX - transform.position.x) <= attackableDist) state = EnemyState.Attack;
+			if (Mathf.Abs(targetPositionX - transform.position.x) <= attackableDist + attackableDistRV) {
+				state = EnemyState.Attack;
+				return;
+			}
 			
 			Move(targetPositionX);
 		}
 
-		public override void OnHit(Entity attacker, float damage, Vector2? pushDir) {
+		public override void AttackRoutine() { }
+
+		public override void StunRoutine() { }
+
+		public override void HitEffect(Entity attacker, float damage, Vector2? pushDir = null) {
+			UUI damageUI = UUIObjectPool.instance.Open("DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
+			damageUI.GetComponent<RectTransform>().anchoredPosition =
+				(transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
+			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
+			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
+			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).Execute();
+			
+			textAction.text = textSAction.text = new UPureString {Text = $"{Mathf.Floor(damage*100)/100f}"};
+			textAction.Initialize(damageUI);
+			textSAction.Initialize(damageUI);
+			
+			if (attacker != player) return;
+			if (entityStat.hp <= 0) {
+				Time.timeScale = 0.05f;
+				new DelayedAction(0.1f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				CameraBrain.instance.ShakeLerp(1f*Mathf.Max(Mathf.Log(damage+3),0.5f), 10);
+				CameraBrain.instance.ZoomLerp(-0.5f);
+			}
+			else {
+				Time.timeScale = 0.05f;
+				new DelayedAction(0.05f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				CameraBrain.instance.ShakeLerp(0.4f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
+				CameraBrain.instance.ZoomLerp(-0.25f);
+			}
+		}
+
+		protected override void OnHit(Entity attacker, float damage, Vector2? pushDir) {
 			// STUN
 			currentExclusiveAction = Stun(1);
 			state                  = EnemyState.Stun;
@@ -211,16 +260,12 @@ namespace AncientMemorial.Entities {
 			Vector2 pushDirection = pushDir??(attacker.transform.position - transform.position).normalized;
 			float   velocity = damage;
 			
-			AddProcessToFixedUpdate(() => rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse));
+			AddProcessToFixedUpdate(() => { rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse); });
 
 			entityStat.hp -= damage;
-
-			if (!(attacker == player && entityStat.hp <= 0)) return;
-			Time.timeScale = 0.25f; 
-			new DelayedAction(0.3f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
 		}
-		
-		public override void OnHit(Projectile attacker, float damage, Vector2? pushDir) {
+
+		protected override void OnHit(Projectile attacker, float damage, Vector2? pushDir) {
 			// STUN
 			currentExclusiveAction = Stun(1);
 			state                  = EnemyState.Stun;
@@ -232,13 +277,9 @@ namespace AncientMemorial.Entities {
 			AddProcessToFixedUpdate(() => rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse));
 			
 			entityStat.hp -= damage;
-
-			if (!(attacker.owner == player && entityStat.hp <= 0)) return;
-			Time.timeScale = 0.25f; 
-			new DelayedAction(0.3f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
 		}
-		
-		public override void OnHit(float damage, Vector2? pushDir) {
+
+		protected override void OnHit(float damage, Vector2? pushDir) {
 			if (pushDir.HasValue) {
 				float velocity = damage * 2;
 				AddProcessToFixedUpdate(() => rigidbody2D.AddForce(pushDir.Value * velocity, ForceMode2D.Impulse));
@@ -247,14 +288,31 @@ namespace AncientMemorial.Entities {
 			entityStat.hp -= damage;
 		}
 
+		protected override float GetRealDamage(float rawDamage) {
+			return rawDamage;
+		}
+
 		protected override void Death() {
 			GameObject doogaegol = UObjectPool.instance.Get("doogaegol", (Vector2)transform.position +  new Vector2(-0.03125f, 0.21875f));
 			Rigidbody2D doogaegolRB = doogaegol.GetComponent<Rigidbody2D>();
 			
 			doogaegolRB.AddForce(new Vector2(Random.Range(-2f, 2f), Random.Range(4f, 6f)), ForceMode2D.Impulse);
 			doogaegolRB.AddTorque(Random.Range(-0.2f, 0.2f), ForceMode2D.Impulse);
-
+			
+			GameManager.UValueFloatVariables["skeletonWarriorDead"]   = new UPureNumber {number = GameManager.UValueFloatVariables["skeletonWarriorDead"].value + 1};
+			GameManager.UValueFloatVariables["EnemyDead"]   = new UPureNumber {number = GameManager.UValueFloatVariables["EnemyDead"].value + 1};
+			
 			base.Death();
+		}
+
+		protected override void OnGrounded() {
+			currentExclusiveAction = Stun(0.5f);
+			state                  = EnemyState.Stun;
+			animator.SetBool(Landing, true);
+			new DelayedAction(0.5f, () => {
+				state = EnemyState.Alert;
+				animator.SetBool(Landing, false);
+			}).Execute();
 		}
 	}
 }

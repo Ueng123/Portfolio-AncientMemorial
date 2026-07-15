@@ -21,7 +21,7 @@ namespace UengSystem.Utility {
 			this.enumerator      = enumerator;
 			this.onCancel        = onCancel;
 			this.onDone          = onDone;
-			this.coroutineRunner = coroutineRunner ?? GlobalCoroutineManager.instance;
+			this.coroutineRunner = coroutineRunner ?? GlobalCoroutineRunner.instance;
 			this.changeDelay     = changeDelay;
 		}
 

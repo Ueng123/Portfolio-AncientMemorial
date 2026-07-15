@@ -12,6 +12,8 @@ namespace UengSystem.UI.UTexts {
 		[SerializeReference] [SubclassSelector]
 		public UValue<string> text;
 		
+		private UText textComponent;
+		
 		public void SetText(UValue<string> newText, float duration) {
 			UValue<string> oldText = text;
 
@@ -23,11 +25,12 @@ namespace UengSystem.UI.UTexts {
 
 		public override void Initialize(UObject self) {
 			component.Initialize();
-			((UText)component).SetValue(text.value);
+			textComponent = (UText)component;
+			textComponent.SetValue(text.value);
 		}
 
 		public override void Routine(UObject self) {
-			((UText)component).SetValue(text.value);
+			textComponent.SetValue(text.value);
 		}
 	}
 }

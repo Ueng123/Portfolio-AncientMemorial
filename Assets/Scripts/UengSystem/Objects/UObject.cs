@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using AncientMemorial;
 using AncientMemorial.Objects;
 using UengSystem.Events;
 using UengSystem.Logic.Tasks;
@@ -18,6 +19,7 @@ namespace UengSystem.Objects {
 
 		private static readonly Dictionary<string,      UObject > IDTable       = new ();
 		private static readonly Dictionary<string, List<UObject>> CategoryTable = new ();
+		public static           BufferedList<UObject>             Instances     = new();
 		
 		// Instance Variables //
 		[Header("Identify")] 
@@ -64,8 +66,8 @@ namespace UengSystem.Objects {
 				_Category = value;
 			}
 		}
-
-		public ExclusiveAction _currentExclusiveAction;
+		
+		private ExclusiveAction _currentExclusiveAction;
 		public ExclusiveAction currentExclusiveAction {
 			get {
 				if (_currentExclusiveAction is { executing: false }) _currentExclusiveAction = null;
@@ -76,7 +78,6 @@ namespace UengSystem.Objects {
 				// 수박맛있다
 				if (_currentExclusiveAction == null) {
 					_currentExclusiveAction = value;
-					Debug.Log($"{name}'s ExclusiveAction is set to {value}");
 					value?.Execute();
 				}
 				else {
@@ -98,10 +99,25 @@ namespace UengSystem.Objects {
 		public bool   isReleased { get;              set; }
 
 		// IStoppable Variables //
-		public  bool            stopped { get; set; }
-		private Vector2         oldLinearVelocity;
-		private RigidbodyType2D oldBodyType;
-		private float           oldAnimatorSpeed;
+		private int stoppedTime;
+
+		public bool stopped {
+			get => stoppedTime != 0;
+			set {
+				stoppedTime += value ? 1 : -1;
+				Debug.Log($"STOP({stoppedTime}) OBJECT : {name}");
+				
+				if (stoppedTime >= 0) return;
+				Debug.LogWarning("u just tried to Resume no stopped obj twin WHY???????? :(");
+				stoppedTime = 0;
+			}
+		}
+		private   Vector2         linearVelocityBeforeStop;
+		private   float           angularVelocityBeforeStop;
+		private   RigidbodyType2D bodyTypeBeforeStop;
+		protected float           animatorSpeedBeforeStop;
+		
+		public    float           DeltaTime => Time.deltaTime * (stopped ? 0 : 1);
 		
 		// Components //
 		[HideInInspector] public new Rigidbody2D    rigidbody2D;
@@ -109,11 +125,11 @@ namespace UengSystem.Objects {
 		[HideInInspector] public     Animator       animator;
 
 		public static UObject GetUObject(string id) {
-			return IDTable[id];
+			return IDTable.GetValueOrDefault(id);
 		}
 
 		public static List<UObject> GetUObjects(string category) {
-			return CategoryTable[category];
+			return !CategoryTable.TryGetValue(category, out List<UObject> objects) ? new List<UObject>() : objects;
 		}
 
 		public static bool UObjectExists(string id) {
@@ -121,7 +137,12 @@ namespace UengSystem.Objects {
 		}
 
 		public static bool UObjectsExist(string category) {
-			return CategoryTable.ContainsKey(category) && IDTable[category];
+			return CategoryTable.ContainsKey(category) && CategoryTable[category].Count > 0;
+		}
+
+		public static void ResetUObjects() {
+			IDTable.Clear();
+			CategoryTable.Clear();
 		}
 
 		// IEventAgent Method //
@@ -132,71 +153,86 @@ namespace UengSystem.Objects {
 		public virtual void OnEvent(Events_Event e) { }
 
 		// IStoppable Method //
-		public void Stop() {
-			if (stopped) return;
-			stopped = true;
+		
+		
+		public virtual void Stop() {
+			if (stopped) { stopped = true; return; } // 현재 stop -> 중첩쌓고 ㅃㅃ
+			stopped = true; // 중첩 쌓기
 			
 			if (rigidbody2D) {
-				oldLinearVelocity = rigidbody2D.linearVelocity;
-				oldBodyType       = rigidbody2D.bodyType;
+				linearVelocityBeforeStop  = rigidbody2D.linearVelocity;
+				angularVelocityBeforeStop = rigidbody2D.angularVelocity;
+				bodyTypeBeforeStop        = rigidbody2D.bodyType;
 				
-				rigidbody2D.linearVelocity = Vector2.zero;
 				rigidbody2D.bodyType       = RigidbodyType2D.Kinematic;
+				rigidbody2D.linearVelocity = Vector2.zero;
+				rigidbody2D.angularVelocity = 0;
 			}
 			
 			if (animator) {
-				oldAnimatorSpeed = animator.speed;
+				animatorSpeedBeforeStop = animator.speed;
 				animator.speed   = 0;
 				animator.enabled = false;
 			}
 		}
 
-		public void Resume() {
-			if (!stopped) return;
-			stopped = false;
+		public virtual void Resume() {
+			stopped = false; // stop 중첩 -1
+			if (stopped) return; // stop 중첨 완전 해제 -> Resume
 			
 			if (rigidbody2D) {
-				rigidbody2D.linearVelocity = oldLinearVelocity;
-				rigidbody2D.bodyType       = oldBodyType;
+				rigidbody2D.linearVelocity  = linearVelocityBeforeStop;
+				rigidbody2D.angularVelocity = angularVelocityBeforeStop;
+				rigidbody2D.bodyType        = bodyTypeBeforeStop;
 			}
 
 			if (animator) {
-				animator.speed   = oldAnimatorSpeed;
+				animator.speed   = animatorSpeedBeforeStop;
 				animator.enabled = true;
 			}
 		}
 
-		public virtual void OnFirstGet() {}
+		public virtual void OnFirstGet() {
+			rigidbody2D    = GetComponent<Rigidbody2D>();
+			spriteRenderer = GetComponent<SpriteRenderer>();
+			animator       = GetComponent<Animator>();
+		}
 
 		public DelayedAction spawnFXCache = null;
 		public Task          GetTask;
 		
 		public virtual void Get(float time) {
 			if (time == 0) {
+				// DONT NEED ANY FREEZE / UNFREEZE 그리고 어짜피 UNFREEZE 하면
 				OnGet();
 				Initialize();
+				ToggleColliders(true);
 				return;
 			}
 			
-			GameObject spawnFX = UObjectPool.instance.Get("SpawnEffectHelper", transform.position);
+			StopAllCoroutines();
+			
+			GameObject spawnFX = UObjectPool.instance.Get("SpawnEffect", transform.position);
 			spawnFX.GetComponent<SpawnEffectHelper>().t_s = time;
+			
+			OnGet();
 			
 			PrepareSpawnFX();
 			Coroutine spawnCoroutine = StartCoroutine(SpawnFX(time));
 			
-			spawnFXCache = new DelayedAction(time,
-											 () => {
-												 FinishSpawnFX();
-												 spawnFXCache = null;
-											 },
-											 () => {
-												 StopCoroutine(spawnCoroutine);
-												 FinishSpawnFX();
-												 spawnFXCache = null;
-											 });
-
+			spawnFXCache = new DelayedAction(
+				time,
+				() => {
+					FinishSpawnFX();
+					spawnFXCache = null;
+				},
+				() => {
+					StopCoroutine(spawnCoroutine);
+					FinishSpawnFX();
+					spawnFXCache = null;
+				}, this);
+			
 			spawnFXCache.Execute();
-			OnGet();
 		}
 		
 		public DelayedAction despawnFXCache = null;
@@ -230,96 +266,184 @@ namespace UengSystem.Objects {
 			}
 		}
 
-		protected Color colorBeforeSpawnFX;
-		protected virtual void PrepareSpawnFX() {
-			Stop();
-			
-			foreach (Collider2D c in GetComponents<Collider2D>()) {
-				c.enabled = false;
+		private   bool            frozen = false;
+		private   Vector2         linearVelocityBeforeFreeze;
+		private   float           angularVelocityBeforeFreeze;
+		private   RigidbodyType2D bodyTypeBeforeFreeze;
+		protected float           animatorSpeedBeforeFreeze;
+		
+		public void Freeze() {
+			Debug.Log($"[F{name}] FREEZE TRY TO {name}");
+			if (frozen) return;
+
+			frozen = true;
+
+			Debug.Log($"[F{name}] FREEZE TO {name}");
+
+			if (rigidbody2D) {
+				linearVelocityBeforeFreeze = rigidbody2D.linearVelocity;
+				angularVelocityBeforeFreeze = rigidbody2D.angularVelocity;
+				bodyTypeBeforeFreeze = rigidbody2D.bodyType;
+
+				rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+				rigidbody2D.linearVelocity = Vector2.zero;
+				rigidbody2D.angularVelocity = 0;
 			}
 			
-			spriteRenderer.sprite = whiteSpawnSprite??spriteRenderer.sprite;
-			colorBeforeSpawnFX    = spriteRenderer.color;
+			if (animator) {
+				animatorSpeedBeforeFreeze = animator.speed;
+				animator.speed = 0;
+				animator.enabled = false;
+			}
 		}
-		
+
+		public void Unfreeze() {
+
+			Debug.Log($"[F{name}] UNFREEZE TRY TO {name}");
+			
+			if (!frozen) return;
+			frozen = false;
+
+			Debug.Log($"[F{name}] UNFREEZE TRY TO {name}");
+
+			if (rigidbody2D) {
+				rigidbody2D.linearVelocity  = linearVelocityBeforeFreeze;
+				rigidbody2D.angularVelocity = angularVelocityBeforeFreeze;
+				rigidbody2D.bodyType        = bodyTypeBeforeFreeze;
+			}
+			
+			if (animator) {
+				animator.speed   = animatorSpeedBeforeFreeze;
+				animator.enabled = true;
+			}
+		}
+
+		protected void ToggleColliders(bool state) {
+			foreach (Collider2D c in GetComponents<Collider2D>()) {
+				if (c.isTrigger) return;
+				c.enabled = state;
+			}
+		}
+
+		protected Color colorBeforeSpawnFX;
+
+		protected virtual void PrepareSpawnFX() {
+			Freeze();
+
+			ToggleColliders(false);
+
+			if (spriteRenderer) spriteRenderer.sprite = whiteSpawnSprite ?? spriteRenderer.sprite;
+			if (spriteRenderer) colorBeforeSpawnFX = spriteRenderer.color;
+		}
+
+
 		protected virtual IEnumerator SpawnFX(float duration) {
-			
-			float elapsed    = 0f;
-			
+			float elapsed = 0f;
+
+
 			while (elapsed < duration) {
 				elapsed += Time.deltaTime;
+
 				float t = elapsed / duration;
 
-				Color color = new (Mathf.Lerp(GameManager.instance.spawnColor.r, 1, t),
-								   Mathf.Lerp(GameManager.instance.spawnColor.g, 1, t),
-								   Mathf.Lerp(GameManager.instance.spawnColor.b, 1, t),
-								   Mathf.Lerp(0,                                 1, t));
 
-				spriteRenderer.color = color;
+				Color color = new(Mathf.Lerp(GameManager.instance.spawnColor.r, 1, t),
+								  Mathf.Lerp(GameManager.instance.spawnColor.g, 1, t),
+								  Mathf.Lerp(GameManager.instance.spawnColor.b, 1, t),
+								  Mathf.Lerp(0,                                 1, t));
+
+
+				if (spriteRenderer) spriteRenderer.color = color;
+
 
 				yield return null;
 			}
 		}
 
+
 		protected virtual void FinishSpawnFX() {
 			Debug.Log("Finish spawning FX");
+
+
+			if (spriteRenderer) spriteRenderer.sprite = colorSpawnSprite ?? spriteRenderer.sprite;
+
+			if (spriteRenderer) spriteRenderer.color = colorBeforeSpawnFX;
+
+
+			ToggleColliders(true);
 			
-			spriteRenderer.sprite = colorSpawnSprite??spriteRenderer.sprite;
-			spriteRenderer.color  = colorBeforeSpawnFX;
-
-			foreach (Collider2D c in GetComponents<Collider2D>()) {
-				c.enabled = true;
-			}
-
-			Resume();
+			Unfreeze();
+			
 			Initialize();
 		}
 
 		protected Color colorBeforeDespawnFX;
-		protected virtual void PrepareDespawnFX() {
-			Stop();
-			
-			foreach (Collider2D c in GetComponents<Collider2D>()) {
-				c.enabled = false;
-			}
-			
-			colorBeforeDespawnFX   = spriteRenderer.color;
-		}
-		
-		protected virtual IEnumerator DespawnFX(float duration) {
-			float elapsed    = 0f;
 
-			spriteRenderer.sprite = whiteSpawnSprite??spriteRenderer.sprite;
-			
+		protected virtual void PrepareDespawnFX() {
+			Freeze();
+
+
+			ToggleColliders(false);
+
+
+			if (spriteRenderer) colorBeforeDespawnFX = spriteRenderer.color;
+		}
+
+		protected virtual IEnumerator DespawnFX(float duration) {
+			float elapsed = 0f;
+
+
+			if (spriteRenderer) spriteRenderer.sprite = whiteSpawnSprite ?? spriteRenderer.sprite;
+
+
 			while (elapsed < duration) {
 				elapsed += Time.deltaTime;
+
 				float t = elapsed / duration;
 
-				Color color = new (GameManager.instance.spawnColor.r,
-								   GameManager.instance.spawnColor.g,
-								   GameManager.instance.spawnColor.b,
-								   Mathf.Lerp(1, 0, t));
 
-				spriteRenderer.color = color;
+				Color color = new(GameManager.instance.spawnColor.r,
+								  GameManager.instance.spawnColor.g,
+								  GameManager.instance.spawnColor.b,
+								  Mathf.Lerp(1, 0, t));
+
+
+				if (spriteRenderer) spriteRenderer.color = color;
+
 
 				yield return null;
 			}
 
-			Resume();
-			spriteRenderer.color = colorBeforeDespawnFX;
+
+			Unfreeze();
+
+			if (spriteRenderer) spriteRenderer.color = colorBeforeDespawnFX;
+
 			UObjectPool.instance.Release(gameObject, -1);
 		}
 
 		public virtual void OnGet() {
+			Instances.Add(this);
+
+			if (rigidbody2D && rigidbody2D.bodyType != RigidbodyType2D.Static)
+				rigidbody2D.linearVelocity = Vector2.zero;
+			
 			GetTask.Execute(this, this);
 		}
 
-		public virtual void OnRelease() {
+		protected virtual void OnRelease() {
 			ReleaseTask.Execute(this, this);
-			currentExclusiveAction?.Cancel();
+
+			currentExclusiveAction = null;
+			if (rigidbody2D && rigidbody2D.bodyType == RigidbodyType2D.Dynamic) rigidbody2D.linearVelocity = Vector2.zero;
 		}
-		
-		public abstract void Initialize();
-		public abstract void Uninitialize();
+
+		public virtual void Initialize() {
+			
+		}
+
+		public virtual void Uninitialize() {
+			Instances.Remove(this);
+		}
 	}
 }

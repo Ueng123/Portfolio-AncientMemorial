@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
@@ -22,13 +24,14 @@ namespace AncientMemorial.Entities {
 			set {
 				if (!stateChangeable) return;
 				if (_state == value) return;
-				if (value == EnemyState.Attack) Attack();
 				_state = value;
+				
+				if (value == EnemyState.Attack) Attack();
 			}
 		}
 
 		// 없으면 어그로 엔티티 계산에서 제외
-		public Dictionary<EntityType, float> aggroC1 = new ();
+		public Dictionary<EntityType, float> aggroC = new ();
 
 		private Entity _aggroEntity;
 		public Entity aggroEntity {
@@ -43,11 +46,14 @@ namespace AncientMemorial.Entities {
 				if (!_aggroEntity) {
 					attackable = false;
 				}
-				
+
+				string valueName = value ? value.name : "null";
+				string aggroEntityName = _aggroEntity ? _aggroEntity.name : "null";
+				Debug.Log($"[AggroEntity] AggroEntity Changed : {aggroEntityName} -> {valueName}");
 				_aggroEntity = value;
 			}
 		}
-
+		
 		private IEnumerator StunEnumerator(float duration) {
 			OnStunStartHandler();
 			yield return new WaitForSeconds(duration);
@@ -82,17 +88,15 @@ namespace AncientMemorial.Entities {
 		
 		public Entity FindAggroEntity() {
 			float  maxAggroValue = entityData.aggroThreshold;
-			Entity aggroTarget        = null;
+			Entity aggroTarget   = null;
 			
 			foreach (Entity entity in entities) {
 				if (entity == this) continue;
 				
-				if (!aggroC1.TryGetValue(entity.entityType, out float aggroCValue1)) continue;
+				if (!aggroC.TryGetValue(entity.entityType, out float aggroCValue)) continue;
 				
-				float aggroCValue = aggroCValue1/ (Vector2.Distance(entity.transform.position, transform.position)+0.5f);
-				
-				float distance   = Mathf.Min(0.01f, Vector2.Distance(transform.position, entity.transform.position));
-				float aggroValue = aggroCValue / (distance + (entity == aggroEntity ? 0 : 1));
+				float distance   = Mathf.Max(0.01f, Vector2.Distance(transform.position, entity.transform.position));
+				float aggroValue = (aggroCValue + (entity==aggroEntity?1:0)) / distance;
 
 				if (aggroValue < maxAggroValue) continue;
 				maxAggroValue  = aggroValue;
@@ -102,24 +106,38 @@ namespace AncientMemorial.Entities {
 			return aggroTarget;
 		}
 
+		public bool isTargettable(EntityType entity) {
+			return aggroC.ContainsKey(entity);
+		}
+
 		public override void Initialize() {
 			base.Initialize();
 
 			foreach ((string key, float value) in entityData.aggroCoefficient) {
 				if (Enum.TryParse(key, true, out EntityType eT)) {
-					aggroC1[eT] = value;
+					aggroC[eT] = value;
 				}
 			}
 			
 			currentExclusiveAction = FindingAggro;
 			state                  = EnemyState.Wander;
 		}
-		
-		private WaitForSeconds waitTime1 = new (0.2f);
-		private WaitForSeconds waitTime2 = new (0.3f);
-		private WaitForSeconds waitTime3 = new (0.4f);
+
+		public override void Uninitialize() {
+			base.Uninitialize();
+			
+			_aggroEntity = null;
+		}
+
+		private WaitForSeconds waitTime1;
+		private WaitForSeconds waitTime2;
+		private WaitForSeconds waitTime3;
 		
 		public IEnumerator AggroEnumerator() {
+			waitTime1 = new WaitForSeconds(0.2f);
+			waitTime2 = new WaitForSeconds(0.3f);
+			waitTime3 = new WaitForSeconds(0.4f);
+			
 			while (true) {
 				yield return Random.Range(1, 4) switch {
 					1 => waitTime1,
@@ -132,24 +150,21 @@ namespace AncientMemorial.Entities {
 			}
 		}
 
-		private   DelayedAction _turnAttackable;
-		private   bool          _attackable;
+		protected StopWatch attackableTimer = new ();
+		private   float     attackableCoeff;
 		protected bool attackable {
-			get => _attackable;
+			get => !attackableTimer.Check(entityData.attackCooldown * attackableCoeff);
 			set {
-				if (!value) {
-					_turnAttackable?.Cancel();
-					_turnAttackable = new DelayedAction(entityData.attackCooldown * Random.Range(0.85f, 1.15f), () => _attackable = true);
-					_turnAttackable.Execute();
-				}
-				_attackable = value;
+				if (value) return;
+				attackableCoeff = Random.Range(1f, 1.1f);
+				attackableTimer.Tick();
 			}
 		}
 		
 		protected abstract IEnumerator   AttackEnumerator();
 		protected abstract void          OnAttackDone();
 		protected abstract void          OnAttackCancel();
-		public void Attack() {
+		public virtual void Attack() {
 			if (!attackable) return;
 			attackable = false;
 			
@@ -157,11 +172,23 @@ namespace AncientMemorial.Entities {
 		}
 		
 		public ExclusiveAction FindingAggro => new (AggroEnumerator(),  () => { },      () => { },    0, this);
-		public ExclusiveAction Attacking    => new (AttackEnumerator(), OnAttackCancel, OnAttackDone, 0, this);
-		
+		public ExclusiveAction Attacking    => new (AttackEnumerator(), () => {
+			attackable = false;
+			OnAttackCancel();
+		}, () => {
+			attackable = false;
+			OnAttackDone();
+		}, 0, this);
+
 		public abstract void WanderRoutine();
 		public abstract void AlertRoutine();
 		public abstract void AttackReadyRoutine();
+		public abstract void AttackRoutine();
+		public abstract void StunRoutine();
+		
+		public override bool isAttackTarget(Entity entity) {
+			return entity != this && aggroC.Keys.ToList().Contains(entity.entityType);
+		}
 
 		protected override void Routine() {
 			switch (state) {
@@ -178,8 +205,14 @@ namespace AncientMemorial.Entities {
 					break;
 				
 				case EnemyState.Attack:
-				case EnemyState.None:
+					AttackRoutine();
+					break;
+				
 				case EnemyState.Stun:
+					StunRoutine();
+					break;
+				
+				case EnemyState.None:
 					break;
 				
 				default:

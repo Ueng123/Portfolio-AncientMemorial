@@ -1,0 +1,18 @@
+﻿{
+  "Name" : "크리스탈[■■□]",
+  "HP" : 800,
+  "MoveSpeed" : 1,
+  "JumpPower" : 0,
+  "AttackCooldown" : 10,
+  "AttackSpeed" : 1,
+  "AttackDamage" : 2,
+  "InvincibleTime" : 10,
+  "GroundBoxOffsetX" : 0,
+  "GroundBoxOffsetY" : 0,
+  "GroundBoxSizeX" : 0,  
+  "GroundBoxSizeY" : 0,
+  "AggroThreshold" : 0,
+  "AggroCoefficient" : {
+    "Player" : 1
+  }
+}

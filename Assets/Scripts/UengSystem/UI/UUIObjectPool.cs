@@ -12,12 +12,15 @@ using UnityEngine.Serialization;
 namespace UengSystem.UI {
 	public class UUIObjectPool : Manager<UUIObjectPool> {
 		[SerializeField]
-		public UUIPrefabItem[]                            prefabData;
+		public UUIPrefabItem[] prefabData;
 		private readonly Dictionary<string, ObjectPool<GameObject>> pools    = new ();
 		private readonly Dictionary<string, Transform>              roots    = new ();
 		private readonly Dictionary<string, UUIQueue>               uuiQueue = new ();
 		
 		public override void Initialize() {
+			pools.Clear();
+			roots.Clear();
+			uuiQueue.Clear();
 			
 			foreach (UUIPrefabItem data in prefabData) {
 				Transform newRoot  = new GameObject($"{data.prefab.name} root").transform;
@@ -49,9 +52,9 @@ namespace UengSystem.UI {
 		}
 
 		public GameObject Open(string key, UCanvas canvas) {
-			Debug.Log("[FUCK] UUI OPENNING");
+			Debug.Log("[UUI] UUI OPENNING");
 			
-			GameObject      obj    = pools[key].Get();
+			GameObject obj = pools[key].Get();
 			UUI script = obj.GetComponent<UUI>();
 
 			obj.transform.SetParent(canvas.transform);
@@ -76,7 +79,7 @@ namespace UengSystem.UI {
 			script.Release(finalRelease?-1:closeTime);
 
 			if (!finalRelease) return;
-			Debug.Log("[FUCK] UUI CLOSED");
+			Debug.Log("[UUI] UUI CLOSED");
 			
 			script.OnClose();
 			obj.SetActive(false);
@@ -96,6 +99,9 @@ namespace UengSystem.UI {
 				uuiQueue[key].GetNextQueue(key);
 			}
 		}
-		public override void ManagerFixedUpdate() {  }
+
+		public override void ManagerFixedUpdate() {
+			
+		}
 	}
 }

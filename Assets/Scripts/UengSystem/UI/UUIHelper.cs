@@ -14,7 +14,6 @@ namespace UengSystem.UI {
 			
 			if (!InitialObject) return;
 			
-			script.OnFirstGet();
 			script.OnGet();
 			script.Initialize();
 			

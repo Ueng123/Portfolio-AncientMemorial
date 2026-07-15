@@ -1,17 +1,18 @@
 ﻿{
-  "Name" : "개무아의수호자",
-  "HP" : 5,
-  "MoveSpeed" : 2.25,
-  "JumpPower" : 3,
+  "Name" : "스켈레톤",
+  "HP" : 10,
+  "MoveSpeed" : 2,
+  "JumpPower" : 2,
   "AttackCooldown" : 7,
-  "AttackSpeed" : 0.7,
-  "AttackDamage" : 1,
+  "AttackSpeed" : 1,
+  "AttackDamage" : 2,
+  "InvincibleTime" : 1,
   "GroundBoxOffsetX" : 0,
   "GroundBoxOffsetY" : -0.5,
   "GroundBoxSizeX" : 0.36,
   "GroundBoxSizeY" : 0.025,
   "AggroThreshold" : 1,
   "AggroCoefficient" : {
-    "Player" : 5
+    "Player" : 6
   }
 }

@@ -6,7 +6,7 @@ namespace UengSystem.ObjectPool {
 		public bool isReleased { get; set; }
 
 		public void OnFirstGet();
-		public void Get(float time);
+		public void Get(float     time);
 		public void Release(float time);
 	}
 }

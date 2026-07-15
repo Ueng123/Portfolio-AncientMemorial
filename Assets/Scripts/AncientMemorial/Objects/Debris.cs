@@ -14,7 +14,7 @@ namespace AncientMemorial.Objects {
 			base.OnGet();
 		}
 
-		public override void OnRelease() {
+		protected override void OnRelease() {
 			base.OnRelease();
 		}
 	}

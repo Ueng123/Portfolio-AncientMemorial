@@ -27,8 +27,8 @@ namespace UengSystem.Logic.Tasks {
 			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime.value);
 			UObject    uobj = obj.GetComponent<UObject>();
 
-			if (ID       !=null) uobj.ID       = ID.getValue;
-			if (Category !=null) uobj.Category = Category.getValue;
+			if (ID       !=null &&ID.value       !="") uobj.ID       = ID.getValue;
+			if (Category !=null &&Category.value !="") uobj.Category = Category.getValue;
 		}
 	}
 }

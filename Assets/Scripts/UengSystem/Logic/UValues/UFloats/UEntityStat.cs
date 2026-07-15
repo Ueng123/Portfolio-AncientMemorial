@@ -13,7 +13,10 @@ namespace UengSystem.Logic.UValues.UFloats {
 
 		public override float getValue {
 			get {
+				if (!targetEntity.value) Debug.Log("NO TARGET ENTITY");
+				if (targetEntity.value.entityStat==null) Debug.Log("NO TARGET ENTITY STAT");
 				return type switch {
+					EntityDataType.MAXHP          => targetEntity.value.entityData.hp,
 					EntityDataType.HP             => targetEntity.value.entityStat.hp,
 					EntityDataType.MoveSpeed      => targetEntity.value.entityStat.moveSpeed,
 					EntityDataType.JumpPower      => targetEntity.value.entityStat.jumpPower,

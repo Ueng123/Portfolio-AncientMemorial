@@ -1,0 +1,18 @@
+﻿{
+  "Name" : "강화된 스켈레톤",
+  "HP" : 600,
+  "MoveSpeed" : 0.5,
+  "JumpPower" : 2,
+  "AttackCooldown" : 5,
+  "AttackSpeed" : 0.5,
+  "AttackDamage" : 2,
+  "InvincibleTime" : 1,
+  "GroundBoxOffsetX" : 0,
+  "GroundBoxOffsetY" : -1.335,
+  "GroundBoxSizeX" : 0.93,  
+  "GroundBoxSizeY" : 0.025,
+  "AggroThreshold" : 0,
+  "AggroCoefficient" : {
+    "Player" : 1
+  }
+}

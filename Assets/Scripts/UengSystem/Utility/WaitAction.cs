@@ -32,7 +32,7 @@ namespace UengSystem.Utility {
           startTime = Time.time;
           Executing = true;
           
-          _runningCoroutine = GlobalCoroutineManager.instance.StartCoroutine(WaitRoutine());
+          _runningCoroutine = GlobalCoroutineRunner.instance.StartCoroutine(WaitRoutine());
        }
 
        public void Cancel() {
@@ -40,7 +40,7 @@ namespace UengSystem.Utility {
           
           Executing = false;
           if (_runningCoroutine != null) {
-             GlobalCoroutineManager.instance.StopCoroutine(_runningCoroutine);
+             GlobalCoroutineRunner.instance.StopCoroutine(_runningCoroutine);
              _runningCoroutine = null;
           }
           actionOnCancel?.Invoke();

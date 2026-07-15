@@ -8,7 +8,7 @@ using UObject = UengSystem.Objects.UObject;
 namespace UengSystem.UDebug {
 	public class TaskThrower : Manager<TaskThrower> {
 
-		[FormerlySerializedAs("task")] [SerializeReference] [SubclassSelector]
+		[FormerlySerializedAs("uTaskComponent")] [FormerlySerializedAs("task")] [SerializeReference] [SubclassSelector]
 		public TaskComponent taskComponent;
 
 		public UObject self;

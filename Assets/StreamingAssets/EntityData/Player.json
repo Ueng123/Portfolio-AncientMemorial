@@ -1,13 +1,13 @@
 ﻿{
-  "Name" : "개무아의마지막눈물",
+  "Name" : "",
   "HP" : 10,
   "MoveSpeed" : 3,
-  "JumpPower" : 5,
-  "AttackSpeed" : 1,
-  "AttackDamage" : 1,
-  "InvincibleTime" : 0.5,
+  "JumpPower" : 3,
+  "AttackSpeed" : 1.5,
+  "AttackDamage" : 2,
+  "InvincibleTime" : 1,
   "GroundBoxOffsetX" : 0,
-  "GroundBoxOffsetY" : -0.75,
+  "GroundBoxOffsetY" : -0.5,
   "GroundBoxSizeX" : 0.45,
   "GroundBoxSizeY" : 0.025
 }

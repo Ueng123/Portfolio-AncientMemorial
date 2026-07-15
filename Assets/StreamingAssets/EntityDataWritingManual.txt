@@ -20,6 +20,7 @@
   "AttackCooldown" : ,
   "AttackSpeed" : ,
   "AttackDamage" : ,
+  "InvincibleTime" : ,
   "GroundBoxOffsetX" : ,
   "GroundBoxOffsetY" : ,
   "GroundBoxSizeX" : ,
@@ -37,6 +38,7 @@ MoveSpeed : 이속, 초당 몇 가는지(유니티 단위)
 JumpPower : 점프력 나타내는 측도
 AttackSpeed : 공격 빈도 (초당 몇번)
 AttackDamage : 공격력 (곱적용)
+InvincibleTime : 소환 후 무적 시간 (너무 짧으면 버그 생길 수 있음)
 GroundBoxOffset[X/Y] : 바닥 감지하는 영역 위치(스프라이트 중앙 기준)
 GroundBoxSize[X/Y] : 바닥 감지하는 영역 크기(영역 위치를 중앙으로 함)
 

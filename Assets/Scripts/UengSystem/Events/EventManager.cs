@@ -6,7 +6,7 @@ using UengSystem.Managers;
 namespace UengSystem.Events {
 	public class EventManager : Manager<EventManager> {
 		
-		[Header("EventManager")]
+		[Header("EventManager")]	
 		public List<List<Event>> events = new List<List<Event>>();
 		public List<Event> GetEvents(int layer) => events[layer];
 		

@@ -53,14 +53,16 @@ namespace UengSystem.UI {
 		public abstract void OnClose();
 
 		public static UUI GetUUI(string id) => GetUObject(id) as UUI;
-		
-		public static List<UUI> GetUUIs(string category) {
-			return UCategoryTable[category];
-		}
+
+		public static List<UUI> GetUUIs(string category) => UCategoryTable[category];
 
 		public T GetAction<T>(string key) where T : UUIAction {
 			if (actionDict.TryGetValue(key, out UUIAction action)) return (T)action;
 			else throw new KeyNotFoundException(key);
+		}
+
+		public static void ResetUUI() {
+			UCategoryTable.Clear();
 		}
 
 		// FUCK NAZETE WORK 안함 REALLY YAMA ROTATING FUCK
@@ -85,8 +87,8 @@ namespace UengSystem.UI {
 
 		public override void Get(float time) {
 			OnGet();
-			if (time == 0) return;
 			gameObject.SetActive(true);
+			if (time == 0) return;
 			StartCoroutine(SpawnFX(time));
 		}
 		
@@ -102,7 +104,7 @@ namespace UengSystem.UI {
 					gettable = true;
 					break;
 				case 0:
-					Instances.Remove(this);
+					AdvancedInstances.Remove(this);
 					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
 					
 					OnRelease();
@@ -110,7 +112,7 @@ namespace UengSystem.UI {
 					gettable = true;
 					break;
 				default:
-					Instances.Remove(this);
+					AdvancedInstances.Remove(this);
 					gameObject.SetActive(true);
 					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
 					
@@ -119,8 +121,8 @@ namespace UengSystem.UI {
 					break;
 			}
 		}
-		
-		public override void OnRelease() {
+
+		protected override void OnRelease() {
 			UCategory = null;
 		}
 		
