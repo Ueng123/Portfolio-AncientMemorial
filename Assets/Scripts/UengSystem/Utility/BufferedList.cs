@@ -16,7 +16,7 @@ namespace UengSystem.Utility {
 		public T this[int index] => mainList[index];
 
 		public List<T> GetList() => mainList;
-
+		
 		public void ApplyAdd() {
 			foreach (T item in AddQueue) {
 				mainList.Add(item);
@@ -40,6 +40,14 @@ namespace UengSystem.Utility {
 
 		public void Add   (T item) => AddQueue   .Add(item);
 		public void Remove(T item) => RemoveQueue.Add(item);
+		public void Clear() {
+			foreach (T item in mainList) Remove(item);
+		}
+		public void ClearImmediatly() {
+			mainList.Clear();
+			AddQueue.Clear();
+			RemoveQueue.Clear();
+		}
 		
 		public IEnumerator<T>   GetEnumerator() {
 			return new DefaultEnumerator<T>(mainList);

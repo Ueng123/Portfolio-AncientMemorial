@@ -18,7 +18,13 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		private void Break(Transform parent = null, bool isEntity = false) {
-			GameObject obj  = UObjectPool.instance.Get("ArrowDebris", transform.position);
+			GameObject obj = UObjectPool.instance.Get("ArrowDebris", transform.position);
+			
+			if (isEntity) {
+				GameObject eff = UObjectPool.instance.Get("ArrowHitEffect", transform.position);
+				eff.transform.rotation = transform.rotation;
+			}
+			
 			if (parent) {
 				if (isEntity) parent.GetComponent<Entity>().debrisAttached.Add(obj.GetComponent<Debris>());
 				obj.transform.SetParent(parent, true);
@@ -48,7 +54,10 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected override void OnCollideEntity(Entity entity) {
-			if (owner && owner.team == entity.team) return;
+			if (owner) {
+				if (owner.entityType == EntityType.Player && entity.Friendly) return;
+				if (owner.entityType != EntityType.Player && !((Enemy)owner).isTargettable(entity.entityType)) return;
+			}
 			
 			SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, 10, new EntityHitData(
 						  null,
