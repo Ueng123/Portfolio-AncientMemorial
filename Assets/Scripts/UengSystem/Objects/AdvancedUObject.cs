@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AncientMemorial;
 using UengSystem.Events;
 using UengSystem.Managers;
 using UengSystem.Utility;
@@ -11,13 +12,13 @@ using EventType = UengSystem.Events.EventType;
 namespace UengSystem.Objects {
 	public abstract class AdvancedUObject : UObject {
 
-		public static readonly BufferedList<AdvancedUObject> Instances = new ();
+		public static readonly BufferedList<AdvancedUObject> AdvancedInstances = new ();
 		
 		private List<Action>[] processToUpdate;
 		private List<Action>[] processToFixedUpdate;
 		
 		private        Action[] updatePhaseRoutines;
-		private        Action[] fixedUpdatePhaseRoutine;
+		private        Action[] fixedUpdatePhaseRoutines;
 		
 		private const int updatePhaseCount      = 3;
 		private const int fixedUpdatePhaseCount = 2;
@@ -26,15 +27,19 @@ namespace UengSystem.Objects {
 			for (int i = 0; i < updatePhaseCount; i++) {
 				GameManager.instance.currentUpdatePhase = i;
 				
-				Instances.Apply();
-				foreach (AdvancedUObject ins in Instances) {
+				AdvancedInstances.Apply();
+				foreach (AdvancedUObject ins in AdvancedInstances) {
+					if (ins.stopped) return;
+					
 					ins.updatePhaseRoutines[i].Invoke();
 				}
 			}
 		}
 		
 		public static void LateUpdateRoutine() {
-			foreach (AdvancedUObject ins in Instances) {
+			foreach (AdvancedUObject ins in AdvancedInstances) {
+				if (ins.stopped) return;
+				
 				ins.LateRoutine();
 			}
 		}
@@ -43,9 +48,11 @@ namespace UengSystem.Objects {
 			for (int i = 0; i < fixedUpdatePhaseCount; i++) {
 				GameManager.instance.currentFixedUpdatePhase = i;
 				
-				Instances.Apply();
-				foreach (AdvancedUObject ins in Instances) {
-					ins.fixedUpdatePhaseRoutine[i].Invoke();
+				AdvancedInstances.Apply();
+				foreach (AdvancedUObject ins in AdvancedInstances) {
+					if (ins.stopped) return;
+					
+					ins.fixedUpdatePhaseRoutines[i].Invoke();
 				}
 			}
 		}
@@ -57,7 +64,9 @@ namespace UengSystem.Objects {
 				if (events.Count == 0) continue;
 				
 				foreach (Event e in events) {
-					foreach (AdvancedUObject ins in Instances) {
+					foreach (AdvancedUObject ins in AdvancedInstances) {
+						if (ins.stopped) return;
+						
 						ins.OnEvent(e);
 					}
 				}
@@ -72,7 +81,7 @@ namespace UengSystem.Objects {
 		
 		// Process System //
 		
-		protected void AddProcessToUpdate(Action process, bool notAllowedToOverlapped = false) {
+		public void AddProcessToUpdate(Action process, bool notAllowedToOverlapped = false) {
 			if (notAllowedToOverlapped) {
 				if (processToUpdate[GameManager.instance.currentFixedUpdatePhase].Contains(process)) return;
 			}
@@ -112,7 +121,7 @@ namespace UengSystem.Objects {
 				Routine
 			};
 
-			fixedUpdatePhaseRoutine = new Action[] {
+			fixedUpdatePhaseRoutines = new Action[] {
 				ExecuteFixedUpdateProcess,
 				FixedRoutine
 			};
@@ -123,25 +132,29 @@ namespace UengSystem.Objects {
 			for (int i = 0; i < fixedUpdatePhaseCount; i++) processToUpdate[i]      = new List<Action>();
 			for (int i = 0; i < updatePhaseCount     ; i++) processToFixedUpdate[i] = new List<Action>();
 			
-			stopped = false;
-			
-			rigidbody2D    = GetComponent<Rigidbody2D>();
-			spriteRenderer = GetComponent<SpriteRenderer>();
-			animator       = GetComponent<Animator>();
+			base.OnFirstGet();
 		}
 
 		public override void Release(float time) {
-			Instances.Remove(this);
+			AdvancedInstances.Remove(this);
+
+			foreach (List<Action> pU in processToUpdate) {
+				pU.Clear();
+			}
+			
+			foreach (List<Action> pFU in processToFixedUpdate) {
+				pFU.Clear();
+			}
+			
 			//Debug.Log($"[UObject] Instance {gameObject.name} Removed");
 			
 			base.Release(time);
 		}
 
 		public override void Initialize() {
-			Instances.Add(this);
+			base.Initialize();
+			AdvancedInstances.Add(this);
 			//Debug.Log($"[UObject] Instance {gameObject.name} Added");
 		}
-
-		public override void Uninitialize() { }
 	}
 }

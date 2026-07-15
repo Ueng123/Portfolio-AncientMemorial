@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {
 	[Serializable]
-	public class AddUFloatVariable : TaskComponent {
+	public class AddUFloatVariableAsPure : TaskComponent {
 		
 		[SerializeReference] [SubclassSelector]
 		public UValue<string> key;
@@ -23,9 +23,8 @@ namespace UengSystem.Logic.Tasks {
 					  $" > value = {value.value}\n" +
 					  $"");
 
-			GameManager.UValueFloatVariables[key.value] = new UAdd {
-				A = GameManager.UValueFloatVariables[key.value],
-				B = value 
+			GameManager.UValueFloatVariables[key.value] = new UPureNumber {
+				number = GameManager.UValueFloatVariables[key.value].value + value.value
 			};
 		}
 	}
