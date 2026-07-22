@@ -14,7 +14,7 @@ namespace AncientMemorial.Tasks {
 			
 			Crystal crystal = GameManager.instance.Crystal;
 
-			crystal.interactable = true;
+			crystal.Interactable();
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UengSystem.Managers;
 using UengSystem.Objects;
 using UengSystem.Utility;
@@ -7,38 +8,33 @@ using UnityEngine;
 namespace UengSystem.Logic.Tasks {
 	[Serializable]
 	public class Task {
-		[SerializeField]
-		private TaskListItem[]  tasks;
-		private DelayedAction[] delayedActions;
-		private Coroutine       runningTask;
+
+		[SerializeField] private bool           useRealTime;
+		[SerializeField] private TaskListItem[] tasks;
+		
+		private UObject coroutineRunner;
+		private Coroutine runningTask;
 		
 		public void Execute(ITaskable self, UObject coroutineRunner = null) {
-			if (tasks.Length == 0) return;
 			
-			delayedActions  =   new DelayedAction[tasks.Length];
-			coroutineRunner ??= GlobalCoroutineRunner.instance;
-			
-			int i = 0;
-			foreach (TaskListItem task in tasks) {
-				DelayedAction action = new (
-					task.time,
-					() => {
-						foreach (TaskComponent t in task.tasks) {
-							t.Execute(self);
-						}
-					},
-					coroutineRunner:coroutineRunner);
+			this.coroutineRunner = coroutineRunner??GlobalCoroutineRunner.instance;
+			runningTask = this.coroutineRunner.StartCoroutine(ExecuteEnumerator(self));
+		}
 
-				action.Execute();
-				
-				delayedActions[i++] = action;
+		public IEnumerator ExecuteEnumerator(ITaskable self) {
+			float waitedTime = 0f;
+			foreach (TaskListItem taskItem in tasks) {
+				float wait = taskItem.time - waitedTime;
+				waitedTime = taskItem.time;
+				if (wait != 0) yield return useRealTime?new WaitForSecondsRealtime(wait):new WaitForSeconds(wait);
+				foreach (TaskComponent task in taskItem.tasks) {
+					task?.Execute(self);
+				}
 			}
 		}
 
 		public void CancelTasks() {
-			foreach (DelayedAction d in delayedActions) {
-				d.Cancel();
-			}
+			coroutineRunner.StopCoroutine(runningTask);
 		}
 	}
 }

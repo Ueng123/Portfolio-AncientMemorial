@@ -33,6 +33,8 @@ namespace UengSystem.UI.UInputFields {
 					dynamicType = DynamicType.Dynamic,
 					Text        = ""
 				};
+
+				inputFieldTextVariable = (UPureString)GameManager.UValueStringVariables["InputFieldValue"];
 			}
 		}
 

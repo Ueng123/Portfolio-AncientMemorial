@@ -4,49 +4,63 @@ using UengSystem.Managers;
 using UnityEngine;
 
 namespace UengSystem.Utility {
-    public class WaitAction {
+    public class WaitAction : UAction {
        public readonly  Func<bool> checkCondition;
        private readonly Action     actionToDelay;
        private readonly Action     actionOnCancel;
        
-       private Coroutine _runningCoroutine; // static 루프 대신 내 목숨줄만 관리한다
-       public bool  Executing { get; private set; }
+       private Coroutine process; // static 루프 대신 내 목숨줄만 관리한다
        public float startTime;
        public float timeOut;
+
+       private IActionable executor;
        
-       public WaitAction(Func<bool> checkCondition, Action actionToDelay, Action actionOnCancel = null, float timeOut = 0) {
+       public WaitAction (Func<bool> checkCondition, Action actionToDelay, Action actionOnCancel = null, float timeOut = 0, IActionable executor = null) {
+          this.executor = executor;
           this.checkCondition = checkCondition;
           this.actionToDelay  = actionToDelay;
           this.actionOnCancel = actionOnCancel;
           this.timeOut        = timeOut;
        }
-
-       public void Execute() {
-          if (Executing) return;
+       
+       public WaitAction ExecuteWA() {
+          if (Executing) return this;
           
           if (checkCondition.Invoke()) {
              actionToDelay();
-             return;
+             return this;
           }
           
           startTime = Time.time;
           Executing = true;
           
-          _runningCoroutine = GlobalCoroutineRunner.instance.StartCoroutine(WaitRoutine());
+          Execute(executor);
+          process = GlobalCoroutineRunner.instance.StartCoroutine(ActionEnumerator());
+          return this;
        }
 
-       public void Cancel() {
+       public override void Done() { DoneWA(); }
+
+       public void DoneWA(bool stopCoroutine = true) {
+          if (!Executing) return;
+          
+          if (stopCoroutine) GlobalCoroutineRunner.instance.StopCoroutine(process);
+          Executing = false;
+          actionToDelay.Invoke();
+       }
+       
+       public override void Cancel() {
           if (!Executing) return;
           
           Executing = false;
-          if (_runningCoroutine != null) {
-             GlobalCoroutineRunner.instance.StopCoroutine(_runningCoroutine);
-             _runningCoroutine = null;
+          if (process != null) {
+             GlobalCoroutineRunner.instance.StopCoroutine(process);
+             process = null;
           }
           actionOnCancel?.Invoke();
        }
 
-       private IEnumerator WaitRoutine() {
+       protected override IEnumerator ActionEnumerator() {
           yield return new WaitUntil(() => {
              if (timeOut != 0 && Time.time - startTime >= timeOut) return true;
              return checkCondition();
@@ -55,8 +69,7 @@ namespace UengSystem.Utility {
           if (timeOut != 0 && Time.time - startTime >= timeOut) {
              Cancel();
           } else {
-             Executing = false;
-             actionToDelay.Invoke();
+             DoneWA(false);
           }
        }
     }

@@ -64,7 +64,6 @@ namespace AncientMemorial.Entities {
 		
 		// Static Methods //
 		public static DelayedAction AttackArea(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
-			
 			GameObject  awareObject = UObjectPool.instance.Get("AttackAware", hitboxPos);
 			AttackAware attackAware = awareObject.GetComponent<AttackAware>();
 			attackAware.targetSize          = new Vector2(hitboxSize.x,      hitboxSize.y);
@@ -79,12 +78,11 @@ namespace AncientMemorial.Entities {
 					delay,
 					() => UObjectPool.instance.Release(awareObject, 0.1f),
 					() => UObjectPool.instance.Release(awareObject, 0.1f),
-					attacker).Execute();
+					attacker).ExecuteDA();
 			}
 			
 			return new DelayedAction(
-				delay,
-				() => {
+				delay, () => {
 					UObjectPool.instance.Release(awareObject, 0.1f);
 					Collider2D[] hitColliders = Physics2D.OverlapBoxAll(hitboxPos, hitboxSize, angle);
 					foreach (Collider2D hit in hitColliders) {
@@ -97,9 +95,7 @@ namespace AncientMemorial.Entities {
 						
 						if (--maxTargetNum == 0) return;
 					}
-				},
-				() => UObjectPool.instance.Release(awareObject, 0.1f),
-				attacker).Execute();
+				}, () => UObjectPool.instance.Release(awareObject, 0.1f), attacker).ExecuteDA();
 		}
 		
 		public static DelayedAction AttackAreaNoEffect(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
@@ -115,7 +111,7 @@ namespace AncientMemorial.Entities {
 					
 					if (--maxTargetNum == 0) return;
 				}
-			}, () => { }, attacker).Execute();
+			}, () => { }, attacker).ExecuteDA();
 		}
 		
 		// Instance Methods //
@@ -173,8 +169,6 @@ namespace AncientMemorial.Entities {
 			Collider2D groundCheckTrigger = groundChecker.GetComponent<Collider2D>();
 			groundCheckTrigger.transform.localPosition = groundBoxOffset;
 			groundCheckTrigger.transform.localScale    = groundBoxSize;
-			
-			Debug.Log($"[Initialize] velocity = {rigidbody2D.linearVelocity}");
 		}
 
 		public override void Uninitialize() {

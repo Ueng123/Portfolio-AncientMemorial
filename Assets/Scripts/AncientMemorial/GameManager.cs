@@ -7,6 +7,7 @@ using AncientMemorial.Interactions;
 using AncientMemorial.Map;
 using AncientMemorial.Tasks;
 using AncientMemorial.Waves;
+using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Inputs;
 using UengSystem.Logic.UValues;
@@ -19,7 +20,9 @@ using UengSystem.Settings;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
 using UengSystem.Utility;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Serialization;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,13 +30,13 @@ using UnityEngine.UI;
 namespace AncientMemorial {
 	public class GameManager : Manager<GameManager> {
 		
-		// NOT INITIALIZE ON RESETSTATICVARIABLES()
-		
 		public Crystal    Crystal;
 		public UCanvas    mainScreenCanvas;
 		public UCanvas    mainWorldCanvas;
 		public MainCamera mainCamera;
 		public GameObject sceneHider;
+
+		public AudioMixer audioMixer;
 		
 		public Color spawnColor;
 		
@@ -63,7 +66,41 @@ namespace AncientMemorial {
 			StartCoroutine(InitializeGame(scene.name));
 		}
 
-		private Dictionary<string, Func<bool>[]> initializeFunctions = new Dictionary<string, Func<bool>[]>{
+		private static float timeScale = 1f;
+		
+		// startTime:unscaledTime
+		private static List<(float timeScale, float startTime, float duration)> timeScaleChangeChain = new();
+		
+		public static float GetTimeScale() {
+			return timeScaleChangeChain.Count==0?timeScale:timeScaleChangeChain[0].timeScale;
+		}
+		
+		public static void SetTimeScale(float timeScale) {
+			GameManager.timeScale = timeScale;
+		}
+		
+		private DelayedAction timeRestoreAction;
+		public static void SetTimeScale(float timeScale, float duration) {
+			float                 startTime = Time.unscaledTime;
+			(float, float, float) thisItem  = (timeScale, startTime, duration);
+			
+			if (timeScaleChangeChain.Count == 0) {
+				timeScaleChangeChain.Add(thisItem);
+				return;
+			}
+
+			for (int i = 0; i < timeScaleChangeChain.Count; i++) {
+				(float timeScale, float startTime, float duration) item = timeScaleChangeChain[i];
+
+				if (!(duration < item.duration)) continue;
+				timeScaleChangeChain.Insert(i, thisItem);
+				return;
+			}
+			
+			timeScaleChangeChain.Add(thisItem);
+		}
+		
+		private static readonly Dictionary<string, Func<bool>[]> initializeFunctions = new() {
 			{"Game", new Func<bool>[] {
 				() => {
 					Debug.Log("Looking For UUIObjectPool...");
@@ -89,6 +126,13 @@ namespace AncientMemorial {
 
 					if (!MapManager.instance) return false;
 					MapManager.instance.Initialize();
+					return true;
+				},
+				() => {
+					Debug.Log("Looking For AudioManager...");
+
+					if (!AudioManager.instance) return false;
+					AudioManager.instance.Initialize();
 					return true;
 				},
 				() => {
@@ -127,6 +171,13 @@ namespace AncientMemorial {
 					return true;
 				},
 				() => {
+					Debug.Log("Looking For AudioManager...");
+
+					if (!AudioManager.instance) return false;
+					AudioManager.instance.Initialize();
+					return true;
+				},
+				() => {
 				Debug.Log("Looking For UObjectPool...");
 
 				if (!UObjectPool.instance) return false;
@@ -142,13 +193,19 @@ namespace AncientMemorial {
 				}}
 			}
 		};
-		
-		IEnumerator InitializeGame(string SceneName) {
 
-			if (Setting.data == null) Setting.LoadData();
+		public static float valueToDB(float value) {
+			if (Mathf.Approximately(value, 0f)) return -80f;
+			value = Mathf.Clamp(value, 0.0001f, 1f);
+			return Mathf.Log10(value) * 20f;
+		}
+
+		private IEnumerator InitializeGame(string SceneName) {
+			
+			SetTimeScale(1);
 			
 			yield return new WaitUntil(() => {
-				Debug.Log("Looking For ScreenCanvas");
+				Debug.Log("Looking For ScreenCanvas...");
 				return mainScreenCanvas;
 			});
 
@@ -157,7 +214,7 @@ namespace AncientMemorial {
 			int   iCount    = initializeFunctions[SceneName].Length;
 			float iComplete = 0;
 			foreach (Func<bool> initializeFunction in initializeFunctions[SceneName]) {
-				yield return new WaitForSeconds(0.1f);
+				yield return new WaitForSeconds(0.05f);
 				yield return new WaitUntil(initializeFunction);
 				loadingSlider ??= ((USlider)UUI.GetUUI("loadingUI").GetAction<USliderAction>("Loading").component).slider;
 				if (loadingSlider) {
@@ -167,13 +224,21 @@ namespace AncientMemorial {
 				
 				Debug.Log($"Initialize Completed {100f*(iComplete/iCount)}%");
 			}
-
-			yield return new WaitForSeconds(0.25f);
+			
+			if (Setting.data == null) {
+				yield return new WaitForSeconds(0.05f);
+				
+				Debug.Log("Loading Settings...");
+				
+				Setting.LoadData();
+			}
+			
+			yield return new WaitForSeconds(0.1f);
 			
 			Debug.Log("Initializing Done!");
 			UUIObjectPool.instance.Close(UUI.GetUUI("loadingUI").gameObject);
 			
-			initialized                        = true;
+			initialized = true;
 		}
 
 		public static void ResetStaticVariables() {
@@ -223,17 +288,6 @@ namespace AncientMemorial {
 			ApplyStaticBufferedLists();
 			
 			foreach (IManager manager in IManager.instances) { manager.ManagerUpdate(); }
-
-			if (InputManager.inputData[InputActionType.MouseMClick].pressType == InputPressType.Up) {
-				foreach (UObject obj in UObject.Instances) {
-					Debug.Log(s?$"{obj} RESUME":$"{obj} STOPPED");
-					
-					if (!s) obj.Stop();
-					if (s) obj.Resume();
-				}
-				
-				s = !s;
-			}
 			
 			InputManager.instance.UpdateInputs();
 			AdvancedUObject.UpdateRoutine();
@@ -255,8 +309,18 @@ namespace AncientMemorial {
 			
 			AdvancedUObject.FixedUpdateRoutine();
 		}
+
+		public override void ManagerUpdate() {
+			// 검토
+			for (int i = timeScaleChangeChain.Count - 1; i >= 0; i--) {
+				(float timeScale, float startTime, float duration) item = timeScaleChangeChain[i];
+				if (Time.unscaledTime >= item.startTime + item.duration) timeScaleChangeChain.RemoveAt(i);
+			}
+			
+			// 적용
+			Time.timeScale = GetTimeScale();
+		}
 		
-		public override void ManagerUpdate()      { }
 		public override void ManagerFixedUpdate() { }
 
 		private void OnEnable() {

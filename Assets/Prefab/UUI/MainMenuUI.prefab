@@ -164,8 +164,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 4367182998769796959}
   button: {fileID: 5934878833609752927}
@@ -337,8 +339,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 4367182998769796959}
   button: {fileID: 956503757946671815}
@@ -799,8 +803,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 4367182998769796959}
   button: {fileID: 5612607183027229430}
@@ -1257,8 +1263,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
   initialPosition: {x: 0, y: 0}
@@ -1285,10 +1293,15 @@ MonoBehaviour:
         actionType: 0
         pressType: 0
         taskOnClicked:
+          useRealTime: 0
           tasks:
           - time: 0
             tasks:
-            - rid: -2
+            - rid: 8985605332481868010
+            - rid: 8985605332481868011
+          - time: 2
+            tasks:
+            - rid: 8985605332481868012
     - rid: 8985604962976792785
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -1296,10 +1309,12 @@ MonoBehaviour:
         actionType: 0
         pressType: 0
         taskOnClicked:
+          useRealTime: 0
           tasks:
           - time: 0
             tasks:
             - rid: 8985605017941311864
+            - rid: 8985605238568780240
           - time: 2
             tasks:
             - rid: 8985605017941311862
@@ -1310,11 +1325,13 @@ MonoBehaviour:
         actionType: 0
         pressType: 0
         taskOnClicked:
+          useRealTime: 0
           tasks:
           - time: 0
             tasks:
             - rid: 8985605017941311861
             - rid: 8985605017941311860
+            - rid: 8985605238568780239
     - rid: 8985605017941311860
       type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
@@ -1348,3 +1365,27 @@ MonoBehaviour:
           rid: -2
         Category:
           rid: -2
+    - rid: 8985605238568780239
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: e1f498080da03ed40bb0cd2c90450d36, type: 3}
+    - rid: 8985605238568780240
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
+    - rid: 8985605332481868010
+      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 8985605332481868011
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 0a352d3250d3547458a652c1e59c5ed3, type: 3}
+    - rid: 8985605332481868012
+      type: {class: EndGame, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data: 

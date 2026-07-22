@@ -27,7 +27,7 @@ namespace AncientMemorial.Entities {
 				(transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
 			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).Execute();
+			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).ExecuteDA();
 			
 			textAction.text  = new UPureString {Text = "<size=20><i>!!!</i></size>"};
 			textSAction.text = textAction.text;
@@ -35,15 +35,13 @@ namespace AncientMemorial.Entities {
 			textSAction.Initialize(damageUI);
 			
 			if (entityStat.hp <= 0) {
-				Time.timeScale = 0.05f;
-				new DelayedAction(0.15f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				GameManager.SetTimeScale(0, 0.15f);
 				CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 3);
 				CameraBrain.instance.ZoomLerp(-2f);
 				return;
 			}
 			
-			Time.timeScale = 0.05f;
-			new DelayedAction(0.05f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+			GameManager.SetTimeScale(0, 0.05f);
 			CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-0.2f);
 		}
@@ -85,15 +83,20 @@ namespace AncientMemorial.Entities {
 			animator.Play("spawn");
 		}
 
+		protected override void PrepareDespawnFX() {
+			ToggleColliders(false);
+		}
+		
 		protected override IEnumerator DespawnFX(float duration) {
+			animator.Play("dead");
 			yield return new WaitForSeconds(duration);
+			UObjectPool.instance.Release(gameObject, -1);
 		}
 
 		protected override void Death() {
 			GameManager.UValueFloatVariables["crystalEnergyDead"] = new UPureNumber {number = GameManager.UValueFloatVariables["crystalEnergyDead"].value + 1};
+			GameManager.UValueFloatVariables["crystalEnergyGimmick"] = new UPureNumber {number = GameManager.UValueFloatVariables["crystalEnergyGimmick"].value - 1};
 			GameManager.UValueFloatVariables["EnemyDead"]   = new UPureNumber {number = GameManager.UValueFloatVariables["EnemyDead"].value + 1};
-			
-			animator.Play("dead");
 			base.Death();
 		}
 	}

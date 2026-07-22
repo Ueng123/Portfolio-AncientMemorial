@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AncientMemorial.Cameras;
 using AncientMemorial.Map;
 using AncientMemorial.Projectiles;
+using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Logic.UValues;
 using UengSystem.Logic.UValues.UBools;
@@ -28,16 +29,6 @@ namespace AncientMemorial.Entities {
 		private static readonly int  Spawning = Animator.StringToHash("spawning");
 		protected override      void OnGrounded() { }
 
-		public override void Stop() {
-			base.Stop();
-			missileStopwatch.Stop();
-		}
-
-		public override void Resume() {
-			base.Resume();
-			missileStopwatch.Resume();
-		}
-
 		private bool groggy;
 		private bool groggyedEffect;
 		public override    void        HitEffect(Entity    attacker,   float    damage, Vector2? pushDir = null) {
@@ -46,7 +37,7 @@ namespace AncientMemorial.Entities {
 				(transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			UTextAction   textAction = damageUI.GetAction<UTextAction>("DamageDisplay");
 			UTextAction   textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).Execute();
+			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).ExecuteDA();
 			
 			textAction.text = new UPureString {Text = (groggy)?$"{Mathf.Floor(damage*100)/100f}<size=20><i> !!</i></size>":$"{Mathf.Floor(damage*100)/100f}"};
 			textSAction.text = textAction.text;
@@ -54,40 +45,40 @@ namespace AncientMemorial.Entities {
 			textSAction.Initialize(damageUI);
 			
 			if (entityStat.hp <= 0) {
-				Time.timeScale = 0.05f;
-				new DelayedAction(0.75f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				GameManager.SetTimeScale(0, 0.5f);
 				CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 3);
 				CameraBrain.instance.ZoomLerp(-1f, 7.5f);
 				return;
 			}
+
+			PlaySFX("crystalHit1");
 			
 			if (groggyedEffect) {
 				groggyedEffect = false;
-				Time.timeScale = 0.05f;
-				new DelayedAction(0.75f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				GameManager.SetTimeScale(0, 0.5f);
 				CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 3);
 				CameraBrain.instance.ZoomLerp(-0.75f);
 				return;
 			}
 			
 			if (groggy) {
-				Time.timeScale = 0.05f;
-				new DelayedAction(0.1f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				GameManager.SetTimeScale(0, 0.1f);
 				CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 				CameraBrain.instance.ZoomLerp(-0.5f, 20f);
 				return;
 			}
 			
-			Time.timeScale = 0.05f;
-			new DelayedAction(0.05f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+			GameManager.SetTimeScale(0, 0.05f);
 			CameraBrain.instance.ShakeLerp(0.8F*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-0.5f, 20f);
 		}
 
 		private void ShootMissile(int shootN = 1) {
 			for (int i = 0; i < shootN; i++) {
-				GameObject missile = UObjectPool.instance.Get("CrystalMissile", transform.position + new Vector3(Random.Range(-1f, 1f), 1.5f+Random.Range(-0.5f, 0.5f)));
-				CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
+				Vector2 spawnPos = transform.position + new Vector3(Random.Range(-1f, 1f), 1.5f + Random.Range(-0.5f, 0.5f));
+				
+				GameObject     missile            = UObjectPool.instance.Get("CrystalMissile", spawnPos);
+				CrystalMissile crystalMissile     = missile.GetComponent<CrystalMissile>();
 				crystalMissile.owner              = this;
 				crystalMissile.damage             = entityStat.attackDamage/2;
 				crystalMissile.Category           = "crystalMissile";
@@ -101,10 +92,11 @@ namespace AncientMemorial.Entities {
 
 		private void ShootMissile2(int shootN = 1) {
 			for (int i = 0; i < shootN; i++) {
-				GameObject missile = UObjectPool.instance.Get("CrystalMissile",
-															  new Vector2(
-																  transform.position.x + Random.Range(-(mapSize.x-1), mapSize.x-1),
-																  transform.position.y + Random.Range(4, mapSize.y-4)));
+				Vector2 spawnPos = new Vector2(
+					transform.position.x + Random.Range(-(mapSize.x - 1), mapSize.x - 1),
+					transform.position.y + Random.Range(4,                mapSize.y - 4));
+				
+				GameObject     missile        = UObjectPool.instance.Get("CrystalMissile", spawnPos);
 				CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
 				crystalMissile.owner              = this;
 				crystalMissile.damage             = entityStat.attackDamage/2;
@@ -122,7 +114,7 @@ namespace AncientMemorial.Entities {
 				new DelayedAction(Random.Range(0f, 0.5f), () => {
 					if (obj.isReleased) return;
 					UObjectPool.instance.Release(obj.gameObject);
-				}).Execute();
+				}).ExecuteDA();
 			}
 		}
 		
@@ -144,11 +136,11 @@ namespace AncientMemorial.Entities {
 		protected override float       GetRealDamage(float rawDamage) {
 			if (groggyedEffect) {
 				groggyedEffect = false;
-				new DelayedAction(5f, ()=>groggy=false).Execute();
+				new DelayedAction(5f, ()=>groggy=false).ExecuteDA();
 				
 				currentExclusiveAction = Stun(5);
 				state                  = EnemyState.Stun;
-				new DelayedAction(5, () => state = EnemyState.Alert).Execute();
+				new DelayedAction(5, () => state = EnemyState.Alert).ExecuteDA();
 				
 				return entityData.hp / 20f;
 			}
@@ -163,6 +155,8 @@ namespace AncientMemorial.Entities {
 		
 		protected override IEnumerator AttackEnumerator() {
 			animator.SetBool(Spawning, true);
+			PlaySFX("crystalRoar");
+			
 			ForceInvincibleTrue(true);
 			
 			InfoUUI.instance.AddInfoMessage("크리스탈이 기억속 잔재를 불러옵니다.");
@@ -178,7 +172,7 @@ namespace AncientMemorial.Entities {
 					string  spawnEntityID = Random.Range(0, 2) == 0 ? "SkeletonWarriorC" : "SkeletonArcherC";
 					Vector3 spawnPosOffset = new (Random.Range(2, 6) * (Random.Range(0, 2) == 0 ? 1 : -1), Random.Range(1, 1.5f));
 					UObjectPool.instance.Get(spawnEntityID, transform.position + spawnPosOffset, 2.5f);
-				}).Execute();
+				}).ExecuteDA();
 			}
 			
 			yield return new WaitUntil(()=>GameManager.UValueFloatVariables["EnemyDead"].value >= entityToSpawn);
@@ -329,6 +323,8 @@ namespace AncientMemorial.Entities {
 			foreach (GameObject obj in hideOnDeath) {
 				obj.SetActive(false);
 			}
+			
+			PlaySFX("crystalHit2");
 
 			GameManager.UValueBoolVariables["crystalPhase1End"]   = new UPureBool {boolValue = true};
 			

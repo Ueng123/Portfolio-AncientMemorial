@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using AncientMemorial.Entities;
+using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Inputs;
 using UengSystem.ObjectPool;
@@ -27,7 +28,7 @@ namespace AncientMemorial.Weapons {
 		private Vector2       plrPos => player.transform.position;
 		
 		private const float attackLength1 = 0.833f;
-		private IEnumerator attack1Enumerator() {
+		private IEnumerator attack3Enumerator() {
 			Vector2 mousePos = InputManager.inputData[InputActionType.MousePosition].valueV;
 			bool    isBack   = mousePos.x < player.transform.position.x;
 			
@@ -39,21 +40,22 @@ namespace AncientMemorial.Weapons {
 			oldAnimatorSpeed = player.animator.speed;
 			player.animator.speed = player.entityStat.attackSpeed;
 			
+			yield return new WaitForSeconds(attackLength1 * 0.1f/player.entityStat.attackSpeed);
+			
 			GameObject obj = UObjectPool.instance.Get("SlashEffect", (Vector2)player.transform.position + new Vector2(0.48f*(isBack?-1:1)+Random.Range(-0.1f, 0.1f),Random.Range(-0.1f, 0.1f)));
 			obj.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(-5f, 5f));
 			obj.transform.localScale = new Vector3(0.9f, 1.2f);
 			
 			// damage
 			const int maxTargetEntity = 2;
-			attackDelayedAction = new DelayedAction(
-				0.1f / player.entityStat.attackSpeed,
-				()=>Entity.AttackAreaNoEffect(player, 1.3f, 0, plrPos+hitboxPos, hitboxSize, 0, maxTargetEntity)).Execute();
+			Entity.AttackAreaNoEffect(player, 1.3f, 0, plrPos+hitboxPos, hitboxSize, 0, maxTargetEntity);
+			player.PlaySFX("swordSlash3");
 			
-			yield return new WaitForSeconds(attackLength1/player.entityStat.attackSpeed);
+			yield return new WaitForSeconds(attackLength1 * 0.9f/player.entityStat.attackSpeed);
 		}
 
 		private const float attackLength2 = 0.85f;
-		private IEnumerator attack2Enumerator() {
+		private IEnumerator attack1Enumerator() {
 			Vector2 mousePos = InputManager.inputData[InputActionType.MousePosition].valueV;
 			bool    isBack   = mousePos.x < player.transform.position.x;
 			
@@ -65,21 +67,22 @@ namespace AncientMemorial.Weapons {
 			oldAnimatorSpeed      = player.animator.speed;
 			player.animator.speed = player.entityStat.attackSpeed;
 			
+			yield return new WaitForSeconds(attackLength1 * 0.06f/player.entityStat.attackSpeed);
+			
 			GameObject obj = UObjectPool.instance.Get("SlashEffect", (Vector2)player.transform.position + new Vector2(0.6f*(isBack?-1:1)+Random.Range(-0.2f, 0.2f),-0.1f+Random.Range(-0.2f, 0.2f)));
 			obj.transform.rotation   = Quaternion.Euler(0, 0, 90 + Random.Range(-1f, 1f));
 			obj.transform.localScale = new Vector3(1, 1.2f);
 			
 			// damage
 			const int maxTargetEntity = 4;
-			attackDelayedAction = new DelayedAction(
-				0.06f / player.entityStat.attackSpeed,
-				()=>Entity.AttackAreaNoEffect(player, 1.1f, 0, plrPos+hitboxPos, hitboxSize, 0, maxTargetEntity)).Execute();
+			Entity.AttackAreaNoEffect(player, 1.1f, 0, plrPos+hitboxPos, hitboxSize, 0, maxTargetEntity);
+			player.PlaySFX("swordSlash1");
 			
-			yield return new WaitForSeconds(attackLength2/player.entityStat.attackSpeed);
+			yield return new WaitForSeconds(attackLength2 * 0.94f/player.entityStat.attackSpeed);
 		}
 		
 		private const float attackLength3 = 0.833f;
-		private IEnumerator attack3Enumerator() {
+		private IEnumerator attack2Enumerator() {
 			Vector2 mousePos = InputManager.inputData[InputActionType.MousePosition].valueV;
 			bool    isBack   = mousePos.x < player.transform.position.x;
 			
@@ -91,55 +94,18 @@ namespace AncientMemorial.Weapons {
 			oldAnimatorSpeed      = player.animator.speed;
 			player.animator.speed = player.entityStat.attackSpeed;
 			
+			yield return new WaitForSeconds(attackLength1 * 0.06f/player.entityStat.attackSpeed);
+			
 			GameObject obj = UObjectPool.instance.Get("SlashEffect", (Vector2)player.transform.position + new Vector2(0.3f*(isBack?-1:1)+Random.Range(-0.1f, 0.1f),-0.1f+Random.Range(-0.1f, 0.1f)));
 			obj.transform.rotation   = Quaternion.Euler(0, 0, -85 + Random.Range(-2f, 2f));
 			obj.transform.localScale = new Vector3(1.1f, 2f);
 			
 			// damage
 			const int maxTargetEntity = 3;
-			attackDelayedAction = new DelayedAction(
-				0.06f / player.entityStat.attackSpeed,
-				()=>Entity.AttackAreaNoEffect(player, 1.5f, 0, plrPos+hitboxPos, hitboxSize, 0, maxTargetEntity)).Execute();
+			Entity.AttackAreaNoEffect(player, 1.5f, 0, plrPos+hitboxPos, hitboxSize, 0, maxTargetEntity);
+			player.PlaySFX("swordSlash2");
 			
-			yield return new WaitForSeconds(attackLength3/player.entityStat.attackSpeed);
-		}
-		
-		private const float attackLength4  = 1.917f;
-		private IEnumerator attack4Enumerator() {
-			Vector2 mousePos = InputManager.inputData[InputActionType.MousePosition].valueV;
-			bool    isBack   = mousePos.x < player.transform.position.x;
-			
-			player.animator.Play("Dattack4"+(isBack?"B":""), 0);
-
-			Vector2 hitboxPos  = new Vector2(0.6f*(isBack?-1:1), 0f);
-			Vector2 hitboxSize = new Vector2(1.5f, 1f);
-			
-			oldAnimatorSpeed      = player.animator.speed;
-			player.animator.speed = player.entityStat.attackSpeed;
-			yield return new WaitForSeconds(attackLength4/(player.entityStat.attackSpeed*3));
-			
-			// damage
-			Debug.Log("ATTACKING 4 LOL");
-			int maxTargetEntity = 7;
-			Collider2D[] hitColliders = Physics2D.OverlapBoxAll(hitboxPos + (Vector2)player.transform.position, hitboxSize, 0f);
-			foreach (Collider2D hit in hitColliders) {
-				if (!hit.CompareTag("Entity")) continue;
-				Entity entity = hit.GetComponent<Entity>();
-
-				if (entity.Friendly || entity == player) continue;
-				if (maxTargetEntity--<=0) break;
-				
-				Debug.Log($"[HIT EVENT] SendingEvent : {entity}");
-				player.AddProcessToUpdate(()=>player.SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, 10, new EntityHitData(
-									 player,
-									 null,
-									 entity,
-									 player.entityStat.attackDamage*3*Random.Range(0.9f, 1.2f),
-									 new Vector2(entity.transform.position.x - player.transform.position.x, 0).normalized
-									 )));
-			}
-			
-			yield return new WaitForSeconds((attackLength4 * 2)/(player.entityStat.attackSpeed*3));
+			yield return new WaitForSeconds(attackLength2 * 0.94f/player.entityStat.attackSpeed);
 		}
 
 		private void OnAttackCancel() {
@@ -162,9 +128,9 @@ namespace AncientMemorial.Weapons {
 
 		protected override ExclusiveAction GetAttackAction(int attackStage) {
 			return attackStage switch {
-				0 => attack2,
-				1 => attack3,
-				2 => attack1,
+				0 => attack1,
+				1 => attack2,
+				2 => attack3,
 				_ => throw new ArgumentOutOfRangeException(nameof(attackStage), attackStage, null)
 			};
 		}
@@ -174,7 +140,6 @@ namespace AncientMemorial.Weapons {
 				0 => (attackLength1 /player.entityStat.attackSpeed) *.5f,
 				1 => (attackLength2 /player.entityStat.attackSpeed) *.5f,
 				2 => (attackLength3 /player.entityStat.attackSpeed) *.5f,
-				3 => (attackLength4 /player.entityStat.attackSpeed) *.5f,
 				_ => throw new ArgumentOutOfRangeException(nameof(attackStage), attackStage, null)
 			};
 		}

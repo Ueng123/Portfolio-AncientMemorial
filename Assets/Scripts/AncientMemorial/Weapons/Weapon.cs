@@ -8,8 +8,7 @@ namespace AncientMemorial.Weapons {
 		protected int       attackStageCount;
 		protected StopWatch attackWatch;
 		protected Player    player;
-		public    bool      isCancellable  => currAttackStage == -1 || !attackWatch.Check(GetAttackDelay(currAttackStage)/1.8f);
-
+		public         bool isCancellable  => currAttackStage == -1 || !attackWatch.Check(GetAttackDelay(currAttackStage)/1.25f);
 		public virtual bool CanAttack() => currAttackStage == -1 || !attackWatch.Check(GetAttackDelay(currAttackStage));
 		
 		public void Initialize() {

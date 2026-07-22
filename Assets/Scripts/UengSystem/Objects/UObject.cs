@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using AncientMemorial;
 using AncientMemorial.Objects;
+using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Logic.Tasks;
 using UengSystem.Managers;
@@ -15,7 +16,7 @@ using Events_Event = UengSystem.Events.Event;
 using Events_EventType = UengSystem.Events.EventType;
 
 namespace UengSystem.Objects {
-	public abstract class UObject : MonoBehaviour, IObjectPoolable, IEventAgent, IStoppable, IInitializable, ITaskable {
+	public abstract class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, IInitializable, ITaskable {
 
 		private static readonly Dictionary<string,      UObject > IDTable       = new ();
 		private static readonly Dictionary<string, List<UObject>> CategoryTable = new ();
@@ -87,7 +88,7 @@ namespace UengSystem.Objects {
 					new DelayedAction(delay, () => {
 						_currentExclusiveAction = value;
 						value?.Execute();
-					}).Execute();
+					}).ExecuteDA();
 				}
 			}
 		}
@@ -97,6 +98,30 @@ namespace UengSystem.Objects {
 		public bool   _gettable;
 		public bool   gettable   { get => _gettable; set => _gettable = value; }
 		public bool   isReleased { get;              set; }
+
+		public AudioSource PlaySFX(string clipName, Vector2 position = default, bool isLocalPosition = true, float volume = 1f, float pitch = 1f, float pan = 0f, float spread = 0f, bool loop = false) {
+			return AudioManager.instance.PlaySFX(clipName, transform, position, isLocalPosition, volume, pitch, pan, spread, loop);
+		}
+		
+		public AudioSource PlaySFX(AudioClip clip, Vector2 position = default, bool isLocalPosition = true, float volume = 1f, float pitch = 1f, float pan = 0f, float spread = 0f, bool loop = false) {
+			return AudioManager.instance.PlaySFX(clip, transform, position, isLocalPosition, volume, pitch, pan, spread, loop);
+		}
+		
+		// IActionable //
+		private readonly List<UAction> runningActions = new();
+
+		public void RegisterAction(UAction action) {
+			runningActions.Add(action);
+		}
+		
+		public void UnregisterAction(UAction action) {
+			runningActions.Remove(action);
+		}
+
+		public void StopAllUActions() {
+			foreach (UAction action in runningActions) { action.Cancel(); }
+			runningActions.Clear();
+		}
 
 		// IStoppable Variables //
 		private int stoppedTime;
@@ -152,58 +177,57 @@ namespace UengSystem.Objects {
 
 		public virtual void OnEvent(Events_Event e) { }
 
-		// IStoppable Method //
-		
-		
-		public virtual void Stop() {
-			if (stopped) { stopped = true; return; } // 현재 stop -> 중첩쌓고 ㅃㅃ
-			stopped = true; // 중첩 쌓기
-			
-			if (rigidbody2D) {
-				linearVelocityBeforeStop  = rigidbody2D.linearVelocity;
-				angularVelocityBeforeStop = rigidbody2D.angularVelocity;
-				bodyTypeBeforeStop        = rigidbody2D.bodyType;
-				
-				rigidbody2D.bodyType       = RigidbodyType2D.Kinematic;
-				rigidbody2D.linearVelocity = Vector2.zero;
-				rigidbody2D.angularVelocity = 0;
-			}
-			
-			if (animator) {
-				animatorSpeedBeforeStop = animator.speed;
-				animator.speed   = 0;
-				animator.enabled = false;
-			}
-		}
-
-		public virtual void Resume() {
-			stopped = false; // stop 중첩 -1
-			if (stopped) return; // stop 중첨 완전 해제 -> Resume
-			
-			if (rigidbody2D) {
-				rigidbody2D.linearVelocity  = linearVelocityBeforeStop;
-				rigidbody2D.angularVelocity = angularVelocityBeforeStop;
-				rigidbody2D.bodyType        = bodyTypeBeforeStop;
-			}
-
-			if (animator) {
-				animator.speed   = animatorSpeedBeforeStop;
-				animator.enabled = true;
-			}
-		}
-
+		private Quaternion      _initialRotation;
+		private Vector3         _initialScale;
+		private Color           _initialColor;
+		private Sprite          _initialSprite;
+		private RigidbodyType2D _initialRigidBodyType;
+		private float           _initialLinearDamping;
+		private float           _initialAngularDamping;
+		private float           _initialGravityScale;
 		public virtual void OnFirstGet() {
+			_initialRotation = transform.rotation;
+			_initialScale    = transform.localScale;
+			
 			rigidbody2D    = GetComponent<Rigidbody2D>();
+			if (rigidbody2D) {
+				_initialRigidBodyType  = rigidbody2D.bodyType;
+				_initialLinearDamping  = rigidbody2D.linearDamping;
+				_initialAngularDamping = rigidbody2D.angularDamping;
+				_initialGravityScale   = rigidbody2D.gravityScale;
+			}
+			
 			spriteRenderer = GetComponent<SpriteRenderer>();
+			if (spriteRenderer) {
+				_initialColor  = spriteRenderer.color;
+				_initialSprite = spriteRenderer.sprite;
+			}
+			
 			animator       = GetComponent<Animator>();
 		}
 
-		public DelayedAction spawnFXCache = null;
+		private DelayedAction spawnFXCache = null;
 		public Task          GetTask;
 		
 		public virtual void Get(float time) {
+			transform.rotation   = _initialRotation;
+			transform.localScale = _initialScale;
+			
+			if (rigidbody2D) {
+				rigidbody2D.linearVelocity  = Vector2.zero;
+				rigidbody2D.angularVelocity = 0f;
+				rigidbody2D.bodyType        = _initialRigidBodyType;
+				rigidbody2D.linearDamping   = _initialLinearDamping;
+				rigidbody2D.angularDamping  = _initialAngularDamping;
+				rigidbody2D.gravityScale    = _initialGravityScale;
+			}
+			
+			if (spriteRenderer) {
+				spriteRenderer.color  = _initialColor;
+				spriteRenderer.sprite = _initialSprite;
+			}
+			
 			if (time == 0) {
-				// DONT NEED ANY FREEZE / UNFREEZE 그리고 어짜피 UNFREEZE 하면
 				OnGet();
 				Initialize();
 				ToggleColliders(true);
@@ -232,10 +256,9 @@ namespace UengSystem.Objects {
 					spawnFXCache = null;
 				}, this);
 			
-			spawnFXCache.Execute();
+			spawnFXCache.ExecuteDA();
 		}
 		
-		public DelayedAction despawnFXCache = null;
 		public Task          ReleaseTask;
 		
 		public virtual void Release(float time) {
@@ -360,7 +383,6 @@ namespace UengSystem.Objects {
 			}
 		}
 
-
 		protected virtual void FinishSpawnFX() {
 			Debug.Log("Finish spawning FX");
 
@@ -381,21 +403,17 @@ namespace UengSystem.Objects {
 
 		protected virtual void PrepareDespawnFX() {
 			Freeze();
-
-
+			
 			ToggleColliders(false);
-
-
+			
 			if (spriteRenderer) colorBeforeDespawnFX = spriteRenderer.color;
 		}
 
 		protected virtual IEnumerator DespawnFX(float duration) {
 			float elapsed = 0f;
-
-
+			
 			if (spriteRenderer) spriteRenderer.sprite = whiteSpawnSprite ?? spriteRenderer.sprite;
-
-
+			
 			while (elapsed < duration) {
 				elapsed += Time.deltaTime;
 
@@ -413,8 +431,7 @@ namespace UengSystem.Objects {
 
 				yield return null;
 			}
-
-
+			
 			Unfreeze();
 
 			if (spriteRenderer) spriteRenderer.color = colorBeforeDespawnFX;
@@ -435,6 +452,9 @@ namespace UengSystem.Objects {
 			ReleaseTask.Execute(this, this);
 
 			currentExclusiveAction = null;
+			StopAllCoroutines();
+			StopAllUActions();
+			
 			if (rigidbody2D && rigidbody2D.bodyType == RigidbodyType2D.Dynamic) rigidbody2D.linearVelocity = Vector2.zero;
 		}
 

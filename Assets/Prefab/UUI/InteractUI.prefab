@@ -112,8 +112,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
   initialPosition: {x: 0, y: 0}
@@ -134,21 +136,22 @@ MonoBehaviour:
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
         component: {fileID: 2131951806108181785}
-        setValue: 1
+        initialValue:
+          rid: -2
         value:
           rid: 6576058688792690831
-        useValue: 0
-        task:
-          rid: -2
-        setColor: 1
         color:
           rid: 6576058688792690781
+        condition: 0
+        taskOnValueChanged:
+          useRealTime: 0
+          tasks: []
     - rid: 6576058200125079634
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 7193954444277158016}
         text:
-          rid: 6576058688792690856
+          rid: 8985605350484083005
     - rid: 6576058688792690781
       type: {class: UNumberColor, ns: UengSystem.Logic.UValues.UColors, asm: Assembly-CSharp}
       data:
@@ -195,7 +198,7 @@ MonoBehaviour:
         endSlope:
           rid: 6576058688792690833
         T:
-          rid: 6576058688792690834
+          rid: 8985605350484083006
     - rid: 6576058688792690832
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
@@ -210,29 +213,6 @@ MonoBehaviour:
         valueCache: 0
         isValueCached: 0
         number: 0.2
-    - rid: 6576058688792690834
-      type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        interactObject:
-          rid: 6576058688792690839
-    - rid: 6576058688792690839
-      type: {class: UObjectFromVariable, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: {fileID: 0}
-        isValueCached: 0
-        varID:
-          rid: 6576058688792690841
-    - rid: 6576058688792690841
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: InteractTargetObject
     - rid: 6576058688792690842
       type: {class: UBasicCubicBezierValue, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
@@ -244,7 +224,7 @@ MonoBehaviour:
         endSlope:
           rid: 6576058688792690844
         T:
-          rid: 6576058688792690845
+          rid: 8985605350484083004
     - rid: 6576058688792690843
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
@@ -259,44 +239,27 @@ MonoBehaviour:
         valueCache: 0
         isValueCached: 0
         number: 0.1
-    - rid: 6576058688792690845
-      type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
+    - rid: 8985605350484083004
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         valueCache: 0
         isValueCached: 0
-        interactObject:
-          rid: 6576058688792690846
-    - rid: 6576058688792690846
-      type: {class: UObjectFromVariable, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: {fileID: 0}
-        isValueCached: 0
-        varID:
-          rid: 6576058688792690859
-    - rid: 6576058688792690856
-      type: {class: UStringFromVariable, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        varID:
-          rid: 6576058688792690860
-    - rid: 6576058688792690859
+        number: 0
+    - rid: 8985605350484083005
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         valueCache: 
         isValueCached: 0
-        Text: InteractTargetObject
-    - rid: 6576058688792690860
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        Text: 
+    - rid: 8985605350484083006
+      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 
+        valueCache: 0
         isValueCached: 0
-        Text: InteractUIText
+        number: 0
 --- !u!95 &3884056995480547450
 Animator:
   serializedVersion: 7
@@ -539,10 +502,14 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 2071304622024838995}
+  slider: {fileID: 0}
+  valueChanged: 0
   references:
     version: 2
     RefIds: []
@@ -653,6 +620,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -719,8 +687,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 2071304622024838995}
   text: {fileID: 0}

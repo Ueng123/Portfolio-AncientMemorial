@@ -6,8 +6,13 @@ using TMPro;
 using UengSystem.Events;
 using UengSystem.Logic.Tasks;
 using UengSystem.Logic.UValues;
+using UengSystem.Logic.UValues.UColors;
+using UengSystem.Logic.UValues.UFloats;
+using UengSystem.Logic.UValues.UObjects;
+using UengSystem.Logic.UValues.UStrings;
 using UengSystem.Objects;
 using UengSystem.UI;
+using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
 using UnityEngine;
@@ -21,13 +26,20 @@ namespace AncientMemorial.Interactions {
 		
 		public static List<Interaction> InteractableInteractions = new ();
 		
-		public DelayedAction interactAction;
+		public  DelayedAction         interactAction;
+		private InteractProgressValue interactProgressValue;
+		private UUI                   interactUI;
 
 		[Header("Interaction")]
-		public bool     interactable;
-		public  float   timeToInteract;
-		public  float   cooldownToInteract;
-		public  UCanvas canvas;
+		[SerializeField]
+		private bool interactable ;
+
+		public bool           showInteractUI;
+		public string         interactString;
+		public UValue<string> interactionText;
+		public float          timeToInteract;
+		public float          cooldownToInteract;
+		public UCanvas        canvas;
 		
 		public Task onInteract;
 		public Task onCancel;
@@ -38,6 +50,9 @@ namespace AncientMemorial.Interactions {
 		// Static Methods //
 		
 		// Instance Methods //
+
+		public virtual void Interactable()   => interactable = true;
+		public virtual void UnInteractable() => interactable = false;
 
 		protected abstract void OnInteractStart();
 		public void InteractStart() {
@@ -59,12 +74,31 @@ namespace AncientMemorial.Interactions {
 
 		protected abstract void OnTarget();
 		protected virtual void Targetted() {
+			if (showInteractUI && !interactUI) {
+				interactUI = UUIObjectPool.instance.Open("InteractUI", canvas).GetComponent<UUI>();
+                interactProgressValue ??= new InteractProgressValue { interactObject = new UObjectSerialized { obj = this } };
+                	
+                USliderAction sliderAction = interactUI.GetAction<USliderAction>("Bar");
+                ((UBasicCubicBezierValue)sliderAction.value).T = interactProgressValue;
+                ((UNumberColor)sliderAction.color).a = interactProgressValue;
+				
+				UTextAction textAction = interactUI.GetAction<UTextAction>("TextLabel");
+				interactionText ??= new UPureString { Text = interactString };
+				textAction.text =   interactionText;
+				textAction.Initialize(interactUI);
+			}
+			
 			onTarget.Execute(this);
 			OnTarget();
 		}
 
 		protected abstract void OnUnTarget();
 		protected virtual void Untargetted() {
+			if (showInteractUI && interactUI) { 
+				UUIObjectPool.instance.Close(interactUI.gameObject);
+				interactUI = null;
+			}
+			
 			onUnTarget.Execute(this);
 			OnUnTarget();
 		}
@@ -102,7 +136,7 @@ namespace AncientMemorial.Interactions {
 				case UengSystem.Events.EventType.Interact_Start: {
 					if (((EventValueData<InteractTryInfo>)e.data).value.objectToInteract == this) {
 						InteractStart();
-						interactAction.Execute();
+						interactAction.ExecuteDA();
 					}
 
 					break;

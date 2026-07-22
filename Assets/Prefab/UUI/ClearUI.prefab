@@ -316,8 +316,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 0}
   button: {fileID: 0}
@@ -1065,8 +1067,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 0}
   button: {fileID: 0}
@@ -1200,8 +1204,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
   initialPosition: {x: 0, y: 0}
@@ -1225,11 +1231,12 @@ MonoBehaviour:
         actionType: 9
         pressType: 0
         taskOnClicked:
+          useRealTime: 1
           tasks:
           - time: 0
             tasks:
             - rid: 8985605036668878972
-          - time: 0
+          - time: 2
             tasks:
             - rid: 8985605036668878971
     - rid: 8985604938008101055
@@ -1239,10 +1246,13 @@ MonoBehaviour:
         actionType: 8
         pressType: 0
         taskOnClicked:
+          useRealTime: 1
           tasks:
           - time: 0
             tasks:
             - rid: 8985605036668878968
+          - time: 2
+            tasks:
             - rid: 8985605036668878969
     - rid: 8985605036668878968
       type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}

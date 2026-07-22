@@ -31,14 +31,14 @@ namespace UengSystem.UI.UUIQueues {
 					() => !UObject.UObjectExists(key),
 					() => new DelayedAction(
 						data.closeTime + item.marginFront + 0.01f,
-						() => { canDoNext = true; }).Execute(),
+						() => { canDoNext = true; }).ExecuteDA(),
 					() => {
 						if (uui.isReleased) return;
 						UUIObjectPool.instance.Close(ui);
 						new DelayedAction(data.closeTime + item.marginBack + 0.01f,
-										  () => { canDoNext = true; }).Execute();
-					}, item.duration).Execute();
-			}).Execute();
+										  () => { canDoNext = true; }).ExecuteDA();
+					}, item.duration).ExecuteWA();
+			}).ExecuteDA();
 		}
 	}
 }

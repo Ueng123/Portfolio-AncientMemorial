@@ -5,7 +5,9 @@ using AncientMemorial.Interactions;
 using AncientMemorial.Map;
 using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
+using AncientMemorial.Waves;
 using AncientMemorial.Weapons;
+using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Inputs;
 using UengSystem.Logic.Tasks;
@@ -42,6 +44,7 @@ namespace AncientMemorial.Entities {
 		private float handRotOffsetSpeed;
 		
 		private bool dashing;
+		private bool jumping;
 
 		private Vector2 arrowAimDir;
 
@@ -56,7 +59,7 @@ namespace AncientMemorial.Entities {
 				if (!targetInteractChangeable) return;
 
 				targetInteractChangeable = false;
-				new DelayedAction(0.1f, () => { targetInteractChangeable = true; }).Execute();
+				new DelayedAction(0.1f, () => { targetInteractChangeable = true; }).ExecuteDA();
 
 				if (_targetInteraction) {
 					SendEvent(EventType.Interact_Untarget, 2, new EventValueData<Interaction>(_targetInteraction));
@@ -88,12 +91,10 @@ namespace AncientMemorial.Entities {
 		
 		private bool CanJump() {
 			if (dashing) return false;
-			if (!isGround) return false;
-			bool inKoyoteTime = unGroundedTimer.Check(0.2f);
+			if (jumping) return false;
 			if (!weapon.isCancellable) return false;
-
-			return isGround || inKoyoteTime;
-
+			if (!isGround) return false;
+			
 			return true;
 		}
 		
@@ -105,7 +106,24 @@ namespace AncientMemorial.Entities {
 			return true;
 		}
 
-		private int moveSign;
+		private bool CanShoot() {
+			if (dashing) return false;
+			if (!shootable) return false;
+			if (!weapon.isCancellable) return false;
+			
+			return true;
+		}
+
+		private int  moveSign;
+		private bool _FootstepSound = false;
+		private bool FootstepSound {
+			get => _FootstepSound;
+			set {
+				if (_FootstepSound == value) return;
+				if (value) PlaySFX("footstep"+Random.Range(1, 4));
+				_FootstepSound = value;
+			}
+		}
 
 		private void Move() {
 			float moveDir = InputManager.inputData[InputActionType.Move].valueF;
@@ -115,7 +133,10 @@ namespace AncientMemorial.Entities {
 
 			isMoving = (moveDir != 0);
 
-			if (isMoving) currentExclusiveAction = null;
+			if (isMoving) {
+				currentExclusiveAction = null;
+				FootstepSound          = spriteRenderer.sprite.name == "Player_2";
+			}
 
 			if (isGround) {
 				if (moveDir == 0 && rigidbody2D.linearVelocityX == 0) return;
@@ -148,49 +169,14 @@ namespace AncientMemorial.Entities {
 		private const float     dashTime      = 0.4f;
 		private void Dash() {
 			SendEvent(EventType.Entity_Behaviour_Dash, 3);
+			PlaySFX("playerDash");
 			
 			currentExclusiveAction = null;
 			
 			dashTimer ??= new StopWatch();
 			dashTimer.Tick();
 			
-			// dashing   =   true;
-			// ForceInvincibleTrue(true);
-			//
-			// float oldVelocityX = rigidbody2D.linearVelocity.x;
-			// float oldGravityScale = rigidbody2D.gravityScale;
-			// rigidbody2D.linearVelocity = Vector2.right * (entityStat.moveSpeed * moveSign * 1.75f);
-			// rigidbody2D.gravityScale = 0;
-			// SpriteRenderer sr = UObjectPool.instance.Get("DashEffect", transform.position).GetComponent<SpriteRenderer>();
-			// sr.flipX = spriteRenderer.flipX;
-			// sr.sprite = spriteRenderer.sprite;
-			
-			// Debug.Log("[DASH] dash started");
-			
 			StartCoroutine(DashEnumerator());
-			
-			// for (int i = 1; i <= n-1; i++) {
-			// 	new DelayedAction(dashLength*i/n, () => {
-			// 		SpriteRenderer sr = UObjectPool.instance.Get("DashEffect", transform.position).GetComponent<SpriteRenderer>();
-			// 		sr.flipX  = spriteRenderer.flipX;
-			// 		sr.sprite = spriteRenderer.sprite;
-			// 	}).Execute();
-			// }
-			//
-			// new DelayedAction(dashLength, () => {
-			// 	dashing                    = false;
-			// 	rigidbody2D.linearVelocity /= 2;
-			// 	rigidbody2D.gravityScale   = oldGravityScale;
-			// 	
-			// 	SpriteRenderer sr = UObjectPool.instance.Get("DashEffect", transform.position).GetComponent<SpriteRenderer>();
-			// 	sr.flipX  = spriteRenderer.flipX;
-			// 	sr.sprite = spriteRenderer.sprite;
-			// }).Execute();
-			//
-			// new DelayedAction(dashLength+0.3f, ()=> {
-			// 	if (dashing) return;
-			// 	ForceInvincibleTrue(false);
-			// }).Execute();
 		}
 
 		IEnumerator DashEnumerator(int dashEffectCount = 10) {
@@ -260,18 +246,13 @@ namespace AncientMemorial.Entities {
 		}
 		
 		private void GetInput() {
-			if (InputManager.inputData[InputActionType.Jump].pressType is InputPressType.Down or InputPressType.Hold && CanJump()) {
-				Jump();
-			}
+			if (InputManager.inputData[InputActionType.Jump].pressType is InputPressType.Down or InputPressType.Hold && CanJump()) Jump();
 			
-			if (InputManager.inputData[InputActionType.Dash].pressType == InputPressType.Down && CanDash())
-				Dash();
+			if (InputManager.inputData[InputActionType.Dash].pressType == InputPressType.Down && CanDash()) Dash();
 			
-			if (InputManager.inputData[InputActionType.MouseLClick].pressType is InputPressType.Down or InputPressType.Hold && weapon.CanAttack())
-				PrimaryAttack();
+			if (InputManager.inputData[InputActionType.MouseLClick].pressType is InputPressType.Down or InputPressType.Hold && weapon.CanAttack()) PrimaryAttack();
 			
-			if (InputManager.inputData[InputActionType.MouseRClick].pressType is InputPressType.Down or InputPressType.Hold)
-				SecondaryAttack();
+			if (InputManager.inputData[InputActionType.MouseRClick].pressType is InputPressType.Down or InputPressType.Hold && CanShoot()) SecondaryAttack();
 			
 			if (InputManager.inputData[InputActionType.Move].valueF != 0.0f)
 				SendEvent(EventType.Entity_Behaviour_Move, 3, new EventValueData<float>(InputManager.inputData[InputActionType.Move].valueF));
@@ -367,7 +348,10 @@ namespace AncientMemorial.Entities {
 		// EVENT BEHAVIOUR //
 		
 		private void Jump() {
+			jumping = true;
+			
 			SendEvent(EventType.Entity_Behaviour_Jump, 3);
+			PlaySFX("playerJump");
 			
 			currentExclusiveAction = null;
 			
@@ -403,18 +387,22 @@ namespace AncientMemorial.Entities {
 		}
 		
 		// R CLICK
-		private bool shootable      = true;
-		private int  mapEntityLayer;
+		private       bool          shootable      = true;
+		private       int           mapEntityLayer;
+		private const float         reloadTime      = 1.5f;
+		private const float         reloadSoundTime = 0.4f;
+		private       DelayedAction reloadSound = new (reloadTime - reloadSoundTime, () => player.PlaySFX("crossbowReload"));
+		private       DelayedAction reload = new (reloadTime, () => player.shootable = true);
+		
 		private void SecondaryAttack() {
-			
-			if (dashing) return;
-			if (!shootable) return;
 			SendEvent(EventType.Entity_Behaviour_Secondary, 3);
+			PlaySFX("crossbowShoot");
 			
 			mapEntityLayer = mapEntityLayer == 0 ? LayerMask.GetMask("Entity", "Map") : mapEntityLayer;
 			
 			shootable = false;
-			new DelayedAction(1.5f, () => shootable = true).Execute();
+			reloadSound.ExecuteDA();
+			reload.ExecuteDA();
 			
 			SetArm();
 			crossbowAnimator.SetTrigger(spriteRenderer.flipX?SHOOTB:SHOOTF);
@@ -435,8 +423,8 @@ namespace AncientMemorial.Entities {
                 
 			if (hitEntity) { SendAttackEvent(hitEntity, 1.5f * Random.Range(0.9f, 1.1f), false); }
 				
-			GameObject   arrowTail         = UObjectPool.instance.Get("ArrowTail", Vector2.zero);
-			LineRenderer arrowTailRenderer = arrowTail.GetComponent<LineRenderer>();
+			GameObject   arrowTail          = UObjectPool.instance.Get("ArrowTail", Vector2.zero);
+			LineRenderer arrowTailRenderer  = arrowTail.GetComponent<LineRenderer>();
 			arrowTailRenderer.positionCount = 2;
 			arrowTailRenderer.SetPosition(0, handPos);
 			arrowTailRenderer.SetPosition(1, hitPos);
@@ -453,8 +441,7 @@ namespace AncientMemorial.Entities {
 				obj.transform.SetParent(hit.collider.transform, true);
 			}
                 
-			new DelayedAction(10, () => UObjectPool.instance.Release(obj), () => { }, obj.GetComponent<UObject>())
-				.Execute();
+			new DelayedAction(10, () => UObjectPool.instance.Release(obj), () => { }, obj.GetComponent<UObject>()).ExecuteDA();
                 
 			obj.transform.rotation = hand.transform.rotation;
 			CameraBrain.instance.ShakeLerp(0.5f, 7.5f);
@@ -496,16 +483,6 @@ namespace AncientMemorial.Entities {
 		}
 		
 		// OVERRIDING //
-		
-		public override void Stop() {
-			base.Stop();
-			dashTimer.Stop();
-		}
-
-		public override void Resume() {
-			base.Resume();
-			dashTimer.Resume();
-		}
 
 		public override EntityData GetData() {
 			EntityData data = base.GetData();
@@ -537,7 +514,10 @@ namespace AncientMemorial.Entities {
 			base.Release(time);
 		}
 
-		protected override void OnGrounded() { }
+		protected override void OnGrounded() {
+			PlaySFX("playerLand");
+			jumping = false;
+		}
 
 		public override void Initialize() {
 			hand.SetActive(true);
@@ -548,8 +528,9 @@ namespace AncientMemorial.Entities {
 		}
 		
 		public override void HitEffect(Entity attacker, float damage, Vector2? pushDir = null) {
-			Time.timeScale =  0.05f;
-			new DelayedAction(0.3f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+			PlaySFX("playerHit");
+			
+			GameManager.SetTimeScale(0.05f, 0.3f);
 			CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-0.3f);
 			
@@ -558,7 +539,7 @@ namespace AncientMemorial.Entities {
 				(transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			UTextAction   textAction = damageUI.GetAction<UTextAction>("DamageDisplay");
 			UTextAction   textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).Execute();
+			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).ExecuteDA();
 			
 			textAction.text = textSAction.text = new UPureString {Text = $"{Mathf.Floor(damage*100)/100f}"};
 			textAction.Initialize(damageUI);
@@ -604,7 +585,11 @@ namespace AncientMemorial.Entities {
 			dead = true;
 			
 			UUIObjectPool.instance.Open("DieUI", GameManager.instance.mainScreenCanvas);
-
+			WaveManager.instance.currentWave = null;
+			AudioManager.instance.SetBGM("Dead");
+			AudioManager.instance.StopAllSFX();
+			GameManager.SetTimeScale(0);
+			
 			base.Death();
 		}
 	}

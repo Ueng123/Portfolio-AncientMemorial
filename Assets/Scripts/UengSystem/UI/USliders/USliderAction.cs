@@ -40,6 +40,8 @@ namespace UengSystem.UI.USliders {
 					dynamicType = DynamicType.Dynamic,
 					number = 0
 				};
+
+				sliderValueVariable = (UPureNumber)GameManager.UValueFloatVariables["SliderValue"];
 			}
 		}
 
@@ -53,10 +55,12 @@ namespace UengSystem.UI.USliders {
 				case USliderTaskCondition.Never:
 					break;
 				case USliderTaskCondition.OnValueChanged:
-					if (slider.valueChanged) taskOnValueChanged.Execute(self);
+					if (slider.valueChanged) {
+						slider.valueChanged = false;
+						taskOnValueChanged.Execute(self);
+					}
 					break;
 				case USliderTaskCondition.Always:
-					
 					taskOnValueChanged.Execute(self);
 					break;
 				default:

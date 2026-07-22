@@ -303,8 +303,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 6795623977238703992}
   button: {fileID: 8527042168608416900}
@@ -872,8 +874,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
   initialPosition: {x: 0, y: 0}
@@ -897,11 +901,12 @@ MonoBehaviour:
         actionType: 9
         pressType: 0
         taskOnClicked:
+          useRealTime: 1
           tasks:
           - time: 0
             tasks:
             - rid: 8985605036668878972
-          - time: 0
+          - time: 2
             tasks:
             - rid: 8985605036668878971
     - rid: 8985604938008101055
@@ -911,11 +916,14 @@ MonoBehaviour:
         actionType: 8
         pressType: 0
         taskOnClicked:
+          useRealTime: 1
           tasks:
           - time: 0
             tasks:
             - rid: 8985605036668878968
-            - rid: 8985605036668878969
+          - time: 2
+            tasks:
+            - rid: 8985605309844422811
     - rid: 8985605036668878968
       type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
@@ -925,18 +933,6 @@ MonoBehaviour:
           rid: -2
         Category:
           rid: -2
-    - rid: 8985605036668878969
-      type: {class: LoadScene, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        sceneName:
-          rid: 8985605036668878970
-    - rid: 8985605036668878970
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: MainMenuBridge
     - rid: 8985605036668878971
       type: {class: LoadScene, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
@@ -958,6 +954,18 @@ MonoBehaviour:
         valueCache: 
         isValueCached: 0
         Text: GameBridge
+    - rid: 8985605309844422811
+      type: {class: LoadScene, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        sceneName:
+          rid: 8985605309844422812
+    - rid: 8985605309844422812
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+        Text: MainMenuBridge
 --- !u!1 &6161630991780243820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,8 +1207,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 6795623977238703992}
   button: {fileID: 7203612935171067385}

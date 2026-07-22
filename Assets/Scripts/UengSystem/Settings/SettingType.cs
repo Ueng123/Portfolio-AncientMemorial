@@ -1,7 +1,7 @@
 ﻿namespace UengSystem.Settings {
 	public enum SettingType {
 		playerName,
-		MasterVolume,
+		Master,
 		BGM,
 		SFX,
 	}

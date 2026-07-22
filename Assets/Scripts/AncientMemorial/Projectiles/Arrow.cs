@@ -31,7 +31,7 @@ namespace AncientMemorial.Projectiles {
 			}
 			
 			new DelayedAction(10, () => UObjectPool.instance.Release(obj), () => { }, obj.GetComponent<UObject>())
-				.Execute();
+				.ExecuteDA();
 			
 			obj.transform.rotation = transform.rotation;
 			UObjectPool.instance.Release(gameObject);

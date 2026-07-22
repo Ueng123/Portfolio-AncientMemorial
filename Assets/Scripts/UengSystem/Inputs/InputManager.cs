@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UengSystem.Managers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace UengSystem.Inputs {
 	public class InputManager : Manager<InputManager> {
@@ -39,7 +40,7 @@ namespace UengSystem.Inputs {
 		}
 
 		private void UpdateMousePosition() {
-			inputData[InputActionType.MousePosition].valueV = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+			inputData[InputActionType.MousePosition].valueV = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 		}
 		
 		public void UpdateInputs() {

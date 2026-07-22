@@ -37,5 +37,10 @@ namespace UengSystem.UI.UInputFields {
 			inputField.onValueChanged.AddListener(OnTextChanged);
 			inputField.onEndEdit.AddListener(OnEndEdit);
 		}
+
+		public override void Uninitialize() {
+			inputField.onValueChanged.RemoveAllListeners();
+			inputField.onEndEdit.RemoveAllListeners();
+		}
 	}
 }

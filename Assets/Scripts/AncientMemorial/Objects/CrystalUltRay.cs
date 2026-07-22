@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
+using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
@@ -22,6 +23,7 @@ namespace AncientMemorial.Objects {
 
 		public bool       showEffect;
 		public GameObject blackBG;
+		private AudioSource ambientSource;
 
 		private readonly List<RaycastHit2D>        results          = new();
 		
@@ -100,17 +102,27 @@ namespace AncientMemorial.Objects {
 			theta         = 0;
 			
 			blackBG.SetActive(showEffect);
-			
+
+			if (showEffect) PlaySFX("ultRaySpawn", volume:1f);
 			new DelayedAction(rayShootTime, () => {
 				rayShooting = true;
-			}, () => { }, this).Execute();
+
+				if (showEffect) ambientSource = PlaySFX("ultRayAmbient", volume:1f, loop:true);
+			}, () => { }, this).ExecuteDA();
 		}
 		
-		private const float despawnAnimTime = 2f;
-		private StopWatch stopWatch = new ();
+		private const    float     despawnAnimTime = 2f;
+		private readonly StopWatch stopWatch       = new ();
 
-		protected override IEnumerator DespawnFX(float duration) {
+		protected override void OnRelease() {
+			base.OnRelease();
 			
+			if (showEffect) {
+				AudioManager.instance.StopSFX(ambientSource);
+			}
+		}
+
+		protected override void PrepareDespawnFX() {
 			ToggleColliders(false);
 
 			if (rigidbody2D) {
@@ -123,6 +135,9 @@ namespace AncientMemorial.Objects {
 			rayShooting = false;
 			rayAnimator.SetTrigger(End);
 			stopWatch.Tick();
+		}
+
+		protected override IEnumerator DespawnFX(float duration) {
 			
 			while (stopWatch.Check(despawnAnimTime)) {
 				theta                      = Mathf.Repeat(theta + w * DeltaTime, 2*pi);

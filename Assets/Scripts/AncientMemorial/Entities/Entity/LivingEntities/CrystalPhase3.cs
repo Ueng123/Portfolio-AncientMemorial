@@ -27,16 +27,6 @@ namespace AncientMemorial.Entities {
 		
 		protected override      void OnGrounded() { }
 
-		public override void Stop() {
-			base.Stop();
-			missileStopwatch.Stop();
-		}
-
-		public override void Resume() {
-			base.Resume();
-			missileStopwatch.Resume();
-		}
-		
 		public Animator   rotatingAnimator;
 
 		private Vector2 mapSize;
@@ -45,15 +35,17 @@ namespace AncientMemorial.Entities {
 		private          string   getText => damageDisplayTexts[Random.Range(0, damageDisplayTexts.Length)];
 		public override    void        HitEffect(Entity    attacker,   float    damage, Vector2? pushDir = null) {
 			currentExclusiveAction = Stun(1);
+			PlaySFX("crystalHit2");
+			
 			state                  = EnemyState.Stun;
-			new DelayedAction(1, () => state = EnemyState.Alert).Execute();
+			new DelayedAction(1, () => state = EnemyState.Alert).ExecuteDA();
 			
 			UUI damageUI = UUIObjectPool.instance.Open("DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
 			damageUI.GetComponent<RectTransform>().anchoredPosition =
 				(transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			UTextAction   textAction = damageUI.GetAction<UTextAction>("DamageDisplay");
 			UTextAction   textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).Execute();
+			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).ExecuteDA();
 			
 			textAction.text  = new UPureString
 				{Text = $"{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText} <size=20><i>!$!</i></size>"};
@@ -61,8 +53,7 @@ namespace AncientMemorial.Entities {
 			textAction.Initialize(damageUI);
 			textSAction.Initialize(damageUI);
 			
-			Time.timeScale = 0.05f;
-			new DelayedAction(0.5f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+			GameManager.SetTimeScale(0.05f, 0.5f);
 			CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-5f);
 		}
@@ -107,7 +98,7 @@ namespace AncientMemorial.Entities {
 				float rot = Random.Range(175f, 185f);
 				float spd = Random.Range(12f,  15f);
 				
-				new DelayedAction(Random.Range(0f, spreadTiming), () => { ShootBigMissile(pos, rot, spd); }, () => { }, this).Execute();
+				new DelayedAction(Random.Range(0f, spreadTiming), () => { ShootBigMissile(pos, rot, spd); }, () => { }, this).ExecuteDA();
 			}
 		}
 		
@@ -131,7 +122,7 @@ namespace AncientMemorial.Entities {
 				new DelayedAction(Random.Range(0f, 0.25f), () => {
 					if (obj.isReleased) return;
 					UObjectPool.instance.Release(obj.gameObject);
-				}).Execute();
+				}).ExecuteDA();
 			}
 
 			foreach (DelayedAction da in MissileAttackAreas) {
@@ -177,14 +168,15 @@ namespace AncientMemorial.Entities {
 		public override void OnStunStart() { }
 		public override void OnStunEnd() { }
 		
-		public int  attackPhase   = 0;
+		public int  attackPhase;
 		public int  julNumGiPhase = -1;
-		public bool doJulNumGi    = false;
 		
 		private ExclusiveAction[] JulNumGi;
 		public override void Attack() {
 			if (!attackable) return;
 			attackable = false;
+			
+			PlaySFX("crystalRoar", pitch:Random.Range(0.8f, 1.2f));
 			
 			JulNumGi ??= new [] {
 				new ExclusiveAction(JulNumGi1Enumerator(), OnJulnumgiCancel, OnJulnumgiDone, 0, this),
@@ -192,8 +184,7 @@ namespace AncientMemorial.Entities {
 				new ExclusiveAction(JulNumGi1Enumerator(), OnJulnumgiCancel, OnJulnumgiDone, 0, this),
 				new ExclusiveAction(JulNumGi2Enumerator(), OnJulnumgiCancel, OnJulnumgiDone, 0, this)
 			};
-
-			if (attackPhase == 0 && !doJulNumGi) attackPhase++;
+			
 			if (attackPhase == 11) InfoUUI.instance.AddInfoMessage("크리스탈이 곧 <color=#ff5a5a>강력한 공격</color>을 사용합니다. 서두르세요!");
 			
 			Debug.Log($"[Crystal Attack] attack phase = {attackPhase}");
@@ -202,16 +193,16 @@ namespace AncientMemorial.Entities {
 				0  => JulNumGi[julNumGiPhase],
 				1  => SpawnCrystalEnergy,
 				2  => SpawnSemiHugeU, // 10s
-				3  => Attacking,      // 1s
+				3  => SpawnSemiHugeC, // 10s
 				4  => Attacking,      // 1s
 				5  => SpawnSemiHugeC, // 10s
-				6  => Attacking,      // 1s
+				6  => SpawnSemiHugeU, // 10s
 				7  => Attacking,      // 1s
 				8  => SpawnSemiHugeU, // 10s
-				9  => Attacking,      // 1s
+				9  => SpawnSemiHugeC, // 10s
 				10 => Attacking,      // 1s
 				11 => SpawnSemiHugeC, // 10s
-				12 => Attacking,      // 1s
+				12 => SpawnSemiHugeU, // 10s
 				13 => Attacking,      // 1s
 				14 => DeathAttack,    // FKING STRONG ATTACK
 				15 => CrystalUltimateRay,
@@ -233,9 +224,11 @@ namespace AncientMemorial.Entities {
 			yield return new WaitForSeconds(1f);
 		}
 		
-		private int[] energyCount         = { 2, 3, 4, 4 };
-		private int   spawnN              = 0;
-		private bool  weCanTakeDamageInfo = false;
+		private int[]      energyCount         = { 2, 3, 4, 4 };
+		private int        spawnN              = 0;
+		private bool       weCanTakeDamageInfo = false;
+		private WaitAction crystalEnergyGimmick1;
+		private WaitAction crystalEnergyGimmick2;
 		protected  IEnumerator SpawnEnumerator() {
 			moveMode             = 0;
 			entityStat.moveSpeed = entityData.moveSpeed/1.5f;
@@ -247,20 +240,32 @@ namespace AncientMemorial.Entities {
 			
 			InfoUUI.instance.AddInfoMessage("크리스탈이 <color=#ff5a5a>강력한 공격</color>을 준비합니다. 힘의 파편을 파괴하여 저지하세요.");
 			
-			GameManager.UValueFloatVariables["crystalEnergyDead"] = new UPureNumber {number = 0};
-			int n = energyCount[spawnN];
+			int n = energyCount[spawnN]; 
+			GameManager.UValueFloatVariables["crystalEnergyDead"]   = new UPureNumber {number = 0};
+			GameManager.UValueFloatVariables["crystalEnergyGimmick"] = new UPureNumber {number = n};
 			
 			Debug.Log($"[Crystal Attack] spawnN = {spawnN}");
 			
-			int nextAttackPhase = spawnN == energyCount.Length-1 ? 15 : 0;
-			new WaitAction(
-				()=>(int)GameManager.UValueFloatVariables["crystalEnergyDead"].value == n,
+			// todo
+			//  체킹하는거에서 실패하면 아예 WaitAction 못나가게
+			crystalEnergyGimmick1??=new WaitAction(
+				()=>(int)GameManager.UValueFloatVariables["crystalEnergyGimmick"].value == 0,
 				() => {
 					SendAttackEvent(this, 1, true);
-					attackPhase = nextAttackPhase;
-					doJulNumGi  = true;
+					attackPhase = 0;
 					julNumGiPhase++;
-				}).Execute();
+				},
+				executor:this);
+			
+			crystalEnergyGimmick2??=new WaitAction(
+				()=>(int)GameManager.UValueFloatVariables["crystalEnergyGimmick"].value == 0,
+				() => {
+					SendAttackEvent(this, 1, true);
+					attackPhase = 15;
+				},
+				executor:this);
+
+			(spawnN == energyCount.Length - 1 ? crystalEnergyGimmick2 : crystalEnergyGimmick1).ExecuteWA();
 			
 			for (int i = 1; i <= n; i++) {
 				float spawnPosX = -mapSize.x/2 + mapSize.x * i / (n + 1);
@@ -307,7 +312,7 @@ namespace AncientMemorial.Entities {
 				float angle = Random.Range(0f, 45f);
 				for (int j = 0; j < 8; j++) {
 					int _j = j;
-					new DelayedAction(u8*j, ()=>ShootSemiHugeMissile(transform.position, angle+45*_j,  7f)).Execute();
+					new DelayedAction(u8*j, ()=>ShootSemiHugeMissile(transform.position, angle+45*_j,  7f)).ExecuteDA();
 				}
 			}
 			
@@ -336,18 +341,13 @@ namespace AncientMemorial.Entities {
 			float endTime        = 10 / barrageSpeed + 1;
 			float totalTime = endTime + barrageTerm * barrageNum;
 			
-			int slashDelayedActionCount        = Mathf.Max(0, Mathf.CeilToInt((totalTime - 2f) / 2f));
-			int slashDelayedActionsArrayLength = slashDelayedActionCount*(slashCount + 1);
-			slashDelayedActions = new DelayedAction[slashDelayedActionsArrayLength];
-			int si                             = 0;
-			
-			Vector4[] slashData = new Vector4[slashCount];
-			
 			for (int i = 0; i < totalTime - 2; i+=2) {
-				int   lastX      = -2; // initial Value
+				Vector4[] slashData = new Vector4[slashCount];
+				int       lastX     = -2; // initial Value
+				
 				for (int j = 0; j < slashCount; j++) {
 					float duration = Random.Range(2, patternDuration);
-
+					
 					lastX = Random.Range(lastX+1, slashDivideCount - slashCount + j + 2);
 					Vector2 startPos = new(slashLengthX*(lastX+0.5f) - oldMapSize.x/2, 0);
 					Vector2 endPos   = new(startPos.x, mapSize.y);
@@ -359,12 +359,12 @@ namespace AncientMemorial.Entities {
 					float   length = dir.magnitude;
 					
 					slashData[j] = new Vector4(center.x, center.y, length, angle);
-					slashDelayedActions[si++] = new DelayedAction(patternDuration - duration + i, () => {
+					new DelayedAction(patternDuration - duration + i, () => {
 						AttackArea(2, duration, center, new Vector2(slashLengthX, length + 5f), angle);
-					}).Execute();
+					}).ExecuteDA();
 				}
 
-				slashDelayedActions[si++] = new DelayedAction(patternDuration + i, () => {
+				new DelayedAction(patternDuration + i, () => {
 					foreach (Vector4 data in slashData) {
 						GameObject obj = UObjectPool.instance.Get("SlashEffect", new Vector2(data.x, data.y + Random.Range(-2f, 2f)));
 						obj.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(-5f, 5f));
@@ -373,7 +373,7 @@ namespace AncientMemorial.Entities {
 					
 					CameraBrain.instance.ShakeLerp(5, 3);
 					CameraBrain.instance.ZoomLerp(-2f);
-				}).Execute();
+				}).ExecuteDA();
 			}
 			bool  isRight = Random.Range(0, 2) == 0;
 			float xPos    = isRight ? (mapSize.x / 2 - 1) : (1 - mapSize.x / 2);
@@ -415,15 +415,10 @@ namespace AncientMemorial.Entities {
 			float endTime        = 10 / barrageSpeed + 1;
 			float totalTime = endTime + barrageTerm * barrageNum;
 			
-			int slashDelayedActionCount = Mathf.Max(0, Mathf.CeilToInt((totalTime - 2f) / 2f));
-			int slashDelayedActionsArrayLength = slashDelayedActionCount*(slashCount + 1);
-			slashDelayedActions = new DelayedAction[slashDelayedActionsArrayLength];
-			int si = 0;
-			
 			for (int i = 0; i < totalTime - 2; i+=2) {
 				Vector4[] slashData = new Vector4[slashCount];
+				int       lastX     = -2; // initial Value
 				
-				int   lastX      = -2; // initial Value
 				for (int j = 0; j < slashCount; j++) {
 					float duration = Random.Range(2, patternDuration);
 
@@ -438,12 +433,12 @@ namespace AncientMemorial.Entities {
 					float   length = dir.magnitude;
 					
 					slashData[j] = new Vector4(center.x, center.y, length, angle);
-					slashDelayedActions[si++] = new DelayedAction(patternDuration - duration + i, () => {
+					new DelayedAction(patternDuration - duration + i, () => {
 						AttackArea(2, duration, center, new Vector2(slashLengthX, length + 5f), angle);
-					}).Execute();
+					}).ExecuteDA();
 				}
-
-				slashDelayedActions[si++] = new DelayedAction(patternDuration + i, () => {
+				
+				new DelayedAction(patternDuration + i, () => {
 					foreach (Vector4 data in slashData) {
 						GameObject obj = UObjectPool.instance.Get("SlashEffect", new Vector2(data.x, data.y + Random.Range(-2f, 2f)));
 						obj.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(-5f, 5f));
@@ -452,7 +447,7 @@ namespace AncientMemorial.Entities {
 					
 					CameraBrain.instance.ShakeLerp(5, 3);
 					CameraBrain.instance.ZoomLerp(-2f);
-				}).Execute();
+				}).ExecuteDA();
 			}
 			
 			// Lambda Scope Warning //
@@ -480,45 +475,28 @@ namespace AncientMemorial.Entities {
 		}
 		// JulNumGi3Enumerator
 		
-		readonly float[] finalT = {
-			1.85001406494f,
-			1.52298874837f,
-			1.25377140187f,
-			1.03214336273f,
-			.849692312042f,
-			.699492968917f,
-			.575844228116f,
-			.474052763629f,
-			.390254884450f,
-			.321269880744f,
-			.264479293881f,
-			.217727527802f,
-			.179240029219f,
-			.147555931024f,
-			.121472602271f,
-			.100000000000f,
-		};
-		
 		protected IEnumerator DeathAttackEnumerator() {
 			moveMode = 4;
+
+			crystalEnergyGimmick1.Cancel();
+			crystalEnergyGimmick2.Cancel();
 
 			foreach (UObject obj in GetUObjects("crystalEnergy")) {
 				CrystalEnergy crystalEnergy = (CrystalEnergy)obj;
 				crystalEnergy.entityStat.hp = 0;
 			}
 			
+			yield return new WaitForSeconds(0.5f);
+
+			PlaySFX("crystalDeathAttack");
+			
 			Vector2 hitboxPos = Vector2.up * (mapSize.y / 2);
 			AttackAreaNoEffect(999, 10, hitboxPos, mapSize+Vector2.one, ignoreInvincible:true);
 
 			GameObject uui = UUIObjectPool.instance.Open("CrystalUltEffect", GameManager.instance.mainScreenCanvas);
 			
-			// wait for 5s
-			for (int i = 0; i < 16; i++) {
-				Shake(0, 1);
-				yield return new WaitForSeconds(finalT[i]/2);
-			}
-
-			yield return new WaitForSeconds(4.5f);
+			// 
+			yield return new WaitForSeconds(9.5f);
 			
 			GameObject eff1 = UObjectPool.instance.Get("SlashEffect", transform.position);
 			eff1.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(40, 50));
@@ -527,13 +505,12 @@ namespace AncientMemorial.Entities {
 			eff2.transform.rotation   = Quaternion.Euler(0, 0, -Random.Range(40, 50));
 			eff2.transform.localScale = new Vector3(mapSize.x*1.1f, mapSize.y*1.2f, 1f);
 			
-			
+			GameManager.SetTimeScale(0f, 1f);
 			CameraBrain.instance.ShakeLerp(75, 10f);
 			CameraBrain.instance.ZoomLerp(-10f);
 			
 			ClearMissiles();
-
-			yield return new WaitForSeconds(1f);
+			
 			UUIObjectPool.instance.Close(uui, true);
 		}
 
@@ -601,7 +578,7 @@ namespace AncientMemorial.Entities {
 			yield return rtWait;
 			spawnOffset = Random.Range(0f, 360f);
 			for (int i = 0; i < crystalMissileNum; i++) { ShootMissile(transform.position, spawnOffset+i*dO, 15); }
-			yield return rtWait8;
+			yield return rtWait8; // 8s
 			
 			offset = Random.Range(0, 2 * pi);
 			ray5   = SpawnRay(3.5f, 1.5f, offset, true);
@@ -615,10 +592,10 @@ namespace AncientMemorial.Entities {
 			UObjectPool.instance.Release(ray2.gameObject, 4);
 			UObjectPool.instance.Release(ray3.gameObject, 4);
 
-			yield return rtWait2;
+			yield return rtWait2; // rt
 			spawnOffset = Random.Range(0f, 360f);
 			for (int i = 0; i < crystalMissileNum; i++) { ShootMissile(transform.position, spawnOffset+i*dO, 15); }
-			yield return rtWait6;
+			yield return rtWait6; // ??
 			
 			offset = Random.Range(0, 2 * pi);
 			ray1   = SpawnRay(3.5f, -1.5f,  offset, true);
@@ -633,7 +610,7 @@ namespace AncientMemorial.Entities {
 			UObjectPool.instance.Release(ray7.gameObject, 4);
 			UObjectPool.instance.Release(ray8.gameObject, 4);
 			
-			yield return rtWait2;
+			yield return rtWait2; // rt
 			spawnOffset = Random.Range(0f, 360f);
 			for (int i = 0; i < crystalMissileNum; i++) { ShootMissile(transform.position, spawnOffset+i*dO, 15); }
 			yield return rtWait8;
@@ -669,6 +646,8 @@ namespace AncientMemorial.Entities {
 			ray8 = SpawnRay(4.5f, 0, offset +pi *7 *u4);
 			
 			animator.Play("Death");
+			PlaySFX("crystalDeath");
+			
 			moveMode = 5;
 			
 			yield return rtWait;
@@ -717,9 +696,6 @@ namespace AncientMemorial.Entities {
 			currentExclusiveAction = FindingAggro;
 			attackable             = false;
 			
-			foreach (DelayedAction da in slashDelayedActions) { da.Cancel(); }
-			slashDelayedActions = null;
-			
 			MapManager.instance.SetMapSize(oldMapSize, 0.02f);
 			ClearMissiles();
 			
@@ -733,9 +709,6 @@ namespace AncientMemorial.Entities {
 			state                  = EnemyState.Alert;
 			currentExclusiveAction = FindingAggro;
 			attackable             = false;
-
-			if (slashDelayedActions != null) foreach (DelayedAction da in slashDelayedActions) { da.Cancel(); }
-			slashDelayedActions = null;
 			
 			MapManager.instance.SetMapSize(oldMapSize, 0.02f);
 			ClearMissiles();
@@ -861,7 +834,8 @@ namespace AncientMemorial.Entities {
 			foreach (GameObject obj in hideOnDeath) {
 				obj.SetActive(false);
 			}
-			
+
+			PlaySFX("crystalDeath2");
 			
 			GameObject eff1 = UObjectPool.instance.Get("SlashEffect", transform.position);
 			eff1.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(40, 50));
@@ -870,11 +844,11 @@ namespace AncientMemorial.Entities {
 			eff2.transform.rotation   = Quaternion.Euler(0, 0, -Random.Range(40, 50));
 			eff2.transform.localScale = new Vector3(mapSize.x*1.1f, mapSize.y*1.2f, 1f);
 			
-			Time.timeScale = 0.05f;
+			GameManager.SetTimeScale(0.1f, 1.5f);
+
 			new DelayedAction(1.5f, ()=> {
 				CameraBrain.instance.ShakeLerp(75, 10f);
-				Time.timeScale = 1f;
-			}, () => { }).Execute(true);
+			}, () => { }).ExecuteDA(true);
 			CameraBrain.instance.ZoomLerp(-5f);
 
 			GameManager.UValueFloatVariables["crystalDead"] = new UPureNumber {number = GameManager.UValueFloatVariables["crystalDead"].value + 1};

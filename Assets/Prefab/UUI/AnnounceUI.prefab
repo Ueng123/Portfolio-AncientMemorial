@@ -365,7 +365,7 @@ MonoBehaviour:
     - rid: 8985605036668878961
       type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
-        closeThis: 0
+        closeThis: 1
         TargetUUI:
           rid: -2
     - rid: 8985605036668878962
@@ -382,7 +382,7 @@ MonoBehaviour:
     - rid: 8985605036668878963
       type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
-        closeThis: 0
+        closeThis: 1
         TargetUUI:
           rid: -2
 --- !u!1 &6817783773246402970

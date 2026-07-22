@@ -31,6 +31,7 @@ namespace UengSystem.UI.UButtons {
 				
                 if (!button.clicked) return;
                 button.clicked = false;
+				
                 taskOnClicked.Execute(self);
 			}
 			else {

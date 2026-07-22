@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using AncientMemorial;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace UengSystem.Settings {
 		
 		public static float GetValueFloat(SettingType settingType) {
 			return settingType switch {
-				SettingType.MasterVolume => data.MasterVolume,
+				SettingType.Master => data.Master,
 				SettingType.BGM => data.BGM,
 				SettingType.SFX => data.SFX,
 				_ => throw new ArgumentOutOfRangeException(nameof(settingType), settingType, "NAHHHH")
@@ -41,8 +42,8 @@ namespace UengSystem.Settings {
 			Debug.Log($"[SETTING] {settingType} changed to {value}");
 			
 			switch (settingType) {
-				case SettingType.MasterVolume:
-					data.MasterVolume = value;
+				case SettingType.Master:
+					data.Master = value;
 					break;
 				case SettingType.BGM:
 					data.BGM = value;
@@ -60,11 +61,24 @@ namespace UengSystem.Settings {
 			string jsonText = File.ReadAllText(path);
 			
 			data = JsonConvert.DeserializeObject<SettingData>(jsonText);
+			ApplyData();
 		}
 
 		public static void SaveData() {
 			string path     = Path.Combine(Application.streamingAssetsPath, $"SettingData.json");
 			File.WriteAllText(path, JsonConvert.SerializeObject(data));
+			
+			ApplyData();
+		}
+
+		public static void ApplyData() {
+			float masterVolume = GameManager.valueToDB(data.Master);
+			float bgmVolume    = GameManager.valueToDB(data.BGM);
+			float sfxVolume    = GameManager.valueToDB(data.SFX);
+				
+			GameManager.instance.audioMixer.SetFloat("Master", masterVolume);
+			GameManager.instance.audioMixer.SetFloat("BGM",    bgmVolume);
+			GameManager.instance.audioMixer.SetFloat("SFX",    sfxVolume);
 		}
 	}
 }

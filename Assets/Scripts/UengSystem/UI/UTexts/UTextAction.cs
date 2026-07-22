@@ -19,8 +19,8 @@ namespace UengSystem.UI.UTexts {
 
 			text = newText;
 
-			DelayedAction act = new DelayedAction(duration, () => text = oldText);
-			act.Execute();
+			DelayedAction act = new (duration, () => text = oldText);
+			act.ExecuteDA();
 		}
 
 		public override void Initialize(UObject self) {

@@ -47,7 +47,6 @@ namespace AncientMemorial.Objects {
 			t_n =  Mathf.Clamp01(t / t_s);
 
 			if (t > t_s) {
-				GameObject spawnEffect = UObjectPool.instance.Get("SpawnParticle", transform.position);
 				UObjectPool.instance.Release(gameObject);
 				return;
 			}

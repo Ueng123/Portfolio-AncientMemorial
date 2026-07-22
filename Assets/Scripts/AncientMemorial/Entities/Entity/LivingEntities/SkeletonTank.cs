@@ -5,6 +5,7 @@ using AncientMemorial.Cameras;
 using AncientMemorial.Map;
 using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
+using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Logic.UValues.UStrings;
@@ -19,31 +20,34 @@ using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
-	public class SkeletonTank : Enemy {
-		private static readonly int attacking   = Animator.StringToHash("attacking");
-		private static readonly int attack2ing  = Animator.StringToHash("attack2ing");
-		private static readonly int attack2   = Animator.StringToHash("attack2");
-		private static readonly int attack   = Animator.StringToHash("attack");
-		private static readonly int spawn    = Animator.StringToHash("spawn");
-		private static readonly int moving   = Animator.StringToHash("moving");
-		private static readonly int backward = Animator.StringToHash("backward");
-		private static readonly int Landing  = Animator.StringToHash("landing");
+	public class SkeletonTank : Skeleton {
+		private static readonly     int attacking  = Animator.StringToHash("attacking");
+		private static readonly     int attack2ing = Animator.StringToHash("attack2ing");
+		private static readonly     int attack2    = Animator.StringToHash("attack2");
+		private new static readonly int attack     = Animator.StringToHash("attack");
+		private static readonly     int spawn      = Animator.StringToHash("spawn");
+		private new static readonly int moving     = Animator.StringToHash("moving");
+		private new static readonly int backward   = Animator.StringToHash("backward");
+		private new static readonly int Landing    = Animator.StringToHash("landing");
 
-		private       float oldAnimSpeed;
-		private       int   attackAnimation;
-		private const float attackLength = 3f;
+		[NonSerialized] private       float oldAnimSpeed;
+		[NonSerialized] private       int   attackAnimation;
+		[NonSerialized] private const float attackLength = 3f;
 		
-		private bool unstoppable;
-		private bool weakness;
-		private int  groggyAttackLeft;
-		private bool groggy;
-		private int groggySuccess;
+		[NonSerialized] private bool unstoppable;
+		[NonSerialized] private bool weakness;
+		[NonSerialized] private int  groggyAttackLeft = -1;
+		[NonSerialized] private bool groggy;
+		[NonSerialized] private int  groggySuccess;
 		
 		public override void OnStunStart() { }
 
 		public override void OnStunEnd() {
 			currentExclusiveAction = FindingAggro;
 		}
+		
+		protected override string footstepSoundName => "tankFootStep";
+		protected override bool   isFootstep        => spriteRenderer.sprite.name is "SkeletonB_0" or "SkeletonB_2";
 
 		public void GroggyEffect() {
 			if (groggySuccess <= 0) return;
@@ -54,28 +58,24 @@ namespace AncientMemorial.Entities {
 				if (groggyAttackLeft == 0) return;
 				unstoppable = true;
 				weakness    = false;
-			}).Execute();
+			}).ExecuteDA();
 			UObjectPool.instance.Get("groggyEffect", transform.position);
 		}
 
-		public int attackPhase = 1;
+		[NonSerialized] public int attackPhase = 1;
 		public override void Attack() {
 			if (!attackable) return;
 			attackable = false;
-
-			bool isCrystalized = entityType == EntityType.SkeletonTankC;
 			
 			currentExclusiveAction = attackPhase switch {
-				1 => Random.Range(0, 16) == 0?Attack2ing:Attacking,
-				2 => Random.Range(0, 6)  == 0? (!isCrystalized ? Spawning : Attack2ing):Attacking,
-				3 => (!isCrystalized ? Spawning : Attack2ing),
-				4 => Random.Range(0, 16) == 0?Attack2ing:Attacking,
-				5 => Random.Range(0, 6)  == 0? (!isCrystalized ? Spawning : Attack2ing):Attacking,
-				6 => Attack2ing,
+				1 => Attacking,
+				2 => Attacking,
+				3 => Attack2ing,
+				4 => Spawning,
 				_ => throw new Exception("NO BRO THAT'S NOT WHAT I WANT :(")
 			};
 			
-			if (++attackPhase == 7) attackPhase = 1;
+			if (++attackPhase == 5) attackPhase = 1;
 		}
 		
 		private ExclusiveAction Attack2ing => new (Attack2Enumerator(), OnAttackCancel, OnAttackDone, 0, this);
@@ -114,7 +114,8 @@ namespace AncientMemorial.Entities {
 			GroggyEffect();
 			
 			yield return new WaitForSeconds((attackLength * (4f-weakTiming))/(entityStat.attackSpeed * 9f));
-			
+
+			PlaySFX("tankAttack1");
 			CameraBrain.instance.ShakeLerp(5f, 10);
 			CameraBrain.instance.ZoomLerp(-0.25f);
 			
@@ -128,9 +129,11 @@ namespace AncientMemorial.Entities {
 			
 		}
 		
-		protected const float attack2Length = 12f;
-		protected const float projectileSpawnTime = 1;
+		[NonSerialized] protected const float attack2Length       = 12f;
+		[NonSerialized] protected const float projectileSpawnTime = 1;
 		protected IEnumerator Attack2Enumerator() {
+			AudioSource attackAudio = AudioManager.instance.PlaySFX("tankAttack2", volume: 0.6f, pitch: 1f);
+			
 			InfoUUI.instance.AddInfoMessage("강화된 스켈레톤이 <color=#ff5a5a>강력한 공격</color>을 사용하려 합니다! <color=#ff5a5a>치명적인 피해</color>를 <color=#ffea5a>3</color>회 적중시켜 저지하세요.");
 			
 			rigidbody2D.linearVelocity = new Vector2(0, rigidbody2D.linearVelocity.y);
@@ -192,11 +195,13 @@ namespace AncientMemorial.Entities {
 					UObjectPool.instance.Release(projectileSpawnObject2);
 				},
 				() => {
+					AudioManager.instance.StopSFX(attackAudio);
+					
 					UObjectPool.instance.Release(projectileSpawnObject1);
 					UObjectPool.instance.Release(projectileSpawnObject2);
 				}
 			);
-			attack12DelayedAction.Execute();
+			attack12DelayedAction.ExecuteDA();
 			
 			// 이동안 세번 빤짝할때 때리기 성공하면 공격 취소됨
 			yield return new WaitForSeconds((attack2Length * (w1)) /(entityStat.attackSpeed * 43f));
@@ -214,7 +219,7 @@ namespace AncientMemorial.Entities {
 			yield return new WaitForSeconds((attack2Length * 2)/(entityStat.attackSpeed * 43f));
 		}
 
-		protected const float spawnLength = 1.617f;
+		[NonSerialized] protected const float spawnLength = 1.617f;
 		protected IEnumerator SpawnSkeleton() {
 			unstoppable                = true;
 			
@@ -302,101 +307,16 @@ namespace AncientMemorial.Entities {
 			groggyAttackLeft = -1;
 		}
 
-		private int mi = 0;
-		private void Move(float targetPositionX) {
-			animator.SetBool(Falling, !isGround);
-			
-			if (!isGround) return;
-			
-			if (aggroEntity) {
-				// (+) : 이 엔티티가 타겟엔티티보다 <-에 있음
-				int signE = (int)Mathf.Sign(aggroEntity.transform.position.x - transform.position.x);
-				// (+) : 이 엔티티가 타켓위치보다 <-에 있음
-				int signT = (int)Mathf.Sign(targetPositionX - transform.position.x);
-			
-				bool movingB   = Mathf.Abs(targetPositionX - transform.position.x) > moveAllowMargin;
-				bool backwardB = signT * signE                                     == -1;
-			
-				// 애니메이션
-				spriteRenderer.flipX = signE == 1;
-			
-				animator.SetBool(moving,   movingB);
-				animator.SetBool(backward, backwardB);
-			
-				if (movingB) animator.speed = entityStat.moveSpeed * (backwardB ? 1.5f : 1);
-				else animator.speed         = 1;
-			
-				// 안움직일 경우 거르기
-				if (!movingB) return;
-				
-				rigidbody2D.linearVelocityX = entityStat.moveSpeed * signT;
-				Debug.Log($"HE IS MOVING {mi++}");
-			}
-			else {
-				// (+) : 이 엔티티가 타켓위치보다 <-에 있음
-				int signT = (int)Mathf.Sign(targetPositionX - transform.position.x);
-			
-				bool movingB   = Mathf.Abs(targetPositionX - transform.position.x) > moveAllowMargin;
-			
-				// 애니메이션
-				spriteRenderer.flipX = signT == 1;
-			
-				animator.SetBool(moving,   movingB);
-				animator.SetBool(backward, false);
-			
-				if (movingB) animator.speed = entityStat.moveSpeed;
-				else animator.speed         = 1;
-			
-				// 안움직일 경우 거르기
-				if (!movingB) return;
-			
-				Vector2 velocity = new (entityStat.moveSpeed * signT, rigidbody2D.linearVelocity.y);
-				rigidbody2D.linearVelocity = velocity;
-				Debug.Log($"HE IS MOVING {mi++}");
-			}
-		}
-
-		private float     currWanderTargetPosX;
-		private float     wanderTime;
+		[NonSerialized] private float currWanderTargetPosX;
+		[NonSerialized] private float wanderTime;
 		public override void WanderRoutine() {
 			if (!aggroEntity) return;
 			state = EnemyState.Alert;
 		}
 
-		private const float         moveTargetDistance   = 2f;
-		private const float         moveAllowMargin      = 1f;
-		private const float         moveTargetDistanceRM = 0.75f;
-		private       float         moveTargetDistanceRV;
-		private       DelayedAction currAlertDA;
-		public override void AlertRoutine() {
-			if (!aggroEntity) {
-				state = EnemyState.Wander;
-				return;
-			}
-			
-			if (attackable) {
-				state = EnemyState.AttackReady;
-				attackableDistRV = Random.Range(-attackableDistRM, attackableDistRM);
-				return;
-			}
-
-			if (currAlertDA is not { Executing: true }) {
-				currAlertDA = new DelayedAction(Random.Range(1f, 3f), () => {
-					moveTargetDistanceRV = Random.Range(-moveTargetDistanceRM, moveTargetDistanceRM);
-				});
-				currAlertDA.Execute();
-			}
-			
-			int signE = (int)Mathf.Sign(aggroEntity.transform.position.x - transform.position.x);
-			float targetPositionX = aggroEntity.transform.position.x + moveTargetDistanceRV - moveTargetDistance*signE;
-			
-			Move(targetPositionX);
-		}
-		
-		private readonly float attackableDist   = 30f;
-		private          float attackableDistRM = 0.2f;
-		private          float attackableDistRV;
-		public override void       AttackReadyRoutine() {
+		[NonSerialized] private const float attackableDist   = 30f;
+		[NonSerialized] private       float attackableDistRV;
+		public override void AttackReadyRoutine() {
 			float targetPositionX = aggroEntity.transform.position.x;
 			if (Mathf.Abs(targetPositionX - transform.position.x) <= attackableDist + attackableDistRV) {
 				state = EnemyState.Attack;
@@ -405,12 +325,7 @@ namespace AncientMemorial.Entities {
 			
 			Move(targetPositionX);
 		}
-
-		public override void AttackRoutine() { }
-
-		public override void StunRoutine() { }
-
-		private bool groggyedEffect = false;
+		
 		public override void HitEffect(Entity attacker, float damage, Vector2? pushDir = null) {
 			
 			UUI damageUI = UUIObjectPool.instance.Open("DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
@@ -418,7 +333,7 @@ namespace AncientMemorial.Entities {
 				(transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			UTextAction   textAction = damageUI.GetAction<UTextAction>("DamageDisplay");
 			UTextAction   textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).Execute();
+			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).ExecuteDA();
 			
 			textAction.text = new UPureString {Text = (weakness||groggy)?$"{Mathf.Floor(damage*100)/100f}<size=20><i> !!</i></size>":$"{Mathf.Floor(damage*100)/100f}"};
 			textSAction.text = textAction.text;
@@ -426,8 +341,9 @@ namespace AncientMemorial.Entities {
 			textSAction.Initialize(damageUI);
 			
 			if (entityStat.hp <= 0) {
-				Time.timeScale = 0.05f;
-				new DelayedAction(1f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				PlaySFX("tankDeath");
+				
+				GameManager.SetTimeScale(0.05f, 1f);
 				CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 3);
 				CameraBrain.instance.ZoomLerp(-5f);
 				return;
@@ -435,39 +351,60 @@ namespace AncientMemorial.Entities {
 			
 			if (attacker != player) return;
 			
-			if (unstoppable) {
-				Time.timeScale = 0.05f;
-				new DelayedAction(0.05f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
-				return;
-			}
-			
-			if (groggyedEffect) {
-				groggyedEffect = false;
-				Time.timeScale = 0.05f;
-				new DelayedAction(0.75f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+			if (groggyAttackLeft == 0) {
+				Debug.Log("[SkeletonTank] critical groggy hit");
+				PlaySFX("tankGroggy");
+				
+				if (!groggyInfo) InfoUUI.instance.AddInfoMessage("강력한 스켈레톤을 공격할 절호의 기회입니다!");
+				groggyInfo = true;
+				
+				groggy           = true;
+				groggyAttackLeft = -1;
+				new DelayedAction(5f, ()=>groggy=false).ExecuteDA();
+				
+				currentExclusiveAction = Stun(5);
+				state                  = EnemyState.Stun;
+				new DelayedAction(5, () => state = EnemyState.Alert).ExecuteDA();
+				
+				GameManager.SetTimeScale(0.05f, 0.75f);
 				CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 3);
 				CameraBrain.instance.ZoomLerp(-1.25f);
 				return;
 			}
 			
 			if (weakness) {
-				Time.timeScale = 0.05f;
-				new DelayedAction(0.5f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				Debug.Log("[SkeletonTank] weakness hit");
+				PlaySFX("tankCritical");
+				
+				GameManager.SetTimeScale(0.05f, 0.5f);
 				CameraBrain.instance.ShakeLerp(1f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 				CameraBrain.instance.ZoomLerp(-0.5f);
 				return;
 			}
 			
 			if (groggy) {
-				Time.timeScale = 0.05f;
-				new DelayedAction(0.1f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+				Debug.Log("[SkeletonTank] groggy hit");
+				PlaySFX("tankHit");
+				
+				GameManager.SetTimeScale(0.05f, 0.1f);
 				CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 				CameraBrain.instance.ZoomLerp(-0.5f);
 				return;
 			}
 			
-			Time.timeScale = 0.05f;
-			new DelayedAction(0.05f, ()=>Time.timeScale = 1f, () => { }).Execute(true);
+			if (unstoppable) {
+				Debug.Log("[SkeletonTank] unstoppable hit");
+				PlaySFX("tankWeakHit");
+				groggySuccess -= 1;
+				
+				GameManager.SetTimeScale(0.05f, 0.05f);
+				return;
+			}
+			
+			Debug.Log("[SkeletonTank] hit");
+			PlaySFX("tankHit");
+			
+			GameManager.SetTimeScale(0.05f, 0.05f);
 			CameraBrain.instance.ShakeLerp(0.8F*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-0.5f);
 		}
@@ -484,28 +421,20 @@ namespace AncientMemorial.Entities {
 			entityStat.hp -= damage;
 		}
 
-		private bool groggyInfo = false;
+		[NonSerialized] private bool groggyInfo = false;
 		protected override float GetRealDamage(float rawDamage) {
-			if (weakness && --groggyAttackLeft == 0) {
-				if (!groggyInfo) InfoUUI.instance.AddInfoMessage("강력한 스켈레톤을 공격할 절호의 기회입니다!");
-				groggyInfo = true;
-				
-				groggy         = true;
-				groggyedEffect = true;
-				new DelayedAction(5f, ()=>groggy=false).Execute();
-				
-				currentExclusiveAction = Stun(5);
-				state                  = EnemyState.Stun;
-				new DelayedAction(5, () => state = EnemyState.Alert).Execute();
-				
-				return entityData.hp / 10f;
+			if (weakness) {
+				groggyAttackLeft -= 1;
+				return groggyAttackLeft == 0 ? entityData.hp / 10f : rawDamage*5f;
 			}
-			if (weakness) { return rawDamage*5f; }
-			if (groggy) { return rawDamage*3f; }
-			if (unstoppable) { 
-				groggySuccess -= 1;
+
+			if (groggy) {
+				return rawDamage*3f;
+			}
+			if (unstoppable) {
 				return rawDamage*0.5f;
 			}
+			
 			return rawDamage;
 		}
 
@@ -529,13 +458,15 @@ namespace AncientMemorial.Entities {
 		}
 
 		protected override void OnGrounded() {
+			PlaySFX("tankFootStep", pitch:0.5f, spread:270f);
+			
 			currentExclusiveAction = Stun(0.5f);
 			state                  = EnemyState.Stun;
 			animator.SetBool(Landing, true);
 			new DelayedAction(0.5f, () => {
 				state = EnemyState.Alert;
 				animator.SetBool(Landing, false);
-			}).Execute();
+			}).ExecuteDA();
 		}
 	}
 }

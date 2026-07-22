@@ -1,12 +1,15 @@
 ﻿using System;
-using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {
 	[Serializable]
-	public class StopAllUObjects : TaskComponent {
+	public class EndGame : TaskComponent {
 		public override void Execute(ITaskable self) {
-			foreach (UObject obj in UObject.Instances) { obj.Stop(); }
+			Application.Quit();
+			
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#endif
 		}
 	}
 }

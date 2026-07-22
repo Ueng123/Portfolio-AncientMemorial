@@ -13,7 +13,7 @@ namespace AncientMemorial.Tasks {
 		public override void Execute(ITaskable self) {
 			Crystal crystal = GameManager.instance.Crystal;
 			crystal.animator.Play("break");
-			crystal.interactable = false;
+			crystal.UnInteractable();
 
 			new DelayedAction(5, () => {
 				UObjectPool.instance.Get("crystalDebris", (Vector2)crystal.crystalModel.transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)));
@@ -35,7 +35,7 @@ namespace AncientMemorial.Tasks {
 				UObjectPool.instance.Get("crystalDebris", (Vector2)crystal.crystalModel.transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)));
 				UObjectPool.instance.Get("crystalDebris", (Vector2)crystal.crystalModel.transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)));
 				crystal.crystalModel.SetActive(false);
-			}).Execute();
+			}).ExecuteDA();
 		}
 	}
 }

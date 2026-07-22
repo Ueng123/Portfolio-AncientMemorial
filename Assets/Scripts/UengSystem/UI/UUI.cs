@@ -127,7 +127,7 @@ namespace UengSystem.UI {
 		}
 		
 		protected override IEnumerator SpawnFX(float duration) {
-			yield return new WaitForSeconds(duration);
+			yield return new WaitForSecondsRealtime(duration);
 			Initialize();
 		}
 

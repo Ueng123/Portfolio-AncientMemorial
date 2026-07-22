@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UengSystem.Audio;
 using UengSystem.Logic.Tasks;
 using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Managers;
@@ -12,30 +13,38 @@ namespace AncientMemorial.Waves {
 		public  Wave        currentWave;
 		
 		public override void Initialize() {
-			waveQueue = new Queue<Wave>(waves);
+			waveQueue                                       = new Queue<Wave>(waves);
+			
+			PlayWave();
 		}
 
 		public void NextWave() {
 			currentWave?.waveTasks.CancelTasks();
-			if (GameManager.instance.Crystal) GameManager.instance.Crystal.interactable = false;
+			if (GameManager.instance.Crystal) GameManager.instance.Crystal.UnInteractable();
 
 			if (waveQueue.Count == 0) {
 				GameEnd();
 				return;
 			}
 
-			GameManager.UValueFloatVariables["timeElapsed"] = new UPureNumber { number = 0 };
-			
 			currentWave = waveQueue.Dequeue();
+			
+			PlayWave();
+		}
+
+		private void PlayWave() {
+			GameManager.UValueFloatVariables["timeElapsed"] = new UPureNumber { number = 0 };
 			currentWave.waveTasks.Execute(GlobalCoroutineRunner.instance);
 		}
 		
 		public void GameEnd() {
+			AudioManager.instance.PlaySFX("clear");
+			GameManager.SetTimeScale(0);
 			UUIObjectPool.instance.Open("ClearUI", GameManager.instance.mainScreenCanvas);
 		}
 		
 		public override void ManagerUpdate() {
-			if (!currentWave) NextWave();
+			if (!currentWave) return;
 			
 			GameManager.UValueFloatVariables["timeElapsed"] = new UPureNumber {
 				number = GameManager.UValueFloatVariables["timeElapsed"].value + GlobalCoroutineRunner.instance.DeltaTime

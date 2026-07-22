@@ -944,7 +944,7 @@ MonoBehaviour:
   - key: BGMSlider
     action:
       rid: 8985604995436511455
-  - key: SFX
+  - key: SFXSlider
     action:
       rid: 8985605017941311612
   - key: ExitWithSave
@@ -970,17 +970,18 @@ MonoBehaviour:
             tasks:
             - rid: 8985605036668878948
             - rid: 8985605036668878949
+            - rid: 8985605238568780286
     - rid: 8985604991616024648
       type: {class: UInputFieldAction, ns: UengSystem.UI.UInputFields, asm: Assembly-CSharp}
       data:
         component: {fileID: 357467987696330337}
         taskOnTextChanged:
-          tasks: []
-        taskOnEndEdit:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985604991616024651
+            - rid: 8985605238568779966
+        taskOnEndEdit:
+          tasks: []
         initialText:
           rid: 8985604991616024650
     - rid: 8985604991616024650
@@ -990,22 +991,10 @@ MonoBehaviour:
         valueCache: 
         isValueCached: 0
         type: 0
-    - rid: 8985604991616024651
-      type: {class: ChangeSettingString, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 0
-        text:
-          rid: 8985604991616024652
-    - rid: 8985604991616024652
-      type: {class: UInputFieldValue, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
     - rid: 8985604991616024653
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
-        component: {fileID: 5518282019694209024}
+        component: {fileID: 8107356648668745536}
         initialValue:
           rid: 8985604995436511448
         value:
@@ -1034,7 +1023,7 @@ MonoBehaviour:
     - rid: 8985604995436511455
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
-        component: {fileID: 2975550489557662081}
+        component: {fileID: 3040374524204875552}
         initialValue:
           rid: 8985604995436511456
         value:
@@ -1063,7 +1052,7 @@ MonoBehaviour:
     - rid: 8985605017941311612
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
-        component: {fileID: 6014225149234916712}
+        component: {fileID: 244553289258937224}
         initialValue:
           rid: 8985605017941311779
         value:
@@ -1126,13 +1115,38 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
+            - rid: 8985605261891731624
             - rid: 8985605036668878983
+            - rid: 8985605238568780285
     - rid: 8985605036668878983
       type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         closeThis: 1
         TargetUUI:
           rid: -2
+    - rid: 8985605238568779966
+      type: {class: ChangeSettingString, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        settingType: 0
+        text:
+          rid: 8985605238568779967
+    - rid: 8985605238568779967
+      type: {class: UInputFieldValue, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        valueCache: 
+        isValueCached: 0
+    - rid: 8985605238568780285
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
+    - rid: 8985605238568780286
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
+    - rid: 8985605261891731624
+      type: {class: LoadSettings, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data: 
 --- !u!1 &2598315001748879960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,7 +1625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8652623592063737584}
   - component: {fileID: 2435970586336445775}
-  - component: {fileID: 6014225149234916712}
+  - component: {fileID: 244553289258937224}
   m_Layer: 6
   m_Name: SFXSlider
   m_TagString: Untagged
@@ -1692,7 +1706,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6014225149234916712
+--- !u!114 &244553289258937224
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1701,9 +1715,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3663083733375376298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7808c863ee64678b8203e237ddc50d2, type: 3}
+  m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   _gettable: 0
@@ -1715,8 +1729,9 @@ MonoBehaviour:
   ReleaseTask:
     tasks: []
   parent: {fileID: 176407675517158008}
-  slider: {fileID: 2811353757806066001}
+  slider: {fileID: 0}
   valueChanged: 0
+  volumeName: SFX
   references:
     version: 2
     RefIds: []
@@ -2298,7 +2313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7350962359376059130}
   - component: {fileID: 6473856591998510214}
-  - component: {fileID: 2975550489557662081}
+  - component: {fileID: 3040374524204875552}
   m_Layer: 6
   m_Name: BGMSlider
   m_TagString: Untagged
@@ -2379,7 +2394,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2975550489557662081
+--- !u!114 &3040374524204875552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2388,9 +2403,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6107680429769948050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7808c863ee64678b8203e237ddc50d2, type: 3}
+  m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   _gettable: 0
@@ -2402,8 +2417,9 @@ MonoBehaviour:
   ReleaseTask:
     tasks: []
   parent: {fileID: 176407675517158008}
-  slider: {fileID: 2811353757806066001}
+  slider: {fileID: 0}
   valueChanged: 0
+  volumeName: BGM
   references:
     version: 2
     RefIds: []
@@ -2492,7 +2508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9041820255104428104}
   - component: {fileID: 2811353757806066001}
-  - component: {fileID: 5518282019694209024}
+  - component: {fileID: 8107356648668745536}
   m_Layer: 6
   m_Name: MasterSlider
   m_TagString: Untagged
@@ -2573,7 +2589,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5518282019694209024
+--- !u!114 &8107356648668745536
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2582,9 +2598,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6811325022243128517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7808c863ee64678b8203e237ddc50d2, type: 3}
+  m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   _gettable: 0
@@ -2596,8 +2612,9 @@ MonoBehaviour:
   ReleaseTask:
     tasks: []
   parent: {fileID: 176407675517158008}
-  slider: {fileID: 2811353757806066001}
+  slider: {fileID: 0}
   valueChanged: 0
+  volumeName: Master
   references:
     version: 2
     RefIds: []

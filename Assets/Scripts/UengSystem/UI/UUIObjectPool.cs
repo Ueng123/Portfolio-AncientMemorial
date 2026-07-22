@@ -35,9 +35,6 @@ namespace UengSystem.UI {
 						IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
 						script.OnFirstGet();
 						
-						UUI uiScript = obj.GetComponent<UUI>();
-						uiScript.OnGet();
-						
 						obj.SetActive(false);
 						return obj;
 					},
@@ -73,6 +70,7 @@ namespace UengSystem.UI {
 		
 		public void Close(GameObject obj, bool finalRelease = false) {
 			UUI script = obj.GetComponent<UUI>();
+			if (script.isReleased) return;
 
 			float closeTime = prefabData.FirstOrDefault((data) => data.prefab.name == obj.name)!.closeTime;
 			

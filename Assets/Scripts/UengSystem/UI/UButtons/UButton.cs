@@ -11,12 +11,17 @@ namespace UengSystem.UI.UButtons {
 		public bool   clicked;
 		
 		public virtual void OnButtonClicked() {
+			Debug.Log("BUTTON CLICK DETECTED : UButton");
 			clicked = true;
 		}
 
 		public override void Initialize() {
 			button = GetComponent<Button>();
 			button.onClick.AddListener(OnButtonClicked);
+		}
+
+		public override void Uninitialize() {
+			button.onClick.RemoveAllListeners();
 		}
 	}
 }

@@ -80,7 +80,8 @@ namespace UengSystem.ObjectPool {
 
 		public void Release(GameObject obj, float time = 0) {
 			IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
-
+			if (script.isReleased) return;
+			
 			script.Release(time);
 			if (time > 0) return;
 			

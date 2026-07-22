@@ -1,6 +1,6 @@
 ﻿{
-  "Name" : "힘의 파편",
-  "HP" : 5,
+  "Name" : "힘의 조각",
+  "HP" : 50,
   "MoveSpeed" : 0,
   "JumpPower" : 0,
   "AttackCooldown" : 0,
