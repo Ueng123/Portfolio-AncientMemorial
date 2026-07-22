@@ -78,7 +78,7 @@ namespace AncientMemorial.Entities {
 
 		private void ShootMissile(int shootN = 1, float spreadTiming = 0f) {
 			for (int i = 0; i < shootN; i++) {
-				// todo
+				// todoo
 				//  Coroutine으로 완화
 				//  개수만큼 Random 돌려서 타임 정렬한채로 놓고
 				//  while 돌리면서 spreadTiming 지날때까지 소환 체킹 - 소환

@@ -243,11 +243,8 @@ namespace AncientMemorial.Entities {
 			int n = energyCount[spawnN]; 
 			GameManager.UValueFloatVariables["crystalEnergyDead"]   = new UPureNumber {number = 0};
 			GameManager.UValueFloatVariables["crystalEnergyGimmick"] = new UPureNumber {number = n};
-			
+
 			Debug.Log($"[Crystal Attack] spawnN = {spawnN}");
-			
-			// todo
-			//  체킹하는거에서 실패하면 아예 WaitAction 못나가게
 			crystalEnergyGimmick1??=new WaitAction(
 				()=>(int)GameManager.UValueFloatVariables["crystalEnergyGimmick"].value == 0,
 				() => {
