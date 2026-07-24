@@ -6,6 +6,9 @@ namespace AncientMemorial.Map {
 		
 		[SerializeField] private Vector2 TargetMapSize;
 		private                  Vector2 CurrMapSize;
+
+		public static float rightWall => instance.CurrMapSize.x / 2;
+		public static float leftWall => -instance.CurrMapSize.x / 2;
 		
 		[Header("Camera Values")]
 		[SerializeField ] private Vector2 CamSizeMargin;

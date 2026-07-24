@@ -93,15 +93,12 @@ namespace UengSystem.UI {
 		}
 		
 		public override void Release(float time) {
-			
-			gettable = false;
 			ID        = null;
 			Category  = null;
 			
 			switch (time) {
 				case < 0:
 					Uninitialize();
-					gettable = true;
 					break;
 				case 0:
 					AdvancedInstances.Remove(this);
@@ -109,7 +106,6 @@ namespace UengSystem.UI {
 					
 					OnRelease();
 					Uninitialize();
-					gettable = true;
 					break;
 				default:
 					AdvancedInstances.Remove(this);

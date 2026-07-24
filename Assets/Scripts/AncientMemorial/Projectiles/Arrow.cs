@@ -26,7 +26,7 @@ namespace AncientMemorial.Projectiles {
 			}
 			
 			if (parent) {
-				if (isEntity) parent.GetComponent<Entity>().debrisAttached.Add(obj.GetComponent<Debris>());
+				if (isEntity) parent.GetComponent<Entity>().debrisAttached.Add(obj.GetComponent<AttatchObject>());
 				obj.transform.SetParent(parent, true);
 			}
 			

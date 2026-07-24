@@ -21,24 +21,24 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
 	public class SkeletonTank : Skeleton {
-		private static readonly     int attacking  = Animator.StringToHash("attacking");
 		private static readonly     int attack2ing = Animator.StringToHash("attack2ing");
 		private static readonly     int attack2    = Animator.StringToHash("attack2");
-		private new static readonly int attack     = Animator.StringToHash("attack");
 		private static readonly     int spawn      = Animator.StringToHash("spawn");
-		private new static readonly int moving     = Animator.StringToHash("moving");
-		private new static readonly int backward   = Animator.StringToHash("backward");
-		private new static readonly int Landing    = Animator.StringToHash("landing");
 
-		[NonSerialized] private       float oldAnimSpeed;
-		[NonSerialized] private       int   attackAnimation;
-		[NonSerialized] private const float attackLength = 3f;
+		private       float oldAnimSpeed;
+		private       int   attackAnimation;
+		private const float attackLength = 3f;
+		protected override float marginX            => 2;
 		
-		[NonSerialized] private bool unstoppable;
-		[NonSerialized] private bool weakness;
-		[NonSerialized] private int  groggyAttackLeft = -1;
-		[NonSerialized] private bool groggy;
-		[NonSerialized] private int  groggySuccess;
+		protected override float moveTargetDistance   => 2;
+		protected override float moveAllowMargin      => 4;
+		protected override float moveTargetDistanceRM => 1;
+		
+		private bool unstoppable;
+		private bool weakness;
+		private int  groggyAttackLeft = -1;
+		private bool groggy;
+		private int  groggySuccess;
 		
 		public override void OnStunStart() { }
 
@@ -62,7 +62,7 @@ namespace AncientMemorial.Entities {
 			UObjectPool.instance.Get("groggyEffect", transform.position);
 		}
 
-		[NonSerialized] public int attackPhase = 1;
+		public int attackPhase = 1;
 		public override void Attack() {
 			if (!attackable) return;
 			attackable = false;
@@ -129,8 +129,7 @@ namespace AncientMemorial.Entities {
 			
 		}
 		
-		[NonSerialized] protected const float attack2Length       = 12f;
-		[NonSerialized] protected const float projectileSpawnTime = 1;
+		protected const float attack2Length       = 12f;
 		protected IEnumerator Attack2Enumerator() {
 			AudioSource attackAudio = AudioManager.instance.PlaySFX("tankAttack2", volume: 0.6f, pitch: 1f);
 			
@@ -157,8 +156,7 @@ namespace AncientMemorial.Entities {
 			groggySuccess    = 2;
 			groggyAttackLeft = 3;
 			
-			// 개쩌는슈퍼짱짱투사채생성기만드는코드
-			float   projectileSpawnTime2 = (attack2Length * 15f) / (entityStat.attackSpeed * 43f);
+			float   projectileSpawnTime = (attack2Length * 15f) / (entityStat.attackSpeed * 43f);
 			Vector2 attackPos1           = (Vector2)transform.position + new Vector2(-0.5f, -0.5f);
 			Vector2 attackPos2           = (Vector2)transform.position + new Vector2( 0.5f, -0.5f);
 			
@@ -174,20 +172,24 @@ namespace AncientMemorial.Entities {
 			
 			projectileSpawnObject1.transform.rotation             = Quaternion.Euler(0f, 0f, 90*Random.Range(0, 5));
 			projectileSpawnObject2.transform.rotation             = Quaternion.Euler(0f, 0f, 90*Random.Range(0, 5));
-			projectileSpawnObject1.GetComponent<Animator>().speed = projectileSpawnTime / projectileSpawnTime2;
-			projectileSpawnObject2.GetComponent<Animator>().speed = projectileSpawnTime / projectileSpawnTime2;
+			projectileSpawnObject1.GetComponent<Animator>().speed = projectileSpawnTime;
+			projectileSpawnObject2.GetComponent<Animator>().speed = projectileSpawnTime;
 			
 			attack12DelayedAction = new DelayedAction(
-				projectileSpawnTime2,
+				projectileSpawnTime,
 				() => {
 					GameObject     projectile1     = UObjectPool.instance.Get("BossProjectile", attackPos1);
 					GameObject     projectile2     = UObjectPool.instance.Get("BossProjectile", attackPos2);
-					BossProjectile bossProjectile1 = projectile1.GetComponent<BossProjectile>();
-					BossProjectile bossProjectile2 = projectile2.GetComponent<BossProjectile>();
-					bossProjectile1.damage               = entityStat.attackDamage * 5/2;
-					bossProjectile2.damage               = entityStat.attackDamage * 5/2;
+					
+					EnergyBall bossProjectile1 = projectile1.GetComponent<EnergyBall>();
+					EnergyBall bossProjectile2 = projectile2.GetComponent<EnergyBall>();
+					
+					bossProjectile1.damage               = entityStat.attackDamage * 5f/2f;
+					bossProjectile2.damage               = entityStat.attackDamage * 5f/2f;
+					
 					bossProjectile1.spriteRenderer.flipX = false;
 					bossProjectile2.spriteRenderer.flipX = true;
+					
 					bossProjectile1.owner                = this;
 					bossProjectile2.owner                = this;
 					
@@ -219,7 +221,7 @@ namespace AncientMemorial.Entities {
 			yield return new WaitForSeconds((attack2Length * 2)/(entityStat.attackSpeed * 43f));
 		}
 
-		[NonSerialized] protected const float spawnLength = 1.617f;
+		protected const float spawnLength = 1.617f;
 		protected IEnumerator SpawnSkeleton() {
 			unstoppable                = true;
 			
@@ -307,15 +309,15 @@ namespace AncientMemorial.Entities {
 			groggyAttackLeft = -1;
 		}
 
-		[NonSerialized] private float currWanderTargetPosX;
-		[NonSerialized] private float wanderTime;
+		private float currWanderTargetPosX;
+		private float wanderTime;
 		public override void WanderRoutine() {
 			if (!aggroEntity) return;
 			state = EnemyState.Alert;
 		}
 
-		[NonSerialized] private const float attackableDist   = 30f;
-		[NonSerialized] private       float attackableDistRV;
+		private const float attackableDist   = 30f;
+		private       float attackableDistRV;
 		public override void AttackReadyRoutine() {
 			float targetPositionX = aggroEntity.transform.position.x;
 			if (Mathf.Abs(targetPositionX - transform.position.x) <= attackableDist + attackableDistRV) {
@@ -349,8 +351,6 @@ namespace AncientMemorial.Entities {
 				return;
 			}
 			
-			if (attacker != player) return;
-			
 			if (groggyAttackLeft == 0) {
 				Debug.Log("[SkeletonTank] critical groggy hit");
 				PlaySFX("tankGroggy");
@@ -376,6 +376,7 @@ namespace AncientMemorial.Entities {
 				Debug.Log("[SkeletonTank] weakness hit");
 				PlaySFX("tankCritical");
 				
+				if (attacker != player) return;
 				GameManager.SetTimeScale(0.05f, 0.5f);
 				CameraBrain.instance.ShakeLerp(1f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 				CameraBrain.instance.ZoomLerp(-0.5f);
@@ -386,6 +387,7 @@ namespace AncientMemorial.Entities {
 				Debug.Log("[SkeletonTank] groggy hit");
 				PlaySFX("tankHit");
 				
+				if (attacker != player) return;
 				GameManager.SetTimeScale(0.05f, 0.1f);
 				CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 				CameraBrain.instance.ZoomLerp(-0.5f);
@@ -397,6 +399,7 @@ namespace AncientMemorial.Entities {
 				PlaySFX("tankWeakHit");
 				groggySuccess -= 1;
 				
+				if (attacker != player) return;
 				GameManager.SetTimeScale(0.05f, 0.05f);
 				return;
 			}
@@ -404,6 +407,7 @@ namespace AncientMemorial.Entities {
 			Debug.Log("[SkeletonTank] hit");
 			PlaySFX("tankHit");
 			
+			if (attacker != player) return;
 			GameManager.SetTimeScale(0.05f, 0.05f);
 			CameraBrain.instance.ShakeLerp(0.8F*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-0.5f);
@@ -421,7 +425,7 @@ namespace AncientMemorial.Entities {
 			entityStat.hp -= damage;
 		}
 
-		[NonSerialized] private bool groggyInfo = false;
+		private bool groggyInfo = false;
 		protected override float GetRealDamage(float rawDamage) {
 			if (weakness) {
 				groggyAttackLeft -= 1;

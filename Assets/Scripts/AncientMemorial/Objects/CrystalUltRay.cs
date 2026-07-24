@@ -140,7 +140,7 @@ namespace AncientMemorial.Objects {
 		protected override IEnumerator DespawnFX(float duration) {
 			
 			while (stopWatch.Check(despawnAnimTime)) {
-				theta                      = Mathf.Repeat(theta + w * DeltaTime, 2*pi);
+				theta                      = Mathf.Repeat(theta + w * Time.deltaTime, 2*pi);
 				float thetaUse             = theta + o;
 				rayTransform.localPosition = new Vector3(r*Mathf.Cos(thetaUse), r*Mathf.Sin(thetaUse), 0);
 				rayTransform.localRotation = Quaternion.Euler(0f, 0f, 90 + thetaUse*Mathf.Rad2Deg);

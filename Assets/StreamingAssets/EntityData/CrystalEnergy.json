@@ -11,8 +11,6 @@
   "GroundBoxOffsetY" : 0,
   "GroundBoxSizeX" : 0,
   "GroundBoxSizeY" : 0,
-  "AggroThreshold" : 1,
-  "AggroCoefficient" : {
-    "Player" : 0
-  }
+  "AggroThreshold" : 0,
+  "AggroCoefficient" : {}
 }

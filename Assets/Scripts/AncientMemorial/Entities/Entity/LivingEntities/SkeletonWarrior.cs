@@ -21,10 +21,15 @@ using Vector2 = UnityEngine.Vector2;
 namespace AncientMemorial.Entities {
 	public class SkeletonWarrior : Skeleton {
 
-		private         float oldAnimSpeed;
-		private         int   attackAnimation;
-		private const   float attackLength = 1.833f;
-
+		private            float oldAnimSpeed;
+		private            int   attackAnimation;
+		private const      float attackLength = 1.833f;
+		protected override float marginX => 1;
+		
+		protected override float moveTargetDistance   => 3;
+		protected override float moveAllowMargin      => 3;
+		protected override float moveTargetDistanceRM => 2;
+		
 		public override void OnStunStart() { }
 
 		public override void OnStunEnd() {
@@ -46,10 +51,10 @@ namespace AncientMemorial.Entities {
 			attackAnimation = isFlipped ? attackF : attackB;
 			animator.SetBool(attackAnimation, true);
 			animator.SetBool(moving, false);
-			animator.SetTrigger(attack);
+			animator.SetTrigger(attacking);
 
-			Vector2 hitboxPos  = (Vector2)transform.position + new Vector2(0.393f * (isFlipped ? -1 : 1), -0.155f);
-			Vector2 hitboxSize = new(0.88f, 0.31f);
+			Vector2 hitboxPos  = (Vector2)transform.position + new Vector2(0.6395f * (isFlipped ? -1 : 1), -0.155f);
+			Vector2 hitboxSize = new(1.76f, 0.31f);
 			attackDelayedAction = AttackArea(1, (attackLength * 6f)/(entityStat.attackSpeed * 11f), hitboxPos, hitboxSize, 0, 1, false, true);
 			yield return new WaitForSeconds(attackLength * 6f/ (entityStat.attackSpeed * 11f));
 
@@ -59,7 +64,7 @@ namespace AncientMemorial.Entities {
 			
 			animator.speed = oldAnimSpeed;
 			animator.SetBool(attackAnimation, false);
-			animator.SetTrigger(attack);
+			animator.SetTrigger(attacking);
 			
 			yield return new WaitForSeconds((attackLength * 2)/(entityStat.attackSpeed * 11f));
 		}
@@ -67,7 +72,7 @@ namespace AncientMemorial.Entities {
 		protected override void OnAttackDone() {
 			animator.speed = oldAnimSpeed;
 			animator.SetBool(attackAnimation, false);
-			animator.SetTrigger(attack);
+			animator.SetTrigger(attacking);
 			
 			state                  = EnemyState.Alert;
 			currentExclusiveAction = FindingAggro;
@@ -76,7 +81,7 @@ namespace AncientMemorial.Entities {
 		protected override void OnAttackCancel() {
 			animator.speed = oldAnimSpeed;
 			animator.SetBool(attackAnimation, false);
-			animator.SetTrigger(attack);
+			animator.SetTrigger(attacking);
 
 			attackDelayedAction.Cancel();
 			

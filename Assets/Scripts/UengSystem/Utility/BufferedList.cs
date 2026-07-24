@@ -39,15 +39,21 @@ namespace UengSystem.Utility {
 		}
 
 		public void Add   (T item) => AddQueue   .Add(item);
+		
 		public void Remove(T item) => RemoveQueue.Add(item);
+		
 		public void Clear() {
 			foreach (T item in mainList) Remove(item);
 		}
-		public void ClearImmediatly() {
+		
+		public void ClearImmediately() {
 			mainList.Clear();
 			AddQueue.Clear();
 			RemoveQueue.Clear();
 		}
+		
+		public int Count => mainList.Count;
+		public int PotentialCount => mainList.Count + AddQueue.Count - RemoveQueue.Count;
 		
 		public IEnumerator<T>   GetEnumerator() {
 			return new DefaultEnumerator<T>(mainList);

@@ -22,7 +22,7 @@ namespace AncientMemorial.Objects {
 		protected override void Routine() {
 			whiteObject.size     = new Vector2(targetSize.x * (lerpX ? stopWatch.Tock() / duration : 1),
 											   targetSize.y * (lerpY ? stopWatch.Tock() / duration : 1));
-			spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColor, DeltaTime * (1 /duration) * 5f);
+			spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColor, Time.deltaTime * (1 /duration) * 5f);
 			whiteObject.color    = spriteRenderer.color;
 		}
 

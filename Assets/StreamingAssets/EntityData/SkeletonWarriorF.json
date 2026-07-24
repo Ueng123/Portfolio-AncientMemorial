@@ -1,0 +1,25 @@
+﻿{
+  "Name" : "친절한 스켈레톤",
+  "HP" : 20,
+  "MoveSpeed" : 3,
+  "JumpPower" : 2,
+  "AttackCooldown" : 3,
+  "AttackSpeed" : 1,
+  "AttackDamage" : 7,
+  "InvincibleTime" : 1,
+  "GroundBoxOffsetX" : 0,
+  "GroundBoxOffsetY" : -0.5,
+  "GroundBoxSizeX" : 0.36,
+  "GroundBoxSizeY" : 0.025,
+  "AggroThreshold" : 0.1,
+  "AggroCoefficient" : {
+    "SkeletonWarrior" : 3,
+    "SkeletonWarriorC" : 500,
+    "SkeletonArcher" : 3,
+    "SkeletonArcherC" : 500,
+    "SkeletonTank" : 5,
+    "CrystalPhase1" : 5,
+    "CrystalPhase2" : 10,
+    "CrystalEnergy" : 5
+  }
+}

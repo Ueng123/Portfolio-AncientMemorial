@@ -60,7 +60,7 @@ namespace AncientMemorial.Entities {
 		private Vector2 groundBoxOffset;
 		private Vector2 groundBoxSize;
 		
-		public List<Debris> debrisAttached = new List<Debris>();
+		public List<AttatchObject> debrisAttached = new List<AttatchObject>();
 		
 		// Static Methods //
 		public static DelayedAction AttackArea(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
@@ -178,22 +178,11 @@ namespace AncientMemorial.Entities {
 			base.Uninitialize();
 		}
 
-		public virtual EntityData GetData() {
-			string path = Path.Combine(Application.streamingAssetsPath, $"EntityData/{entityType}.json");
-			if (!File.Exists(path)) {
-				Debug.LogError($"NO FILE FOUND : [{entityType}] BRO;((((");
-				return null;
-			}
-			
-			string jsonText = File.ReadAllText(path);
-			
-			return JsonConvert.DeserializeObject<EntityData>(jsonText);
+		protected virtual EntityData GetData() {
+			return new EntityData(entityType);
 		}
 		
-		private int testest = 0;
 		public override void OnGet() {
-			Debug.Log(testest++);
-
 			entityData = GetData();
 			
 			entityStat      = new EntityStat(
@@ -257,7 +246,7 @@ namespace AncientMemorial.Entities {
 		protected override void OnRelease() {
 			UUIObjectPool.instance.Close(entityUI.gameObject);
 			
-			foreach (Debris debris in debrisAttached) {
+			foreach (AttatchObject debris in debrisAttached) {
 				Debug.Log("deleting debris!!");
 				debris.transform.SetParent(null);
 				if (debris.isReleased) continue;
@@ -341,7 +330,7 @@ namespace AncientMemorial.Entities {
 							  realDamage,
 							  hitData.pushDir);
 
-					if (!invincible && entityStat.hp > 0) Invincible(0.15f);
+					if (!invincible && entityStat.hp > 0) Invincible(0.05f);
 					break;
 			}
 		}

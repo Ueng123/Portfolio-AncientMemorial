@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1830908648120635420}
   - component: {fileID: 4921231574561699411}
   - component: {fileID: 5698839722082736710}
-  - component: {fileID: 802469747820155874}
+  - component: {fileID: -3906420645453531673}
   m_Layer: 0
   m_Name: bigMissileEffect
   m_TagString: Untagged
@@ -36,6 +36,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4921231574561699411
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -54,6 +55,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,9 +78,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 8363571517377567531, guid: 84b1985356062b14c9e81e0d4e807212, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -87,8 +92,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!95 &5698839722082736710
 Animator:
   serializedVersion: 7
@@ -111,7 +116,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &802469747820155874
+--- !u!114 &-3906420645453531673
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,28 +125,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 2507578616167794662}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bd49957cbe6d0d4f9c21e9dc231e1f2, type: 3}
+  m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whiteSpawnSprite: {fileID: 8363571517377567531, guid: 84b1985356062b14c9e81e0d4e807212, type: 3}
   colorSpawnSprite: {fileID: 8363571517377567531, guid: 84b1985356062b14c9e81e0d4e807212, type: 3}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks:
-    - time: 5
+    - time: 1
       tasks:
-      - rid: 8722662612876394575
+      - rid: 8985605350484083475
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8722662612876394575
+    - rid: 8985605350484083475
       type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0

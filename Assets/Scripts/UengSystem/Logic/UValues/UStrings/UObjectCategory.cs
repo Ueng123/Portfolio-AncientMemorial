@@ -6,7 +6,7 @@ namespace UengSystem.Logic.UValues.UStrings {
 	public class UObjectCategory : UValue<string> {
 		public override bool   getIsDynamic => false;
 
-		public UObject obj;
+		public Objects.UObject obj;
 
 		public override string getValue => obj.Category;
 	}

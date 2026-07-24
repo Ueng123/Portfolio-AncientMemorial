@@ -1,15 +1,29 @@
 ﻿using System;
+using System.Linq;
 using AncientMemorial.Entities;
 using UengSystem.Logic.Tasks;
+using UengSystem.Logic.UValues;
+using UnityEngine;
 
 namespace AncientMemorial.Tasks {
 	[Serializable]
 	public class KillAllEntity : TaskComponent {
 		public bool exceptPlayer;
+		public bool exceptFriendly;
+
+		public EntityType[]   targetTypes;
+		[SerializeReference] [SubclassSelector]
+		public UValue<string> targetCategory;
+		[SerializeReference] [SubclassSelector]
+		public UValue<Entity> targetEntity;
 		
 		public override void Execute(ITaskable self) {
 			foreach (Entity e in Entity.entities) {
 				if (e == Entity.player && exceptPlayer) continue;
+				if (e.Friendly && exceptFriendly) continue;
+				if (targetTypes != null && !targetTypes.Contains(e.entityType)) continue;
+				if (targetCategory != null && e.Category != targetCategory.value) continue;
+				if (targetEntity != null && e != targetEntity.value) continue;
 				e.entityStat.hp = 0;
 			}
 		}

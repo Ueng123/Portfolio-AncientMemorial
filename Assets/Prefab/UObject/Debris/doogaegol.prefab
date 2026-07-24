@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 5231399551225970893}
   - component: {fileID: 1819358550949134630}
   - component: {fileID: 2292108016527539062}
-  - component: {fileID: 8218167896835286607}
-  - component: {fileID: 8497025651912082255}
+  - component: {fileID: 5024142331638760139}
   - component: {fileID: 7107052034912411330}
   m_Layer: 8
   m_Name: doogaegol
@@ -38,6 +37,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1819358550949134630
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -56,6 +56,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,9 +79,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 6744743527399318908, guid: a5c41dbed45ab76448ec093612e1dc97, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -89,8 +93,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!50 &2292108016527539062
 Rigidbody2D:
   serializedVersion: 5
@@ -118,7 +122,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &8218167896835286607
+--- !u!114 &5024142331638760139
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,40 +131,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 672452184323998955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de11ba3fd92463e4cbb6abead168fdfa, type: 3}
+  m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8497025651912082255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 672452184323998955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bd49957cbe6d0d4f9c21e9dc231e1f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whiteSpawnSprite: {fileID: 6744743527399318908, guid: a5c41dbed45ab76448ec093612e1dc97, type: 3}
   colorSpawnSprite: {fileID: 6744743527399318908, guid: a5c41dbed45ab76448ec093612e1dc97, type: 3}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks:
     - time: 4
       tasks:
-      - rid: 8722662207642665219
+      - rid: 8985605350484083474
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8722662207642665219
+    - rid: 8985605350484083474
       type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 1

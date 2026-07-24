@@ -43,6 +43,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8105305509989278386
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -61,6 +62,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,9 +85,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -6380232630893654169, guid: 240e0ee2da17df749802711e142f5da1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -94,8 +99,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!95 &8904867624041190258
 Animator:
   serializedVersion: 7
@@ -251,13 +256,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: -6380232630893654169, guid: 240e0ee2da17df749802711e142f5da1, type: 3}
   colorSpawnSprite: {fileID: -6380232630893654169, guid: 240e0ee2da17df749802711e142f5da1, type: 3}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks:
     - time: 0
       tasks:
@@ -274,7 +280,7 @@ MonoBehaviour:
     - time: 0
       tasks:
       - rid: 8722662457280299112
-  entityType: 7
+  entityType: 6
   entityData:
     name: 
     hp: 0
@@ -302,7 +308,6 @@ MonoBehaviour:
   groundChecker: {fileID: 6265980885284654929}
   debrisAttached: []
   markYPos: 1.6
-  attackPhase: 1
   references:
     version: 2
     RefIds:

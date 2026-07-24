@@ -13,6 +13,7 @@
   "GroundBoxSizeY" : 0.025,
   "AggroThreshold" : 1,
   "AggroCoefficient" : {
-    "Player" : 7.5
+    "Player" : 7.5,
+    "SkeletonWarriorF" : 10
   }
 }

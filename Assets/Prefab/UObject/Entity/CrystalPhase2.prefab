@@ -340,15 +340,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 5293031974318352618, guid: e1a1fb6a99dd94348a00a12a35813a1e, type: 3}
   colorSpawnSprite: {fileID: 5293031974318352618, guid: e1a1fb6a99dd94348a00a12a35813a1e, type: 3}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
-  entityType: 11
+  entityType: 8
   entityData:
     name: 
     hp: 0

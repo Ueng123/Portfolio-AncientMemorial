@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7230269267250636463}
   - component: {fileID: 5981464628535314598}
   - component: {fileID: 2953840287157939513}
-  - component: {fileID: 1114750606362949364}
+  - component: {fileID: -7102057199481377104}
   m_Layer: 0
   m_Name: ArrowHitEffect
   m_TagString: Untagged
@@ -4826,7 +4826,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &2953840287157939513
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4845,6 +4845,8 @@ ParticleSystemRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4866,9 +4868,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4900,8 +4904,7 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
---- !u!114 &1114750606362949364
+--- !u!114 &-7102057199481377104
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4910,28 +4913,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1391917594571327685}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bd49957cbe6d0d4f9c21e9dc231e1f2, type: 3}
+  m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks:
     - time: 2
       tasks:
-      - rid: 8722662487183065160
+      - rid: 8985605350484083474
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8722662487183065160
+    - rid: 8985605350484083474
       type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0

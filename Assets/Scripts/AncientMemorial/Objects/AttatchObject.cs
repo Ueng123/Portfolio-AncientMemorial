@@ -1,7 +1,7 @@
 ﻿using UengSystem.Objects;
 
 namespace AncientMemorial.Objects {
-	public class Debris : AdvancedUObject {
+	public class AttatchObject : AdvancedUObject {
 		protected override void EarlyRoutine() { }
 
 		protected override void Routine() { }

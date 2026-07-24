@@ -8,7 +8,7 @@ namespace UengSystem.Logic.UValues.UVector2s {
 		public override bool getIsDynamic => true;
 
 		[SerializeReference] [SubclassSelector]
-		public UValue<UObject> targetObject;
+		public UValue<Objects.UObject> targetObject;
 
 		public override Vector2 getValue => targetObject.value.transform.position;
 	}

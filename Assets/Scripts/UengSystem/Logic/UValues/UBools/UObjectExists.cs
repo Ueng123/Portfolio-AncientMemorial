@@ -10,6 +10,6 @@ namespace UengSystem.Logic.UValues.UBools {
 		[SerializeReference] [SubclassSelector]
 		public UValue<string> id;
 
-		public override bool getValue => UObject.UObjectExists(id.value);
+		public override bool getValue => Objects.UObject.UObjectExists(id.value);
 	}
 }

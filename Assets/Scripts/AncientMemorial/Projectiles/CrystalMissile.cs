@@ -65,7 +65,7 @@ namespace AncientMemorial.Projectiles {
 									targetPosition.x - transform.position.x
 								) * Mathf.Rad2Deg - 90f;
 			
-			transform.rotation = Quaternion.Euler(0f, 0f, Mathf.LerpAngle(currAngle, targetAngle + offset, DeltaTime*5/LockOnDuration));
+			transform.rotation = Quaternion.Euler(0f, 0f, Mathf.LerpAngle(currAngle, targetAngle + offset, Time.deltaTime*5/LockOnDuration));
 		}
 
 		public override void Initialize() {
@@ -99,10 +99,7 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected override void OnCollideEntity(Entity entity) {
-			if (owner) {
-				if (owner.entityType == EntityType.Player && entity.Friendly) return;
-				if (owner.entityType != EntityType.Player && !((Enemy)owner).isTargettable(entity.entityType)) return;
-			}
+			if (owner) { if (!owner.isAttackTarget(entity)) return; }
 			
 			SendEvent(EventType.Entity_Behaviour_Hit, 10, new EntityHitData(
 						  null,

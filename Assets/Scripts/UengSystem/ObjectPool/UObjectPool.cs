@@ -27,12 +27,11 @@ namespace UengSystem.ObjectPool {
 						createFunc: () => {
 							GameObject obj = Instantiate(prefab, newRoot);
 							obj.name = prefab.name;
-							obj.SetActive(false);
 							
 							IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
-							script.gettable = true;
 							script.OnFirstGet();
 							
+							obj.SetActive(false);
 							return obj;
 						},
 						actionOnGet: (obj) => {  },
@@ -49,25 +48,8 @@ namespace UengSystem.ObjectPool {
 		
 		public GameObject Get(string key, Vector2 position, float time = 0) {
 			List<GameObject> willReleaseObjects = new();
-			GameObject       obj                = null;
-			IObjectPoolable  script             = null;
-
-			int i = 0;
-			while (i++<=100) {
-				obj = pools[key].Get();
-				script = obj.GetComponent<IObjectPoolable>();
-				if (script.gettable) {
-					break;
-				}
-				
-				willReleaseObjects.Add(obj);
-			}
-
-			if (!obj) throw new Exception();
-			
-			foreach (GameObject releaseObj in willReleaseObjects) {
-				pools[key].Release(releaseObj);
-			}
+			GameObject       obj                = pools[key].Get();
+			IObjectPoolable  script             = obj.GetComponent<IObjectPoolable>();
 			
 			obj.transform.position = position;
 			

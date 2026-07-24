@@ -8,10 +8,10 @@ namespace UengSystem.Logic.UValues.UFloats {
 		public override bool getIsDynamic => true;
 
 		[SerializeReference][SubclassSelector]
-		public UValue<UObject> A;
+		public UValue<Objects.UObject> A;
 		
 		[SerializeReference][SubclassSelector]
-		public UValue<UObject> B;
+		public UValue<Objects.UObject> B;
 		
 		public override float getValue => Vector2.Distance(A.value.transform.position, B.value.transform.position);
 	}

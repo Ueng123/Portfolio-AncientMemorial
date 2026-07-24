@@ -10,14 +10,18 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace AncientMemorial.Projectiles {
-	public class BossProjectile : Projectile {
+	public class EnergyBall : Projectile {
 		private StopWatch  stopWatch;
 		public  float      boomTime;
 		public  Vector2    hitboxSize;
 		public  GameObject awareObject;
 		
 		private void Boom() {
-			UObjectPool.instance.Get("BOOM", transform.position);
+			UObjectPool.instance.Get("BigImpact", transform.position);
+			
+			float distCoEfficient = Entity.player?Mathf.Clamp01(Vector2.Distance(transform.position, Entity.player.transform.position)*5):1;
+			CameraBrain.instance.ShakeLerp(10f*distCoEfficient, 10f);
+			
 			UObjectPool.instance.Release(gameObject);
 			
 			Collider2D[] hitColliders = Physics2D.OverlapBoxAll(transform.position, hitboxSize, 0f);

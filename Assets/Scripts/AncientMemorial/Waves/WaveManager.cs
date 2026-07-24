@@ -47,7 +47,7 @@ namespace AncientMemorial.Waves {
 			if (!currentWave) return;
 			
 			GameManager.UValueFloatVariables["timeElapsed"] = new UPureNumber {
-				number = GameManager.UValueFloatVariables["timeElapsed"].value + GlobalCoroutineRunner.instance.DeltaTime
+				number = GameManager.UValueFloatVariables["timeElapsed"].value + Time.deltaTime
 			};
 
 			foreach (ConditionalTask condition in currentWave.alwaysConditionalTasks) { condition.Execute(this); }

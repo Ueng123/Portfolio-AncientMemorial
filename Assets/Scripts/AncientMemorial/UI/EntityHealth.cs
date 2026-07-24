@@ -19,7 +19,7 @@ namespace AncientMemorial.UI {
 
 		public override void SetValue(float value) {
 			slider.value    = value;
-			subSlider.value = Mathf.Lerp(subSlider.value, value, (value==0?25f:5f)*DeltaTime);
+			subSlider.value = Mathf.Lerp(subSlider.value, value, (value==0?25f:5f)*Time.deltaTime);
 		}
 	}
 }

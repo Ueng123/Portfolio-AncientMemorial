@@ -141,7 +141,7 @@ namespace AncientMemorial.Entities {
 			if (isGround) {
 				if (moveDir == 0 && rigidbody2D.linearVelocityX == 0) return;
 
-				float step = 6 * entityStat.moveSpeed * DeltaTime;
+				float step = 6 * entityStat.moveSpeed * Time.deltaTime;
 				int velocitySign = rigidbody2D.linearVelocityX == 0
 									   ? (int)moveDir
 									   : (int)Mathf.Sign(rigidbody2D.linearVelocityX);
@@ -228,22 +228,7 @@ namespace AncientMemorial.Entities {
 
 		private int        debugMode    = 1;
 		private GameObject debugInfoObject;
-		private bool       _inDebugMode = false;
-		private bool inDebugMode {
-			get => _inDebugMode;
-			set {
-				if (_inDebugMode == value) return;
-				_inDebugMode = value;
-				string v = value ? "enabled" : "disabled";
-				InfoUUI.instance.AddInfoMessage($"[DEBUG : debugMode {v}]");
-				if (debugInfoObject) {
-					UObjectPool.instance.Release(debugInfoObject);
-				}
-				else {
-					debugInfoObject = UObjectPool.instance.Get("DebugInfo", transform.position);
-				}
-			}
-		}
+		private bool       inDebugMode;
 		
 		private void GetInput() {
 			if (InputManager.inputData[InputActionType.Jump].pressType is InputPressType.Down or InputPressType.Hold && CanJump()) Jump();
@@ -411,13 +396,20 @@ namespace AncientMemorial.Entities {
 			Vector2 direction = new (Mathf.Cos(radH), Mathf.Sin(radH));
 
 			float dist = MapManager.instance.GetMapSize().magnitude + 1f;
-                
-			RaycastHit2D hit  = Physics2D.Raycast(handPos, direction, dist, mapEntityLayer);
-			if (hit.point == Vector2.zero) {
-				Debug.Log("HOW??????????????????????");
-				return;
+
+			RaycastHit2D[] results = new RaycastHit2D[entities.Count + 1]; // (최대) 모든 엔티티중에서도 때릴 애가 없으면 벽에 박힐 경우
+			RaycastHit2D   hit = default;
+			
+			Physics2D.RaycastNonAlloc(handPos, direction, results, dist, mapEntityLayer);
+
+			foreach (RaycastHit2D hitData in results) {
+				if (hitData.collider.gameObject.layer != 3 && !isAttackTarget(hitData.collider.GetComponent<Entity>())) continue;
+				hit = hitData;
+				break;
 			}
-				
+			
+			if (hit==default) throw new Exception("Entity/Map not found bt HOW");
+			
 			Vector2 hitPos    = hit.point;
 			Entity  hitEntity = hit.collider.GetComponent<Entity>();
                 
@@ -437,7 +429,7 @@ namespace AncientMemorial.Entities {
 			}
                 
 			if (hit.collider) {
-				if (hitEntity) hit.collider.GetComponent<Entity>().debrisAttached.Add(obj.GetComponent<Debris>());
+				if (hitEntity) hit.collider.GetComponent<Entity>().debrisAttached.Add(obj.GetComponent<AttatchObject>());
 				obj.transform.SetParent(hit.collider.transform, true);
 			}
                 
@@ -460,7 +452,7 @@ namespace AncientMemorial.Entities {
 			float degH   = radH * Mathf.Rad2Deg;
 			float offset = handRotOffset;
 
-			handRotOffset = (Mathf.Abs(handRotOffset) <= 0.001f)?0:Mathf.Lerp(handRotOffset, targetHandRotOffset, handRotOffsetSpeed * DeltaTime);
+			handRotOffset = (Mathf.Abs(handRotOffset) <= 0.001f)?0:Mathf.Lerp(handRotOffset, targetHandRotOffset, handRotOffsetSpeed * Time.deltaTime);
 
 			hand.transform.localPosition = handPos;
 			hand.transform.localRotation = Quaternion.Euler(0, 0, degH + offset*Mathf.Sign(dM.x));
@@ -474,7 +466,7 @@ namespace AncientMemorial.Entities {
 			crossbowGuideObject.transform.position = Vector2.Lerp(
 				(Vector2)transform.position+new Vector2(0.532f*(spriteRenderer.flipX ? 1 : -1), 0.157f),
 				crossbowGuideObject.transform.position,
-				DeltaTime*0.01f);
+				Time.deltaTime*0.01f);
 			crossbowGuideAnimator.SetBool(SHOOTABLE, shootable);
 		}
 
@@ -484,7 +476,7 @@ namespace AncientMemorial.Entities {
 		
 		// OVERRIDING //
 
-		public override EntityData GetData() {
+		protected override EntityData GetData() {
 			EntityData data = base.GetData();
 			data.name = Setting.data.playerName;
 
@@ -566,7 +558,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		public override bool isAttackTarget(Entity entity) {
-			return entity != this && !((Enemy)entity).Friendly;
+			return entity != this && !entity.Friendly;
 		}
 		
 		protected override void EarlyRoutine() {

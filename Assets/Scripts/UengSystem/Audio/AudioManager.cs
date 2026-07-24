@@ -97,6 +97,7 @@ namespace UengSystem.Audio {
 
 		public AudioSource PlaySFX(AudioClip clip, float volume = 0.5f, float pitch = 1f, float pan = 0f, bool loop = false) {
 			AudioSource source = SpawnSourceSFX(volume, pitch, pan, 0, loop);
+			source.enabled = true;
 			
 			source.clip = clip;
 			
@@ -115,6 +116,7 @@ namespace UengSystem.Audio {
 
 		public AudioSource PlaySFX(AudioClip clip, Vector2 position, float volume = 0.5f, float pitch = 1f, float pan = 0f, float spread = 0f, bool loop = false) {
 			AudioSource source = SpawnSourceSFX(volume, pitch, pan, spread, loop, position);
+			source.enabled = true;
 			
 			playingSFX.Add(source);
 			
@@ -134,6 +136,7 @@ namespace UengSystem.Audio {
 		public AudioSource PlaySFX(AudioClip clip, Transform parent, Vector2 position, bool isLocalPosition, float volume = 0.5f, float pitch = 1f, float pan = 0f, float spread = 0f, bool loop = false) {
 			Vector2 worldPosition = isLocalPosition ? parent.TransformPoint(position) : position;
 			AudioSource source = SpawnSourceSFX(volume, pitch, pan, spread, loop, worldPosition);
+			source.enabled = true;
 			
 			source.transform.SetParent(parent, true);
 			playingSFX.Add(source);
@@ -171,6 +174,8 @@ namespace UengSystem.Audio {
 			source.transform.SetParent(transform, true);
 
 			playingSFX.Remove(source);
+
+			source.enabled = false;
 			SFXPool.Release(source);
 		}
 

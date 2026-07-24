@@ -15,15 +15,16 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
 	public abstract class Skeleton : Enemy {
-		protected static readonly int attackF  = Animator.StringToHash("attackFrontEnd");
-		protected static readonly int attackB  = Animator.StringToHash("attackBackEnd");
-		protected static readonly int attack   = Animator.StringToHash("attacking");
-		protected static readonly int moving   = Animator.StringToHash("moving");
-		protected static readonly int backward = Animator.StringToHash("backward");
-		protected static readonly int Landing  = Animator.StringToHash("landing");
+		protected static readonly int attackF   = Animator.StringToHash("attackFrontEnd");
+		protected static readonly int attackB   = Animator.StringToHash("attackBackEnd");
+		protected static readonly int attack    = Animator.StringToHash("attack");
+		protected static readonly int attacking = Animator.StringToHash("attacking");
+		protected static readonly int moving    = Animator.StringToHash("moving");
+		protected static readonly int backward  = Animator.StringToHash("backward");
+		protected static readonly int Landing   = Animator.StringToHash("landing");
 	
-		[NonSerialized] private float oldAnimSpeed;
-		[NonSerialized] private int   attackAnimation;
+		private float oldAnimSpeed;
+		private int   attackAnimation;
 
 		public override void OnStunStart() { }
 
@@ -43,9 +44,12 @@ namespace AncientMemorial.Entities {
 
 		protected abstract string footstepSoundName { get; }
 		protected abstract bool isFootstep { get; }
+		protected abstract float marginX   { get; }
 
 		protected void Move(float targetPositionX) {
 			animator.SetBool(Falling, !isGround);
+			
+			targetPositionX = Mathf.Clamp(targetPositionX, MapManager.leftWall + marginX, MapManager.rightWall - marginX);
 			
 			if (!isGround) return;
 			if (aggroEntity) {
@@ -98,15 +102,21 @@ namespace AncientMemorial.Entities {
 			}
 		}
 
-		[NonSerialized] private float         currWanderTargetPosX;
-		[NonSerialized] private DelayedAction currWanderDA;
+		private float         currWanderTargetPosX;
+		private DelayedAction currWanderDA;
+		private float         newWanderOffsetMin => Mathf.Clamp01((transform.position.x - MapManager.leftWall) / 2f); // 왼쪽 벽으로부터 얼마나 떨어져있는지
+		private float         newWanderOffsetMax => Mathf.Clamp01((MapManager.rightWall - transform.position.x) / 2f); // 오른쪽 벽으로부터 얼마나 떨어져있는지
+		
 		public override void WanderRoutine() {
+			if (Mathf.Approximately(currWanderTargetPosX, default)) currWanderTargetPosX = transform.position.x;
+			
 			if (currWanderDA is not { Executing: true }) {
-				currWanderTargetPosX = transform.position.x;
-				currWanderDA = new DelayedAction(Random.Range(5f, 20f), () => {
-					currWanderTargetPosX = Random.Range(-MapManager.instance.GetMapSize().x / 2.2f,
-														MapManager.instance.GetMapSize().x  / 2.2f);
-				});
+				
+				currWanderDA = new DelayedAction(currWanderDA==null?Random.Range(0.5f, 1.5f):Random.Range(3f, 7f),
+												 () => {
+													 currWanderTargetPosX 
+														 = transform.position.x + Random.Range(-5*newWanderOffsetMin, 5*newWanderOffsetMax);
+												 });
 				currWanderDA.ExecuteDA();
 			}
 
@@ -133,11 +143,11 @@ namespace AncientMemorial.Entities {
 		// 	return _velocityScale;
 		// }
 
-		[NonSerialized] protected const float         moveTargetDistance   = 3f;
-		[NonSerialized] protected const float         moveAllowMargin      = 1f;
-		[NonSerialized] protected const float         moveTargetDistanceRM = 0.75f;
-		[NonSerialized] protected       float         moveTargetDistanceRV;
-		[NonSerialized] protected       DelayedAction currAlertDA;
+		protected abstract float         moveTargetDistance   { get; }
+		protected abstract float         moveAllowMargin      { get; }
+		protected abstract float         moveTargetDistanceRM { get; }
+		protected          float         moveTargetDistanceRV;
+		protected          DelayedAction currAlertDA;
 		public override void AlertRoutine() {
 			if (!aggroEntity) {
 				state = EnemyState.Wander;
@@ -178,10 +188,11 @@ namespace AncientMemorial.Entities {
 			textAction.Initialize(damageUI);
 			textSAction.Initialize(damageUI);
 			
-			if (attacker != player) return;
+			
 			if (entityStat.hp <= 0) {
 				PlaySFX("skeletonDeath");
 				
+				if (attacker != player) return;
 				GameManager.SetTimeScale(0.05f, 0.1f);
 				CameraBrain.instance.ShakeLerp(1f*Mathf.Max(Mathf.Log(damage+3),0.5f), 10);
 				CameraBrain.instance.ZoomLerp(-0.5f);
@@ -189,6 +200,7 @@ namespace AncientMemorial.Entities {
 			else {
 				PlaySFX("skeletonExcited");
 				
+				if (attacker != player) return;
 				GameManager.SetTimeScale(0.05f, 0.05f);
 				CameraBrain.instance.ShakeLerp(0.4f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 				CameraBrain.instance.ZoomLerp(-0.25f);
@@ -249,8 +261,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		protected override void OnGrounded() {
-			PlaySFX("skeletonAmbient");
-			PlaySFX("skeletonExcited");
+			// PlaySFX("skeletonLand");
 			
 			currentExclusiveAction = Stun(0.5f);
 			state                  = EnemyState.Stun;

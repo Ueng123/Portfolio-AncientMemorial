@@ -261,7 +261,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -920,7 +919,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1106,7 +1104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1276,7 +1273,7 @@ BoxCollider2D:
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 999}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &562574009
 MonoBehaviour:
@@ -1292,7 +1289,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1528,7 +1524,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1855,7 +1850,7 @@ BoxCollider2D:
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 999}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &723782656
 MonoBehaviour:
@@ -1871,7 +1866,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -3109,7 +3103,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -3348,7 +3341,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -3483,7 +3475,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -4077,6 +4068,10 @@ MonoBehaviour:
     cornerLU: {fileID: 1245238433}
     cornerRD: {fileID: 1145342898}
     cornerLD: {fileID: 1211999428}
+    colliderL: {fileID: 723782654}
+    colliderR: {fileID: 562574007}
+    colliderU: {fileID: 1581402127}
+    colliderD: {fileID: 1988160304}
   MapCenterTransform: {fileID: 701255595}
 --- !u!1 &1540751649
 GameObject:
@@ -4313,7 +4308,7 @@ BoxCollider2D:
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 999, y: 1}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1581402128
 MonoBehaviour:
@@ -4341,7 +4336,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -4646,7 +4640,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::System.Runtime.CompilerServices.UengSystem.Audio.USFXSource
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -5422,6 +5415,7 @@ MonoBehaviour:
   - {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
   - {fileID: 131187581413603052, guid: 7284a2e7c8e68344d8813715f00f9697, type: 3}
   - {fileID: 131187581413603052, guid: a1c8d4167fd3c44429972f85a3aad61c, type: 3}
+  - {fileID: 131187581413603052, guid: a863e89be37695a4f83fc4dd0366c264, type: 3}
   - {fileID: 8858349818350000186, guid: c1869d108cefeca42b435449f168b359, type: 3}
   - {fileID: 2128586633492397799, guid: befb2af89be8d794b84065c31055cb6d, type: 3}
   - {fileID: 2128586633492397799, guid: 8ae4ce87f2c7e774e8466e44dfe7e9b9, type: 3}
@@ -5436,7 +5430,6 @@ MonoBehaviour:
   - {fileID: 4257326429148041538, guid: ce385bf25a2a5e9489730b4addf39091, type: 3}
   - {fileID: 4257326429148041538, guid: 404473356c8812443bc35f6f3463de11, type: 3}
   - {fileID: 3187900536203831007, guid: 021e8adb7751cba498115519e93feb46, type: 3}
-  - {fileID: 1542439479415163211, guid: 7142220bf0a63274cb9dc2365f65a795, type: 3}
   - {fileID: 4683694428465582068, guid: f8acc439a8ef37c4d8daaf2b33aa6706, type: 3}
   - {fileID: 60593518339071841, guid: c70d83c5a8491b04ba60058dbec3e52a, type: 3}
   - {fileID: 1391917594571327685, guid: d8a5e48d84bdcca4db71dfe59f75ed57, type: 3}
@@ -5454,11 +5447,12 @@ MonoBehaviour:
   - {fileID: 2507578616167794662, guid: abb4b4b3d733328409c67db391dfc355, type: 3}
   - {fileID: 2507578616167794662, guid: f21e9347d0c81aa42836e0ae9ea1fbb1, type: 3}
   - {fileID: 6301149579103193317, guid: c6924125cf32e8044b6ad4e5bdb5ae22, type: 3}
+  - {fileID: 7602727121281649465, guid: d9f26ed8674033349bd3bcea466d60c6, type: 3}
+  - {fileID: 4168969846195652150, guid: ddfd93a9ff0f039449c5d0b9fbc31b77, type: 3}
   - {fileID: 4686542210769390805, guid: 09fc2150f9124cb439a44aa1ee8c89ff, type: 3}
   - {fileID: 2509423870686702689, guid: ffa13de754631d74bb6675ea6139b4d8, type: 3}
   - {fileID: 8664906978992796605, guid: b10fb5e167db4cf47bac9928f157ceb3, type: 3}
   - {fileID: 6301149579103193317, guid: c9a2bb238425f53479851753cdbb2371, type: 3}
-  - {fileID: 1565779426130284671, guid: 11933724fa1085f4b92d65e82f8306c3, type: 3}
   - {fileID: 3161069295203682342, guid: facb8a6f773b55d4c935b8cca67c3ece, type: 3}
   - {fileID: 2808094509374810376, guid: a159f13c5d93a0e43ac733f6784e7357, type: 3}
 --- !u!1 &1988160301
@@ -5603,7 +5597,7 @@ BoxCollider2D:
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 999, y: 1}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1988160306
 MonoBehaviour:
@@ -5619,7 +5613,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}

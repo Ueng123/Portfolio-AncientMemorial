@@ -11,30 +11,38 @@ namespace AncientMemorial.Map {
 		public SpriteRenderer[] ceilSR;
 		public SpriteRenderer[] bgSR;
 		
-		public Transform leftWallTR;
-		public Transform rightWallTR;
-		public Transform floorTR;
-		public Transform ceilTR;
-		public Transform bgTR;
-		public Transform cornerRU;
-		public Transform cornerLU;
-		public Transform cornerRD;
-		public Transform cornerLD;
+		public Transform     leftWallTR;
+		public Transform     rightWallTR;
+		public Transform     floorTR;
+		public Transform     ceilTR;
+		public Transform     bgTR;
+		public Transform     cornerRU;
+		public Transform     cornerLU;
+		public Transform     cornerRD;
+		public Transform     cornerLD;
+		public BoxCollider2D colliderL;
+		public BoxCollider2D colliderR;
+		public BoxCollider2D colliderU;
+		public BoxCollider2D colliderD;
 
 		public void Move(Vector2 MapSize) {
-
+			
+			colliderL.size = new Vector2(0.5f, MapSize.y+1);
 			foreach (SpriteRenderer sr in leftWallSR) {
 				sr.size = new Vector2(1, MapSize.y);
 			}
 			
+			colliderR.size = new Vector2(0.5f, MapSize.y+1);
 			foreach (SpriteRenderer sr in rightWallSR) {
 				sr.size = new Vector2(1, MapSize.y);
 			}
 			
+			colliderU.size = new Vector2(MapSize.x+1, 1);
 			foreach (SpriteRenderer sr in floorSR) {
 				sr.size = new Vector2(MapSize.x, 1);
 			}
 			
+			colliderD.size = new Vector2(MapSize.x+1, 1);
 			foreach (SpriteRenderer sr in ceilSR) {
 				sr.size = new Vector2(MapSize.x, 1);
 			}

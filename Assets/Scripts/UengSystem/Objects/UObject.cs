@@ -12,11 +12,12 @@ using UengSystem.ObjectPool;
 using UengSystem.Utility;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using Event = UnityEngine.Event;
 using Events_Event = UengSystem.Events.Event;
 using Events_EventType = UengSystem.Events.EventType;
 
 namespace UengSystem.Objects {
-	public abstract class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, IInitializable, ITaskable {
+	public class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, IInitializable, ITaskable {
 
 		private static readonly Dictionary<string,      UObject > IDTable       = new ();
 		private static readonly Dictionary<string, List<UObject>> CategoryTable = new ();
@@ -95,8 +96,6 @@ namespace UengSystem.Objects {
 
 		public Sprite whiteSpawnSprite;
 		public Sprite colorSpawnSprite;
-		public bool   _gettable;
-		public bool   gettable   { get => _gettable; set => _gettable = value; }
 		public bool   isReleased { get;              set; }
 
 		public AudioSource PlaySFX(string clipName, Vector2 position = default, bool isLocalPosition = true, float volume = 1f, float pitch = 1f, float pan = 0f, float spread = 0f, bool loop = false) {
@@ -122,32 +121,11 @@ namespace UengSystem.Objects {
 			foreach (UAction action in runningActions) { action.Cancel(); }
 			runningActions.Clear();
 		}
-
-		// IStoppable Variables //
-		private int stoppedTime;
-
-		public bool stopped {
-			get => stoppedTime != 0;
-			set {
-				stoppedTime += value ? 1 : -1;
-				Debug.Log($"STOP({stoppedTime}) OBJECT : {name}");
-				
-				if (stoppedTime >= 0) return;
-				Debug.LogWarning("u just tried to Resume no stopped obj twin WHY???????? :(");
-				stoppedTime = 0;
-			}
-		}
-		private   Vector2         linearVelocityBeforeStop;
-		private   float           angularVelocityBeforeStop;
-		private   RigidbodyType2D bodyTypeBeforeStop;
-		protected float           animatorSpeedBeforeStop;
-		
-		public    float           DeltaTime => Time.deltaTime * (stopped ? 0 : 1);
 		
 		// Components //
-		[HideInInspector] public new Rigidbody2D    rigidbody2D;
-		[HideInInspector] public     SpriteRenderer spriteRenderer;
-		[HideInInspector] public     Animator       animator;
+		[HideInInspector] public Rigidbody2D    rigidbody2D;
+		[HideInInspector] public SpriteRenderer spriteRenderer;
+		[HideInInspector] public Animator       animator;
 
 		public static UObject GetUObject(string id) {
 			return IDTable.GetValueOrDefault(id);
@@ -186,6 +164,7 @@ namespace UengSystem.Objects {
 		private float           _initialAngularDamping;
 		private float           _initialGravityScale;
 		public virtual void OnFirstGet() {
+			
 			_initialRotation = transform.rotation;
 			_initialScale    = transform.localScale;
 			
@@ -214,12 +193,15 @@ namespace UengSystem.Objects {
 			transform.localScale = _initialScale;
 			
 			if (rigidbody2D) {
-				rigidbody2D.linearVelocity  = Vector2.zero;
-				rigidbody2D.angularVelocity = 0f;
 				rigidbody2D.bodyType        = _initialRigidBodyType;
 				rigidbody2D.linearDamping   = _initialLinearDamping;
 				rigidbody2D.angularDamping  = _initialAngularDamping;
 				rigidbody2D.gravityScale    = _initialGravityScale;
+			}
+			
+			if (rigidbody2D && rigidbody2D.bodyType != RigidbodyType2D.Static) {
+				rigidbody2D.linearVelocity  = Vector2.zero; 
+				rigidbody2D.angularVelocity = 0f;
 			}
 			
 			if (spriteRenderer) {
@@ -227,19 +209,17 @@ namespace UengSystem.Objects {
 				spriteRenderer.sprite = _initialSprite;
 			}
 			
+			StopAllCoroutines();
+			OnGet();
+			
 			if (time == 0) {
-				OnGet();
 				Initialize();
 				ToggleColliders(true);
 				return;
 			}
 			
-			StopAllCoroutines();
-			
 			GameObject spawnFX = UObjectPool.instance.Get("SpawnEffect", transform.position);
 			spawnFX.GetComponent<SpawnEffectHelper>().t_s = time;
-			
-			OnGet();
 			
 			PrepareSpawnFX();
 			Coroutine spawnCoroutine = StartCoroutine(SpawnFX(time));
@@ -265,19 +245,16 @@ namespace UengSystem.Objects {
 			if (isReleased) return;
 			spawnFXCache?.Cancel();
 			
-			gettable = false;
 			ID        = null;
 			Category  = null;
 			
 			switch (time) {
 				case < 0:
 					Uninitialize();
-					gettable = true;
 					break;
 				case 0:
 					OnRelease();
 					Uninitialize();
-					gettable = true;
 					break;
 				default:
 					OnRelease();
@@ -441,9 +418,6 @@ namespace UengSystem.Objects {
 
 		public virtual void OnGet() {
 			Instances.Add(this);
-
-			if (rigidbody2D && rigidbody2D.bodyType != RigidbodyType2D.Static)
-				rigidbody2D.linearVelocity = Vector2.zero;
 			
 			GetTask.Execute(this, this);
 		}
@@ -458,9 +432,7 @@ namespace UengSystem.Objects {
 			if (rigidbody2D && rigidbody2D.bodyType == RigidbodyType2D.Dynamic) rigidbody2D.linearVelocity = Vector2.zero;
 		}
 
-		public virtual void Initialize() {
-			
-		}
+		public virtual void Initialize() { }
 
 		public virtual void Uninitialize() {
 			Instances.Remove(this);

@@ -29,8 +29,6 @@ namespace UengSystem.Objects {
 				
 				AdvancedInstances.Apply();
 				foreach (AdvancedUObject ins in AdvancedInstances) {
-					if (ins.stopped) return;
-					
 					ins.updatePhaseRoutines[i].Invoke();
 				}
 			}
@@ -38,8 +36,6 @@ namespace UengSystem.Objects {
 		
 		public static void LateUpdateRoutine() {
 			foreach (AdvancedUObject ins in AdvancedInstances) {
-				if (ins.stopped) return;
-				
 				ins.LateRoutine();
 			}
 		}
@@ -50,8 +46,6 @@ namespace UengSystem.Objects {
 				
 				AdvancedInstances.Apply();
 				foreach (AdvancedUObject ins in AdvancedInstances) {
-					if (ins.stopped) return;
-					
 					ins.fixedUpdatePhaseRoutines[i].Invoke();
 				}
 			}
@@ -65,8 +59,6 @@ namespace UengSystem.Objects {
 				
 				foreach (Event e in events) {
 					foreach (AdvancedUObject ins in AdvancedInstances) {
-						if (ins.stopped) return;
-						
 						ins.OnEvent(e);
 					}
 				}
@@ -96,16 +88,12 @@ namespace UengSystem.Objects {
 		}
 		
 		private void ExecuteUpdateProcess() {
-			if (stopped) return;
-			
 			foreach (List<Action> processes in processToUpdate) {
 				foreach (Action process in processes) process.Invoke();
 				processes.Clear();
 			}
 		}
 		private void ExecuteFixedUpdateProcess() {
-			if (stopped) return;
-			
 			foreach (List<Action> processes in processToFixedUpdate) {
 				foreach (Action process in processes) process.Invoke();
 				processes.Clear();

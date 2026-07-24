@@ -31,7 +31,7 @@ namespace AncientMemorial.Entities {
 
 		private Vector2 mapSize;
 		
-		private readonly string[] damageDisplayTexts = new[] { "9", "9", "9", "9", "$", "#", "@", "!" };
+		private readonly string[] damageDisplayTexts = new[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "9", "9", "9", "9", "0", "$", "#", "@", "!", "$", "#", "@", "!" };
 		private          string   getText => damageDisplayTexts[Random.Range(0, damageDisplayTexts.Length)];
 		public override    void        HitEffect(Entity    attacker,   float    damage, Vector2? pushDir = null) {
 			currentExclusiveAction = Stun(1);
@@ -48,12 +48,12 @@ namespace AncientMemorial.Entities {
 			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).ExecuteDA();
 			
 			textAction.text  = new UPureString
-				{Text = $"{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText} <size=20><i>!$!</i></size>"};
+				{Text = $"{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText}{getText} <size=20><i>!$!</i></size>"};
 			textSAction.text = textAction.text;
 			textAction.Initialize(damageUI);
 			textSAction.Initialize(damageUI);
 			
-			GameManager.SetTimeScale(0.05f, 0.5f);
+			GameManager.SetTimeScale(0.05f, 1f);
 			CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-5f);
 		}
@@ -327,7 +327,7 @@ namespace AncientMemorial.Entities {
 			Shake(10f, 0);
 
 			int   barrageNum      = 10;
-			float barrageSpeed     = player.entityStat.moveSpeed*5;
+			float barrageSpeed     = aggroEntity.entityStat.moveSpeed*5;
 			float barrageTerm = 3f;
 			
 			const int   slashCount       = 4;
@@ -400,7 +400,7 @@ namespace AncientMemorial.Entities {
 			Shake(10f, 0);
 			
 			const int   barrageNum   = 10;
-			float       barrageSpeed = player.entityStat.moveSpeed*5;
+			float       barrageSpeed = aggroEntity.entityStat.moveSpeed*5;
 			const float barrageTerm  = 3f;
 			const float halfBarrageTerm = barrageTerm / 2;
 			
@@ -767,7 +767,7 @@ namespace AncientMemorial.Entities {
 		private const float u8 = 0.125f;
 		
 		public void setTargetPosition() {
-			t += DeltaTime * moveMode switch {
+			t += Time.deltaTime * moveMode switch {
 				0 => 0.3f,
 				1 => 0.5f,
 				2 => 2f,
@@ -777,10 +777,10 @@ namespace AncientMemorial.Entities {
 				_ => 1f
 			};
 			
-			Vector2  playerPos = player?.transform.position??Vector2.zero;
+			Vector2  aggroEntityPos = aggroEntity?.transform.position??Vector2.zero;
 			targetPos = moveMode switch {
 				0 => new Vector2(mapSize.x * Mathf.Sin(2 * t)*u3, mapSize.y*u2 + mapSize.y*Mathf.Sin(3 * t)*u4 + mapSize.y*u8),
-				1 => new Vector2(playerPos.x + Mathf.Sin(2 * t), 2.625f + playerPos.y + 0.5f * Mathf.Sin(t)),
+				1 => new Vector2(aggroEntityPos.x + Mathf.Sin(2 * t), 2.625f + aggroEntityPos.y + 0.5f * Mathf.Sin(t)),
 				2 => new Vector2((mapSize.x*u2 - 3)*(t*t*t*u3 - t*t*pi + t + U)*uU, mapSize.y*(t-pi)*(t-pi)*uU1 + mapSize.y*u2),
 				3 => new Vector2(-(mapSize.x*u2 - 3)*(t*t*t*u3 - t*t*pi + t + U)*uU, mapSize.y*(t-pi)*(t-pi)*uU1 + mapSize.y*u2),
 				4 => new Vector2(Mathf.Cos(2*t)*u2, Mathf.Sin(2*t)*u2+mapSize.y/2),

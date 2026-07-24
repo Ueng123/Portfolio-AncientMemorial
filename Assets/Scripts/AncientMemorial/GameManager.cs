@@ -41,6 +41,7 @@ namespace AncientMemorial {
 		public Color spawnColor;
 		
 		public int currentUpdatePhase;
+		public int currentLateUpdatePhase;
 		public int currentFixedUpdatePhase;
 		
 		public static readonly Dictionary<string, UValue<float  >> UValueFloatVariables   = new ();
@@ -100,97 +101,130 @@ namespace AncientMemorial {
 			timeScaleChangeChain.Add(thisItem);
 		}
 		
-		private static readonly Dictionary<string, Func<bool>[]> initializeFunctions = new() {
-			{"Game", new Func<bool>[] {
-				() => {
-					Debug.Log("Looking For UUIObjectPool...");
+		private static readonly Dictionary<string, Func<bool>[]> initializeFunctions = new() { 
+			{ "Game", new Func<bool>[] { 
+					() => {
+						Debug.Log("Looking For MainScreen Canvas");
+						
+						return instance.mainScreenCanvas;
+					},
+					() => {
+						Debug.Log("Looking For UUIObjectPool...");
 
-					if (!UUIObjectPool.instance) return false;
-					UUIObjectPool.instance.Initialize();
+						if (!UUIObjectPool.instance) return false;
+						UUIObjectPool.instance.Initialize();
 
-					GameObject gameLoadObj = UUIObjectPool.instance.Open("GameLoadingUI", instance.mainScreenCanvas);
-					UUI        gameLoadUI  = gameLoadObj.GetComponent<UUI>();
-					gameLoadUI.ID = "loadingUI";
+						GameObject gameLoadObj = UUIObjectPool.instance.Open("GameLoadingUI", instance.mainScreenCanvas);
+						UUI        gameLoadUI  = gameLoadObj.GetComponent<UUI>();
+						gameLoadUI.ID = "loadingUI";
 
-					return true;
-				},
-				() => {
-					Debug.Log("Looking For InputManager...");
+						return true;
+					},
+					() => {
+						Debug.Log("Looking For InputManager...");
 
-					if (!InputManager.instance) return false;
-					InputManager.instance.Initialize();
-					return true;
-				},
-				() => {
-					Debug.Log("Looking For MapManager...");
+						if (!InputManager.instance) return false;
+						InputManager.instance.Initialize();
+						return true;
+					},
+					() => {
+						Debug.Log("Looking For MapManager...");
 
-					if (!MapManager.instance) return false;
-					MapManager.instance.Initialize();
-					return true;
-				},
-				() => {
-					Debug.Log("Looking For AudioManager...");
+						if (!MapManager.instance) return false;
+						MapManager.instance.Initialize();
+						return true;
+					},
+					() => {
+						Debug.Log("Looking For AudioManager...");
 
-					if (!AudioManager.instance) return false;
-					AudioManager.instance.Initialize();
-					return true;
-				},
-				() => {
+						if (!AudioManager.instance) return false;
+						AudioManager.instance.Initialize();
+						return true;
+					},
+					() => {
+						Debug.Log("Looking For UObjectPool...");
+
+						if (!UObjectPool.instance) return false;
+						UObjectPool.instance.Initialize();
+						return true;
+					},
+					() => {
+						Debug.Log("Looking For WaveManager...");
+
+						if (!WaveManager.instance) return false;
+						WaveManager.instance.Initialize();
+						return true;
+					},
+					() => {
+						if (Setting.data != null) return true;
+						Debug.Log("Loading Settings...");
+
+						Setting.LoadData();
+						return true;
+					},
+					() => {
+						if (!EntityData.GetInitialized()) {
+							EntityData.Initialize();
+						}
+
+						return true;
+					}
+				}
+			}, 
+			{ "MainMenu", new Func<bool>[] {
+					() => {
+						Debug.Log("Looking For MainScreen Canvas");
+					
+						return instance.mainScreenCanvas;
+					},
+					() => {
+						Debug.Log("Looking For UUIObjectPool...");
+
+						if (!UUIObjectPool.instance) return false;
+						UUIObjectPool.instance.Initialize();
+
+						GameObject gameLoadObj = UUIObjectPool.instance.Open("GameLoadingUI", instance.mainScreenCanvas);
+						UUI        gameLoadUI  = gameLoadObj.GetComponent<UUI>();
+						gameLoadUI.ID = "loadingUI";
+
+						return true;
+					},
+					() => {
+						Debug.Log("Looking For InputManager...");
+
+						if (!InputManager.instance) return false;
+						InputManager.instance.Initialize();
+						return true;
+					},
+					() => {
+						Debug.Log("Looking For AudioManager...");
+
+						if (!AudioManager.instance) return false;
+						AudioManager.instance.Initialize();
+						return true;
+					},
+					() => {
 					Debug.Log("Looking For UObjectPool...");
 
 					if (!UObjectPool.instance) return false;
 					UObjectPool.instance.Initialize();
 					return true;
-				},
-				() => {
-					Debug.Log("Looking For WaveManager...");
+					},
+					() => {
+						Debug.Log("Looking For WaveManager...");
 
-					if (!WaveManager.instance) return false;
-					WaveManager.instance.Initialize();
-					return true;
-				}}
-			},
-			{"MainMenu", new Func<bool>[] {
-				() => {
-					Debug.Log("Looking For UUIObjectPool...");
+						if (!WaveManager.instance) return false;
+						WaveManager.instance.Initialize();
+						return true;
+					},
+					() => {
+						if (Setting.data != null) return true;
+						Debug.Log("Loading Settings...");
 
-					if (!UUIObjectPool.instance) return false;
-					UUIObjectPool.instance.Initialize();
-
-					GameObject gameLoadObj = UUIObjectPool.instance.Open("GameLoadingUI", instance.mainScreenCanvas);
-					UUI        gameLoadUI  = gameLoadObj.GetComponent<UUI>();
-					gameLoadUI.ID = "loadingUI";
-
-					return true;
-				},
-				() => {
-					Debug.Log("Looking For InputManager...");
-
-					if (!InputManager.instance) return false;
-					InputManager.instance.Initialize();
-					return true;
-				},
-				() => {
-					Debug.Log("Looking For AudioManager...");
-
-					if (!AudioManager.instance) return false;
-					AudioManager.instance.Initialize();
-					return true;
-				},
-				() => {
-				Debug.Log("Looking For UObjectPool...");
-
-				if (!UObjectPool.instance) return false;
-				UObjectPool.instance.Initialize();
-				return true;
-				},
-				() => {
-					Debug.Log("Looking For WaveManager...");
-
-					if (!WaveManager.instance) return false;
-					WaveManager.instance.Initialize();
-					return true;
-				}}
+						Setting.LoadData();
+						return true;
+					}
+				}
 			}
 		};
 
@@ -201,36 +235,22 @@ namespace AncientMemorial {
 		}
 
 		private IEnumerator InitializeGame(string SceneName) {
-			
 			SetTimeScale(1);
-			
-			yield return new WaitUntil(() => {
-				Debug.Log("Looking For ScreenCanvas...");
-				return mainScreenCanvas;
-			});
 
 			Slider loadingSlider = null;
-
+			
 			int   iCount    = initializeFunctions[SceneName].Length;
 			float iComplete = 0;
 			foreach (Func<bool> initializeFunction in initializeFunctions[SceneName]) {
-				yield return new WaitForSeconds(0.05f);
+				yield return new WaitForSeconds(0.01f);
 				yield return new WaitUntil(initializeFunction);
-				loadingSlider ??= ((USlider)UUI.GetUUI("loadingUI").GetAction<USliderAction>("Loading").component).slider;
+				if (!loadingSlider && UUI.GetUUI("loadingUI")) loadingSlider ??= ((USlider)UUI.GetUUI("loadingUI").GetAction<USliderAction>("Loading").component).slider;
 				if (loadingSlider) {
 					Destroy(sceneHider);
 					loadingSlider.value = 1f*(++iComplete/iCount);
 				}
 				
 				Debug.Log($"Initialize Completed {100f*(iComplete/iCount)}%");
-			}
-			
-			if (Setting.data == null) {
-				yield return new WaitForSeconds(0.05f);
-				
-				Debug.Log("Loading Settings...");
-				
-				Setting.LoadData();
 			}
 			
 			yield return new WaitForSeconds(0.1f);
@@ -257,7 +277,7 @@ namespace AncientMemorial {
 			
 			// Entity
 			Entity.player   = null;
-			Entity.entities?.ClearImmediatly();
+			Entity.entities?.ClearImmediately();
 			
 			// Interaction
 			Interaction.InteractableInteractions?.Clear();
@@ -272,7 +292,7 @@ namespace AncientMemorial {
 			IManager.instances?.Clear();
 			
 			// AdvancedUObject
-			AdvancedUObject.AdvancedInstances?.ClearImmediatly();
+			AdvancedUObject.AdvancedInstances?.ClearImmediately();
 			
 			// UObject
 			UObject.ResetUObjects();
@@ -280,8 +300,7 @@ namespace AncientMemorial {
 			// UUI
 			UUI.ResetUUI();
 		}
-
-		private bool s = false;
+		
 		private void Update() {
 			if (!initialized) return;
 			

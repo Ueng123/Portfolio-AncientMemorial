@@ -14,7 +14,7 @@ namespace UengSystem.Logic.UValues.UObjects {
 		}
 		
 		[SerializeReference][SubclassSelector]
-		public UValue<UObject> obj;
+		public UValue<Objects.UObject> obj;
 		
 		public override Entity getValue => (Entity)obj.value;
 	}

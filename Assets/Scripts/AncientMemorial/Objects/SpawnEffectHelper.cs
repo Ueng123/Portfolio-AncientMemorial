@@ -43,7 +43,7 @@ namespace AncientMemorial.Objects {
 		
 		protected override void Routine() {
 			
-			t   += DeltaTime;
+			t   += Time.deltaTime;
 			t_n =  Mathf.Clamp01(t / t_s);
 
 			if (t > t_s) {

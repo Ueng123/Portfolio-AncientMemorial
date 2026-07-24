@@ -35,12 +35,15 @@ namespace AncientMemorial.Entities {
 			textSAction.Initialize(damageUI);
 			
 			if (entityStat.hp <= 0) {
+				PlaySFX("crystalHit2");
 				GameManager.SetTimeScale(0, 0.15f);
 				CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 3);
 				CameraBrain.instance.ZoomLerp(-2f);
 				return;
 			}
 			
+			PlaySFX("crystalHit1");
+			if (attacker != player) return;
 			GameManager.SetTimeScale(0, 0.05f);
 			CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-0.2f);
@@ -67,7 +70,7 @@ namespace AncientMemorial.Entities {
 		protected override void OnAttackCancel() { }
 
 		public override void WanderRoutine() {
-			rotatingAnimator.speed = Mathf.Lerp(rotatingAnimator.speed, 1, DeltaTime);
+			rotatingAnimator.speed = Mathf.Lerp(rotatingAnimator.speed, 1, Time.deltaTime);
 		}
 
 		public override void AlertRoutine() { }

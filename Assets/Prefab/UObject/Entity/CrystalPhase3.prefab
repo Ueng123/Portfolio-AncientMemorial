@@ -169,7 +169,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -179,7 +178,7 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  entityType: 12
+  entityType: 9
   entityData:
     name: 
     hp: 0
@@ -214,7 +213,6 @@ MonoBehaviour:
   rotatingAnimator: {fileID: 480095218483812705}
   attackPhase: 1
   julNumGiPhase: -1
-  doJulNumGi: 0
   _moveMode: 0
   targetPos: {x: 0, y: 0}
   references:

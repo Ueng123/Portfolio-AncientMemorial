@@ -11,6 +11,6 @@ namespace UengSystem.Logic.UValues.UBools {
 		[SerializeReference] [SubclassSelector]
 		public UValue<string> category;
 
-		public override bool getValue => UObject.UObjectsExist(category.value);
+		public override bool getValue => Objects.UObject.UObjectsExist(category.value);
 	}
 }

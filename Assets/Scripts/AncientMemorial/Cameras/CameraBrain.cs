@@ -65,7 +65,7 @@ namespace AncientMemorial.Cameras {
        protected override void LateRoutine() {
           // 1. 셰이크 럴프 제어
           if (_shakeLerp && _noiseComponent) {
-             _noiseComponent.AmplitudeGain = Mathf.Lerp(_noiseComponent.AmplitudeGain, 0, _shakeLerpSpeed * DeltaTime);
+             _noiseComponent.AmplitudeGain = Mathf.Lerp(_noiseComponent.AmplitudeGain, 0, _shakeLerpSpeed * Time.deltaTime);
              if (Mathf.Approximately(_noiseComponent.AmplitudeGain, 0f)) {
                 _noiseComponent.AmplitudeGain = 0f;
                 _shakeLerp = false;
@@ -76,7 +76,7 @@ namespace AncientMemorial.Cameras {
 
           // 2. 줌 오프셋 Lerp 연산
           if (_isZooming) {
-             _zoomOffset = Mathf.Lerp(_zoomOffset, _targetOffset, DeltaTime * _zoomSpeed);
+             _zoomOffset = Mathf.Lerp(_zoomOffset, _targetOffset, Time.deltaTime * _zoomSpeed);
 
              if (Mathf.Abs(_zoomOffset - _targetOffset) < 0.01f) {
                 _zoomOffset = _targetOffset;

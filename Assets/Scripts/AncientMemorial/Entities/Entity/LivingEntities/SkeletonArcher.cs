@@ -15,16 +15,14 @@ using UnityEngine;
 
 namespace AncientMemorial.Entities {
 	public class SkeletonArcher : Skeleton {
-		private static readonly int attackF  = Animator.StringToHash("attackFrontEnd");
-		private static readonly int attackB  = Animator.StringToHash("attackBackEnd");
-		private static readonly int attacking   = Animator.StringToHash("attacking");
-		private static readonly int attack   = Animator.StringToHash("attack");
-		private static readonly int moving   = Animator.StringToHash("moving");
-		private static readonly int backward = Animator.StringToHash("backward");
-		private static readonly int Landing  = Animator.StringToHash("landing");
 
-		private         float oldAnimSpeed;
-		private const   float attackLength = 1.833f;
+		private            float oldAnimSpeed;
+		private const      float attackLength = 1.833f;
+		protected override float marginX            => 1;
+		
+		protected override float moveTargetDistance   => 5;
+		protected override float moveAllowMargin      => 3;
+		protected override float moveTargetDistanceRM => 2;
 
 		public override void OnStunStart() { }
 
@@ -35,7 +33,12 @@ namespace AncientMemorial.Entities {
 		protected override string footstepSoundName => "footstep"+Random.Range(1, 4);
 		protected override bool   isFootstep        => spriteRenderer.sprite.name is "SkeletonA_0" or "SkeletonA_4";
 
-		private const float v0 = 10f;
+		private float v0;
+		
+		private void SetRandomVelocity() {
+			v0 = Random.Range(9f, 11f);
+		}
+		
 		private Vector2 GetArrowVelocity() {
 			float g  = Mathf.Abs(Physics2D.gravity.y);
 			float x1 = aggroEntity.transform.position.x;
@@ -98,6 +101,8 @@ namespace AncientMemorial.Entities {
 			animator.SetBool(attacking, false);
 			animator.SetTrigger(attack);
 			
+			SetRandomVelocity();
+			
 			state                  = EnemyState.Alert;
 			currentExclusiveAction = FindingAggro;
 		}
@@ -106,22 +111,24 @@ namespace AncientMemorial.Entities {
 			animator.speed = oldAnimSpeed;
 			animator.SetBool(attacking, false);
 			
+			SetRandomVelocity();
+			
 			state                  = EnemyState.Alert;
 			currentExclusiveAction = FindingAggro;
 		}
+
 		
-		private          bool      shootable               = false;
-		private const    float     shootableCheckTime      = 0.1f;
-		private readonly StopWatch shootableCheckStopwatch = new ();
-		public override void       AttackReadyRoutine() {
+		
+		public override void Initialize() {
+			base.Initialize();
+			SetRandomVelocity();
+		}
+
+		private bool shootable = false;
+		public override void AttackReadyRoutine() {
 			if (!aggroEntity) {
 				state = EnemyState.Wander;
 				return;
-			}
-			
-			if (!shootableCheckStopwatch.Check(shootableCheckTime)) {
-				shootableCheckStopwatch.Tick();
-				shootable = ArrowShootable();
 			}
 			
 			if (attackable && shootable) {
@@ -141,7 +148,13 @@ namespace AncientMemorial.Entities {
 			
 			Move(targetPositionX);
 		}
-		
+
+		protected override void FixedRoutine() {
+			base.FixedRoutine();
+
+			if (state == EnemyState.AttackReady) shootable = ArrowShootable();
+		}
+
 		protected override void Death() {
 			GameManager.UValueFloatVariables["skeletonArcherDead"]   = new UPureNumber {number = GameManager.UValueFloatVariables["skeletonWarriorDead"].value + 1};
 			base.Death();

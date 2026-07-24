@@ -11,7 +11,7 @@ namespace AncientMemorial.Objects {
 		protected override void EarlyRoutine() { }
 
 		protected override void Routine() {
-			transform.position += Vector3.up * (leviateStep * DeltaTime);
+			transform.position += Vector3.up * (leviateStep * Time.deltaTime);
 		}
 
 		protected override void LateRoutine() { }
@@ -24,8 +24,8 @@ namespace AncientMemorial.Objects {
 			spriteRenderer.sprite = whiteSpawnSprite??spriteRenderer.sprite;
 			
 			while (elapsed < duration) {
-				elapsed            += DeltaTime;
-				transform.position += Vector3.up * (leviateStep * DeltaTime);
+				elapsed            += Time.deltaTime;
+				transform.position += Vector3.up * (leviateStep * Time.deltaTime);
 				float t = elapsed                               / duration;
 
 				Color color = new (GameManager.instance.spawnColor.r,

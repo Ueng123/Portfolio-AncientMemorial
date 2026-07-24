@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace AncientMemorial.Entities {
 	[Serializable]
-	public class EntityData {
+	public struct EntityData {
 		public string                    name;
 		public int                       hp;
 		public float                     moveSpeed;
@@ -20,5 +22,30 @@ namespace AncientMemorial.Entities {
 		public float                     groundBoxSizeY;
 		public float                     aggroThreshold;
 		public Dictionary<string, float> aggroCoefficient;
+
+
+		private static Dictionary<EntityType, EntityData> entityDataCache;
+
+		public static bool GetInitialized() {
+			return entityDataCache != null;
+		}
+		
+		public static void Initialize() {
+			entityDataCache = new Dictionary<EntityType, EntityData>();
+			foreach (EntityType entityType in Enum.GetValues(typeof(EntityType))) {
+				string path = Path.Combine(Application.streamingAssetsPath, $"EntityData/{entityType}.json");
+				if (!File.Exists(path)) { throw new FileNotFoundException($"NO FILE FOUND : [{entityType}] BRO;(((("); }
+			
+				string jsonText = File.ReadAllText(path);
+			
+				entityDataCache[entityType] = JsonConvert.DeserializeObject<EntityData>(jsonText);
+			}
+		}
+		
+		public EntityData(EntityType type) {
+			if (entityDataCache==null) throw new NullReferenceException("u need to do InitializeEntityDataCache()");
+			if (!entityDataCache.TryGetValue(type, out EntityData data)) throw new KeyNotFoundException($"WTF?");
+			this = data;
+		}
 	}
 }

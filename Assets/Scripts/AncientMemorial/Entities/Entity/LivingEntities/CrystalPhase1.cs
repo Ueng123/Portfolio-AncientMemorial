@@ -45,7 +45,7 @@ namespace AncientMemorial.Entities {
 			textSAction.Initialize(damageUI);
 			
 			if (entityStat.hp <= 0) {
-				GameManager.SetTimeScale(0, 0.5f);
+				GameManager.SetTimeScale(0.5f, 0.5f);
 				CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 3);
 				CameraBrain.instance.ZoomLerp(-1f, 7.5f);
 				return;
@@ -55,6 +55,8 @@ namespace AncientMemorial.Entities {
 			
 			if (groggyedEffect) {
 				groggyedEffect = false;
+				
+				if (attacker != player) return;
 				GameManager.SetTimeScale(0, 0.5f);
 				CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 3);
 				CameraBrain.instance.ZoomLerp(-0.75f);
@@ -62,12 +64,14 @@ namespace AncientMemorial.Entities {
 			}
 			
 			if (groggy) {
+				if (attacker != player) return;
 				GameManager.SetTimeScale(0, 0.1f);
 				CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 				CameraBrain.instance.ZoomLerp(-0.5f, 20f);
 				return;
 			}
 			
+			if (attacker != player) return;
 			GameManager.SetTimeScale(0, 0.05f);
 			CameraBrain.instance.ShakeLerp(0.8F*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-0.5f, 20f);

@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace UengSystem.Logic.UValues.UObjects {
 	[Serializable]
-	public class UObjectSerialized : UValue<UObject> {
+	public class UObjectSerialized : UValue<Objects.UObject> {
 		public override bool getIsDynamic => false;
 
-		public UObject obj;
+		public Objects.UObject obj;
 
-		public override UObject getValue => obj;
+		public override Objects.UObject getValue => obj;
 	}
 }

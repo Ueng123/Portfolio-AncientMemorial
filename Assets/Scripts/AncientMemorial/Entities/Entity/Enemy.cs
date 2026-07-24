@@ -39,12 +39,12 @@ namespace AncientMemorial.Entities {
 			set {
 				if (_aggroEntity == value) return;
 
-				if (value) AggroFounded();
-				else AggroHidden();
+				if (!value) AggroHidden();
 
 				// 처음 적 발견시 공격 쿨다운 다시 굴리기
-				if (!_aggroEntity) {
+				if (!_aggroEntity && value) {
 					attackable = false;
+					AggroFounded();
 				}
 
 				string valueName = value ? value.name : "null";
@@ -210,9 +210,6 @@ namespace AncientMemorial.Entities {
 				
 				case EnemyState.Stun:
 					StunRoutine();
-					break;
-				
-				case EnemyState.None:
 					break;
 				
 				default:

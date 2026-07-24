@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2374416631808135733}
   - component: {fileID: 2707795610901063598}
-  - component: {fileID: 4948311030775249328}
+  - component: {fileID: 1465366955024128332}
+  - component: {fileID: 8338239954452307036}
   m_Layer: 0
   m_Name: groggyEffect
   m_TagString: Untagged
@@ -35,6 +36,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2707795610901063598
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -53,6 +55,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -74,11 +78,13 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 6762398864243627268, guid: 62e1c6fdeb61a5c4889abfa6951fada9, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 6762398864243627268, guid: 7b5c1cf7e24bfc447947cd493e39b038, type: 3}
+  m_Color: {r: 0.9811321, g: 0.22677112, b: 0.22677112, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -86,9 +92,9 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4948311030775249328
+  m_BlendShapeWeights: []
+--- !u!114 &1465366955024128332
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,55 +103,78 @@ MonoBehaviour:
   m_GameObject: {fileID: 8480243640505895215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bd49957cbe6d0d4f9c21e9dc231e1f2, type: 3}
+  m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  whiteSpawnSprite: {fileID: 6762398864243627268, guid: 62e1c6fdeb61a5c4889abfa6951fada9, type: 3}
-  colorSpawnSprite: {fileID: 6762398864243627268, guid: 62e1c6fdeb61a5c4889abfa6951fada9, type: 3}
-  _gettable: 0
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks:
     - time: 0
       tasks:
-      - rid: 8722662457280299103
+      - rid: 8985605350484083478
     - time: 0.8
       tasks:
-      - rid: 8722662457280299101
+      - rid: 8985605350484083477
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8722662457280299101
+    - rid: 8985605350484083477
       type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
         releaseThis: 1
         TargetObject:
           rid: -2
-    - rid: 8722662457280299103
+    - rid: 8985605350484083478
       type: {class: CameraSetZoomOffset, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         zoomOffset:
-          rid: 8722662457280299104
+          rid: 8985605350484083479
         speed:
-          rid: 8722662457280299105
-    - rid: 8722662457280299104
+          rid: 8985605350484083480
+    - rid: 8985605350484083479
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: -0.2
-    - rid: 8722662457280299105
+    - rid: 8985605350484083480
       type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         valueCache: 0
         isValueCached: 0
         number: 5
+--- !u!95 &8338239954452307036
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8480243640505895215}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 75a21f53847f08347842ed4b60d14fca, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
