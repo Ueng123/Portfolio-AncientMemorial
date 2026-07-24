@@ -5,7 +5,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 namespace AncientMemorial.Cameras {
-    public class MainCamera : AdvancedUObject {
+    public class MainCamera : UObject {
 
        [Header("Camera Settings")]
        public CinemachineCamera cam;

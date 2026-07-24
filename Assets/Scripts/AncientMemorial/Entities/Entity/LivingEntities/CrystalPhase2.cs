@@ -78,7 +78,7 @@ namespace AncientMemorial.Entities {
 			GameManager.SetTimeScale(0, 0.05f);
 			CameraBrain.instance.ShakeLerp(0.8F*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
 			CameraBrain.instance.ZoomLerp(-0.5f);
-		}
+		} 
 
 		private void ShootMissile(int shootN = 1, float spreadTiming = 0f) {
 			for (int i = 0; i < shootN; i++) {

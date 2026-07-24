@@ -14,7 +14,7 @@ using UnityEngine.Serialization;
 using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.Objects {
-	public class CrystalUltRay : AdvancedUObject {
+	public class CrystalUltRay : UObject {
 		private static readonly int            End = Animator.StringToHash("end");
 		private                 bool           rayShooting;
 		public                  Entity         owner;
@@ -38,10 +38,6 @@ namespace AncientMemorial.Objects {
 		private       float theta;
 		private const float pi = 3.14159265358979323846f;
 		
-		protected override void EarlyRoutine() { }
-		protected override void Routine() { }
-		protected override void LateRoutine() { }
-
 		protected override void FixedRoutine() {
 			theta                      = Mathf.Repeat(theta + w * (rayShooting?1:0.3f) * Time.fixedDeltaTime, 2*pi);
 			float thetaUse             = theta + o;

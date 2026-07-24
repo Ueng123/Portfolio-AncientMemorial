@@ -22,7 +22,7 @@ using Slider = UnityEngine.UI.Slider;
 using Image = UnityEngine.UI.Image;
 
 namespace AncientMemorial.Interactions {
-	public abstract class Interaction : AdvancedUObject {
+	public abstract class Interaction : UObject {
 		
 		public static List<Interaction> InteractableInteractions = new ();
 		
@@ -131,7 +131,7 @@ namespace AncientMemorial.Interactions {
 
 		protected override void Routine() { }
 
-		public override void OnEvent(Events_Event e) {
+		public override void EventRoutine(Events_Event e) {
 			switch (e.type) {
 				case UengSystem.Events.EventType.Interact_Start: {
 					if (((EventValueData<InteractTryInfo>)e.data).value.objectToInteract == this) {
@@ -166,11 +166,5 @@ namespace AncientMemorial.Interactions {
 				}
 			}
 		}
-
-		protected override void LateRoutine() { }
-		
-		// FIXED UPDATE ROUTINE //
-		
-		protected override void FixedRoutine() { }
 	}
 }

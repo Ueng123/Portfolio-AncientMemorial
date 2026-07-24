@@ -17,8 +17,6 @@ namespace AncientMemorial.Objects {
 			spawnTimer = new StopWatch();
 			spawnTimer.Tick();
 		}
-
-		protected override void EarlyRoutine() { }
 		
 		protected override void Routine() {
 			bool downCondition = InputManager.inputData[InputActionType.MouseLClick].pressType == InputPressType.Down
@@ -35,9 +33,5 @@ namespace AncientMemorial.Objects {
 			
 			UObjectPool.instance.Get(plushName, pos, 3);
 		}
-
-		protected override void LateRoutine() { }
-
-		protected override void FixedRoutine() { }
 	}
 }

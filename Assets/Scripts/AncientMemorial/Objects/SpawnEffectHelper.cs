@@ -8,7 +8,7 @@ using UnityEngine;
 namespace AncientMemorial.Objects {
 	using Event = UengSystem.Events.Event;
 
-	public class SpawnEffectHelper : AdvancedUObject {
+	public class SpawnEffectHelper : UObject {
 		[SerializeField] private LineRenderer SubLineA;
 		[SerializeField] private LineRenderer SubLineB;
 		[SerializeField] private Transform    SpawnEffect;
@@ -17,8 +17,6 @@ namespace AncientMemorial.Objects {
 		public  float t_s;
 		public  float t_n;
 		
-		protected override void EarlyRoutine() { }
-
 		private (float f, float b) GetValue(float x) {
 			float x_o = transform.position.x;
 			float y_o = transform.position.y;
@@ -78,12 +76,6 @@ namespace AncientMemorial.Objects {
 			float angle = (float)(180f * Math.Pow(t_n * 5f, 1.2));
 			SpawnEffect.rotation = Quaternion.Euler(0, 0, angle);
 		}
-
-		protected override void LateRoutine() { }
-
-		protected override void FixedRoutine() { }
-
-		public override    void OnEvent(Event e) { }
 		
 		public override void Initialize() {
 

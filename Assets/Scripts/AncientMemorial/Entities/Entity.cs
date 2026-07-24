@@ -22,7 +22,7 @@ using Events_Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.Entities {
-	public abstract class Entity : AdvancedUObject {
+	public abstract class Entity : UObject {
 
 		public static           Player               player;
 		public static           BufferedList<Entity> entities = new BufferedList<Entity>();
@@ -152,7 +152,7 @@ namespace AncientMemorial.Entities {
 		protected virtual void Death() {
 			float closeTime = UUIObjectPool.instance.prefabData.FirstOrDefault((data) => data.prefab.name == entityUI.name)!.closeTime;
 			UObjectPool.instance.Release(gameObject, closeTime+0.1f);
-			if (AdvancedInstances.GetList().Contains(entityUI)) ((USlider)entityUI.GetAction<USliderAction>("EntityHP").component).SetValue(0);
+			if (instances.GetList().Contains(entityUI)) ((USlider)entityUI.GetAction<USliderAction>("EntityHP").component).SetValue(0);
 			else Destroy(entityUI.gameObject);
 		}
 
@@ -311,8 +311,8 @@ namespace AncientMemorial.Entities {
 
 		protected abstract float GetRealDamage(float rawDamage);
 		
-		public override void OnEvent(Events_Event e) {
-			base.OnEvent(e);
+		public override void EventRoutine(Events_Event e) {
+			base.EventRoutine(e);
 			switch (e.type) {
 				case EventType.Entity_Behaviour_Hit:
 					EntityHitData hitData = (EntityHitData)e.data;

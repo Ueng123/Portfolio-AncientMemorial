@@ -7,7 +7,7 @@ using UengSystem.Utility;
 using UnityEngine;
 
 namespace UengSystem.UI {
-	public abstract class UUI : AdvancedUObject {
+	public abstract class UUI : UObject {
 		
 		private static readonly Dictionary<string, List<UUI>> UCategoryTable = new ();
 		private static readonly int                           Close          = Animator.StringToHash("Close");
@@ -93,6 +93,8 @@ namespace UengSystem.UI {
 		}
 		
 		public override void Release(float time) {
+			if (isReleased) return;
+			
 			ID        = null;
 			Category  = null;
 			
@@ -101,14 +103,14 @@ namespace UengSystem.UI {
 					Uninitialize();
 					break;
 				case 0:
-					AdvancedInstances.Remove(this);
+					instances.Remove(this);
 					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
 					
 					OnRelease();
 					Uninitialize();
 					break;
 				default:
-					AdvancedInstances.Remove(this);
+					instances.Remove(this);
 					gameObject.SetActive(true);
 					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
 					

@@ -4,7 +4,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 namespace AncientMemorial.Cameras {
-    public class CameraBrain : AdvancedUObject {
+    public class CameraBrain : UObject {
        
        public static CameraBrain                        instance;
        

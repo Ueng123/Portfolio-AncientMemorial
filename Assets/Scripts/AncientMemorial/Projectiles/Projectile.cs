@@ -4,7 +4,7 @@ using UnityEngine;
 using Events_Event = UengSystem.Events.Event;
 
 namespace AncientMemorial.Projectiles {
-	public abstract class Projectile : AdvancedUObject {
+	public abstract class Projectile : UObject {
 
 		public Entity owner;
 		public float  damage;
@@ -13,8 +13,6 @@ namespace AncientMemorial.Projectiles {
 		protected abstract void OnCollideEntity(Entity entity);
 		
 		protected abstract void OnCollideObject(UObject obj);
-
-		protected override void FixedRoutine() { }
 
 		protected void OnTriggerEnter2D(Collider2D other) {
 			//Debug.Log(other.gameObject.name);
@@ -30,6 +28,6 @@ namespace AncientMemorial.Projectiles {
 			if (obj) OnCollideObject(obj);
 		}
 
-		public override    void OnEvent(Events_Event e) { }
+		public override void EventRoutine(Events_Event e) { }
 	}
 }

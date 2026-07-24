@@ -4,7 +4,7 @@ using UengSystem.Utility;
 using UnityEngine;
 
 namespace AncientMemorial.Objects {
-	public class AttackAware : AdvancedUObject {
+	public class AttackAware : UObject {
 		public SpriteRenderer whiteObject;
 		public Vector2    targetSize;
 
@@ -17,19 +17,13 @@ namespace AncientMemorial.Objects {
 		private StopWatch stopWatch;
 		public float duration;
 		
-		protected override void EarlyRoutine() { }
-
 		protected override void Routine() {
 			whiteObject.size     = new Vector2(targetSize.x * (lerpX ? stopWatch.Tock() / duration : 1),
 											   targetSize.y * (lerpY ? stopWatch.Tock() / duration : 1));
 			spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColor, Time.deltaTime * (1 /duration) * 5f);
 			whiteObject.color    = spriteRenderer.color;
 		}
-
-		protected override void LateRoutine() { }
-
-		protected override void FixedRoutine() { }
-
+		
 		public override void Initialize() {
 			base.Initialize();
 			stopWatch = new StopWatch();

@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using AncientMemorial;
 using AncientMemorial.Objects;
 using UengSystem.Audio;
@@ -12,16 +15,17 @@ using UengSystem.ObjectPool;
 using UengSystem.Utility;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
-using Event = UnityEngine.Event;
-using Events_Event = UengSystem.Events.Event;
-using Events_EventType = UengSystem.Events.EventType;
+using Event = UengSystem.Events.Event;
+using EventType = UengSystem.Events.EventType;	
 
 namespace UengSystem.Objects {
 	public class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, IInitializable, ITaskable {
 
 		private static readonly Dictionary<string,      UObject > IDTable       = new ();
 		private static readonly Dictionary<string, List<UObject>> CategoryTable = new ();
-		public static           BufferedList<UObject>             Instances     = new();
+		public static           BufferedList<UObject>             instances     = new();
+
+		public WhenInitialize whenInitialize;
 		
 		// Instance Variables //
 		[Header("Identify")] 
@@ -77,7 +81,6 @@ namespace UengSystem.Objects {
 			}
 			
 			set {
-				// 수박맛있다
 				if (_currentExclusiveAction == null) {
 					_currentExclusiveAction = value;
 					value?.Execute();
@@ -104,6 +107,169 @@ namespace UengSystem.Objects {
 		
 		public AudioSource PlaySFX(AudioClip clip, Vector2 position = default, bool isLocalPosition = true, float volume = 1f, float pitch = 1f, float pan = 0f, float spread = 0f, bool loop = false) {
 			return AudioManager.instance.PlaySFX(clip, transform, position, isLocalPosition, volume, pitch, pan, spread, loop);
+		}
+		
+		// Routine System //
+		protected virtual void EarlyRoutine()        { }
+		protected virtual void Routine()             { }
+		protected virtual void LateRoutine()         { }
+		protected virtual void FixedRoutine()        { }
+		public virtual    void EventRoutine(Event e) { }
+
+		// === NEW! === //
+		public static BufferedList<UObject> earlyRoutineObjects = new BufferedList<UObject>();
+		public static BufferedList<UObject> routineObjects      = new BufferedList<UObject>();
+		public static BufferedList<UObject> eventRoutineObjects = new BufferedList<UObject>();
+		public static BufferedList<UObject> lateRoutineObjects  = new BufferedList<UObject>();
+		public static BufferedList<UObject> fixedRoutineObjects = new BufferedList<UObject>();
+		
+		private          byte                   executeRoutineMethod      = 0b_0000_0000;
+		private readonly Dictionary<Type, byte> executeRoutineMethodCache = new Dictionary<Type, byte>();
+		// ============ //
+		
+		private List<Action>[] processToUpdate;
+		private List<Action>[] processToFixedUpdate;
+		
+		// === NEW! === //
+		public void CheckRoutine() {
+			Type type = GetType();
+			if (executeRoutineMethodCache.TryGetValue(type, out byte value)) {
+				executeRoutineMethod = value;
+				return;
+			}
+			
+			MethodInfo[] routineMethodInfos =  {
+				type.GetMethod("EarlyRoutine", BindingFlags.Instance | BindingFlags.NonPublic),
+				type.GetMethod("Routine",      BindingFlags.Instance | BindingFlags.NonPublic),
+				type.GetMethod("EventRoutine", BindingFlags.Instance | BindingFlags.NonPublic),
+				type.GetMethod("LateRoutine",  BindingFlags.Instance | BindingFlags.NonPublic),
+				type.GetMethod("FixedRoutine", BindingFlags.Instance | BindingFlags.NonPublic),
+			};
+			
+			for (int i = 0; i < routineMethodInfos.Length; i++) {
+				MethodInfo methodInfo = routineMethodInfos[i];
+				if (methodInfo == null) {
+					executeRoutineMethod |= (byte)(1 << i);
+					continue;
+				} 
+       
+				byte[] ilBytes = methodInfo.GetMethodBody()?.GetILAsByteArray();
+				if (ilBytes == null || ilBytes.Length == 0) {
+					executeRoutineMethod |= (byte)(1 << i);
+					continue;
+				}
+				
+				bool isEmpty = ilBytes.All(b => b == OpCodes.Nop.Value || b == OpCodes.Ret.Value);
+				if (isEmpty) {
+					executeRoutineMethod |= (byte)(1 << i);
+				}
+			}
+			
+			executeRoutineMethodCache[type] = executeRoutineMethod;
+		}
+
+		public void RegisterRoutineList() {
+			if ((executeRoutineMethod &0b_0000_0001) ==0) earlyRoutineObjects.Add(this);
+			if ((executeRoutineMethod &0b_0000_0010) ==0) routineObjects     .Add(this);
+			if ((executeRoutineMethod &0b_0000_0100) ==0) eventRoutineObjects.Add(this);
+			if ((executeRoutineMethod &0b_0000_1000) ==0) lateRoutineObjects .Add(this);
+			if ((executeRoutineMethod &0b_0001_0000) ==0) fixedRoutineObjects.Add(this);
+		}
+		
+		public void UnregisterRoutineList() {
+			if ((executeRoutineMethod &0b_0000_0001) ==0) earlyRoutineObjects.Remove(this);
+			if ((executeRoutineMethod &0b_0000_0010) ==0) routineObjects     .Remove(this);
+			if ((executeRoutineMethod &0b_0000_0100) ==0) eventRoutineObjects.Remove(this);
+			if ((executeRoutineMethod &0b_0000_1000) ==0) lateRoutineObjects .Remove(this);
+			if ((executeRoutineMethod &0b_0001_0000) ==0) fixedRoutineObjects.Remove(this);
+		}
+		// ============ //
+		
+		public static void UpdateRoutine() {
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.Processing;
+			foreach (UObject obj in instances) {
+				obj.ExecuteUpdateProcess();
+			}
+			
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.EarlyRoutine;
+			earlyRoutineObjects.Apply();
+			foreach (UObject obj in earlyRoutineObjects) {
+				obj.EarlyRoutine();
+			}
+			
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.Routine;
+			routineObjects.Apply();
+			foreach (UObject obj in routineObjects) {
+				obj.Routine();
+			}
+			
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.EventRoutine;
+			EventRoutine();
+			
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.LateRoutine;
+			lateRoutineObjects.Apply();
+			foreach (UObject obj in lateRoutineObjects) {
+				obj.LateRoutine();
+			}
+			
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.RoutineEnd;
+		}
+		
+		public static void EventRoutine() {
+			for (int i = 0; i < EventManager.instance.events.Count; i++) {
+				List<Event> events = EventManager.instance.GetEvents(i);
+				if (events.Count == 0) continue;
+				
+				foreach (Event e in events) {
+					eventRoutineObjects.Apply();
+					foreach (UObject obj in eventRoutineObjects) {
+						obj.EventRoutine(e);
+					}
+				}
+			}
+		}
+		
+		public static void FixedUpdateRoutine() {
+			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.Processing;
+			foreach (UObject instance in instances) {
+				instance.ExecuteFixedUpdateProcess();
+			}
+			
+			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.FixedRoutine;
+			foreach (UObject instance in fixedRoutineObjects) {
+				instance.FixedRoutine();
+			}
+			
+			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.RoutineEnd;
+		}
+		
+		// Process System //
+		protected void AddProcessToUpdate(Action process, bool notAllowedToOverlapped = false) {
+			if (notAllowedToOverlapped) {
+				if (processToUpdate[(int)GameManager.instance.currentFixedUpdatePhase].Contains(process)) return;
+			}
+			processToUpdate[(int)GameManager.instance.currentFixedUpdatePhase].Add(process);
+		}
+
+		protected void AddProcessToFixedUpdate(Action process, bool notAllowedToOverlapped = false) {
+			if (notAllowedToOverlapped) {
+				if (processToFixedUpdate[(int)GameManager.instance.currentUpdatePhase].Contains(process)) return;
+			}
+			processToFixedUpdate[(int)GameManager.instance.currentFixedUpdatePhase].Add(process);
+		}
+		
+		private void ExecuteUpdateProcess() {
+			foreach (List<Action> processes in processToUpdate) {
+				foreach (Action process in processes) process.Invoke();
+				processes.Clear();
+			}
+		}
+		
+		private void ExecuteFixedUpdateProcess() {
+			foreach (List<Action> processes in processToFixedUpdate) {
+				foreach (Action process in processes) process.Invoke();
+				processes.Clear();
+			}
 		}
 		
 		// IActionable //
@@ -144,72 +310,146 @@ namespace UengSystem.Objects {
 		}
 
 		public static void ResetUObjects() {
+			instances.Clear();
 			IDTable.Clear();
 			CategoryTable.Clear();
 		}
 
 		// IEventAgent Method //
-		public void SendEvent(Events_EventType type, int layer, EventData data = default) {
-			EventManager.instance.AddEvent(new Events_Event(type, this, data), layer);
+		public void SendEvent(EventType type, int layer, EventData data = default) {
+			EventManager.instance.AddEvent(new Event(type, this, data), layer);
+		}
+		
+		private Dictionary<GameObject, ObjectInitializeData> objectInitializeData = new();
+
+		public bool isRegistered(GameObject obj) {
+			return objectInitializeData.ContainsKey(obj);
+		}
+		
+		public void RegisterObjectInitializeData(GameObject obj) {
+			ObjectInitializeData data = new();
+			
+			data.initialPosition = obj.transform.position;
+			data.initialRotation = obj.transform.rotation;
+			data.initialScale    = obj.transform.localScale;
+			
+			data.rigidbody2D = obj.GetComponent<Rigidbody2D>();
+			if (data.rigidbody2D) {
+				data.initialRigidBodyType  = data.rigidbody2D.bodyType;
+				data.initialLinearDamping  = data.rigidbody2D.linearDamping;
+				data.initialAngularDamping = data.rigidbody2D.angularDamping;
+				data.initialGravityScale   = data.rigidbody2D.gravityScale;
+			}
+			
+			data.spriteRenderer = obj.GetComponent<SpriteRenderer>();
+			if (data.spriteRenderer) { 
+				data.initialColor  = data.spriteRenderer.color;
+				data.initialSprite = data.spriteRenderer.sprite;
+			}
+			
+			objectInitializeData.Add(obj, data);
 		}
 
-		public virtual void OnEvent(Events_Event e) { }
+		public void ApplyObjectInitializeData(GameObject obj) {
+			ApplyObjectInitializeData(obj, objectInitializeData[obj]);
+		}
+		
+		public void ApplyObjectInitializeData(GameObject obj, ObjectInitializeData data) {
+			if (obj != gameObject) obj.transform.position = data.initialPosition;
+			obj.transform.rotation  = data.initialRotation;
+			obj.transform.localScale = data.initialScale;
+			
+			if (data.rigidbody2D) {
+				data.rigidbody2D.bodyType       = data.initialRigidBodyType;
+				switch (data.initialRigidBodyType) {
+					case RigidbodyType2D.Static:
+						break;
+					
+					case RigidbodyType2D.Kinematic:
+						data.rigidbody2D.linearVelocity  = Vector2.zero; 
+						data.rigidbody2D.angularVelocity = 0f;
+						break;
+						
+					case RigidbodyType2D.Dynamic:
+						data.rigidbody2D.linearVelocity  = Vector2.zero; 
+						data.rigidbody2D.angularVelocity = 0f;
+						data.rigidbody2D.linearDamping   = data.initialLinearDamping;
+                        data.rigidbody2D.angularDamping  = data.initialAngularDamping;
+                        data.rigidbody2D.gravityScale    = data.initialGravityScale;
+						break;
+					
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+			}
+			
+			if (data.spriteRenderer) {
+				data.spriteRenderer.sprite = data.initialSprite;
+				data.spriteRenderer.color  = data.initialColor;
+				data.spriteRenderer.flipX = data.initialFlipX;
+				data.spriteRenderer.flipY = data.initialFlipY;
+			}
+		}
+		
+		public void RegisterToAllChildren(Transform obj) {
+			RegisterObjectInitializeData(obj.gameObject); // 부모에서 사용
+			
+			if (obj.childCount == 0) return;                // 자식 X - 이 재귀 끝
+			for (int i = obj.childCount - 1; i >= 0; i--) { // 자식 O
+				Transform child = obj.GetChild(i);
+				RegisterToAllChildren(child);
+			}
+		}
+		
+		public void ApplyToAllChildren(Transform obj) {
 
-		private Quaternion      _initialRotation;
-		private Vector3         _initialScale;
-		private Color           _initialColor;
-		private Sprite          _initialSprite;
-		private RigidbodyType2D _initialRigidBodyType;
-		private float           _initialLinearDamping;
-		private float           _initialAngularDamping;
-		private float           _initialGravityScale;
+			if (isRegistered(obj.gameObject)) {
+				// 기존에 있던 children임.
+				ApplyObjectInitializeData(obj.gameObject); // 부모에서 사용
+			}
+			// 없던 child인 경우 무시
+			
+			if (obj.childCount == 0) return;                // 자식 X - 이 재귀 끝
+			for (int i = obj.childCount - 1; i >= 0; i--) { // 자식 O
+				Transform child = obj.GetChild(i);
+				ApplyToAllChildren(child);
+			}
+		}
+
+		public const int updatePhaseCount      = 5;
+		public const int fixedUpdatePhaseCount = 2;
+		
+		// 게임 오브젝트가 오브젝트 풀을 통해 Instantiate 되었을때 실행 //
 		public virtual void OnFirstGet() {
+			CheckRoutine();
 			
-			_initialRotation = transform.rotation;
-			_initialScale    = transform.localScale;
-			
+			// GET COMPONENTS //
 			rigidbody2D    = GetComponent<Rigidbody2D>();
-			if (rigidbody2D) {
-				_initialRigidBodyType  = rigidbody2D.bodyType;
-				_initialLinearDamping  = rigidbody2D.linearDamping;
-				_initialAngularDamping = rigidbody2D.angularDamping;
-				_initialGravityScale   = rigidbody2D.gravityScale;
-			}
-			
 			spriteRenderer = GetComponent<SpriteRenderer>();
-			if (spriteRenderer) {
-				_initialColor  = spriteRenderer.color;
-				_initialSprite = spriteRenderer.sprite;
-			}
-			
 			animator       = GetComponent<Animator>();
+			
+			// INITIALIZE PROCESS //
+			processToUpdate      = new List<Action>[fixedUpdatePhaseCount]; // sent from FixedUpdate
+			processToFixedUpdate = new List<Action>[updatePhaseCount];      // sent from Update
+			
+			for (int i = 0; i < fixedUpdatePhaseCount; i++) processToUpdate[i]      = new List<Action>();
+			for (int i = 0; i < updatePhaseCount     ; i++) processToFixedUpdate[i] = new List<Action>();
+			
+			// INITIALIZE OBJECT //
+			if (whenInitialize == WhenInitialize.Never) return;
+			RegisterToAllChildren(transform);
 		}
 
 		private DelayedAction spawnFXCache = null;
 		public Task          GetTask;
 		
+		// 게임 오브젝트가 Pool.Get()되었을때 실행 //
 		public virtual void Get(float time) {
-			transform.rotation   = _initialRotation;
-			transform.localScale = _initialScale;
-			
-			if (rigidbody2D) {
-				rigidbody2D.bodyType        = _initialRigidBodyType;
-				rigidbody2D.linearDamping   = _initialLinearDamping;
-				rigidbody2D.angularDamping  = _initialAngularDamping;
-				rigidbody2D.gravityScale    = _initialGravityScale;
-			}
-			
-			if (rigidbody2D && rigidbody2D.bodyType != RigidbodyType2D.Static) {
-				rigidbody2D.linearVelocity  = Vector2.zero; 
-				rigidbody2D.angularVelocity = 0f;
-			}
-			
-			if (spriteRenderer) {
-				spriteRenderer.color  = _initialColor;
-				spriteRenderer.sprite = _initialSprite;
-			}
+
+			if (whenInitialize is WhenInitialize.OnGet or WhenInitialize.Both) ApplyToAllChildren(transform);
 			
 			StopAllCoroutines();
+			
 			OnGet();
 			
 			if (time == 0) {
@@ -239,7 +479,7 @@ namespace UengSystem.Objects {
 			spawnFXCache.ExecuteDA();
 		}
 		
-		public Task          ReleaseTask;
+		public Task ReleaseTask;
 		
 		public virtual void Release(float time) {
 			if (isReleased) return;
@@ -248,13 +488,23 @@ namespace UengSystem.Objects {
 			ID        = null;
 			Category  = null;
 			
+			foreach (List<Action> processes in processToUpdate) {
+				processes.Clear();
+			}
+			
+			foreach (List<Action> processes in processToFixedUpdate) {
+				processes.Clear();
+			}
+			
 			switch (time) {
 				case < 0:
 					Uninitialize();
+					if (whenInitialize is WhenInitialize.OnRelease or WhenInitialize.Both) ApplyToAllChildren(transform);
 					break;
 				case 0:
 					OnRelease();
 					Uninitialize();
+					if (whenInitialize is WhenInitialize.OnRelease or WhenInitialize.Both) ApplyToAllChildren(transform);
 					break;
 				default:
 					OnRelease();
@@ -363,7 +613,6 @@ namespace UengSystem.Objects {
 		protected virtual void FinishSpawnFX() {
 			Debug.Log("Finish spawning FX");
 
-
 			if (spriteRenderer) spriteRenderer.sprite = colorSpawnSprite ?? spriteRenderer.sprite;
 
 			if (spriteRenderer) spriteRenderer.color = colorBeforeSpawnFX;
@@ -416,26 +665,32 @@ namespace UengSystem.Objects {
 			UObjectPool.instance.Release(gameObject, -1);
 		}
 
+		// 게임 오브젝트가 Pool.Get()되었을때 실행 (인스턴스 커스텀용) //
+		// 등록 -> 행동 //
 		public virtual void OnGet() {
-			Instances.Add(this);
+			instances.Add(this);
 			
 			GetTask.Execute(this, this);
 		}
 
+		// 게임 오브젝트가 Pool.Release()되었을때 실행 (인스턴스 커스텀용) //
+		// 행동 -> 등록해제 //
 		protected virtual void OnRelease() {
 			ReleaseTask.Execute(this, this);
-
+			
+			UnregisterRoutineList();
+			
 			currentExclusiveAction = null;
 			StopAllCoroutines();
 			StopAllUActions();
-			
-			if (rigidbody2D && rigidbody2D.bodyType == RigidbodyType2D.Dynamic) rigidbody2D.linearVelocity = Vector2.zero;
 		}
 
-		public virtual void Initialize() { }
+		public virtual void Initialize() {
+			RegisterRoutineList();
+		}
 
 		public virtual void Uninitialize() {
-			Instances.Remove(this);
+			instances.Remove(this);
 		}
 	}
 }

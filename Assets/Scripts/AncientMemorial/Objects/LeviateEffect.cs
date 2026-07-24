@@ -5,19 +5,13 @@ using UengSystem.Objects;
 using UnityEngine;
 
 namespace AncientMemorial.Objects {
-	public class LeviateEffect : AdvancedUObject {
+	public class LeviateEffect : UObject {
 		public float leviateStep;
-		
-		protected override void EarlyRoutine() { }
 
 		protected override void Routine() {
 			transform.position += Vector3.up * (leviateStep * Time.deltaTime);
 		}
-
-		protected override void LateRoutine() { }
-
-		protected override void FixedRoutine() { }
-
+		
 		protected override IEnumerator DespawnFX(float duration) {
 			float elapsed    = 0f;
 			

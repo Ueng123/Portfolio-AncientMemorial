@@ -152,8 +152,10 @@ namespace AncientMemorial.Entities {
 				Debug.DrawLine(transform.position + Vector3.up    * 0.25f,
 							   transform.position + Vector3.right * velocitySign + Vector3.up * 0.25f, Color.green);
 				Debug.DrawLine(transform.position,
-							   transform.position + Vector3.right * velocitySign *
-							   (moveDir == 0 ? -2 : moveDir * velocitySign > 0 ? 1 : -3), Color.yellow);
+							   transform.position
+							   + Vector3.right
+							   * (velocitySign * (moveDir == 0 ? -2 : moveDir * velocitySign > 0 ? 1 : -3)),
+							   Color.yellow);
 
 				float newVX = Mathf.Clamp(rigidbody2D.linearVelocityX + step * stepCE, -entityStat.moveSpeed,
 										  entityStat.moveSpeed);
@@ -467,7 +469,7 @@ namespace AncientMemorial.Entities {
 				(Vector2)transform.position+new Vector2(0.532f*(spriteRenderer.flipX ? 1 : -1), 0.157f),
 				crossbowGuideObject.transform.position,
 				Time.deltaTime*0.01f);
-			crossbowGuideAnimator.SetBool(SHOOTABLE, shootable);
+			crossbowGuideAnimator?.SetBool(SHOOTABLE, shootable);
 		}
 
 		public Vector2 GetExpectPos(float timeToReach) {

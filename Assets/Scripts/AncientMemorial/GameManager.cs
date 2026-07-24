@@ -40,9 +40,8 @@ namespace AncientMemorial {
 		
 		public Color spawnColor;
 		
-		public int currentUpdatePhase;
-		public int currentLateUpdatePhase;
-		public int currentFixedUpdatePhase;
+		public UpdateRoutineType      currentUpdatePhase;
+		public FixedUpdateRoutineType currentFixedUpdatePhase;
 		
 		public static readonly Dictionary<string, UValue<float  >> UValueFloatVariables   = new ();
 		public static readonly Dictionary<string, UValue<string >> UValueStringVariables  = new ();
@@ -54,7 +53,7 @@ namespace AncientMemorial {
 		private bool initialized = false;
 		
 		public static void ApplyStaticBufferedLists() {
-			UObject.Instances.Apply();
+			UObject.instances.Apply();
 			Entity.entities.Apply();
 		}
 		
@@ -236,6 +235,7 @@ namespace AncientMemorial {
 
 		private IEnumerator InitializeGame(string SceneName) {
 			SetTimeScale(1);
+			UValueFloatVariables["InitializeLoading"] = new UPureNumber { number = 0 };
 
 			Slider loadingSlider = null;
 			
@@ -291,9 +291,6 @@ namespace AncientMemorial {
 			// IManager
 			IManager.instances?.Clear();
 			
-			// AdvancedUObject
-			AdvancedUObject.AdvancedInstances?.ClearImmediately();
-			
 			// UObject
 			UObject.ResetUObjects();
 			
@@ -309,24 +306,16 @@ namespace AncientMemorial {
 			foreach (IManager manager in IManager.instances) { manager.ManagerUpdate(); }
 			
 			InputManager.instance.UpdateInputs();
-			AdvancedUObject.UpdateRoutine();
-			AdvancedUObject.EventRoutine();
-		}
-		
-		private void LateUpdate() {
-			if (!initialized) return;
-			
-			AdvancedUObject.LateUpdateRoutine();
+			UObject.UpdateRoutine();
 			
 			ClearFramePerLists();
 		}
 		
 		private void FixedUpdate() {
 			if (!initialized) return;
-			
 			foreach (IManager manager in IManager.instances) { manager.ManagerFixedUpdate(); }
 			
-			AdvancedUObject.FixedUpdateRoutine();
+			UObject.FixedUpdateRoutine();
 		}
 
 		public override void ManagerUpdate() {
