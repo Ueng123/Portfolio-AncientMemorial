@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UTrigFunc : UValue<float> {
-		public override bool getIsDynamic {
+		protected override bool getIsDynamic {
 			get {
 				x.parent = this;
 				return x.isDynamic;
@@ -15,7 +15,7 @@ namespace UengSystem.Logic.UValues.UFloats {
 		[SerializeReference] [SubclassSelector]
 		public UValue<float> x;
 
-		public override float getValue => funcType switch {
+		protected override float getValue => funcType switch {
 			TrigFunction.sin => Mathf.Sin(x.value),
 			TrigFunction.cos => Mathf.Cos(x.value),
 			TrigFunction.tan => Mathf.Tan(x.value),

@@ -1,6 +1,6 @@
 ﻿{
-  "Name" : "크리스탈[■□□]",
-  "HP" : 800,
+  "Name" : "크리스탈",
+  "HP" : 4000,
   "MoveSpeed" : 0,
   "JumpPower" : 0,
   "AttackCooldown" : 15,

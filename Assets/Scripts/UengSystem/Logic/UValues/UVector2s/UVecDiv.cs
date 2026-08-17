@@ -4,11 +4,11 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UVector2s {
 	[Serializable]
 	public class UVecDiv : UValue<Vector2> {
-		public override bool getIsDynamic {
+		protected override bool getIsDynamic {
 			get {
 				A.parent = this;
 				B.parent = this;
-				return A.isDynamicAuto || B.isDynamicAuto;
+				return A.isDynamic || B.isDynamic;
 			}
 		}
 		
@@ -16,6 +16,6 @@ namespace UengSystem.Logic.UValues.UVector2s {
 		[SerializeReference][SubclassSelector] public UValue<Vector2> A;
 		[SerializeReference][SubclassSelector] public UValue<float> B;
 
-		public override Vector2 getValue => A.value / B.value;
+		protected override Vector2 getValue => A.value / B.value;
 	}
 }

@@ -1,6 +1,6 @@
 ﻿{
   "Name" : "힘의 조각",
-  "HP" : 50,
+  "HP" : 800,
   "MoveSpeed" : 0,
   "JumpPower" : 0,
   "AttackCooldown" : 0,

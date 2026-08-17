@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using AncientMemorial.Objects;
+﻿using System.Collections.Generic;
 using UengSystem.Managers;
 
 using UnityEngine;
@@ -73,8 +70,5 @@ namespace UengSystem.ObjectPool {
 			obj.transform.SetParent(roots[obj.name]);
 			pools[obj.name].Release(obj);
 		}
-		
-		public override void ManagerUpdate()      { }
-		public override void ManagerFixedUpdate() { }
 	}
 }

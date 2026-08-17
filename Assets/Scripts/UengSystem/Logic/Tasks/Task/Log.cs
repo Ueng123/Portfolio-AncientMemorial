@@ -1,6 +1,6 @@
 ﻿using System;
 using UengSystem.Logic.UValues;
-using UengSystem.Objects;
+using UengSystem.UDebug;
 using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {
@@ -11,7 +11,7 @@ namespace UengSystem.Logic.Tasks {
 		public UValue<string> text;
 		
 		public override void Execute(ITaskable self) {
-			Debug.Log(text.getValue);
+			DebugManager.Log(text.value);
 		}
 	}
 }

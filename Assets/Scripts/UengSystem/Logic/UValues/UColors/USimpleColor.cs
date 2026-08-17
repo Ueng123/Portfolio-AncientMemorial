@@ -4,9 +4,9 @@ using Color = UnityEngine.Color;
 namespace UengSystem.Logic.UValues.UColors {
 	[Serializable]
 	public class USimpleColor : UValue<Color> {
-		public override bool getIsDynamic => false;
+		protected override bool getIsDynamic => false;
 		
-		public Color color;
-		public override Color getValue => color;
+		public             Color color;
+		protected override Color getValue => color;
 	}
 }

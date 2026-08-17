@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4046758503276528221}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5517316, y: 3.727134, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -105,16 +105,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c2e11bec9a4069bb499606bdde7447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: -4346244404228752641, guid: 72bb809dc42d4a044b48e68f668009e4, type: 3}
   colorSpawnSprite: {fileID: -4346244404228752641, guid: 72bb809dc42d4a044b48e68f668009e4, type: 3}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
-    tasks: []
+    useRealTime: 0
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 8985605512623030767
+    - time: 1
+      tasks:
+      - rid: 5909658579411927393
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5909658579411927393
+      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        releaseTime: 1
+        releaseThis: 1
+        TargetObject:
+          rid: -2
+    - rid: 8985605512623030767
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 40da1bbcbc714c540a62403d0416c5ac, type: 3}
+        playOnThis: 1
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2

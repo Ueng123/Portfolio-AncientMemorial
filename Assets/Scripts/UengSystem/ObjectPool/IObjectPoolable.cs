@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace UengSystem.ObjectPool {
+﻿namespace UengSystem.ObjectPool {
 	public interface IObjectPoolable {
 		public bool isReleased { get; set; }
 

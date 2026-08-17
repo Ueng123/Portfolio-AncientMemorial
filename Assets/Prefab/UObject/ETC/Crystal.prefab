@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &505370641531219162
 Transform:
   m_ObjectHideFlags: 0
@@ -4926,7 +4926,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -10
+  m_SortingOrder: 100
   m_MaskInteraction: 0
   m_Sprite: {fileID: 5293031974318352618, guid: e1a1fb6a99dd94348a00a12a35813a1e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4967,7 +4967,7 @@ Transform:
   m_GameObject: {fileID: 7113938830686400928}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.65, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4987,9 +4987,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd7ac5e57ea33a84aabdecec5514fdcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 3
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -5000,6 +5000,8 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   interactable: 0
+  showInteractUI: 1
+  interactString: 
   timeToInteract: 2
   cooldownToInteract: 3
   canvas: {fileID: 7552081053337369198}
@@ -5017,159 +5019,17 @@ MonoBehaviour:
     tasks: []
   onTarget:
     useRealTime: 0
-    tasks:
-    - time: 0
-      tasks:
-      - rid: 8722662735725461585
-      - rid: 6576058688792690850
-      - rid: 6576058688792690818
+    tasks: []
   onUnTarget:
     useRealTime: 0
-    tasks:
-    - time: 0
-      tasks:
-      - rid: 6576058688792690803
+    tasks: []
   crystalModel: {fileID: 3674200608950402841}
   references:
     version: 2
     RefIds:
-    - rid: 2446785106162221127
-      type: {class: UObjectID, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        obj: {fileID: 3793273603714431931}
     - rid: 6576058220649644113
       type: {class: NextWave, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
       data: 
-    - rid: 6576058688792690803
-      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        closeThis: 0
-        TargetUUI:
-          rid: 6576058688792690805
-    - rid: 6576058688792690805
-      type: {class: UUIByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: {fileID: 0}
-        isValueCached: 0
-        ID:
-          rid: 6576058697792356432
-    - rid: 6576058688792690818
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 1626135144726553035, guid: 6e46a5a7d4e3caf468a1e06e95950b79, type: 3}
-        canvas: {fileID: 7552081053337369198}
-        ID:
-          rid: 6576058697792356423
-        Category:
-          rid: 6576058688792690820
-    - rid: 6576058688792690820
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: 
-    - rid: 6576058688792690850
-      type: {class: SetUObjectVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        key:
-          rid: 6576058688792690851
-        value:
-          rid: 6576058688792690852
-    - rid: 6576058688792690851
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: InteractTargetObject
-    - rid: 6576058688792690852
-      type: {class: UObjectByID, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: {fileID: 0}
-        isValueCached: 0
-        ID:
-          rid: 2446785106162221127
-    - rid: 6576058697792356423
-      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        strings:
-        - rid: 6576058697792356426
-        - rid: 6576058697792356425
-    - rid: 6576058697792356425
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: InteractUI
-    - rid: 6576058697792356426
-      type: {class: UObjectID, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        obj: {fileID: 3793273603714431931}
-    - rid: 6576058697792356432
-      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        strings:
-        - rid: 6576058697792356433
-        - rid: 6576058697792356434
-    - rid: 6576058697792356433
-      type: {class: UObjectID, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        obj: {fileID: 3793273603714431931}
-    - rid: 6576058697792356434
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: InteractUI
-    - rid: 8722662735725461585
-      type: {class: SetUStringVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        key:
-          rid: 8722662735725461587
-        value:
-          rid: 8722662735725461588
-    - rid: 8722662735725461587
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: InteractUIText
-    - rid: 8722662735725461588
-      type: {class: UStringFromVariable, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        varID:
-          rid: 8722662735725461589
-    - rid: 8722662735725461589
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: CrystalInteractUIText
 --- !u!114 &3417821801068807836
 MonoBehaviour:
   m_ObjectHideFlags: 0

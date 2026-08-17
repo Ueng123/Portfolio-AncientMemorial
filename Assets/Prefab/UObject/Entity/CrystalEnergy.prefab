@@ -5221,7 +5221,7 @@ Transform:
   m_GameObject: {fileID: 4214376795195228249}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.44, y: 2.69, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5311,6 +5311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f72bba33f834b929606a979ae2cd673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 3
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -5349,6 +5350,7 @@ MonoBehaviour:
   entityUIHeight: 170
   groundChecker: {fileID: 0}
   debrisAttached: []
+  isWaveEnemy: 0
   markYPos: 0
   rotatingAnimator: {fileID: 2197840360819527753}
   references:

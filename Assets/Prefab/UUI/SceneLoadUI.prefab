@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2749504918189715702}
   - component: {fileID: 5916277437247804145}
   - component: {fileID: 6358730967927439185}
-  - component: {fileID: 6877773202856892149}
+  - component: {fileID: -1577316975000400282}
   m_Layer: 6
   m_Name: SceneLoadUI
   m_TagString: Untagged
@@ -99,7 +99,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6877773202856892149
+--- !u!114 &-1577316975000400282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,12 +108,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6223700616463536429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344c6a08c0d74e27ab3ef9275865b0ea, type: 3}
+  m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -124,8 +124,11 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
+  openTime: 2
+  closeTime: 0.001
   actions: []
   references:
     version: 2

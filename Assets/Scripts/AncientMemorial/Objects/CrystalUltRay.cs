@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
 using UengSystem.Audio;
-using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
-using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.Objects {
 	public class CrystalUltRay : UObject {
@@ -32,16 +28,16 @@ namespace AncientMemorial.Objects {
 		
 		private ContactFilter2D contactFilter;
 		
-		public        float r;
-		public        float w;
-		public        float o;
+		public        float radius;
+		public        float angularVelocity;
+		public        float angleOffset;
 		private       float theta;
 		private const float pi = 3.14159265358979323846f;
 		
 		protected override void FixedRoutine() {
-			theta                      = Mathf.Repeat(theta + w * (rayShooting?1:0.3f) * Time.fixedDeltaTime, 2*pi);
-			float thetaUse             = theta + o;
-			rayTransform.localPosition = new Vector3(r*Mathf.Cos(thetaUse), r*Mathf.Sin(thetaUse), 0);
+			theta                      = Mathf.Repeat(theta + angularVelocity * (rayShooting?1:0.1f) * Time.fixedDeltaTime, 2*pi);
+			float thetaUse             = theta + angleOffset;
+			rayTransform.localPosition = new Vector3(radius*Mathf.Cos(thetaUse), radius*Mathf.Sin(thetaUse), 0);
 			rayTransform.localRotation = Quaternion.Euler(0f, 0f, 90 + thetaUse*Mathf.Rad2Deg);
 			
 			if (!rayShooting) return;
@@ -82,14 +78,13 @@ namespace AncientMemorial.Objects {
 					
 					hitCooldownTable[entity] = Time.fixedTime;
 					
-					Entity.SendAttackEvent(owner, entity, 3, false);
+					Entity.SendAttackMultiplyEvent(owner, entity, 1, false);
 				}
 			}
 		}
 
 		private const float rayShootAnimLength = 4.5f;
 		private const float rayShootKeyframe   = 197f/270f;
-
 		public const float rayShootTime = rayShootAnimLength * rayShootKeyframe;
 		public override void Initialize() {
 			base.Initialize();
@@ -111,8 +106,6 @@ namespace AncientMemorial.Objects {
 		private readonly StopWatch stopWatch       = new ();
 
 		protected override void OnRelease() {
-			base.OnRelease();
-			
 			if (showEffect) {
 				AudioManager.instance.StopSFX(ambientSource);
 			}
@@ -136,9 +129,9 @@ namespace AncientMemorial.Objects {
 		protected override IEnumerator DespawnFX(float duration) {
 			
 			while (stopWatch.Check(despawnAnimTime)) {
-				theta                      = Mathf.Repeat(theta + w * Time.deltaTime, 2*pi);
-				float thetaUse             = theta + o;
-				rayTransform.localPosition = new Vector3(r*Mathf.Cos(thetaUse), r*Mathf.Sin(thetaUse), 0);
+				theta                      = Mathf.Repeat(theta + angularVelocity * Time.deltaTime, 2*pi);
+				float thetaUse             = theta + angleOffset;
+				rayTransform.localPosition = new Vector3(radius*Mathf.Cos(thetaUse), radius*Mathf.Sin(thetaUse), 0);
 				rayTransform.localRotation = Quaternion.Euler(0f, 0f, 90 + thetaUse*Mathf.Rad2Deg);
 				yield return null;
 			}

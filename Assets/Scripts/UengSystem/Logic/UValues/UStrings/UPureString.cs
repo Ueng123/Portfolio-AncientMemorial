@@ -3,9 +3,9 @@
 namespace UengSystem.Logic.UValues.UStrings {
 	[Serializable]
 	public class UPureString : UValue<string> {
-		public override bool getIsDynamic => false;
+		protected override bool getIsDynamic => false;
 		
-		public          string Text;
-		public override string getValue => Text;
+		public             string Text;
+		protected override string getValue => Text;
 	}
 }

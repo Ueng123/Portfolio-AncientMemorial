@@ -1,14 +1,7 @@
 ﻿using System.Collections;
 using AncientMemorial.Cameras;
-using AncientMemorial.Map;
-using AncientMemorial.Projectiles;
 using UengSystem.Logic.UValues.UFloats;
-using UengSystem.Logic.UValues.UStrings;
-using UengSystem.Managers;
 using UengSystem.ObjectPool;
-using UengSystem.Objects;
-using UengSystem.UI;
-using UengSystem.UI.UTexts;
 using UengSystem.Utility;
 using UnityEngine;
 
@@ -19,20 +12,11 @@ namespace AncientMemorial.Entities {
 
 		public Animator rotatingAnimator;
 		
-		public override    void        HitEffect(Entity    attacker,   float    damage, Vector2? pushDir = null) {
+		public override    void        OnHit(Entity    attacker,   float    damage, Vector2? pushDir = null) {
 			rotatingAnimator.speed = 15;
-			
-			UUI damageUI = UUIObjectPool.instance.Open("DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
-			damageUI.GetComponent<RectTransform>().anchoredPosition =
-				(transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
-			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
-			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).ExecuteDA();
-			
-			textAction.text  = new UPureString {Text = "<size=20><i>!!!</i></size>"};
-			textSAction.text = textAction.text;
-			textAction.Initialize(damageUI);
-			textSAction.Initialize(damageUI);
+
+			PlaySFX("crystalRoar", volume:0.1f, pitch: 3f);
+			ShowCriticalDamageUI(damage);
 			
 			if (entityStat.hp <= 0) {
 				PlaySFX("crystalHit2");
@@ -49,13 +33,7 @@ namespace AncientMemorial.Entities {
 			CameraBrain.instance.ZoomLerp(-0.2f);
 		}
 
-		protected override void OnHit(Entity attacker, float damage, Vector2? pushDir) { entityStat.hp -= damage; }
-
-		protected override void OnHit(Projectile projectile, float damage, Vector2? pushDir) { entityStat.hp -= damage; }
-
-		protected override void OnHit(float damage, Vector2? pushDir) { entityStat.hp -= damage; }
-
-		protected override float GetRealDamage(float rawDamage) { return 1; }
+		protected override float GetRealDamage(float rawDamage) { return rawDamage; }
 
 		public override void OnStunStart() { }
 
@@ -69,18 +47,10 @@ namespace AncientMemorial.Entities {
 
 		protected override void OnAttackCancel() { }
 
-		public override void WanderRoutine() {
-			rotatingAnimator.speed = Mathf.Lerp(rotatingAnimator.speed, 1, Time.deltaTime);
-		}
-
-		public override void AlertRoutine() { }
-
-		public override void AttackReadyRoutine() { }
-
-		public override void AttackRoutine() { }
-
-		public override void StunRoutine() { }
-
+		// public override void WanderRoutine() {
+		// 	rotatingAnimator.speed = Mathf.Lerp(rotatingAnimator.speed, 1, Time.deltaTime);
+		// }
+		
 		public override void Initialize() {
 			base.Initialize();
 			animator.Play("spawn");
@@ -92,14 +62,16 @@ namespace AncientMemorial.Entities {
 		
 		protected override IEnumerator DespawnFX(float duration) {
 			animator.Play("dead");
-			yield return new WaitForSeconds(duration);
+			yield return CacheManager.WaitForSeconds(duration);
 			UObjectPool.instance.Release(gameObject, -1);
 		}
 
 		protected override void Death() {
-			GameManager.UValueFloatVariables["crystalEnergyDead"] = new UPureNumber {number = GameManager.UValueFloatVariables["crystalEnergyDead"].value + 1};
-			GameManager.UValueFloatVariables["crystalEnergyGimmick"] = new UPureNumber {number = GameManager.UValueFloatVariables["crystalEnergyGimmick"].value - 1};
-			GameManager.UValueFloatVariables["EnemyDead"]   = new UPureNumber {number = GameManager.UValueFloatVariables["EnemyDead"].value + 1};
+			GameManager.UValueFloatVariables["crystalEnergyDead"] = new UPureFloat {number = GameManager.UValueFloatVariables["crystalEnergyDead"].value + 1};
+			GameManager.UValueFloatVariables["crystalEnergyGimmick"] = new UPureFloat {number = GameManager.UValueFloatVariables["crystalEnergyGimmick"].value - 1};
+			
+			PlaySFX("crystalRoar", pitch: 0.75f);
+			
 			base.Death();
 		}
 	}

@@ -9,30 +9,31 @@ namespace UengSystem.UI.USliders {
 		public Slider slider;
 		protected Image sliderFillImage;
 
+		private float valueCache;
 		public bool valueChanged = false;
-
-		private float _sliderValue;
-		private float sliderValue {
-			set {
-				if (Mathf.Approximately(_sliderValue, value)) return;
-				valueChanged = true;
-				_sliderValue = value;
-			}
-		}
 
 		public override void Initialize() {
 			slider          = GetComponent<Slider>();
+			valueCache      = slider.value;
 			sliderFillImage = slider.fillRect?.GetComponent<Image>();
+			slider.onValueChanged.AddListener(OnValueChanged);
 		}
 		
-		public virtual float GetValue() {
-			sliderValue  = slider.value;
-			return slider.value;
+		public override void Uninitialize() {
+			slider.onValueChanged.RemoveAllListeners();
+		}
+		
+		public virtual void OnValueChanged(float value) {
+			valueCache   = value;
+			valueChanged = true;
 		}
 
+		public virtual float GetValue() => valueCache;
+		
 		public virtual void SetValue(float value) {
+			if (Mathf.Approximately(value, valueCache)) return;
+			valueCache   = value;
 			slider.value = value;
-			sliderValue  = value;
 		}
 
 		public Color GetColor()            => sliderFillImage.color;

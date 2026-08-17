@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UCubicBezierValue : UValue<float> {
-		public override bool getIsDynamic {
+		protected override bool getIsDynamic {
 			get {
 				startValue.parent  = this;
 				endValue.parent    = this;
@@ -49,6 +49,6 @@ namespace UengSystem.Logic.UValues.UFloats {
 			}
 		}
 
-		public override float getValue => curve.GetValue(T.value);
+		protected override float getValue => curve.GetValue(T.value);
 	}
 }

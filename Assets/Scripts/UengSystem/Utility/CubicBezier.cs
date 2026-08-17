@@ -1,6 +1,4 @@
 ﻿using System;
-using Unity.Mathematics.Geometry;
-using UnityEngine;
 
 namespace UengSystem.Utility {
 	public struct CubicBezier : IEquatable<CubicBezier> {

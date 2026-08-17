@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 5488637877393530582}
   - component: {fileID: 5527237533539991929}
   - component: {fileID: 2240756956794967183}
-  - component: {fileID: 7811576881407057780}
+  - component: {fileID: -8158172842653651038}
   - component: {fileID: 7353956501363239835}
   m_Layer: 7
   m_Name: EntityUI
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7811576881407057780
+--- !u!114 &-8158172842653651038
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,67 +124,69 @@ MonoBehaviour:
   m_GameObject: {fileID: 549908156000847162}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344c6a08c0d74e27ab3ef9275865b0ea, type: 3}
+  m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
+  openTime: 1.5
+  closeTime: 1.5
   actions:
   - key: EntityName
     action:
-      rid: 8722662273157431397
+      rid: 8985605461560001423
   - key: EntityHP
     action:
-      rid: 8722662273157431399
+      rid: 8985605461560001425
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8722662273157431397
+    - rid: 5909658491678359775
+      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        number: 1
+    - rid: 8985605461560001423
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 1417411076128888617}
         text:
-          rid: 8722662273157431415
-    - rid: 8722662273157431399
+          rid: 8985605461560001518
+    - rid: 8985605461560001425
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
         component: {fileID: 5138797963125562758}
-        setValue: 1
+        initialValue:
+          rid: 5909658491678359775
         value:
-          rid: 8722662273157431416
-        useValue: 0
-        task:
           rid: -2
-        setColor: 0
         color:
           rid: -2
-    - rid: 8722662273157431415
+        condition: 0
+        taskOnValueChanged:
+          useRealTime: 0
+          tasks: []
+    - rid: 8985605461560001518
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 
-        isValueCached: 0
         Text: 
-    - rid: 8722662273157431416
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0
 --- !u!95 &7353956501363239835
 Animator:
   serializedVersion: 7
@@ -197,7 +199,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: dd9c82e096c1cc944844a6f358324d39, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -461,7 +463,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u25A0\u25A1\u25A0\u25A1 \u25A0\u25A1"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f29fa83ee46a96a4b810b91002a82fc9, type: 2}
   m_sharedMaterial: {fileID: 4143440930881732704, guid: f29fa83ee46a96a4b810b91002a82fc9, type: 2}
@@ -499,6 +501,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -558,17 +561,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
-  parent: {fileID: 7811576881407057780}
+  parent: {fileID: 0}
   text: {fileID: 0}
   references:
     version: 2
@@ -675,17 +680,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 480543e636444a27a4b15a6ab0f999b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
-  parent: {fileID: 7811576881407057780}
+  parent: {fileID: 0}
+  slider: {fileID: 0}
+  valueChanged: 0
   subSlider: {fileID: 1806687070336871910}
   background: {fileID: 530345589866329086}
   references:

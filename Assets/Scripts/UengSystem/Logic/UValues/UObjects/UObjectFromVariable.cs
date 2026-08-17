@@ -1,17 +1,16 @@
 ﻿using System;
 using AncientMemorial;
-using UengSystem.Managers;
 using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.Logic.UValues.UObjects {
 	[Serializable]
 	public class UObjectFromVariable : UValue<Objects.UObject> {
-		public override bool getIsDynamic => true;
+		protected override bool getIsDynamic => true;
 
 		[SerializeReference] [SubclassSelector]
 		public UValue<string> varID;
 
-		public override Objects.UObject getValue => GameManager.UValueUObjectVariables[varID.value].value;
+		protected override UObject getValue => GameManager.UValueUObjectVariables[varID.value].value;
 	}
 }

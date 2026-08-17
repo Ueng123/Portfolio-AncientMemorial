@@ -108,6 +108,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -153,15 +154,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 6049909586694473078}
   text: {fileID: 0}
@@ -290,36 +293,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd15537f2ba14e0ab37a4b4c55d8909e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: -30}
   initialScale: {x: 1, y: 1, z: 1}
+  openTime: 0.001
+  closeTime: 0.001
   actions:
-  - key: info1
+  - key: 1
     action:
       rid: 8722662772965376085
-  - key: info2
+  - key: 2
     action:
       rid: 8722662772965376086
-  - key: info3
+  - key: 3
     action:
       rid: 8722662772965376087
-  - key: info4
+  - key: 4
     action:
       rid: 8722662772965376088
-  - key: info5
+  - key: 5
     action:
       rid: 8722662772965376089
-  - key: info6
+  - key: 6
     action:
       rid: 8722662772965376090
   infoDuration: 5
@@ -366,43 +374,31 @@ MonoBehaviour:
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 
-        isValueCached: 0
         Text: 
     - rid: 8722662772965376093
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 
-        isValueCached: 0
         Text: 
     - rid: 8722662772965376094
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 
-        isValueCached: 0
         Text: 
     - rid: 8722662772965376095
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 
-        isValueCached: 0
         Text: 
     - rid: 8722662772965376096
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 
-        isValueCached: 0
         Text: 
     - rid: 8722662772965376097
       type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 
-        isValueCached: 0
         Text: 
 --- !u!95 &6496077742332316475
 Animator:
@@ -531,6 +527,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -576,15 +573,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 6049909586694473078}
   text: {fileID: 0}
@@ -699,6 +698,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -744,15 +744,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 6049909586694473078}
   text: {fileID: 0}
@@ -867,6 +869,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -912,15 +915,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 6049909586694473078}
   text: {fileID: 0}
@@ -1033,6 +1038,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1078,15 +1084,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 6049909586694473078}
   text: {fileID: 0}
@@ -1202,6 +1210,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1247,15 +1256,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   parent: {fileID: 6049909586694473078}
   text: {fileID: 0}

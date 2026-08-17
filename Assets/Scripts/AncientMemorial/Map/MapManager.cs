@@ -40,7 +40,8 @@ namespace AncientMemorial.Map {
 			MapCenterTransform.position = CurrCamPos;
 		}
 		
-		public Vector2 GetMapSize() => TargetMapSize;
+		public Vector2 GetMapSize()        => CurrMapSize;
+		public Vector2 GetTargetMapSize() => TargetMapSize;
 
 		public override void Initialize() {
 			TargetCamLens = new Vector2(
@@ -52,9 +53,7 @@ namespace AncientMemorial.Map {
 			CurrCamLens = TargetCamLens;
 			CurrCamPos  = TargetCamPos;
 		}
-
-		public override void ManagerUpdate() { }
-
+		
 		public override void ManagerFixedUpdate() {
 			CurrMapSize = Vector2.Lerp(CurrMapSize, TargetMapSize,                  mapChangeSpeed);
 			

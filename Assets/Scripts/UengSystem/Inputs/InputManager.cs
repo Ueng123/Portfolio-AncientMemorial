@@ -9,38 +9,60 @@ namespace UengSystem.Inputs {
 
 		public        Camera                                 mainCamera;
 		public        List<InputActions>                     inputActions;
-		public static Dictionary<InputActionType, InputData> inputData;
+		private static Dictionary<ActionType, InputData>     inputData;
+		
+		public static void Clear() {
+			inputData?.Clear();
+		}
+
+		public static Vector2 mousePosition => inputData[ActionType.MousePosition].valueV;
+		
+		public static bool GetInput(ActionType actionType, PressType pressType) {
+			return (inputData[actionType].pressType & pressType)!=0;
+		}
+
+		public static bool GetInput(ActionType actionType) {
+			return inputData[actionType].valueB;
+		}
+		
+		public static float GetValue(ActionType actionType) {
+			return inputData[actionType].valueF;
+		}
+		
+		public static Vector2 GetVector(ActionType actionType) {
+			return inputData[actionType].valueV;
+		}
 		
 		public override void Initialize() {
-			inputData = new Dictionary<InputActionType, InputData>();
-			
-			foreach (InputActions action in inputActions) {
+			inputData  = new Dictionary<ActionType, InputData>();
+
+			for (int i = 0; i < inputActions.Count; i++) {
+				InputActions action = inputActions[i];
 				action.inputAction.Enable();
 
 				InputData initInput = new InputData {
 					inputType = action.inputType,
-					pressType = (action.inputType==InputType.Button)?
-									InputPressType.None:
-									InputPressType.Value
+					pressType = (action.inputType == InputType.Button) ? PressType.None : PressType.Value
 				};
 
 				inputData[action.actionType] = initInput;
 			}
 
-			inputData[InputActionType.MousePosition] = new InputData {
+			inputData[ActionType.MousePosition] = new InputData {
 				inputType = InputType.Axis2D,
-				pressType = InputPressType.Value
+				pressType = PressType.Value
 			};
 		}
 		
 		public override void Uninitialize() {
-			foreach (InputActions action in inputActions) {
+			for (int i = 0; i < inputActions.Count; i++) {
+				InputActions action = inputActions[i];
 				action.inputAction.Disable();
 			}
 		}
 
 		private void UpdateMousePosition() {
-			inputData[InputActionType.MousePosition].valueV = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+			inputData[ActionType.MousePosition].valueV = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 		}
 		
 		public void UpdateInputs() {
@@ -59,10 +81,10 @@ namespace UengSystem.Inputs {
 						// 눌림여부  |   X     |   O    |  Up
 						// 눌림여부  |   X     |   X    |  None
 
-						if (Now  && Pre)  currInput.pressType = InputPressType.Hold;
-						if (Now  && !Pre) currInput.pressType = InputPressType.Down;
-						if (!Now && Pre)  currInput.pressType = InputPressType.Up;
-						if (!Now && !Pre) currInput.pressType = InputPressType.None;
+						if (Now  && Pre)  currInput.pressType = PressType.Hold;
+						if (Now  && !Pre) currInput.pressType = PressType.Down;
+						if (!Now && Pre)  currInput.pressType = PressType.Up;
+						if (!Now && !Pre) currInput.pressType = PressType.None;
 						
 						currInput.valueB = Now;
 						
@@ -95,8 +117,5 @@ namespace UengSystem.Inputs {
 
 			UpdateMousePosition();
 		}
-		
-		public override void ManagerUpdate()      { }
-		public override void ManagerFixedUpdate() { }
 	}
 }

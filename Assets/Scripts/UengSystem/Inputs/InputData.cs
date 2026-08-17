@@ -2,7 +2,7 @@
 
 namespace UengSystem.Inputs {
 	public class InputData {
-		public InputPressType pressType;
+		public PressType pressType;
 		public InputType      inputType;
 
 		public bool    valueB;

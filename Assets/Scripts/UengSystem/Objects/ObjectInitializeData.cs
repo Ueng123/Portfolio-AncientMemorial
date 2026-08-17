@@ -18,9 +18,5 @@ namespace UengSystem.Objects {
 		public Transform      transform;
 		public SpriteRenderer spriteRenderer;
 		public Rigidbody2D    rigidbody2D;
-
-		public ObjectInitializeData() {
-			
-		}
 	}
 }

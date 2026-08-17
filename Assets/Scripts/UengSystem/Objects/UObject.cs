@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -10,42 +9,41 @@ using AncientMemorial.Objects;
 using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Logic.Tasks;
-using UengSystem.Managers;
 using UengSystem.ObjectPool;
+using UengSystem.States;
+using UengSystem.UDebug;
 using UengSystem.Utility;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;	
 
 namespace UengSystem.Objects {
-	public class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, IInitializable, ITaskable {
+	public class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, ITaskable {
 
-		private static readonly Dictionary<string,      UObject > IDTable       = new ();
-		private static readonly Dictionary<string, List<UObject>> CategoryTable = new ();
+		private static readonly Dictionary<string, UObject>       IDTable       = new();
+		private static readonly Dictionary<string, List<UObject>> CategoryTable = new();
 		public static           BufferedList<UObject>             instances     = new();
 
 		public WhenInitialize whenInitialize;
-		
+
 		// Instance Variables //
-		[Header("Identify")] 
-		private string _ID;
-		private string _Category;
+		[Header("Identify")] private string _ID;
+		private                      string _Category;
 
 		public string ID {
 			get => _ID;
 			set {
 				if (value == null) {
 					if (_ID == null) return;
-					
+
 					IDTable[_ID] = null;
 					_ID          = null;
-					
+
 					return;
 				}
-				
+
 				if (_ID != null) throw new InvalidOperationException("u just tried to set ID twice twin :(");
-				
+
 				IDTable[value] = this;
 				_ID            = value;
 			}
@@ -56,220 +54,214 @@ namespace UengSystem.Objects {
 			set {
 				if (value == null) {
 					if (_Category == null) return;
-					
+
 					CategoryTable[_Category].Remove(this);
 					if (CategoryTable[_Category].Count == 0) CategoryTable.Remove(_Category);
-	                    
+
 					_Category = null;
 
 					return;
 				}
-				
-				if (_Category != null) throw new InvalidOperationException("u just tried to set Category twice twin :(");
+
+				if (_Category != null)
+					throw new InvalidOperationException("u just tried to set Category twice twin :(");
 				if (!CategoryTable.ContainsKey(value)) CategoryTable[value] = new List<UObject>();
-				
+
 				CategoryTable[value].Add(this);
 				_Category = value;
-			}
-		}
-		
-		private ExclusiveAction _currentExclusiveAction;
-		public ExclusiveAction currentExclusiveAction {
-			get {
-				if (_currentExclusiveAction is { executing: false }) _currentExclusiveAction = null;
-				return _currentExclusiveAction;
-			}
-			
-			set {
-				if (_currentExclusiveAction == null) {
-					_currentExclusiveAction = value;
-					value?.Execute();
-				}
-				else {
-					_currentExclusiveAction.Cancel();
-
-					float delay = _currentExclusiveAction.changeDelay;
-					new DelayedAction(delay, () => {
-						_currentExclusiveAction = value;
-						value?.Execute();
-					}).ExecuteDA();
-				}
 			}
 		}
 
 		public Sprite whiteSpawnSprite;
 		public Sprite colorSpawnSprite;
-		public bool   isReleased { get;              set; }
+		public bool   isReleased { get; set; }
 
-		public AudioSource PlaySFX(string clipName, Vector2 position = default, bool isLocalPosition = true, float volume = 1f, float pitch = 1f, float pan = 0f, float spread = 0f, bool loop = false) {
-			return AudioManager.instance.PlaySFX(clipName, transform, position, isLocalPosition, volume, pitch, pan, spread, loop);
+		public AudioSource PlaySFX(string clipName,    Vector2 position = default, bool  isLocalPosition = true,
+								   float  volume = 1f, float   pitch    = 1f,      float pan = 0f, float spread = 0f,
+								   bool   loop   = false) {
+			return AudioManager.instance.PlaySFX(clipName, transform, position, isLocalPosition, volume, pitch, pan,
+												 spread, loop);
 		}
-		
-		public AudioSource PlaySFX(AudioClip clip, Vector2 position = default, bool isLocalPosition = true, float volume = 1f, float pitch = 1f, float pan = 0f, float spread = 0f, bool loop = false) {
-			return AudioManager.instance.PlaySFX(clip, transform, position, isLocalPosition, volume, pitch, pan, spread, loop);
+
+		public AudioSource PlaySFX(AudioClip clip,        Vector2 position = default, bool  isLocalPosition = true,
+								   float     volume = 1f, float   pitch    = 1f,      float pan = 0f, float spread = 0f,
+								   bool      loop   = false) {
+			return AudioManager.instance.PlaySFX(clip, transform, position, isLocalPosition, volume, pitch, pan, spread,
+												 loop);
 		}
-		
+
 		// Routine System //
-		protected virtual void EarlyRoutine()        { }
-		protected virtual void Routine()             { }
-		protected virtual void LateRoutine()         { }
-		protected virtual void FixedRoutine()        { }
-		public virtual    void EventRoutine(Event e) { }
-
-		// === NEW! === //
-		public static BufferedList<UObject> earlyRoutineObjects = new BufferedList<UObject>();
-		public static BufferedList<UObject> routineObjects      = new BufferedList<UObject>();
-		public static BufferedList<UObject> eventRoutineObjects = new BufferedList<UObject>();
-		public static BufferedList<UObject> lateRoutineObjects  = new BufferedList<UObject>();
-		public static BufferedList<UObject> fixedRoutineObjects = new BufferedList<UObject>();
-		
-		private          byte                   executeRoutineMethod      = 0b_0000_0000;
-		private readonly Dictionary<Type, byte> executeRoutineMethodCache = new Dictionary<Type, byte>();
-		// ============ //
-		
-		private List<Action>[] processToUpdate;
-		private List<Action>[] processToFixedUpdate;
-		
-		// === NEW! === //
-		public void CheckRoutine() {
-			Type type = GetType();
-			if (executeRoutineMethodCache.TryGetValue(type, out byte value)) {
-				executeRoutineMethod = value;
-				return;
-			}
-			
-			MethodInfo[] routineMethodInfos =  {
-				type.GetMethod("EarlyRoutine", BindingFlags.Instance | BindingFlags.NonPublic),
-				type.GetMethod("Routine",      BindingFlags.Instance | BindingFlags.NonPublic),
-				type.GetMethod("EventRoutine", BindingFlags.Instance | BindingFlags.NonPublic),
-				type.GetMethod("LateRoutine",  BindingFlags.Instance | BindingFlags.NonPublic),
-				type.GetMethod("FixedRoutine", BindingFlags.Instance | BindingFlags.NonPublic),
-			};
-			
-			for (int i = 0; i < routineMethodInfos.Length; i++) {
-				MethodInfo methodInfo = routineMethodInfos[i];
-				if (methodInfo == null) {
-					executeRoutineMethod |= (byte)(1 << i);
-					continue;
-				} 
-       
-				byte[] ilBytes = methodInfo.GetMethodBody()?.GetILAsByteArray();
-				if (ilBytes == null || ilBytes.Length == 0) {
-					executeRoutineMethod |= (byte)(1 << i);
-					continue;
-				}
-				
-				bool isEmpty = ilBytes.All(b => b == OpCodes.Nop.Value || b == OpCodes.Ret.Value);
-				if (isEmpty) {
-					executeRoutineMethod |= (byte)(1 << i);
-				}
-			}
-			
-			executeRoutineMethodCache[type] = executeRoutineMethod;
+		protected virtual void EarlyRoutine() {
+			executeRoutineMethodCache[GetType()] &= 0b_0001_1110;
+			earlyRoutineObjects.Remove(this);
 		}
+
+		protected virtual void Routine() {
+			executeRoutineMethodCache[GetType()] &= 0b_0001_1101;
+			routineObjects.Remove(this);
+		}
+
+		protected virtual void LateRoutine() {
+			executeRoutineMethodCache[GetType()] &= 0b_0001_0111;
+			lateRoutineObjects.Remove(this);
+		}
+
+		protected virtual void FixedRoutine() {
+			executeRoutineMethodCache[GetType()] &= 0b_0000_1111;
+			fixedRoutineObjects.Remove(this);
+		}
+
+		public static BufferedList<UObject> earlyRoutineObjects = new BufferedList<UObject>(100, 10);
+		public static BufferedList<UObject> routineObjects      = new BufferedList<UObject>(100, 10);
+		public static BufferedList<UObject> eventRoutineObjects = new BufferedList<UObject>(100, 10);
+		public static BufferedList<UObject> lateRoutineObjects  = new BufferedList<UObject>(100, 10);
+		public static BufferedList<UObject> fixedRoutineObjects = new BufferedList<UObject>(100, 10);
+		
+		private readonly Dictionary<Type, byte> executeRoutineMethodCache = new Dictionary<Type, byte>();
+
+		private Queue<Action> processToUpdate;
+		private Queue<Action> processToFixedUpdate;
 
 		public void RegisterRoutineList() {
-			if ((executeRoutineMethod &0b_0000_0001) ==0) earlyRoutineObjects.Add(this);
-			if ((executeRoutineMethod &0b_0000_0010) ==0) routineObjects     .Add(this);
-			if ((executeRoutineMethod &0b_0000_0100) ==0) eventRoutineObjects.Add(this);
-			if ((executeRoutineMethod &0b_0000_1000) ==0) lateRoutineObjects .Add(this);
-			if ((executeRoutineMethod &0b_0001_0000) ==0) fixedRoutineObjects.Add(this);
+			executeRoutineMethodCache.TryAdd(GetType(), 0b_0001_1111);
+			byte executeRoutineMethod = executeRoutineMethodCache[GetType()];
+			
+			if ((executeRoutineMethod &0b_0000_0001)!=0) earlyRoutineObjects.Add(this);
+			if ((executeRoutineMethod &0b_0000_0010)!=0) routineObjects     .Add(this);
+			if ((executeRoutineMethod &0b_0000_0100)!=0) eventRoutineObjects.Add(this);
+			if ((executeRoutineMethod &0b_0000_1000)!=0) lateRoutineObjects .Add(this);
+			if ((executeRoutineMethod &0b_0001_0000)!=0) fixedRoutineObjects.Add(this);
 		}
 		
 		public void UnregisterRoutineList() {
-			if ((executeRoutineMethod &0b_0000_0001) ==0) earlyRoutineObjects.Remove(this);
-			if ((executeRoutineMethod &0b_0000_0010) ==0) routineObjects     .Remove(this);
-			if ((executeRoutineMethod &0b_0000_0100) ==0) eventRoutineObjects.Remove(this);
-			if ((executeRoutineMethod &0b_0000_1000) ==0) lateRoutineObjects .Remove(this);
-			if ((executeRoutineMethod &0b_0001_0000) ==0) fixedRoutineObjects.Remove(this);
+			byte executeRoutineMethod = executeRoutineMethodCache.GetValueOrDefault(GetType(), (byte)0b_0001_1111);
+			
+			if ((executeRoutineMethod &0b_0000_0001)!=0) earlyRoutineObjects.Remove(this);
+			if ((executeRoutineMethod &0b_0000_0010)!=0) routineObjects     .Remove(this);
+			if ((executeRoutineMethod &0b_0000_0100)!=0) eventRoutineObjects.Remove(this);
+			if ((executeRoutineMethod &0b_0000_1000)!=0) lateRoutineObjects .Remove(this);
+			if ((executeRoutineMethod &0b_0001_0000)!=0) fixedRoutineObjects.Remove(this);
 		}
-		// ============ //
 		
 		public static void UpdateRoutine() {
 			GameManager.instance.currentUpdatePhase = UpdateRoutineType.Processing;
-			foreach (UObject obj in instances) {
-				obj.ExecuteUpdateProcess();
-			}
-			
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.EarlyRoutine;
-			earlyRoutineObjects.Apply();
-			foreach (UObject obj in earlyRoutineObjects) {
-				obj.EarlyRoutine();
-			}
-			
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.Routine;
-			routineObjects.Apply();
-			foreach (UObject obj in routineObjects) {
-				obj.Routine();
-			}
-			
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.EventRoutine;
-			EventRoutine();
-			
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.LateRoutine;
-			lateRoutineObjects.Apply();
-			foreach (UObject obj in lateRoutineObjects) {
-				obj.LateRoutine();
-			}
-			
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.RoutineEnd;
-		}
-		
-		public static void EventRoutine() {
-			for (int i = 0; i < EventManager.instance.events.Count; i++) {
-				List<Event> events = EventManager.instance.GetEvents(i);
-				if (events.Count == 0) continue;
-				
-				foreach (Event e in events) {
-					eventRoutineObjects.Apply();
-					foreach (UObject obj in eventRoutineObjects) {
-						obj.EventRoutine(e);
-					}
+			for (int i = 0; i < instances.Count; i++) {
+				UObject obj = instances[i];
+				try {
+					obj.ExecuteUpdateProcess();
+				}
+				catch (Exception e) {
+					DebugManager.LogError(
+						$"Update > UObject.UpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).ExecuteUpdateProcess()",
+						e, obj.gameObject);
 				}
 			}
+
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.EarlyRoutine;
+			earlyRoutineObjects.Apply();
+			for (int i = 0; i < earlyRoutineObjects.Count; i++) {
+				UObject obj = earlyRoutineObjects[i];
+				try {
+					obj.EarlyRoutine();
+				}
+				catch (Exception e) {
+					DebugManager.LogError(
+						$"Update > UObject.UpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).EarlyRoutine()",
+						e, obj.gameObject);
+				}
+			}
+
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.Routine;
+			routineObjects.Apply();
+			for (int i = 0; i < routineObjects.Count; i++) {
+				UObject obj = routineObjects[i];
+				try {
+					obj.Routine();
+				}
+				catch (Exception e) {
+					DebugManager.LogError(
+						$"Update > UObject.UpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).Routine()", e,
+						obj.gameObject);
+				}
+			}
+		}
+
+		public static void LateUpdateRoutine() {
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.LateRoutine;
+			lateRoutineObjects.Apply();
+			for (int i = 0; i < lateRoutineObjects.Count; i++) {
+				UObject obj = lateRoutineObjects[i];
+				try {
+					obj.LateRoutine();
+				}
+				catch (Exception e) {
+					DebugManager.LogError(
+						$"LateUpdate > UObject.UpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).LateRoutine()",
+						e, obj.gameObject);
+				}
+			}
+
+			GameManager.instance.currentUpdatePhase = UpdateRoutineType.RoutineEnd;
 		}
 		
 		public static void FixedUpdateRoutine() {
 			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.Processing;
-			foreach (UObject instance in instances) {
-				instance.ExecuteFixedUpdateProcess();
+			for (int i = 0; i < instances.Count; i++) {
+				UObject obj = instances[i];
+				try {
+					obj.ExecuteFixedUpdateProcess();
+				}
+				catch (Exception e) {
+					DebugManager.LogError(
+						$"FixedUpdate > UObject.FixedUpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).ExecuteFixedUpdateProcess()",
+						e, obj.gameObject);
+				}
 			}
-			
+
 			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.FixedRoutine;
-			foreach (UObject instance in fixedRoutineObjects) {
-				instance.FixedRoutine();
+			fixedRoutineObjects.Apply();
+			for (int i = 0; i < fixedRoutineObjects.Count; i++) {
+				UObject obj = fixedRoutineObjects[i];
+				try {
+					obj.FixedRoutine();
+				}
+				catch (Exception e) {
+					DebugManager.LogError(
+						$"FixedUpdate > UObject.FixedUpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).FixedRoutine()",
+						e, obj.gameObject);
+				}
 			}
-			
+
 			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.RoutineEnd;
 		}
 		
 		// Process System //
-		protected void AddProcessToUpdate(Action process, bool notAllowedToOverlapped = false) {
-			if (notAllowedToOverlapped) {
-				if (processToUpdate[(int)GameManager.instance.currentFixedUpdatePhase].Contains(process)) return;
-			}
-			processToUpdate[(int)GameManager.instance.currentFixedUpdatePhase].Add(process);
+		protected void AddProcessToUpdate(Action process) {
+			processToUpdate.Enqueue(process);
 		}
 
-		protected void AddProcessToFixedUpdate(Action process, bool notAllowedToOverlapped = false) {
-			if (notAllowedToOverlapped) {
-				if (processToFixedUpdate[(int)GameManager.instance.currentUpdatePhase].Contains(process)) return;
-			}
-			processToFixedUpdate[(int)GameManager.instance.currentFixedUpdatePhase].Add(process);
+		protected void AddProcessToFixedUpdate(Action process) {
+			processToFixedUpdate.Enqueue(process);
 		}
 		
 		private void ExecuteUpdateProcess() {
-			foreach (List<Action> processes in processToUpdate) {
-				foreach (Action process in processes) process.Invoke();
-				processes.Clear();
+			if (processToUpdate.Count == 0) return;
+			
+			foreach (Action process in processToUpdate) {
+				process.Invoke();
 			}
+			
+			processToUpdate.Clear();
 		}
 		
 		private void ExecuteFixedUpdateProcess() {
-			foreach (List<Action> processes in processToFixedUpdate) {
-				foreach (Action process in processes) process.Invoke();
-				processes.Clear();
+			if (processToFixedUpdate.Count == 0) return;
+			
+			foreach (Action process in processToFixedUpdate) {
+				process.Invoke();
 			}
+			
+			processToFixedUpdate.Clear();
 		}
 		
 		// IActionable //
@@ -310,7 +302,13 @@ namespace UengSystem.Objects {
 		}
 
 		public static void ResetUObjects() {
-			instances.Clear();
+			instances.ClearImmediately();
+			earlyRoutineObjects?.ClearImmediately(); 
+			routineObjects?.ClearImmediately(); 
+			lateRoutineObjects?.ClearImmediately(); 
+			eventRoutineObjects?.ClearImmediately();
+			fixedRoutineObjects?.ClearImmediately();
+			
 			IDTable.Clear();
 			CategoryTable.Clear();
 		}
@@ -329,7 +327,7 @@ namespace UengSystem.Objects {
 		public void RegisterObjectInitializeData(GameObject obj) {
 			ObjectInitializeData data = new();
 			
-			data.initialPosition = obj.transform.position;
+			data.initialPosition = obj.transform.localPosition;
 			data.initialRotation = obj.transform.rotation;
 			data.initialScale    = obj.transform.localScale;
 			
@@ -355,31 +353,18 @@ namespace UengSystem.Objects {
 		}
 		
 		public void ApplyObjectInitializeData(GameObject obj, ObjectInitializeData data) {
-			if (obj != gameObject) obj.transform.position = data.initialPosition;
+			if (obj != gameObject) obj.transform.localPosition = data.initialPosition;
 			obj.transform.rotation  = data.initialRotation;
 			obj.transform.localScale = data.initialScale;
 			
 			if (data.rigidbody2D) {
-				data.rigidbody2D.bodyType       = data.initialRigidBodyType;
-				switch (data.initialRigidBodyType) {
-					case RigidbodyType2D.Static:
-						break;
-					
-					case RigidbodyType2D.Kinematic:
-						data.rigidbody2D.linearVelocity  = Vector2.zero; 
-						data.rigidbody2D.angularVelocity = 0f;
-						break;
-						
-					case RigidbodyType2D.Dynamic:
-						data.rigidbody2D.linearVelocity  = Vector2.zero; 
-						data.rigidbody2D.angularVelocity = 0f;
-						data.rigidbody2D.linearDamping   = data.initialLinearDamping;
-                        data.rigidbody2D.angularDamping  = data.initialAngularDamping;
-                        data.rigidbody2D.gravityScale    = data.initialGravityScale;
-						break;
-					
-					default:
-						throw new ArgumentOutOfRangeException();
+				data.rigidbody2D.bodyType        = data.initialRigidBodyType;
+				data.rigidbody2D.linearVelocity  = Vector2.zero;
+				data.rigidbody2D.angularVelocity = 0f;
+				if (data.initialRigidBodyType == RigidbodyType2D.Dynamic) {
+					data.rigidbody2D.linearDamping  = data.initialLinearDamping;
+					data.rigidbody2D.angularDamping = data.initialAngularDamping;
+					data.rigidbody2D.gravityScale   = data.initialGravityScale;
 				}
 			}
 			
@@ -392,48 +377,31 @@ namespace UengSystem.Objects {
 		}
 		
 		public void RegisterToAllChildren(Transform obj) {
-			RegisterObjectInitializeData(obj.gameObject); // 부모에서 사용
-			
-			if (obj.childCount == 0) return;                // 자식 X - 이 재귀 끝
-			for (int i = obj.childCount - 1; i >= 0; i--) { // 자식 O
-				Transform child = obj.GetChild(i);
+			if (!isRegistered(obj.gameObject)) RegisterObjectInitializeData(obj.gameObject); // 부모에서 사용
+			foreach (Transform child in obj.transform) {
 				RegisterToAllChildren(child);
 			}
 		}
 		
-		public void ApplyToAllChildren(Transform obj) {
-
-			if (isRegistered(obj.gameObject)) {
-				// 기존에 있던 children임.
-				ApplyObjectInitializeData(obj.gameObject); // 부모에서 사용
-			}
-			// 없던 child인 경우 무시
-			
-			if (obj.childCount == 0) return;                // 자식 X - 이 재귀 끝
-			for (int i = obj.childCount - 1; i >= 0; i--) { // 자식 O
-				Transform child = obj.GetChild(i);
-				ApplyToAllChildren(child);
+		public void ApplyToAllChildren() {
+			foreach (GameObject obj in objectInitializeData.Keys) {
+				ApplyObjectInitializeData(obj);
 			}
 		}
-
-		public const int updatePhaseCount      = 5;
-		public const int fixedUpdatePhaseCount = 2;
 		
+		public const int updatePhaseCount      = 6;
+		public const int fixedUpdatePhaseCount = 3;
+
 		// 게임 오브젝트가 오브젝트 풀을 통해 Instantiate 되었을때 실행 //
 		public virtual void OnFirstGet() {
-			CheckRoutine();
-			
 			// GET COMPONENTS //
 			rigidbody2D    = GetComponent<Rigidbody2D>();
 			spriteRenderer = GetComponent<SpriteRenderer>();
 			animator       = GetComponent<Animator>();
 			
 			// INITIALIZE PROCESS //
-			processToUpdate      = new List<Action>[fixedUpdatePhaseCount]; // sent from FixedUpdate
-			processToFixedUpdate = new List<Action>[updatePhaseCount];      // sent from Update
-			
-			for (int i = 0; i < fixedUpdatePhaseCount; i++) processToUpdate[i]      = new List<Action>();
-			for (int i = 0; i < updatePhaseCount     ; i++) processToFixedUpdate[i] = new List<Action>();
+			processToUpdate      = new Queue<Action>(); // sent from FixedUpdate
+			processToFixedUpdate = new Queue<Action>(); // sent from Update
 			
 			// INITIALIZE OBJECT //
 			if (whenInitialize == WhenInitialize.Never) return;
@@ -445,11 +413,11 @@ namespace UengSystem.Objects {
 		
 		// 게임 오브젝트가 Pool.Get()되었을때 실행 //
 		public virtual void Get(float time) {
-
-			if (whenInitialize is WhenInitialize.OnGet or WhenInitialize.Both) ApplyToAllChildren(transform);
+			if (whenInitialize is WhenInitialize.OnGet or WhenInitialize.Both) ApplyToAllChildren();
 			
 			StopAllCoroutines();
 			
+			GetTask.Execute(this, this);
 			OnGet();
 			
 			if (time == 0) {
@@ -488,79 +456,80 @@ namespace UengSystem.Objects {
 			ID        = null;
 			Category  = null;
 			
-			foreach (List<Action> processes in processToUpdate) {
-				processes.Clear();
-			}
-			
-			foreach (List<Action> processes in processToFixedUpdate) {
-				processes.Clear();
-			}
-			
 			switch (time) {
 				case < 0:
-					Uninitialize();
-					if (whenInitialize is WhenInitialize.OnRelease or WhenInitialize.Both) ApplyToAllChildren(transform);
+					OnFinalRelease();
 					break;
 				case 0:
-					OnRelease();
-					Uninitialize();
-					if (whenInitialize is WhenInitialize.OnRelease or WhenInitialize.Both) ApplyToAllChildren(transform);
+					OnReleaseCall();
+					OnFinalRelease();
 					break;
 				default:
-					OnRelease();
-					
+					OnReleaseCall();
 					PrepareDespawnFX();
 					StartCoroutine(DespawnFX(time));
-					
 					break;
 			}
 		}
 
-		private   bool            frozen = false;
-		private   Vector2         linearVelocityBeforeFreeze;
-		private   float           angularVelocityBeforeFreeze;
-		private   RigidbodyType2D bodyTypeBeforeFreeze;
-		protected float           animatorSpeedBeforeFreeze;
+		private bool                   isRigidbody2DFrozen = false;
+		private Vector2                linearVelocityBeforeFreeze;
+		private float                  angularVelocityBeforeFreeze;
+		private RigidbodyConstraints2D constraintsBeforeFreeze;
+
+		private   bool  isAnimatorFrozen = false;
+		protected float animatorSpeedBeforeFreeze;
 		
 		public void Freeze() {
-			Debug.Log($"[F{name}] FREEZE TRY TO {name}");
-			if (frozen) return;
+			FreezeRigidbody2D();
+			FreezeAnimator();
+		}
 
-			frozen = true;
-
-			Debug.Log($"[F{name}] FREEZE TO {name}");
-
+		public void FreezeRigidbody2D() {
+			if (isRigidbody2DFrozen) return;
+			isRigidbody2DFrozen = true;
+			
 			if (rigidbody2D) {
-				linearVelocityBeforeFreeze = rigidbody2D.linearVelocity;
+				linearVelocityBeforeFreeze  = rigidbody2D.linearVelocity;
 				angularVelocityBeforeFreeze = rigidbody2D.angularVelocity;
-				bodyTypeBeforeFreeze = rigidbody2D.bodyType;
-
-				rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-				rigidbody2D.linearVelocity = Vector2.zero;
+				constraintsBeforeFreeze = rigidbody2D.constraints;
+				
+				rigidbody2D.constraints     = RigidbodyConstraints2D.FreezeAll;
+				rigidbody2D.linearVelocity  = Vector2.zero;
 				rigidbody2D.angularVelocity = 0;
 			}
+		}
+
+		public void FreezeAnimator() {
+			if (isAnimatorFrozen) return;
+			isAnimatorFrozen = true;
 			
 			if (animator) {
 				animatorSpeedBeforeFreeze = animator.speed;
-				animator.speed = 0;
-				animator.enabled = false;
+				animator.speed            = 0;
+				animator.enabled          = false;
+			}
+		}
+		
+		public void Unfreeze() {
+			UnfreezeRigidbody2D();
+			UnfreezeAnimator();
+		}
+		
+		public void UnfreezeRigidbody2D() {
+			if (!isRigidbody2DFrozen) return; 
+			isRigidbody2DFrozen = false;
+			
+			if (rigidbody2D) {
+				rigidbody2D.constraints     = constraintsBeforeFreeze;
+				rigidbody2D.linearVelocity  = linearVelocityBeforeFreeze;
+				rigidbody2D.angularVelocity = angularVelocityBeforeFreeze;
 			}
 		}
 
-		public void Unfreeze() {
-
-			Debug.Log($"[F{name}] UNFREEZE TRY TO {name}");
-			
-			if (!frozen) return;
-			frozen = false;
-
-			Debug.Log($"[F{name}] UNFREEZE TRY TO {name}");
-
-			if (rigidbody2D) {
-				rigidbody2D.linearVelocity  = linearVelocityBeforeFreeze;
-				rigidbody2D.angularVelocity = angularVelocityBeforeFreeze;
-				rigidbody2D.bodyType        = bodyTypeBeforeFreeze;
-			}
+		public void UnfreezeAnimator() {
+			if (!isAnimatorFrozen) return;
+			isAnimatorFrozen = false;
 			
 			if (animator) {
 				animator.speed   = animatorSpeedBeforeFreeze;
@@ -568,10 +537,10 @@ namespace UengSystem.Objects {
 			}
 		}
 
-		protected void ToggleColliders(bool state) {
+		protected void ToggleColliders(bool targetState) {
 			foreach (Collider2D c in GetComponents<Collider2D>()) {
 				if (c.isTrigger) return;
-				c.enabled = state;
+				c.enabled = targetState;
 			}
 		}
 
@@ -579,7 +548,6 @@ namespace UengSystem.Objects {
 
 		protected virtual void PrepareSpawnFX() {
 			Freeze();
-
 			ToggleColliders(false);
 
 			if (spriteRenderer) spriteRenderer.sprite = whiteSpawnSprite ?? spriteRenderer.sprite;
@@ -596,7 +564,6 @@ namespace UengSystem.Objects {
 
 				float t = elapsed / duration;
 
-
 				Color color = new(Mathf.Lerp(GameManager.instance.spawnColor.r, 1, t),
 								  Mathf.Lerp(GameManager.instance.spawnColor.g, 1, t),
 								  Mathf.Lerp(GameManager.instance.spawnColor.b, 1, t),
@@ -605,25 +572,30 @@ namespace UengSystem.Objects {
 
 				if (spriteRenderer) spriteRenderer.color = color;
 
-
 				yield return null;
 			}
 		}
 
 		protected virtual void FinishSpawnFX() {
-			Debug.Log("Finish spawning FX");
-
+			DebugManager.Log("Finish spawning FX");
+			
 			if (spriteRenderer) spriteRenderer.sprite = colorSpawnSprite ?? spriteRenderer.sprite;
-
 			if (spriteRenderer) spriteRenderer.color = colorBeforeSpawnFX;
 
-
 			ToggleColliders(true);
-			
 			Unfreeze();
+
+			if (rigidbody2D && rigidbody2D.bodyType!=RigidbodyType2D.Static) rigidbody2D.linearVelocity = Vector2.zero;
 			
 			Initialize();
 		}
+		
+		public virtual void OnGet() { }
+		
+		public virtual void Initialize() {
+			instances.Add(this);
+			RegisterRoutineList();
+		} 
 
 		protected Color colorBeforeDespawnFX;
 
@@ -659,38 +631,33 @@ namespace UengSystem.Objects {
 			}
 			
 			Unfreeze();
-
 			if (spriteRenderer) spriteRenderer.color = colorBeforeDespawnFX;
-
+			
 			UObjectPool.instance.Release(gameObject, -1);
 		}
 
-		// 게임 오브젝트가 Pool.Get()되었을때 실행 (인스턴스 커스텀용) //
-		// 등록 -> 행동 //
-		public virtual void OnGet() {
-			instances.Add(this);
-			
-			GetTask.Execute(this, this);
-		}
-
-		// 게임 오브젝트가 Pool.Release()되었을때 실행 (인스턴스 커스텀용) //
-		// 행동 -> 등록해제 //
-		protected virtual void OnRelease() {
+		protected void OnReleaseCall() {
 			ReleaseTask.Execute(this, this);
 			
+			instances.Remove(this);
 			UnregisterRoutineList();
 			
-			currentExclusiveAction = null;
 			StopAllCoroutines();
 			StopAllUActions();
+			
+			processToUpdate.Clear();
+			processToFixedUpdate.Clear();
+			
+			OnRelease();
 		}
 
-		public virtual void Initialize() {
-			RegisterRoutineList();
+		protected void OnFinalRelease() {
+			Uninitialize();
+			if (whenInitialize is WhenInitialize.OnRelease or WhenInitialize.Both) ApplyToAllChildren();
 		}
-
-		public virtual void Uninitialize() {
-			instances.Remove(this);
-		}
+		
+		protected virtual void OnRelease() { }
+		
+		public virtual void Uninitialize() { }
 	}
 }

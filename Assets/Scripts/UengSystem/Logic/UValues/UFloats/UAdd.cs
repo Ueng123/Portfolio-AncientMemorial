@@ -4,11 +4,11 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UAdd : UValue<float> {
-		public override bool getIsDynamic {
+		protected override bool getIsDynamic {
 			get {
 				A.parent = this;
 				B.parent = this;
-				return A.isDynamicAuto || B.isDynamicAuto;
+				return A.isDynamic || B.isDynamic;
 			}
 		}
 		
@@ -16,6 +16,6 @@ namespace UengSystem.Logic.UValues.UFloats {
 		[SerializeReference][SubclassSelector] public UValue<float> A;
 		[SerializeReference][SubclassSelector] public UValue<float> B;
 
-		public override float getValue => A.value + B.value;
+		protected override float getValue => A.value + B.value;
 	}
 }

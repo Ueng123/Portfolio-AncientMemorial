@@ -1,16 +1,15 @@
 ﻿using System;
 using AncientMemorial;
-using UengSystem.Managers;
 using UnityEngine;
 
 namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UFloatFromVariable : UValue<float> {
-		public override bool getIsDynamic => true;
+		protected override bool getIsDynamic => true;
 
 		[SerializeReference] [SubclassSelector]
 		public UValue<string> varID;
 
-		public override float getValue => GameManager.UValueFloatVariables[varID.value].value;
+		protected override float getValue => GameManager.UValueFloatVariables[varID.value].value;
 	}
 }

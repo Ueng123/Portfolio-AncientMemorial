@@ -1,11 +1,11 @@
 ﻿{
-  "Name" : "크리스탈[■■■]",
+  "Name" : "크리스탈",
   "HP" : 5,
   "MoveSpeed" : 10,
   "JumpPower" : 0,
   "AttackCooldown" : 2,
   "AttackSpeed" : 1,
-  "AttackDamage" : 1,
+  "AttackDamage" : 2,
   "InvincibleTime" : 3,
   "GroundBoxOffsetX" : 0,
   "GroundBoxOffsetY" : 0,

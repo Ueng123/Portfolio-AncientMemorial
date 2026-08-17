@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8216699841161094074}
   - component: {fileID: 745930507251042388}
   - component: {fileID: 5854045109060071724}
-  - component: {fileID: 7114967454059136216}
   - component: {fileID: 6615913750855238343}
+  - component: {fileID: 5435931340437879862}
   m_Layer: 5
   m_Name: DamageUI
   m_TagString: Untagged
@@ -79,67 +79,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7114967454059136216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5025638713572249089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344c6a08c0d74e27ab3ef9275865b0ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  _gettable: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  GetTask:
-    tasks: []
-  ReleaseTask:
-    tasks: []
-  canvas: {fileID: 0}
-  initialPosition: {x: 0, y: 0}
-  initialScale: {x: 1, y: 1, z: 1}
-  actions:
-  - key: DamageDisplay
-    action:
-      rid: 8722662578688098377
-  - key: DamageDisplayShadow
-    action:
-      rid: 8722662590740168776
-  references:
-    version: 2
-    RefIds:
-    - rid: 8722662578688098377
-      type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
-      data:
-        component: {fileID: 263317259813806649}
-        text:
-          rid: 8722662578688098380
-    - rid: 8722662578688098380
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: 
-    - rid: 8722662590740168776
-      type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
-      data:
-        component: {fileID: 2985755807005308903}
-        text:
-          rid: 8722662590740168777
-    - rid: 8722662590740168777
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: 
 --- !u!95 &6615913750855238343
 Animator:
   serializedVersion: 7
@@ -162,6 +101,68 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5435931340437879862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025638713572249089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GetTask:
+    useRealTime: 0
+    tasks: []
+  ReleaseTask:
+    useRealTime: 0
+    tasks: []
+  canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
+  initialPosition: {x: 0, y: 0}
+  initialScale: {x: 1, y: 1, z: 1}
+  openTime: 0.3
+  closeTime: 1
+  actions:
+  - key: DamageDisplay
+    action:
+      rid: 5909658469114576927
+  - key: DamageDisplayShadow
+    action:
+      rid: 5909658469114576928
+  references:
+    version: 2
+    RefIds:
+    - rid: 5909658469114576927
+      type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
+      data:
+        component: {fileID: 263317259813806649}
+        text:
+          rid: 5909658469114576929
+    - rid: 5909658469114576928
+      type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
+      data:
+        component: {fileID: 2985755807005308903}
+        text:
+          rid: 5909658469114576930
+    - rid: 5909658469114576929
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        Text: 
+    - rid: 5909658469114576930
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        Text: 
 --- !u!1 &5676730801021025776
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,6 +268,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -312,17 +314,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
-  parent: {fileID: 7114967454059136216}
+  parent: {fileID: 0}
   text: {fileID: 0}
   references:
     version: 2
@@ -446,6 +450,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -491,17 +496,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
-  parent: {fileID: 7114967454059136216}
+  parent: {fileID: 0}
   text: {fileID: 0}
   references:
     version: 2

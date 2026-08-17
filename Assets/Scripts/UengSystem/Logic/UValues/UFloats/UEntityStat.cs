@@ -1,20 +1,27 @@
 ﻿using System;
 using AncientMemorial.Entities;
+using UengSystem.UDebug;
 using UnityEngine;
 
 namespace UengSystem.Logic.UValues.UFloats {
 	[Serializable]
 	public class UEntityStat : UValue<float> {
-		public override bool  getIsDynamic => true;
+		protected override bool  getIsDynamic => true;
 
 		[SerializeReference] [SubclassSelector]
 		public UValue<Entity> targetEntity;
 		public EntityDataType type;
 
-		public override float getValue {
+		protected override float getValue {
 			get {
-				if (!targetEntity.value) Debug.Log("NO TARGET ENTITY");
-				if (targetEntity.value.entityStat==null) Debug.Log("NO TARGET ENTITY STAT");
+				if (!targetEntity.value) {
+					DebugManager.Log("NO TARGET ENTITY");
+					return 0;
+				}
+				if (targetEntity.value.entityStat == null) {
+					DebugManager.Log("NO TARGET ENTITY STAT");
+					return 0;
+				}
 				return type switch {
 					EntityDataType.MAXHP          => targetEntity.value.entityData.hp,
 					EntityDataType.HP             => targetEntity.value.entityStat.hp,

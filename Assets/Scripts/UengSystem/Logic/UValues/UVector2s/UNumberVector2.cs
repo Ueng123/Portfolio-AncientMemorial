@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UVector2s {
 	[Serializable]
 	public class UNumberVector2 : UValue<Vector2> {
-		public override bool getIsDynamic {
+		protected override bool getIsDynamic {
 			get {
 				x.parent = this;
 				y.parent = this;
@@ -15,6 +15,6 @@ namespace UengSystem.Logic.UValues.UVector2s {
 		[SerializeReference][SubclassSelector] public UValue<float> x;
 		[SerializeReference][SubclassSelector] public UValue<float> y;
 
-		public override Vector2 getValue => new (x.value, y.value);
+		protected override Vector2 getValue => new (x.value, y.value);
 	}
 }

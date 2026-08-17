@@ -13,7 +13,7 @@ namespace UengSystem.Logic.Tasks {
 		public UValue<float> number;
 		
 		public override void Execute(ITaskable self) {
-			Setting.SetValueFloat(settingType, number.value);
+			Setting.SetValue(settingType, number.value);
 		}
 	}
 }

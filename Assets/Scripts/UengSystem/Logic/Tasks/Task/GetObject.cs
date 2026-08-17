@@ -2,6 +2,7 @@
 using UengSystem.Logic.UValues;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
+using UengSystem.UDebug;
 using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {
@@ -15,20 +16,20 @@ namespace UengSystem.Logic.Tasks {
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
 		
 		public override void Execute(ITaskable self) { 
-			// Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
-			// Debug.Log($" >>> Given Data\n"                       +
-			// 		  $" > ID = {ID.value}\n"                    + 
-			// 		  $" > Category = {Category.value}\n"        + 
-			// 		  $" > targetPrefab = {TargetObject.name}\n" + 
-			// 		  $" > position = {position.value}\n"              + 
-			// 		  $" > duration = {spawnTime.value}\n"           + 
-			// 		  $"");
+			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			DebugManager.Log($" >>> Given Data\n"                                            +
+							 (ID       != null ? $" > ID = {ID.value}\n" : "")               +
+							 (Category != null ? $" > Category = {Category.value}\n" : "")   +
+							 $" > targetPrefab = {TargetObject.name}\n"                      +
+							 $" > position = {position.value}\n"                             +
+							 (spawnTime != null ? $" > duration = {spawnTime.value}\n" : "") +
+							 $"");
 			
-			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime.value);
-			UObject    uobj = obj.GetComponent<UObject>();
+			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime?.value??0);
+			UObject    uObj = obj.GetComponent<UObject>();
 
-			if (ID       !=null &&ID.value       !="") uobj.ID       = ID.getValue;
-			if (Category !=null &&Category.value !="") uobj.Category = Category.getValue;
+			if (ID       !=null &&ID.value       !="") uObj.ID       = ID.value;
+			if (Category !=null &&Category.value !="") uObj.Category = Category.value;
 		}
 	}
 }

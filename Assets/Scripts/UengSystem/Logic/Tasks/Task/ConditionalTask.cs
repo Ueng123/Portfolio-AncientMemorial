@@ -1,8 +1,6 @@
 ﻿using System;
 using UengSystem.Logic.UValues;
-using UengSystem.Objects;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UengSystem.Logic.Tasks {
 	[Serializable]
@@ -17,8 +15,8 @@ namespace UengSystem.Logic.Tasks {
 		
 		public override void Execute(ITaskable self) {
 			boolValueCache ??= boolean.value;
+			bool result = boolean.value;
 			
-			bool result = boolean.getValue;
 			switch (type) {
 				case ConditionalTaskType.ExecuteEveryFrame:
 					if (result) taskOnTrue?.Execute(self);

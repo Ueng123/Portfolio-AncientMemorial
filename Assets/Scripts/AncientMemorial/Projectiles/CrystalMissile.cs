@@ -1,11 +1,9 @@
 ﻿using AncientMemorial.Entities;
-using AncientMemorial.Objects;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
 using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.Projectiles {
@@ -54,10 +52,7 @@ namespace AncientMemorial.Projectiles {
 			
 			Vector2 plrPos = Entity.player.transform.position;
 			
-			targetPosition = Vector2.up*0.25f
-							 + (expectAttack ?
-									Entity.player.GetExpectPos(((Vector2)transform.position - plrPos).magnitude * 2f / initialSpeed) :
-									plrPos);
+			targetPosition = Vector2.up*0.25f + plrPos;
 			
 			float currAngle = transform.eulerAngles.z;
 			float targetAngle = Mathf.Atan2(
@@ -101,13 +96,7 @@ namespace AncientMemorial.Projectiles {
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner) { if (!owner.isAttackTarget(entity)) return; }
 			
-			SendEvent(EventType.Entity_Behaviour_Hit, 10, new EntityHitData(
-						  null,
-						  this,
-						  entity,
-						  damage,
-						  new Vector2(entity.transform.position.x - transform.position.x, 0).normalized
-					  ));
+			SendAttackEvent(entity, damage);
 			
 			Break();
 		}

@@ -1,11 +1,9 @@
 ﻿using AncientMemorial.Entities;
-using AncientMemorial.Objects;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
 using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.Projectiles {
@@ -51,16 +49,17 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected override void OnCollideEntity(Entity entity) {
-			if (!(targetPlayer && entity == Entity.player)) return;
-			if (!(targetEnemy  && entity != Entity.player)) return;
-			
-			SendEvent(EventType.Entity_Behaviour_Hit, 10, new EntityHitData(
-						   null,
-						   this,
-						   entity,
-						   damage,
-						   new Vector2(entity.transform.position.x - transform.position.x, 0).normalized
-					   ));
+			if (owner) {
+				if (!owner.isAttackTarget(entity)) return;
+				SendAttackMultiplyEvent(entity, damage);
+			}
+			else {
+				bool isTargetPlayer = targetPlayer && entity == Entity.player;
+				bool isTargetEntity = targetEnemy  && entity != Entity.player;
+				if (!isTargetPlayer && !isTargetEntity) return;
+				
+				SendAttackEvent(entity, damage);
+			}
 
 			if (breakOnHit && --hitableNum == 0) { Break(); return; }
 			if (hitObject) UObjectPool.instance.Get(hitObject.name, transform.position);

@@ -1,10 +1,11 @@
 ﻿namespace UengSystem.Objects {
+	[System.Flags]
 	public enum UpdateRoutineType {
-		Processing = 0,
-		EarlyRoutine = 1,
-		Routine = 2,
-		EventRoutine = 3,
-		LateRoutine = 4,
+		Processing,
+		EarlyRoutine = 0b_0000_0001,
+		Routine      = 0b_0000_0010,
+		EventRoutine = 0b_0000_0100,
+		LateRoutine  = 0b_0000_1000,
 		RoutineEnd
 	}
 }

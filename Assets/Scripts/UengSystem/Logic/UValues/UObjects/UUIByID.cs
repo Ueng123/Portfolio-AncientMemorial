@@ -5,16 +5,16 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UObjects {
 	[Serializable]
 	public class UUIByID : UValue<UUI> {
-		public override bool getIsDynamic {
+		protected override bool getIsDynamic {
 			get {
 				ID.parent = this;
-				return ID.isDynamicAuto;
+				return ID.isDynamic;
 			}
 		}
 		
 		[SerializeReference][SubclassSelector]
 		public UValue<string> ID;
 
-		public override UUI getValue => UUI.GetUUI(ID.value);
+		protected override UUI getValue => UUI.GetUUI(ID.value);
 	}
 }

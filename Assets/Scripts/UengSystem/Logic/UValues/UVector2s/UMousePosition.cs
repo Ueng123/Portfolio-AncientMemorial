@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UVector2s {
 	[Serializable]
 	public class UMousePosition : UValue<Vector2> {
-		public override bool    getIsDynamic => true;
-		public override Vector2 getValue     => InputManager.inputData[InputActionType.MousePosition].valueV;
+		protected override bool    getIsDynamic => true;
+		protected override Vector2 getValue     => InputManager.mousePosition;
 	}
 }

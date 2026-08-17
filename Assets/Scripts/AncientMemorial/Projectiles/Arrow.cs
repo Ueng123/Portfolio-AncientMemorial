@@ -43,12 +43,6 @@ namespace AncientMemorial.Projectiles {
 			trailRenderer.Clear();
 		}
 
-		protected override void EarlyRoutine() { }
-
-		protected override void Routine() { }
-
-		protected override void LateRoutine() { }
-
 		protected override void FixedRoutine() {
 			transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rigidbody2D.linearVelocity.y, rigidbody2D.linearVelocity.x)*Mathf.Rad2Deg);
 		}
@@ -56,16 +50,10 @@ namespace AncientMemorial.Projectiles {
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner) {
 				if (owner.entityType == EntityType.Player && entity.Friendly) return;
-				if (owner.entityType != EntityType.Player && !((Enemy)owner).isTargettable(entity.entityType)) return;
+				if (owner.entityType != EntityType.Player && !Enemy.isTargettable(entity.entityType)) return;
 			}
 			
-			SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, 10, new EntityHitData(
-						  null,
-						  this,
-						  entity,
-						  damage*owner.entityStat.attackDamage,
-						  new Vector2(entity.transform.position.x - transform.position.x, 0).normalized
-					  ));
+			SendAttackMultiplyEvent(entity, damage);
 			
 			Break(entity.transform, true);
 		}

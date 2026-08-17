@@ -1,10 +1,10 @@
 ﻿{
-  "Name" : "친절한 스켈레톤",
-  "HP" : 20,
+  "Name" : "스켈레톤 동료",
+  "HP" : 50,
   "MoveSpeed" : 3,
   "JumpPower" : 2,
-  "AttackCooldown" : 3,
-  "AttackSpeed" : 1,
+  "AttackCooldown" : 1,
+  "AttackSpeed" : 2,
   "AttackDamage" : 7,
   "InvincibleTime" : 1,
   "GroundBoxOffsetX" : 0,
@@ -20,6 +20,7 @@
     "SkeletonTank" : 5,
     "CrystalPhase1" : 5,
     "CrystalPhase2" : 10,
-    "CrystalEnergy" : 5
+    "CrystalEnergy" : 5,
+    "Scarecrow": 1
   }
 }

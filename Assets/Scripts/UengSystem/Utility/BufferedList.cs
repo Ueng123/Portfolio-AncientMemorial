@@ -1,66 +1,76 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace UengSystem.Utility {
-	public class BufferedList<T> : IEnumerable<T> {
+	public class BufferedList<T> {
 		
-		private List<T> mainList = new List<T>();
-		private List<T> AddQueue = new List<T>();
-		private List<T> RemoveQueue = new List<T>();
+		private List<T> mainList;
+		private Queue<(T, ModifyType)> modifyQueue;
 		
-		public BufferedList(List<T> mainList) => this.mainList = mainList;
-		public BufferedList(T[] mainList) => this.mainList = mainList.ToList();
-		public BufferedList() { }
+		public BufferedList(List<T> mainList) {
+			this.mainList = mainList;
+			modifyQueue = new Queue<(T, ModifyType)>(10);
+		}
+
+		public BufferedList(T[] mainList) {
+			this.mainList = mainList.ToList();
+			modifyQueue   = new Queue<(T, ModifyType)>(10);
+		}
+
+		public BufferedList(int bufferSize) {
+			mainList    = new List<T>(bufferSize);
+			modifyQueue = new Queue<(T, ModifyType)>(10);
+		}
+		
+		public BufferedList(int bufferSize, int bufferSize2) {
+			mainList    = new List<T>(bufferSize);
+			modifyQueue = new Queue<(T, ModifyType)>(bufferSize2);
+		}
+
+		public BufferedList() {
+			mainList    = new List<T>(20);
+			modifyQueue = new Queue<(T, ModifyType)>(10);
+		}
 
 		public T this[int index] => mainList[index];
 
 		public List<T> GetList() => mainList;
 		
-		public void ApplyAdd() {
-			foreach (T item in AddQueue) {
-				mainList.Add(item);
-			}
-			
-			AddQueue.Clear();
-		}
-
-		public void ApplyRemove() {
-			foreach (T item in RemoveQueue) {
-				mainList.Remove(item);
-			}
-			
-			RemoveQueue.Clear();
-		}
-		
 		public void Apply() {
-			ApplyAdd();
-			ApplyRemove();
+			while (modifyQueue.Count > 0) {
+				(T item, ModifyType type) request = modifyQueue.Dequeue();
+				if (request.type == ModifyType.Add) mainList.Add(request.item);
+				if (request.type == ModifyType.Remove) mainList.Remove(request.item);
+				if (request.type == ModifyType.Clear) mainList.Clear();
+			}
+
+			countOffset = 0;
 		}
 
-		public void Add   (T item) => AddQueue   .Add(item);
-		
-		public void Remove(T item) => RemoveQueue.Add(item);
-		
-		public void Clear() {
-			foreach (T item in mainList) Remove(item);
+		public void Add   (T item) {
+			countOffset += 1;
+			modifyQueue.Enqueue((item, ModifyType.Add));
 		}
-		
+
+		public void Remove(T item) {
+			countOffset -= 1;
+			modifyQueue.Enqueue((item, ModifyType.Remove));
+		}
+
+		public void Clear() {
+			countOffset = -mainList.Count;
+			modifyQueue.Enqueue((default, ModifyType.Clear));
+		}
+
 		public void ClearImmediately() {
 			mainList.Clear();
-			AddQueue.Clear();
-			RemoveQueue.Clear();
+			modifyQueue.Clear();
+			countOffset = 0;
 		}
 		
 		public int Count => mainList.Count;
-		public int PotentialCount => mainList.Count + AddQueue.Count - RemoveQueue.Count;
-		
-		public IEnumerator<T>   GetEnumerator() {
-			return new DefaultEnumerator<T>(mainList);
-		}
 
-		IEnumerator IEnumerable.GetEnumerator() {
-			return GetEnumerator();
-		}
+		public int countOffset = 0;
+		public int PotentialCount => mainList.Count + countOffset;
 	}
 }

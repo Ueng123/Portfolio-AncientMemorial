@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ namespace AncientMemorial.Entities {
 			}
 		}
 
-		private List<Standable> standables = new ();
+		private List<CanStandOn> standables = new ();
        
 		private void FilterStandables() {
 			int count = standables.Count;
@@ -20,7 +19,7 @@ namespace AncientMemorial.Entities {
 
 			// 역순 순회로 가비지 없이 원소 제거 (상남자 국룰 구조)
 			for (int i = count - 1; i >= 0; i--) {
-				Standable s = standables[i];
+				CanStandOn s = standables[i];
 				if (!s || !s.gameObject.activeInHierarchy) {
 					standables.RemoveAt(i);
 				}
@@ -28,13 +27,13 @@ namespace AncientMemorial.Entities {
 		}
 		
 		private void OnTriggerEnter2D(Collider2D other) {
-			if (other.TryGetComponent(out Standable s)) {
+			if (other.TryGetComponent(out CanStandOn s)) {
 				standables.Add(s);
 			};
 		}
 
 		private void OnTriggerExit2D(Collider2D other) {
-			if (other.TryGetComponent(out Standable s)) {
+			if (other.TryGetComponent(out CanStandOn s)) {
 				standables.Remove(s);
 			};
 		}

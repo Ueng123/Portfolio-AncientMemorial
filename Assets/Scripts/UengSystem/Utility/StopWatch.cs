@@ -3,31 +3,33 @@
 namespace UengSystem.Utility {
 	public class StopWatch {
 		private float tickTime;
-		private float stopTime;
-		private bool  stopped;
+		private bool  ticked;
 		
-		public StopWatch(float startTime = 0) {
-			tickTime = startTime;
-		}
+		private float stopTime;
+		private bool  paused;
 
 		public void Tick() {
+			ticked = true;
 			tickTime = Time.time;
 		}
 
 		public float Tock() {
+			if (!ticked) throw new System.Exception("StopWatch not ticked");
+			
 			return Time.time - tickTime;
 		}
 
-		public void Stop() {
-			if (stopped) return;
-			stopped = true;
+		public void Pause() {
+			if (!ticked) return;
+			if (paused) return;
+			paused = true;
 			
 			stopTime = Time.time;
 		}
 
 		public float Resume() {
-			if (!stopped) return 0;
-			stopped = false;
+			if (!paused) return 0;
+			paused = false;
 			
 			float totalStoppedTime = Time.time - stopTime;
 			tickTime += totalStoppedTime;
@@ -35,7 +37,7 @@ namespace UengSystem.Utility {
 		}
 
 		public bool Check(float margin, float time = 0) {
-			return Mathf.Abs(Tock() - time) < margin;
+			return ticked && Mathf.Abs(Tock() - time) < margin;
 		}
 	}
 }

@@ -5,7 +5,6 @@ using UengSystem.Logic.UValues;
 using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Objects;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UengSystem.UI.USliders {
 	[Serializable]
@@ -24,27 +23,35 @@ namespace UengSystem.UI.USliders {
 		public Task                taskOnValueChanged;
 
 		private USlider     slider;
-		public static UPureNumber sliderValueVariable;
+		public static UPureFloat sliderValueVariable;
 		
 		public override void Initialize(UObject self) {
-			component.Initialize();
-			slider = (USlider)component;
+			slider = GetComponent<USlider>();
+			slider.Initialize();
 			
-			if (initialValue!=null) slider.SetValue(initialValue.value);
+			slider.SetValue(initialValue?.value??0);
+			slider.valueChanged = false;
 			
 			if (GameManager.UValueFloatVariables.TryGetValue("SliderValue", out UValue<float> v)) {
-				sliderValueVariable = (UPureNumber)v;
+				sliderValueVariable = (UPureFloat)v;
 			} 
 			else {
-				GameManager.UValueFloatVariables["SliderValue"] = new UPureNumber {
+				GameManager.UValueFloatVariables["SliderValue"] = new UPureFloat {
 					dynamicType = DynamicType.Dynamic,
 					number = 0
 				};
 
-				sliderValueVariable = (UPureNumber)GameManager.UValueFloatVariables["SliderValue"];
+				sliderValueVariable = (UPureFloat)GameManager.UValueFloatVariables["SliderValue"];
 			}
 		}
 
+		public override void Uninitialize(UObject self) {
+			component.Uninitialize();
+			
+			if (value !=null) slider.SetValue(value.value);
+			if (color !=null) slider.SetColor(color.value);
+		}
+		
 		public override void Routine(UObject self) {
 			if (value!=null) slider.SetValue(value.value);
 			if (color!=null) slider.SetColor(color.value);

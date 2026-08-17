@@ -2,6 +2,8 @@
 
 namespace UengSystem.Utility {
 	public abstract class UAction {
+		public static int  runningActionCount;
+
 		public bool Executing;
 
 		public void Execute(IActionable executor) {

@@ -6,12 +6,12 @@ using UnityEngine;
 namespace AncientMemorial.Interactions {
 	[Serializable]
 	public class InteractProgressValue : UValue<float> {
-		public override bool getIsDynamic => true;
+		protected override bool getIsDynamic => true;
 
 		[SerializeReference] [SubclassSelector]
 		public UValue<UObject> interactObject;
 
-		public override float getValue {
+		protected override float getValue {
 			get {
 				float? result = null;
 

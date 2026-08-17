@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8473981597120347740}
   - component: {fileID: 4626480128364574658}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TopText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -150,17 +150,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
-  parent: {fileID: 7315208830347232079}
+  parent: {fileID: 504735944019126575}
   text: {fileID: 0}
   references:
     version: 2
@@ -177,7 +179,7 @@ GameObject:
   - component: {fileID: 6583111466921184421}
   - component: {fileID: 2247862670365371121}
   - component: {fileID: 7379953140837147211}
-  - component: {fileID: 7315208830347232079}
+  - component: {fileID: 504735944019126575}
   m_Layer: 5
   m_Name: AnnounceUI
   m_TagString: Untagged
@@ -227,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.3137255}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -266,7 +268,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7315208830347232079
+--- !u!114 &504735944019126575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -275,116 +277,82 @@ MonoBehaviour:
   m_GameObject: {fileID: 4147965585229853653}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344c6a08c0d74e27ab3ef9275865b0ea, type: 3}
+  m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
+  openTime: 1.5
+  closeTime: 1.5
   actions:
-  - key: InsideTitle
-    action:
-      rid: 6576058688792690816
   - key: TopTitle
     action:
-      rid: 6576058688792690817
-  - key: Close1
+      rid: 5909658469114576908
+  - key: InsideTitle
     action:
-      rid: 2446785154401960041
-  - key: Close2
+      rid: 5909658469114577200
+  - key: Close
     action:
-      rid: 8985605036668878962
+      rid: 5909658469114576914
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 2446785154401960019
-      type: {class: UStringFromVariable, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        varID:
-          rid: 2446785154401960022
-    - rid: 2446785154401960020
-      type: {class: UStringFromVariable, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        varID:
-          rid: 2446785154401960021
-    - rid: 2446785154401960021
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: AnnounceUITopTitle
-    - rid: 2446785154401960022
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: AnnounceUIInsideTitle
-    - rid: 2446785154401960041
-      type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
-      data:
-        component: {fileID: 0}
-        actionType: 9
-        pressType: 0
-        taskOnClicked:
-          tasks:
-          - time: 0
-            tasks:
-            - rid: 8985605036668878961
-    - rid: 6576058688792690816
-      type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
-      data:
-        component: {fileID: 1744346307858358292}
-        text:
-          rid: 2446785154401960019
-    - rid: 6576058688792690817
+    - rid: 5909658469114576908
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 4626480128364574658}
         text:
-          rid: 2446785154401960020
-    - rid: 8985605036668878961
-      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        closeThis: 1
-        TargetUUI:
-          rid: -2
-    - rid: 8985605036668878962
+          rid: 5909658469114577315
+    - rid: 5909658469114576914
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
         component: {fileID: 0}
-        actionType: 8
+        actionType: 2001
         pressType: 0
         taskOnClicked:
+          useRealTime: 1
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605036668878963
-    - rid: 8985605036668878963
+            - rid: 5909658469114576915
+    - rid: 5909658469114576915
       type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         closeThis: 1
         TargetUUI:
           rid: -2
+    - rid: 5909658469114577200
+      type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
+      data:
+        component: {fileID: 1744346307858358292}
+        text:
+          rid: 5909658469114577316
+    - rid: 5909658469114577315
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        Text: 
+    - rid: 5909658469114577316
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        Text: AnnounceUIInsideText
 --- !u!1 &6817783773246402970
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,7 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.2627451}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.12941177}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -490,7 +458,7 @@ GameObject:
   - component: {fileID: 6322112537852275441}
   - component: {fileID: 1744346307858358292}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: InsideText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -513,7 +481,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3922233236550594219
 CanvasRenderer:
@@ -570,15 +538,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -641,17 +609,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
-  parent: {fileID: 7315208830347232079}
+  parent: {fileID: 504735944019126575}
   text: {fileID: 0}
   references:
     version: 2

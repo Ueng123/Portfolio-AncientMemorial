@@ -5,11 +5,11 @@ using UnityEngine.Serialization;
 namespace UengSystem.Logic.UValues.UBools {
 	[Serializable]
 	public class CompareNumbers : UValue<bool> {
-		public override bool getIsDynamic { 
+		protected override bool getIsDynamic { 
 			get {
 				A.parent = this;
 				B.parent = this;
-				return A.isDynamicAuto || B.isDynamicAuto;
+				return A.isDynamic || B.isDynamic;
 			}
 		}
 		
@@ -21,7 +21,7 @@ namespace UengSystem.Logic.UValues.UBools {
 
 		[FormerlySerializedAs("compareType")] public UCompareType uCompareType;
 
-		public override bool getValue => uCompareType switch {
+		protected override bool getValue => uCompareType switch {
 				UCompareType.Greater        => A.value >  B.value,
 				UCompareType.Equal          => Mathf.Approximately(A.value, B.value),
 				UCompareType.Less           => A.value <  B.value,

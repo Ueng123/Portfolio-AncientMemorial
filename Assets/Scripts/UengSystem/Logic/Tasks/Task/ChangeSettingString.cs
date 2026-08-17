@@ -14,7 +14,7 @@ namespace UengSystem.Logic.Tasks {
 		public UValue<string> text;
 		
 		public override void Execute(ITaskable self) {
-			Setting.SetValueString(settingType, text.value);
+			Setting.SetValue(settingType, text.value);
 		}
 	}
 }

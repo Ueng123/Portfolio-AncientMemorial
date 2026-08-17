@@ -1,13 +1,9 @@
 ﻿using System;
-using UengSystem.Managers;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.Utility;
 using UnityEngine;
 
 namespace AncientMemorial.Objects {
-	using Event = UengSystem.Events.Event;
-
 	public class SpawnEffectHelper : UObject {
 		[SerializeField] private LineRenderer SubLineA;
 		[SerializeField] private LineRenderer SubLineB;

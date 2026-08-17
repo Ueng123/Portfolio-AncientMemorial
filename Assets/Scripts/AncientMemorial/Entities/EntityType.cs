@@ -10,6 +10,7 @@
 		CrystalPhase1,
 		CrystalPhase2,
 		CrystalPhase3,
-		CrystalEnergy
+		CrystalEnergy,
+		Scarecrow
 	}
 }

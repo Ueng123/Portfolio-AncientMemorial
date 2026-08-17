@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 60593518339071841}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1022, y: 2.0058, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -36,6 +36,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4287961856708237073
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -54,6 +55,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,9 +78,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -3289514343382112645, guid: 1aa54fb6dd46c8b4580b7224184a1df7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -87,8 +92,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+  m_BlendShapeWeights: []
 --- !u!114 &4620499813121616540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,20 +106,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aacf2b81fa74f2080ca371e62bef741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: -3289514343382112645, guid: 1aa54fb6dd46c8b4580b7224184a1df7, type: 3}
   colorSpawnSprite: {fileID: -3289514343382112645, guid: 1aa54fb6dd46c8b4580b7224184a1df7, type: 3}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks: []
   ReleaseTask:
+    useRealTime: 0
     tasks: []
   whiteObject: {fileID: 7519479357293339129}
   targetSize: {x: 5, y: 5}
   initialColor: {r: 0.509434, g: 0.18503025, b: 0.18503025, a: 0}
   targetColor: {r: 0.9433962, g: 0.24474904, b: 0.24474904, a: 0.6156863}
+  lerpX: 1
+  lerpY: 1
   duration: 5
   references:
     version: 2
@@ -153,6 +162,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7519479357293339129
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -171,6 +181,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -192,9 +204,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 2993196679591866617, guid: ce22c06f0fb6c9a4383a7aad0225ee77, type: 3}
   m_Color: {r: 0.41509432, g: 0.115521535, b: 0.115521535, a: 1}
   m_FlipX: 0
@@ -204,5 +218,5 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+  m_BlendShapeWeights: []

@@ -309,9 +309,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd517ee438da45ef9453fd032db75b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -321,7 +321,7 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  parent: {fileID: 0}
+  parent: {fileID: 631686481045674116}
   button: {fileID: 0}
   clicked: 0
   buttonGroups:
@@ -1060,9 +1060,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd517ee438da45ef9453fd032db75b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1072,7 +1072,7 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  parent: {fileID: 0}
+  parent: {fileID: 631686481045674116}
   button: {fileID: 0}
   clicked: 0
   buttonGroups:
@@ -1093,7 +1093,7 @@ GameObject:
   - component: {fileID: 3651454536968086625}
   - component: {fileID: 3670760412958277337}
   - component: {fileID: 8295472234065856933}
-  - component: {fileID: 8305342192317559342}
+  - component: {fileID: 631686481045674116}
   m_Layer: 6
   m_Name: ClearUI
   m_TagString: Untagged
@@ -1185,7 +1185,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8305342192317559342
+--- !u!114 &631686481045674116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1194,12 +1194,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8173116676957819873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344c6a08c0d74e27ab3ef9275865b0ea, type: 3}
+  m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1210,51 +1210,54 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
+  openTime: 5
+  closeTime: 1
   actions:
   - key: RetryButton
     action:
-      rid: 8985604938008101054
+      rid: 5909658469114576916
   - key: MainMenuButton
     action:
-      rid: 8985604938008101055
+      rid: 5909658469114576917
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8985604938008101054
+    - rid: 5909658469114576916
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
         component: {fileID: 957942927784187489}
-        actionType: 9
+        actionType: 0
         pressType: 0
         taskOnClicked:
           useRealTime: 1
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605036668878972
+            - rid: 5909658469114576918
           - time: 2
             tasks:
-            - rid: 8985605036668878971
-    - rid: 8985604938008101055
+            - rid: 5909658604788515074
+    - rid: 5909658469114576917
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
         component: {fileID: 1336618201863923921}
-        actionType: 8
+        actionType: 0
         pressType: 0
         taskOnClicked:
           useRealTime: 1
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605036668878968
+            - rid: 5909658469114576921
           - time: 2
             tasks:
-            - rid: 8985605036668878969
-    - rid: 8985605036668878968
+            - rid: 5909658604788515075
+    - rid: 5909658469114576918
       type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
@@ -1263,24 +1266,7 @@ MonoBehaviour:
           rid: -2
         Category:
           rid: -2
-    - rid: 8985605036668878969
-      type: {class: LoadScene, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        sceneName:
-          rid: 8985605036668878970
-    - rid: 8985605036668878970
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: MainMenuBridge
-    - rid: 8985605036668878971
-      type: {class: LoadScene, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        sceneName:
-          rid: 8985605036668878973
-    - rid: 8985605036668878972
+    - rid: 5909658469114576921
       type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
@@ -1289,13 +1275,12 @@ MonoBehaviour:
           rid: -2
         Category:
           rid: -2
-    - rid: 8985605036668878973
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: GameBridge
+    - rid: 5909658604788515074
+      type: {class: StartStage, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data: 
+    - rid: 5909658604788515075
+      type: {class: LoadMainMenu, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data: 
 --- !u!1 &8803643299293040027
 GameObject:
   m_ObjectHideFlags: 0

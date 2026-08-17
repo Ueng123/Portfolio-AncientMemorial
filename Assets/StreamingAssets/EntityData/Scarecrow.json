@@ -1,0 +1,16 @@
+﻿{
+  "Name" : "허수아비",
+  "HP" : 3,
+  "MoveSpeed" : 0,
+  "JumpPower" : 0,
+  "AttackCooldown" : 1,
+  "AttackSpeed" : 1,
+  "AttackDamage" : 1,
+  "InvincibleTime" : 1,
+  "GroundBoxOffsetX" : 0,
+  "GroundBoxOffsetY" : 0,
+  "GroundBoxSizeX" : 0,
+  "GroundBoxSizeY" : 0,
+  "AggroThreshold" : 1,
+  "AggroCoefficient" : {}
+}

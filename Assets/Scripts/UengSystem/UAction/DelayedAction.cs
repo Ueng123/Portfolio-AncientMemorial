@@ -1,27 +1,33 @@
 ﻿using System;
 using System.Collections;
 using UengSystem.Managers;
-using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.Utility {
 	public class DelayedAction : UAction {
-
-		private float   startTime;
-		public  float   delay;
-		private Action  actionToDelay;
-		private Action  actionOnCancel;
-		private bool    isUObjectDelayed;
+		public static int runningDelayedActionCount = 0;
+		
+		private float  startTime;
+		public  float  delay;
+		private Action actionToDelay;
+		private Action actionOnCancel;
+		private bool   delayInRealTime = false;
 		
 		private Coroutine process;
 
 		private IActionable executor;
 
+		private WaitForSeconds waitForSeconds;
+		private WaitForSecondsRealtime waitForSecondsRealtime;
+		
 		public DelayedAction(float delay, Action actionToDelay, Action actionOnCancel = null, IActionable executor = null) {
 			this.executor       = executor;
 			this.delay          = delay;
 			this.actionToDelay  = actionToDelay;
 			this.actionOnCancel = actionOnCancel;
+			
+			waitForSeconds  = new WaitForSeconds(delay);
+			waitForSecondsRealtime = new WaitForSecondsRealtime(delay);
 		}
 
 		public DelayedAction ExecuteDA(bool delayInRealTime = false) {
@@ -32,12 +38,15 @@ namespace UengSystem.Utility {
 				return this;
 			}
 			
-			startTime = Time.time;
+			startTime                 =  Time.time;
+			
 			Executing = true;
+			runningActionCount        += 1;
+			runningDelayedActionCount += 1;
 			
 			Execute(executor);
 			this.delayInRealTime = delayInRealTime;
-			process = GlobalCoroutineRunner.instance.StartCoroutine(ActionEnumerator());
+			process = CoroutineRunner.instance.StartCoroutine(ActionEnumerator());
 			return this;
 		}
 
@@ -46,17 +55,22 @@ namespace UengSystem.Utility {
 		public void DoneDA(bool stopCoroutine = true) {
 			if (!Executing) return;
 			
-			if (stopCoroutine) GlobalCoroutineRunner.instance.StopCoroutine(process);
+			if (stopCoroutine) CoroutineRunner.instance.StopCoroutine(process);
 			actionToDelay.Invoke();
-			Executing = false;
+			
+			Executing                 =  false;
+			runningActionCount        -= 1;
+			runningDelayedActionCount -= 1;
 		}
 		
 		public override void Cancel() {
 			if (!Executing) return;
 
-			GlobalCoroutineRunner.instance.StopCoroutine(process);
+			CoroutineRunner.instance.StopCoroutine(process);
 			actionOnCancel?.Invoke();
-			Executing = false;
+			Executing                 =  false;
+			runningActionCount        -= 1;
+			runningDelayedActionCount -= 1;
 		}
 
 		// 0~1
@@ -64,10 +78,9 @@ namespace UengSystem.Utility {
 			if (!Executing) return 0;
 			return (Time.time - startTime) / delay;
 		}
-
-		bool delayInRealTime = false;
+		
 		protected override IEnumerator ActionEnumerator() {
-			yield return (delayInRealTime)? new WaitForSecondsRealtime(delay) : new WaitForSeconds(delay);
+			yield return delayInRealTime? waitForSecondsRealtime : waitForSeconds;
 			DoneDA(false);
 		}
 	}

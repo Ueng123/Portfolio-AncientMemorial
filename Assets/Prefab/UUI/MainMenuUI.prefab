@@ -157,9 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -169,7 +169,7 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  parent: {fileID: 4367182998769796959}
+  parent: {fileID: 0}
   button: {fileID: 5934878833609752927}
   clicked: 0
   references:
@@ -332,9 +332,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -344,7 +344,7 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  parent: {fileID: 4367182998769796959}
+  parent: {fileID: 0}
   button: {fileID: 956503757946671815}
   clicked: 0
   references:
@@ -553,7 +553,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LEEINYEONG v.1.5.8
+  m_text: PORTFOLIO
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f8ae6646752e27f4db1167bec9a281db, type: 2}
   m_sharedMaterial: {fileID: 3873704729813154052, guid: f8ae6646752e27f4db1167bec9a281db, type: 2}
@@ -580,8 +580,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 8
+  m_fontSizeBase: 8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -796,9 +796,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -808,7 +808,7 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  parent: {fileID: 4367182998769796959}
+  parent: {fileID: 0}
   button: {fileID: 5612607183027229430}
   clicked: 0
   references:
@@ -1100,7 +1100,7 @@ GameObject:
   - component: {fileID: 9136632709445225285}
   - component: {fileID: 1672453603933145913}
   m_Layer: 6
-  m_Name: Image
+  m_Name: Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1174,7 +1174,8 @@ GameObject:
   - component: {fileID: 965566658202691130}
   - component: {fileID: 6079022606265142444}
   - component: {fileID: 781044265253659849}
-  - component: {fileID: 4367182998769796959}
+  - component: {fileID: 4918296456921196045}
+  - component: {fileID: 8746755860563242816}
   m_Layer: 6
   m_Name: MainMenuUI
   m_TagString: Untagged
@@ -1244,7 +1245,29 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4367182998769796959
+--- !u!95 &4918296456921196045
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9008770567718173952}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 99e70767dce5410449049f3efe58adfd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8746755860563242816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1253,12 +1276,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 9008770567718173952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344c6a08c0d74e27ab3ef9275865b0ea, type: 3}
+  m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1269,24 +1292,27 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
+  openTime: 1.5
+  closeTime: 0.5
   actions:
   - key: Setting
     action:
-      rid: 8985604962976792786
+      rid: 5909658469114576948
   - key: Start
     action:
-      rid: 8985604962976792785
+      rid: 5909658469114576947
   - key: Exit
     action:
-      rid: 8985604962976792784
+      rid: 5909658469114576946
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8985604962976792784
+    - rid: 5909658469114576946
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
         component: {fileID: 5966255081664911325}
@@ -1297,12 +1323,12 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605332481868010
-            - rid: 8985605332481868011
+            - rid: 5909658469114576949
+            - rid: 5909658469114576954
           - time: 2
             tasks:
-            - rid: 8985605332481868012
-    - rid: 8985604962976792785
+            - rid: 5909658469114576952
+    - rid: 5909658469114576947
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
         component: {fileID: 2444463905598717777}
@@ -1313,12 +1339,10 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605017941311864
-            - rid: 8985605238568780240
-          - time: 2
-            tasks:
-            - rid: 8985605017941311862
-    - rid: 8985604962976792786
+            - rid: 5909658469114576962
+            - rid: 5909658469114576961
+            - rid: 5909658579411927578
+    - rid: 5909658469114576948
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
         component: {fileID: 7571584074595268246}
@@ -1329,63 +1353,96 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605017941311861
-            - rid: 8985605017941311860
-            - rid: 8985605238568780239
-    - rid: 8985605017941311860
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 2305972385019689905, guid: c045c6ddc61114543ae8960a3785dfe5, type: 3}
-        canvas: {fileID: 0}
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 8985605017941311861
-      type: {class: LoadSettings, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data: 
-    - rid: 8985605017941311862
-      type: {class: LoadScene, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        sceneName:
-          rid: 8985605017941311863
-    - rid: 8985605017941311863
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: GameBridge
-    - rid: 8985605017941311864
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
-        canvas: {fileID: 0}
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 8985605238568780239
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: e1f498080da03ed40bb0cd2c90450d36, type: 3}
-    - rid: 8985605238568780240
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
-    - rid: 8985605332481868010
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
-        canvas: {fileID: 0}
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 8985605332481868011
+            - rid: 5909658469114576967
+            - rid: 5909658469114576966
+            - rid: 5909658469114576965
+    - rid: 5909658469114576949
       type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
         clip: {fileID: 8300000, guid: 0a352d3250d3547458a652c1e59c5ed3, type: 3}
-    - rid: 8985605332481868012
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658469114576952
       type: {class: EndGame, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data: 
+    - rid: 5909658469114576954
+      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658469114576961
+      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 2014505629007714483, guid: 236bc008bed361d4b9febdaf1eab44b2, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658469114576962
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658469114576965
+      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 776431297840088385, guid: c045c6ddc61114543ae8960a3785dfe5, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658469114576966
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: e1f498080da03ed40bb0cd2c90450d36, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658469114576967
+      type: {class: LoadSettings, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data: 
+    - rid: 5909658579411927578
+      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 1
+        TargetUUI:
+          rid: -2

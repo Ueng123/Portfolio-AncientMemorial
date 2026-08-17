@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6586021569189193511}
   - component: {fileID: 7630046528085648861}
   - component: {fileID: 6074808703177566181}
-  - component: {fileID: 2071304622024838995}
   - component: {fileID: 3884056995480547450}
+  - component: {fileID: -6044223357479922707}
   m_Layer: 5
   m_Name: InteractUI
   m_TagString: Untagged
@@ -93,173 +93,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &2071304622024838995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1626135144726553035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344c6a08c0d74e27ab3ef9275865b0ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  _gettable: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  GetTask:
-    useRealTime: 0
-    tasks: []
-  ReleaseTask:
-    useRealTime: 0
-    tasks: []
-  canvas: {fileID: 0}
-  initialPosition: {x: 0, y: 0}
-  initialScale: {x: 1, y: 1, z: 1}
-  actions:
-  - key: Bar
-    action:
-      rid: 6576058200125079632
-  - key: TextLabel
-    action:
-      rid: 6576058200125079634
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 6576058200125079632
-      type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
-      data:
-        component: {fileID: 2131951806108181785}
-        initialValue:
-          rid: -2
-        value:
-          rid: 6576058688792690831
-        color:
-          rid: 6576058688792690781
-        condition: 0
-        taskOnValueChanged:
-          useRealTime: 0
-          tasks: []
-    - rid: 6576058200125079634
-      type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
-      data:
-        component: {fileID: 7193954444277158016}
-        text:
-          rid: 8985605350484083005
-    - rid: 6576058688792690781
-      type: {class: UNumberColor, ns: UengSystem.Logic.UValues.UColors, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: {r: 0, g: 0, b: 0, a: 0}
-        isValueCached: 0
-        r:
-          rid: 6576058688792690826
-        g:
-          rid: 6576058688792690827
-        b:
-          rid: 6576058688792690828
-        a:
-          rid: 6576058688792690842
-    - rid: 6576058688792690826
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 1
-    - rid: 6576058688792690827
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 1
-    - rid: 6576058688792690828
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 1
-    - rid: 6576058688792690831
-      type: {class: UBasicCubicBezierValue, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        startSlope:
-          rid: 6576058688792690832
-        endSlope:
-          rid: 6576058688792690833
-        T:
-          rid: 8985605350484083006
-    - rid: 6576058688792690832
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0.2
-    - rid: 6576058688792690833
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0.2
-    - rid: 6576058688792690842
-      type: {class: UBasicCubicBezierValue, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        startSlope:
-          rid: 6576058688792690843
-        endSlope:
-          rid: 6576058688792690844
-        T:
-          rid: 8985605350484083004
-    - rid: 6576058688792690843
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0.1
-    - rid: 6576058688792690844
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0.1
-    - rid: 8985605350484083004
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0
-    - rid: 8985605350484083005
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 
-        isValueCached: 0
-        Text: 
-    - rid: 8985605350484083006
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0
 --- !u!95 &3884056995480547450
 Animator:
   serializedVersion: 7
@@ -282,6 +115,116 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-6044223357479922707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626135144726553035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GetTask:
+    useRealTime: 0
+    tasks: []
+  ReleaseTask:
+    useRealTime: 0
+    tasks: []
+  canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
+  initialPosition: {x: 0, y: 0}
+  initialScale: {x: 1, y: 1, z: 1}
+  openTime: 0.05
+  closeTime: 0.667
+  actions:
+  - key: Bar
+    action:
+      rid: 5909658469114577148
+  - key: TextLabel
+    action:
+      rid: 5909658469114577158
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5909658469114577148
+      type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
+      data:
+        component: {fileID: 2131951806108181785}
+        initialValue:
+          rid: 5909658469114577166
+        value:
+          rid: 5909658469114577149
+        color:
+          rid: 5909658469114577160
+        condition: 0
+        taskOnValueChanged:
+          useRealTime: 0
+          tasks: []
+    - rid: 5909658469114577149
+      type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        interactObject:
+          rid: -2
+    - rid: 5909658469114577158
+      type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
+      data:
+        component: {fileID: 7193954444277158016}
+        text:
+          rid: 5909658469114577159
+    - rid: 5909658469114577159
+      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        Text: 
+    - rid: 5909658469114577160
+      type: {class: UNumberColor, ns: UengSystem.Logic.UValues.UColors, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        r:
+          rid: 5909658469114577161
+        g:
+          rid: 5909658469114577162
+        b:
+          rid: 5909658469114577164
+        a:
+          rid: 5909658469114577165
+    - rid: 5909658469114577161
+      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        number: 1
+    - rid: 5909658469114577162
+      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        number: 1
+    - rid: 5909658469114577164
+      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        number: 1
+    - rid: 5909658469114577165
+      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        number: 0
+    - rid: 5909658469114577166
+      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        number: 0
 --- !u!1 &1661297399338291499
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,9 +438,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7808c863ee64678b8203e237ddc50d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -507,7 +450,7 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  parent: {fileID: 2071304622024838995}
+  parent: {fileID: 0}
   slider: {fileID: 0}
   valueChanged: 0
   references:
@@ -680,9 +623,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85d6af699b44a089acdd8ab5bbf2f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -692,7 +635,7 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  parent: {fileID: 2071304622024838995}
+  parent: {fileID: 0}
   text: {fileID: 0}
   references:
     version: 2

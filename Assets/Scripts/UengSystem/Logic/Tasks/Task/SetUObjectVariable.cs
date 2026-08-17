@@ -1,8 +1,8 @@
 ﻿using System;
 using AncientMemorial;
 using UengSystem.Logic.UValues;
-using UengSystem.Managers;
 using UengSystem.Objects;
+using UengSystem.UDebug;
 using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {
@@ -15,11 +15,11 @@ namespace UengSystem.Logic.Tasks {
 		public UValue<UObject> value;
 		
 		public override void Execute(ITaskable self) {
-			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
-			Debug.Log($" >>> Given Data\n"          +
-					  $" > key   = {key.value}\n"   +
-					  $" > value = {value.value}\n" +
-					  $"");
+			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			DebugManager.Log($" >>> Given Data\n"          +
+							 $" > key   = {key.value}\n"   +
+							 $" > value = {value.value}\n" +
+							 $"");
 
 			GameManager.UValueUObjectVariables[key.value] = value;
 		}

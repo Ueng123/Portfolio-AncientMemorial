@@ -1,5 +1,4 @@
-﻿using UengSystem.ObjectPool;
-using UengSystem.Objects;
+﻿using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
 
@@ -18,8 +17,8 @@ namespace AncientMemorial.Objects {
 		public float duration;
 		
 		protected override void Routine() {
-			whiteObject.size     = new Vector2(targetSize.x * (lerpX ? stopWatch.Tock() / duration : 1),
-											   targetSize.y * (lerpY ? stopWatch.Tock() / duration : 1));
+			whiteObject.size     = new Vector2(targetSize.x * Mathf.Clamp01(lerpX&&duration !=0 ? stopWatch.Tock() / duration : 1),
+											   targetSize.y * Mathf.Clamp01(lerpY&&duration !=0 ? stopWatch.Tock() / duration : 1));
 			spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColor, Time.deltaTime * (1 /duration) * 5f);
 			whiteObject.color    = spriteRenderer.color;
 		}

@@ -1,7 +1,7 @@
 ﻿namespace UengSystem.Objects {
 	public enum FixedUpdateRoutineType {
-		Processing = 0,
-		FixedRoutine = 1,
+		Processing,
+		FixedRoutine = 0b_0001_0000,
 		RoutineEnd
 	}
 }

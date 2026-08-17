@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UengSystem.UDebug;
 
 namespace UengSystem.UI.UButtons {
 	public class UChoiceButton : UButton {
@@ -9,7 +8,7 @@ namespace UengSystem.UI.UButtons {
 			base.OnButtonClicked();
 
 			foreach (UChoiceButton currButton in buttonGroups) {
-				Debug.Log("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES");
+				DebugManager.Log("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES");
 				currButton.button.enabled = false;
 			}
 		}

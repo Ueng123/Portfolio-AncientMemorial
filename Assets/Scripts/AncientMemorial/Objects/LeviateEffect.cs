@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using UengSystem.Managers;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UnityEngine;

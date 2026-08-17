@@ -1,13 +1,12 @@
 ﻿using System;
-using UengSystem.Objects;
 
 namespace UengSystem.Logic.UValues.UStrings {
 	[Serializable]
 	public class UObjectID : UValue<string> {
-		public override bool   getIsDynamic => false;
+		protected override bool   getIsDynamic => false;
 
 		public Objects.UObject obj;
 
-		public override string getValue => obj.ID;
+		protected override string getValue => obj.ID;
 	}
 }

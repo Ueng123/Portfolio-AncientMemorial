@@ -4,12 +4,12 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UColors {
 	[Serializable]
 	public class UNumberColor : UValue<Color> {
-		public override bool getIsDynamic { 
+		protected override bool getIsDynamic { 
 			get {
 				r.parent = this;
 				g.parent = this;
 				b.parent = this;
-				return r.isDynamicAuto || g.isDynamicAuto || b.isDynamicAuto || a.isDynamicAuto;
+				return r.isDynamic || g.isDynamic || b.isDynamic || a.isDynamic;
 			}
 		}
 		
@@ -25,6 +25,6 @@ namespace UengSystem.Logic.UValues.UColors {
 		[SerializeReference] [SubclassSelector]
 		public UValue<float> a;
 
-		public override Color getValue => new (r.value, g.value, b.value, a.value);
+		protected override Color getValue => new (r.value, g.value, b.value, a.value);
 	}
 }

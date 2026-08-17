@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace UengSystem.Utility {
     public class WaitAction : UAction {
+       public static int runningWaitActionCount = 0;
+       
        public readonly  Func<bool> checkCondition;
        private readonly Action     actionToDelay;
        private readonly Action     actionOnCancel;
@@ -15,12 +17,16 @@ namespace UengSystem.Utility {
 
        private IActionable executor;
        
+       private WaitUntil waitUntil;
+       
        public WaitAction (Func<bool> checkCondition, Action actionToDelay, Action actionOnCancel = null, float timeOut = 0, IActionable executor = null) {
           this.executor = executor;
           this.checkCondition = checkCondition;
           this.actionToDelay  = actionToDelay;
           this.actionOnCancel = actionOnCancel;
           this.timeOut        = timeOut;
+
+          waitUntil = new WaitUntil(() => checkCondition() || (timeOut != 0 && Time.time - startTime >= timeOut));
        }
        
        public WaitAction ExecuteWA() {
@@ -31,11 +37,14 @@ namespace UengSystem.Utility {
              return this;
           }
           
+          runningActionCount     += 1;
+          runningWaitActionCount += 1;
+          
           startTime = Time.time;
           Executing = true;
           
           Execute(executor);
-          process = GlobalCoroutineRunner.instance.StartCoroutine(ActionEnumerator());
+          process = CoroutineRunner.instance.StartCoroutine(ActionEnumerator());
           return this;
        }
 
@@ -44,7 +53,10 @@ namespace UengSystem.Utility {
        public void DoneWA(bool stopCoroutine = true) {
           if (!Executing) return;
           
-          if (stopCoroutine) GlobalCoroutineRunner.instance.StopCoroutine(process);
+          runningActionCount     -= 1;
+          runningWaitActionCount -= 1;
+          
+          if (stopCoroutine) CoroutineRunner.instance.StopCoroutine(process);
           Executing = false;
           actionToDelay.Invoke();
        }
@@ -52,19 +64,19 @@ namespace UengSystem.Utility {
        public override void Cancel() {
           if (!Executing) return;
           
+          runningActionCount     -= 1;
+          runningWaitActionCount -= 1;
+          
           Executing = false;
           if (process != null) {
-             GlobalCoroutineRunner.instance.StopCoroutine(process);
+             CoroutineRunner.instance.StopCoroutine(process);
              process = null;
           }
           actionOnCancel?.Invoke();
        }
 
        protected override IEnumerator ActionEnumerator() {
-          yield return new WaitUntil(() => {
-             if (timeOut != 0 && Time.time - startTime >= timeOut) return true;
-             return checkCondition();
-          });
+          yield return waitUntil;
           
           if (timeOut != 0 && Time.time - startTime >= timeOut) {
              Cancel();

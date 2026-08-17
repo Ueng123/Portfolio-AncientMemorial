@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 768032935473687589}
   - component: {fileID: 8142865154666549077}
   - component: {fileID: 7775365282799351898}
-  - component: {fileID: 862208520791289048}
   - component: {fileID: 759174574126723683}
+  - component: {fileID: -1446571414422938889}
   m_Layer: 6
   m_Name: CrystalUltEffect
   m_TagString: Untagged
@@ -78,35 +78,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &862208520791289048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 997904975485824716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344c6a08c0d74e27ab3ef9275865b0ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  _gettable: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  GetTask:
-    tasks: []
-  ReleaseTask:
-    tasks: []
-  canvas: {fileID: 0}
-  initialPosition: {x: 0, y: 0}
-  initialScale: {x: 1, y: 1, z: 1}
-  actions: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!95 &759174574126723683
 Animator:
   serializedVersion: 7
@@ -129,6 +100,40 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-1446571414422938889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997904975485824716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GetTask:
+    useRealTime: 0
+    tasks: []
+  ReleaseTask:
+    useRealTime: 0
+    tasks: []
+  canvas: {fileID: 0}
+  rectTransform: {fileID: 0}
+  initialPosition: {x: 0, y: 0}
+  initialScale: {x: 1, y: 1, z: 1}
+  openTime: 10
+  closeTime: 0.5
+  actions: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1144455625597264859
 GameObject:
   m_ObjectHideFlags: 0

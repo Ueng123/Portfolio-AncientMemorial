@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2507578616167794662}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7550023, y: 3.4965684, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 8363571517377567531, guid: 84b1985356062b14c9e81e0d4e807212, type: 3}
   colorSpawnSprite: {fileID: 8363571517377567531, guid: 84b1985356062b14c9e81e0d4e807212, type: 3}
   rigidbody2D: {fileID: 0}

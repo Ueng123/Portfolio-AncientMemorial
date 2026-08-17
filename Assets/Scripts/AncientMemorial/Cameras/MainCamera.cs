@@ -31,7 +31,7 @@ namespace AncientMemorial.Cameras {
 
        protected override void LateRoutine() {
           Vector2 mapCenterPos = MapManager.instance.MapCenterTransform.position;
-          Vector2 playerPos    = Entity.player ? Entity.player.transform.position : mapCenterPos;
+          Vector2 playerPos    = Entity.player ? Entity.player.transform.position + Vector3.up*0.75f : mapCenterPos;
 
           float xPos = AlignTypeX switch {
              CameraAlignType.Center => mapCenterPos.x,

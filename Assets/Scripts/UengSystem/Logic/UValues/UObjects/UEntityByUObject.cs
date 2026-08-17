@@ -1,21 +1,20 @@
 ﻿using System;
 using AncientMemorial.Entities;
-using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.Logic.UValues.UObjects {
 	[Serializable]
 	public class UEntityByUObject : UValue<Entity> {
-		public override bool getIsDynamic {
+		protected override bool getIsDynamic {
 			get {
 				obj.parent = this;
-				return obj.isDynamicAuto;
+				return obj.isDynamic;
 			}
 		}
 		
 		[SerializeReference][SubclassSelector]
 		public UValue<Objects.UObject> obj;
-		
-		public override Entity getValue => (Entity)obj.value;
+
+		protected override Entity getValue => (Entity)obj.value;
 	}
 }

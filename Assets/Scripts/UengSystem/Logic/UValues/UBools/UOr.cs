@@ -4,11 +4,11 @@ using UnityEngine;
 namespace UengSystem.Logic.UValues.UBools {
 	[Serializable]
 	public class UOr : UValue<bool> {
-		public override bool getIsDynamic { 
+		protected override bool getIsDynamic { 
 			get {
 				A.parent = this;
 				B.parent = this;
-				return A.isDynamicAuto || B.isDynamicAuto;
+				return A.isDynamic || B.isDynamic;
 			}
 		}
 		
@@ -16,6 +16,6 @@ namespace UengSystem.Logic.UValues.UBools {
 		[SerializeReference] [SubclassSelector] public UValue<bool> A;
 		[SerializeReference] [SubclassSelector] public UValue<bool> B;
 
-		public override bool getValue => A.getValue || B.getValue;
+		protected override bool getValue => A.value || B.value;
 	}
 }

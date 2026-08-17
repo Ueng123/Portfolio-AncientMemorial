@@ -1,13 +1,13 @@
 ﻿{
   "Name" : "",
-  "HP" : 10,
-  "MoveSpeed" : 3,
-  "JumpPower" : 3,
-  "AttackSpeed" : 1.5,
-  "AttackDamage" : 2,
+  "HP" : 20,
+  "MoveSpeed" : 2.5,
+  "JumpPower" : 6,
+  "AttackSpeed" : 3,
+  "AttackDamage" : 1,
   "InvincibleTime" : 1,
   "GroundBoxOffsetX" : 0,
   "GroundBoxOffsetY" : -0.5,
   "GroundBoxSizeX" : 0.45,
-  "GroundBoxSizeY" : 0.025
+  "GroundBoxSizeY" : 0.01
 }

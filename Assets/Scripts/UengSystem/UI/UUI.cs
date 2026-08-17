@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.Utility;
 using UnityEngine;
 
 namespace UengSystem.UI {
-	public abstract class UUI : UObject {
+	public class UUI : UObject {
 		
 		private static readonly Dictionary<string, List<UUI>> UCategoryTable = new ();
 		private static readonly int                           Close          = Animator.StringToHash("Close");
@@ -17,7 +15,7 @@ namespace UengSystem.UI {
 		[Header("Identify")] 
 		public  UCanvas canvas;
 
-		protected RectTransform rectTransform;
+		public RectTransform rectTransform;
 		private   string        _UCategory;
 
 		public Vector2 initialPosition;
@@ -44,13 +42,16 @@ namespace UengSystem.UI {
 				_UCategory = value;
 			}
 		}
+
+		public float openTime;
+		public float closeTime;
 		
 		[Header("UUI")]
 		public UUIActionListItem[] actions;
 		private Dictionary<string, UUIAction> actionDict = new();
 
-		public abstract void OnOpen();
-		public abstract void OnClose();
+		public virtual void OnOpen()  { }
+		public virtual void OnClose() { }
 
 		public static UUI GetUUI(string id) => GetUObject(id) as UUI;
 
@@ -58,7 +59,11 @@ namespace UengSystem.UI {
 
 		public T GetAction<T>(string key) where T : UUIAction {
 			if (actionDict.TryGetValue(key, out UUIAction action)) return (T)action;
-			else throw new KeyNotFoundException(key);
+			throw new KeyNotFoundException(key);
+		}
+		
+		public T GetAction<T>(int index) where T : UUIAction {
+			return (T)actions[index].action;
 		}
 
 		public static void ResetUUI() {
@@ -73,6 +78,13 @@ namespace UengSystem.UI {
 			}
 		}
 
+		public override void Get(float time) {
+			OnGet();
+			gameObject.SetActive(true);
+			if (time == 0) return;
+			StartCoroutine(SpawnFX(time));
+		}
+		
 		public override void OnGet() {
 			foreach (UUIActionListItem action in actions) {
 				action.action.Initialize(this);
@@ -85,54 +97,30 @@ namespace UengSystem.UI {
 			rectTransform.localScale       = initialScale;
 		}
 
-		public override void Get(float time) {
-			OnGet();
-			gameObject.SetActive(true);
-			if (time == 0) return;
-			StartCoroutine(SpawnFX(time));
-		}
-		
-		public override void Release(float time) {
-			if (isReleased) return;
-			
-			ID        = null;
-			Category  = null;
-			
-			switch (time) {
-				case < 0:
-					Uninitialize();
-					break;
-				case 0:
-					instances.Remove(this);
-					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
-					
-					OnRelease();
-					Uninitialize();
-					break;
-				default:
-					instances.Remove(this);
-					gameObject.SetActive(true);
-					Debug.Log($"[UObject] Instance {gameObject.name} Removed");
-					
-					OnRelease();
-					StartCoroutine(DespawnFX(time));
-					break;
+		protected override void OnRelease() {
+			foreach (UUIActionListItem action in actions) {
+				action.action.Uninitialize(this);
 			}
+			
+			UCategory = null;
+			base.OnRelease();
 		}
 
-		protected override void OnRelease() {
-			UCategory = null;
-		}
-		
+		protected override void PrepareSpawnFX() { }
+
+		protected override void FinishSpawnFX() { }
+
 		protected override IEnumerator SpawnFX(float duration) {
 			yield return new WaitForSecondsRealtime(duration);
 			Initialize();
 		}
 
+		protected override void PrepareDespawnFX() { }
+
 		protected override IEnumerator DespawnFX(float duration) {
-			animator.SetTrigger(Close);
+			if (animator) animator.SetTrigger(Close);
 			yield return new WaitForSeconds(duration);
-			UUIObjectPool.instance.Close(gameObject, true);
+			UUIPool.instance.Close(gameObject, true);
 		}
 	}
 }

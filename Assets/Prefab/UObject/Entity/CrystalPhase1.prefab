@@ -315,7 +315,7 @@ Transform:
   m_GameObject: {fileID: 7121936188299108062}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.004014237, w: 0.99999195}
-  m_LocalPosition: {x: 2.221, y: 2.439, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -338,6 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32d9b715afd4413d847e8e48cc7c2f22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
   whiteSpawnSprite: {fileID: 5293031974318352618, guid: e1a1fb6a99dd94348a00a12a35813a1e, type: 3}
   colorSpawnSprite: {fileID: 5293031974318352618, guid: e1a1fb6a99dd94348a00a12a35813a1e, type: 3}
   rigidbody2D: {fileID: 0}
@@ -376,7 +377,8 @@ MonoBehaviour:
   entityUIHeight: 240
   groundChecker: {fileID: 0}
   debrisAttached: []
-  markYPos: 0
+  isWaveEnemy: 0
+  markYPos: 2
   hideOnDeath:
   - {fileID: 3981097627943833926}
   - {fileID: 7849471868784536762}
@@ -454,7 +456,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 900
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

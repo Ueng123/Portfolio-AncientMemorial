@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UengSystem.UI {
 	[Serializable]
-	public abstract class UUIComponent : BasicUObject {
+	public abstract class UUIComponent : UObject {
 		[Header("UI Component")]
 		public UUI parent;
 	}

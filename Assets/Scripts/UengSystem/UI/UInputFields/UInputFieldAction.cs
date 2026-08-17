@@ -20,10 +20,10 @@ namespace UengSystem.UI.UInputFields {
 		public static UPureString inputFieldTextVariable;
 		
 		public override void Initialize(UObject self) {
-			component.Initialize();
-			
 			inputField = (UInputField)component;
-			if (initialText!=null) inputField.SetText(initialText.value);
+			inputField.Initialize();
+			inputField.SetText(initialText?.value??string.Empty);
+			inputField.textChanged = false;
 			
 			if (GameManager.UValueStringVariables.TryGetValue("InputFieldValue", out UValue<string> v)) {
 				inputFieldTextVariable = (UPureString)v;
@@ -38,15 +38,21 @@ namespace UengSystem.UI.UInputFields {
 			}
 		}
 
+		public override void Uninitialize(UObject self) {
+			component.Uninitialize();
+		}
+
 		public override void Routine(UObject self) {
 			if (taskOnTextChanged!=null&&inputField.textChanged) {
+				inputField.textChanged      = false;
 				inputFieldTextVariable.Text = inputField.GetLiveText();
-				taskOnTextChanged.Execute(GlobalCoroutineRunner.instance);
+				taskOnTextChanged.Execute(CoroutineRunner.instance);
 			}
 			
 			if (taskOnEndEdit!=null && inputField.endEdit) {
+				inputField.endEdit          = false;
 				inputFieldTextVariable.Text = inputField.GetText();
-				taskOnEndEdit.Execute(GlobalCoroutineRunner.instance);
+				taskOnEndEdit.Execute(CoroutineRunner.instance);
 			}
 		}
 	}

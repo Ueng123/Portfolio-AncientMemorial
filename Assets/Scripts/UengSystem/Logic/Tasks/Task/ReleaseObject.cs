@@ -2,8 +2,8 @@
 using UengSystem.Logic.UValues;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
+using UengSystem.UDebug;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UengSystem.Logic.Tasks {
 	[Serializable]
@@ -16,14 +16,14 @@ namespace UengSystem.Logic.Tasks {
 		
 		public override void Execute(ITaskable self) {
 			UObject target = releaseThis?(UObject)self:TargetObject.value;
-			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
-			Debug.Log($" >>> Given Data\n"                     +
-					  $" > releaseThis = {releaseThis}\n"      +
-					  $" > TargetObject = {target.name}\n"     +
-					  $" > --- TargetUUI DATA ---\n"           +
-					  $" > --- ID = {target.ID}\n"             +
-					  $" > --- Category = {target.Category}\n" +
-					  $"");
+			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			DebugManager.Log($" >>> Given Data\n"                     +
+							 $" > releaseThis = {releaseThis}\n"      +
+							 $" > TargetObject = {target.name}\n"     +
+							 $" > --- TargetUUI DATA ---\n"           +
+							 $" > --- ID = {target.ID}\n"             +
+							 $" > --- Category = {target.Category}\n" +
+							 $"");
 		
 			UObjectPool.instance.Release(target.gameObject, releaseTime);
 		}

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections;
-using AncientMemorial.Cameras;
+﻿using AncientMemorial.Cameras;
 using AncientMemorial.Map;
-using AncientMemorial.Projectiles;
-using UengSystem.Logic.UValues.UFloats;
-using UengSystem.Logic.UValues.UStrings;
 using UengSystem.ObjectPool;
-using UengSystem.UI;
-using UengSystem.UI.UTexts;
+using UengSystem.Objects;
 using UengSystem.Utility;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -23,16 +16,14 @@ namespace AncientMemorial.Entities {
 		protected static readonly int backward  = Animator.StringToHash("backward");
 		protected static readonly int Landing   = Animator.StringToHash("landing");
 	
-		private float oldAnimSpeed;
-		private int   attackAnimation;
+		protected float oldAnimSpeed;
+		protected int   attackAnimation;
 
 		public override void OnStunStart() { }
 
-		public override void OnStunEnd() {
-			currentExclusiveAction = FindingAggro;
-		}
+		public override void OnStunEnd() { }
 		
-		[NonSerialized]private bool _FootstepSound = false;
+		private bool _FootstepSound = false;
 		private bool FootstepSound {
 			get => _FootstepSound;
 			set {
@@ -52,9 +43,9 @@ namespace AncientMemorial.Entities {
 			targetPositionX = Mathf.Clamp(targetPositionX, MapManager.leftWall + marginX, MapManager.rightWall - marginX);
 			
 			if (!isGround) return;
-			if (aggroEntity) {
+			if (player) {
 				// (+) : 이 엔티티가 타겟엔티티보다 <-에 있음
-				int signE = (int)Mathf.Sign(aggroEntity.transform.position.x - transform.position.x);
+				int signE = (int)Mathf.Sign(player.transform.position.x - transform.position.x);
 				// (+) : 이 엔티티가 타켓위치보다 <-에 있음
 				int signT = (int)Mathf.Sign(targetPositionX - transform.position.x);
 			
@@ -107,25 +98,25 @@ namespace AncientMemorial.Entities {
 		private float         newWanderOffsetMin => Mathf.Clamp01((transform.position.x - MapManager.leftWall) / 2f); // 왼쪽 벽으로부터 얼마나 떨어져있는지
 		private float         newWanderOffsetMax => Mathf.Clamp01((MapManager.rightWall - transform.position.x) / 2f); // 오른쪽 벽으로부터 얼마나 떨어져있는지
 		
-		public override void WanderRoutine() {
-			if (Mathf.Approximately(currWanderTargetPosX, default)) currWanderTargetPosX = transform.position.x;
-			
-			if (currWanderDA is not { Executing: true }) {
-				
-				currWanderDA = new DelayedAction(currWanderDA==null?Random.Range(0.5f, 1.5f):Random.Range(3f, 7f),
-												 () => {
-													 currWanderTargetPosX 
-														 = transform.position.x + Random.Range(-5*newWanderOffsetMin, 5*newWanderOffsetMax);
-												 });
-				currWanderDA.ExecuteDA();
-			}
-
-			Move(currWanderTargetPosX);
-			
-			if (!aggroEntity) return;
-			currWanderDA.Cancel();
-			state = EnemyState.Alert;
-		}
+		// public override void WanderRoutine() {
+		// 	if (Mathf.Approximately(currWanderTargetPosX, default)) currWanderTargetPosX = transform.position.x;
+		// 	
+		// 	if (currWanderDA is not { Executing: true }) {
+		// 		
+		// 		currWanderDA = new DelayedAction(currWanderDA==null?Random.Range(0.5f, 1.5f):Random.Range(3f, 7f),
+		// 										 () => {
+		// 											 currWanderTargetPosX 
+		// 												 = transform.position.x + Random.Range(-5*newWanderOffsetMin, 5*newWanderOffsetMax);
+		// 										 });
+		// 		currWanderDA.ExecuteDA();
+		// 	}
+		//
+		// 	Move(currWanderTargetPosX);
+		// 	
+		// 	if (!player) return;
+		// 	currWanderDA.Cancel();
+		// 	// state = EnemyState.Alert;
+		// }
 		
 		// private readonly StopWatch _velocityRefresh = new ();
 		// private          float     _velocityScale   = -1;
@@ -148,100 +139,60 @@ namespace AncientMemorial.Entities {
 		protected abstract float         moveTargetDistanceRM { get; }
 		protected          float         moveTargetDistanceRV;
 		protected          DelayedAction currAlertDA;
-		public override void AlertRoutine() {
-			if (!aggroEntity) {
-				state = EnemyState.Wander;
-				return;
-			}
-			
-			if (attackable) {
-				state = EnemyState.AttackReady;
-				return;
-			}
+		// public override void AlertRoutine() {
+		// 	// if (!player) {
+		// 	// 	state = EnemyState.Wander;
+		// 	// 	return;
+		// 	// }
+		// 	//
+		// 	// if (attackable) {
+		// 	// 	state = EnemyState.AttackReady;
+		// 	// 	return;
+		// 	// }
+		//
+		// 	if (currAlertDA is not { Executing: true }) {
+		// 		currAlertDA = new DelayedAction(Random.Range(1f, 3f), () => {
+		// 			moveTargetDistanceRV = Random.Range(-moveTargetDistanceRM, moveTargetDistanceRM);
+		// 		});
+		// 		currAlertDA.ExecuteDA();
+		// 	}
+		// 	
+		// 	int signE = (int)Mathf.Sign(player.transform.position.x - transform.position.x);
+		// 	float targetPositionX = player.transform.position.x + moveTargetDistanceRV - moveTargetDistance*signE;
+		// 	
+		// 	Move(targetPositionX);
+		// }
 
-			if (currAlertDA is not { Executing: true }) {
-				currAlertDA = new DelayedAction(Random.Range(1f, 3f), () => {
-					moveTargetDistanceRV = Random.Range(-moveTargetDistanceRM, moveTargetDistanceRM);
-				});
-				currAlertDA.ExecuteDA();
-			}
-			
-			int signE = (int)Mathf.Sign(aggroEntity.transform.position.x - transform.position.x);
-			float targetPositionX = aggroEntity.transform.position.x + moveTargetDistanceRV - moveTargetDistance*signE;
-			
-			Move(targetPositionX);
-		}
+		// public override void AttackRoutine() { }
 
-		public override void AttackRoutine() { }
-
-		public override void StunRoutine() { }
-
-		public override void HitEffect(Entity attacker, float damage, Vector2? pushDir = null) {
-			UUI damageUI = UUIObjectPool.instance.Open("DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
-			damageUI.GetComponent<RectTransform>().anchoredPosition =
-				(transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
-			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
-			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIObjectPool.instance.Close(damageUI.gameObject)).ExecuteDA();
+		public override void OnHit(Entity attacker, float damage, Vector2? pushDir = null) {
+			ShowDamageUI(damage);
 			
-			textAction.text = textSAction.text = new UPureString {Text = $"{Mathf.Floor(damage*100)/100f}"};
-			textAction.Initialize(damageUI);
-			textSAction.Initialize(damageUI);
+			// ((UObject)this).state = Stun(1);
+			// state                  = EnemyState.Stun;
+			// new DelayedAction(1, () => state = EnemyState.Alert).ExecuteDA();
+			//
+			Vector2 pushDirection = pushDir??(attacker.transform.position - transform.position).normalized;
+			float   velocity      = 0.5f + Mathf.Log(damage, 500);
 			
+			AddProcessToFixedUpdate(() => { rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse); });
 			
 			if (entityStat.hp <= 0) {
 				PlaySFX("skeletonDeath");
 				
 				if (attacker != player) return;
-				GameManager.SetTimeScale(0.05f, 0.1f);
-				CameraBrain.instance.ShakeLerp(1f*Mathf.Max(Mathf.Log(damage+3),0.5f), 10);
-				CameraBrain.instance.ZoomLerp(-0.5f);
+				GameManager.SetTimeScale(0f, 0.05f);
+				CameraBrain.instance.ShakeLerp(2f, 10);
+				CameraBrain.instance.ZoomLerp(-0.2f);
 			}
 			else {
 				PlaySFX("skeletonExcited");
 				
 				if (attacker != player) return;
-				GameManager.SetTimeScale(0.05f, 0.05f);
-				CameraBrain.instance.ShakeLerp(0.4f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
-				CameraBrain.instance.ZoomLerp(-0.25f);
+				GameManager.SetTimeScale(0f, 0.05f);
+				CameraBrain.instance.ShakeLerp(1f, 10f);
+				CameraBrain.instance.ZoomLerp(-0.1f);
 			}
-		}
-
-		protected override void OnHit(Entity attacker, float damage, Vector2? pushDir) {
-			// STUN
-			currentExclusiveAction = Stun(1);
-			state                  = EnemyState.Stun;
-			new DelayedAction(1, () => state = EnemyState.Alert).ExecuteDA();
-			
-			Vector2 pushDirection = pushDir??(attacker.transform.position - transform.position).normalized;
-			float   velocity = damage;
-			
-			AddProcessToFixedUpdate(() => { rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse); });
-
-			entityStat.hp -= damage;
-		}
-
-		protected override void OnHit(Projectile attacker, float damage, Vector2? pushDir) {
-			// STUN
-			currentExclusiveAction = Stun(1);
-			state                  = EnemyState.Stun;
-			new DelayedAction(1, () => state = EnemyState.Alert).ExecuteDA();
-			
-			Vector2 pushDirection = pushDir??new Vector2(transform.position.x-attacker.transform.position.x, 0).normalized;
-			float   velocity      = damage*2;
-			
-			AddProcessToFixedUpdate(() => rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse));
-			
-			entityStat.hp -= damage;
-		}
-
-		protected override void OnHit(float damage, Vector2? pushDir) {
-			if (pushDir.HasValue) {
-				float velocity = damage * 2;
-				AddProcessToFixedUpdate(() => rigidbody2D.AddForce(pushDir.Value * velocity, ForceMode2D.Impulse));
-			}
-			
-			entityStat.hp -= damage;
 		}
 
 		protected override float GetRealDamage(float rawDamage) {
@@ -249,8 +200,6 @@ namespace AncientMemorial.Entities {
 		}
 
 		protected override void Death() {
-			GameManager.UValueFloatVariables["EnemyDead"]   = new UPureNumber {number = GameManager.UValueFloatVariables["EnemyDead"].value + 1};
-			
 			GameObject doogaegol = UObjectPool.instance.Get("doogaegol", (Vector2)transform.position +  new Vector2(-0.03125f, 0.21875f));
 			Rigidbody2D doogaegolRB = doogaegol.GetComponent<Rigidbody2D>();
 			
@@ -261,15 +210,17 @@ namespace AncientMemorial.Entities {
 		}
 
 		protected override void OnGrounded() {
-			// PlaySFX("skeletonLand");
+			PlaySFX("skeletonLand");
 			
-			currentExclusiveAction = Stun(0.5f);
-			state                  = EnemyState.Stun;
+			// ((UObject)this).state = Stun(0.5f);
+			// state                  = EnemyState.Stun;
+			
+			// new DelayedAction(0.5f, () => {
+			// 	state = EnemyState.Alert;
+			// 	animator.SetBool(Landing, false);
+			// }).ExecuteDA();
+			
 			animator.SetBool(Landing, true);
-			new DelayedAction(0.5f, () => {
-				state = EnemyState.Alert;
-				animator.SetBool(Landing, false);
-			}).ExecuteDA();
 		}
 	}
 }

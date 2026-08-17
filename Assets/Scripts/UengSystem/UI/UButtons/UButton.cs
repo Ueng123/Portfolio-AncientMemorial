@@ -1,5 +1,7 @@
 ﻿using System;
+using UengSystem.UDebug;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UengSystem.UI.UButtons {
@@ -11,8 +13,9 @@ namespace UengSystem.UI.UButtons {
 		public bool   clicked;
 		
 		public virtual void OnButtonClicked() {
-			Debug.Log("BUTTON CLICK DETECTED : UButton");
+			DebugManager.Log("BUTTON CLICK DETECTED : UButton");
 			clicked = true;
+			EventSystem.current.SetSelectedGameObject(null);
 		}
 
 		public override void Initialize() {

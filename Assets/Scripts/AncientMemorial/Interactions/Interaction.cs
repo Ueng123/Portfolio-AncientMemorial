@@ -2,12 +2,10 @@
 
 using System.Collections.Generic;
 using AncientMemorial.Entities;
-using TMPro;
 using UengSystem.Events;
 using UengSystem.Logic.Tasks;
 using UengSystem.Logic.UValues;
 using UengSystem.Logic.UValues.UColors;
-using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Logic.UValues.UObjects;
 using UengSystem.Logic.UValues.UStrings;
 using UengSystem.Objects;
@@ -16,13 +14,11 @@ using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Events_Event = UengSystem.Events.Event;
-using Slider = UnityEngine.UI.Slider;
-using Image = UnityEngine.UI.Image;
+using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.Interactions {
-	public abstract class Interaction : UObject {
+	public class Interaction : UObject {
 		
 		public static List<Interaction> InteractableInteractions = new ();
 		
@@ -54,32 +50,36 @@ namespace AncientMemorial.Interactions {
 		public virtual void Interactable()   => interactable = true;
 		public virtual void UnInteractable() => interactable = false;
 
-		protected abstract void OnInteractStart();
+		protected virtual void OnInteractStart() { }
+
 		public void InteractStart() {
 			onInteractStart.Execute(this);
 			OnInteractStart();
 		}
 
-		protected abstract void OnCancel();
+		protected virtual void OnCancel() { }
+
 		public void Cancel() {
 			onCancel.Execute(this);
 			OnCancel();
 		}
-		
-		protected abstract void OnInteract();
+
+		protected virtual void OnInteract() { }
+
 		public void Interact() {
 			onInteract.Execute(this);
 			OnInteract();
 		}
 
-		protected abstract void OnTarget();
+		protected virtual void OnTarget() { }
+
 		protected virtual void Targetted() {
 			if (showInteractUI && !interactUI) {
-				interactUI = UUIObjectPool.instance.Open("InteractUI", canvas).GetComponent<UUI>();
+				interactUI = UUIPool.instance.Open("InteractUI", canvas).GetComponent<UUI>();
                 interactProgressValue ??= new InteractProgressValue { interactObject = new UObjectSerialized { obj = this } };
                 	
                 USliderAction sliderAction = interactUI.GetAction<USliderAction>("Bar");
-                ((UBasicCubicBezierValue)sliderAction.value).T = interactProgressValue;
+                sliderAction.value = interactProgressValue;
                 ((UNumberColor)sliderAction.color).a = interactProgressValue;
 				
 				UTextAction textAction = interactUI.GetAction<UTextAction>("TextLabel");
@@ -92,10 +92,11 @@ namespace AncientMemorial.Interactions {
 			OnTarget();
 		}
 
-		protected abstract void OnUnTarget();
+		protected virtual void OnUnTarget() {  }
+
 		protected virtual void Untargetted() {
 			if (showInteractUI && interactUI) { 
-				UUIObjectPool.instance.Close(interactUI.gameObject);
+				UUIPool.instance.Close(interactUI.gameObject);
 				interactUI = null;
 			}
 			
@@ -118,53 +119,73 @@ namespace AncientMemorial.Interactions {
 		
 		// ETC. Override //
 
+		private bool prefabInteractable;
 		public override void OnFirstGet() {
-			interactAction = new DelayedAction(timeToInteract, () => { Interact(); SendEvent(UengSystem.Events.EventType.Interact_Stop, 4); }, Cancel, this);
+			interactAction = new DelayedAction(timeToInteract, () => { Interact(); SendEvent(UengSystem.Events.EventType.Interact_Stop, (int)EventPriority.Stop); }, Cancel, this);
+			prefabInteractable = interactable;
 			base.OnFirstGet();
 		}
-		
+
+		public override void Initialize() {
+			interactable = prefabInteractable;
+			
+			EventManager.instance.RegisterEvent(EventType.Interact_Start, InteractStartEvent);
+			EventManager.instance.RegisterEvent(EventType.Interact_Cancel, InteractCancelEvent);
+			EventManager.instance.RegisterEvent(EventType.Interact_Target, InteractTargetEvent);
+			EventManager.instance.RegisterEvent(EventType.Interact_Untarget, InteractUntargetEvent);
+			
+			base.Initialize();
+		}
+
+		protected override void OnRelease() {
+			interactable = false;
+			
+			EventManager.instance.UnregisterEvent(EventType.Interact_Start,    InteractStartEvent);
+			EventManager.instance.UnregisterEvent(EventType.Interact_Cancel,   InteractCancelEvent);
+			EventManager.instance.UnregisterEvent(EventType.Interact_Target,   InteractTargetEvent);
+			EventManager.instance.UnregisterEvent(EventType.Interact_Untarget, InteractUntargetEvent);
+			
+			base.OnRelease();
+			
+			if (!interactUI) return;
+			Untargetted();
+		}
+
+		public override void Uninitialize() {
+			base.Uninitialize();
+
+			if (!interactUI) return;
+			Destroy(interactUI.gameObject);
+			interactUI = null;
+		}
+
 		// UPDATE ROUTINE //
 
 		protected override void EarlyRoutine() {
 			if (CheckInteractable()) InteractableInteractions.Add(this);
 		}
 
-		protected override void Routine() { }
+		private void InteractStartEvent(Events_Event e) {
+			if (((EventValueData<Interaction>)e.data).value != this) return;
+			InteractStart();
+			interactAction.ExecuteDA();
+		}
 
-		public override void EventRoutine(Events_Event e) {
-			switch (e.type) {
-				case UengSystem.Events.EventType.Interact_Start: {
-					if (((EventValueData<InteractTryInfo>)e.data).value.objectToInteract == this) {
-						InteractStart();
-						interactAction.ExecuteDA();
-					}
+		private void InteractCancelEvent(Events_Event e) {
+			if (((EventValueData<Interaction>)e.data).value != this) return;
+			if (!interactAction.Executing) return;
+			interactAction.Cancel();
+		}
 
-					break;
-				}
-				case UengSystem.Events.EventType.Interact_Cancel: {
-					if (((EventValueData<InteractTryInfo>)e.data).value.objectToInteract == this) {
-						if (!interactAction.Executing) return;
-						interactAction.Cancel();
-					}
+		private void InteractTargetEvent(Events_Event e) {
+			if (((EventValueData<Interaction>)e.data).value != this) return;
+			Targetted();
+		}
 
-					break;
-				}
-				case UengSystem.Events.EventType.Interact_Target: {
-					if (((EventValueData<Interaction>)e.data).value == this) {
-						Targetted();
-					}
-
-					break;
-				}
-				case UengSystem.Events.EventType.Interact_Untarget: {
-					if (((EventValueData<Interaction>)e.data).value == this) {
-						Untargetted();
-						interactAction.Cancel();
-					}
-
-					break;
-				}
-			}
+		private void InteractUntargetEvent(Events_Event e) {
+			if (((EventValueData<Interaction>)e.data).value != this) return;
+			Untargetted();
+			interactAction.Cancel();
 		}
 	}
 }

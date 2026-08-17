@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace AncientMemorial.Entities {
 	[Serializable]
 	public struct EntityData {
 		public string                    name;
-		public int                       hp;
+		public float                       hp;
 		public float                     moveSpeed;
 		public float                     jumpPower;
 		public float                     attackCooldown;
 		public float                     attackSpeed;
-		public int                       attackDamage;
+		public float                       attackDamage;
 		public float                     invincibleTime;
 		public float                     groundBoxOffsetX;
 		public float                     groundBoxOffsetY;

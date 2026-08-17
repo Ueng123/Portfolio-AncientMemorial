@@ -85,7 +85,7 @@ AnimatorController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: EntityUI
-  serializedVersion: 5
+  serializedVersion: 6
   m_AnimatorParameters:
   - m_Name: Close
     m_Type: 9
@@ -106,6 +106,7 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+  m_EvaluateTransitionsOnStart: 0
 --- !u!1102 &1472029007994901366
 AnimatorState:
   serializedVersion: 6
@@ -135,7 +136,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1107 &1943578873093167826
 AnimatorStateMachine:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}

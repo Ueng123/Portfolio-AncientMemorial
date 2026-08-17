@@ -1,6 +1,4 @@
 ﻿using AncientMemorial;
-using UnityEngine;
-using UnityEngine.Audio;
 
 namespace UengSystem.UI.USliders {
 	public class UVolumeSlider : USlider {

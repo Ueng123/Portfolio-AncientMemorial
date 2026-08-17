@@ -2,6 +2,6 @@
 	public enum DynamicType {
 		Auto,
 		Dynamic,
-		NotDynamic
+		Static
 	}
 }

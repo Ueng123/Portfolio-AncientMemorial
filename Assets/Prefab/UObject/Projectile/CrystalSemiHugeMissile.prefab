@@ -4767,7 +4767,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &8103569996018178920
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4786,6 +4786,8 @@ ParticleSystemRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4807,9 +4809,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -5
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4841,7 +4845,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &7778782581053888006
 GameObject:
   m_ObjectHideFlags: 0
@@ -4886,9 +4889,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ComponentVersion: 2
+  m_ComponentVersion: 4
   m_LightType: 3
   m_BlendStyleIndex: 0
+  m_Light2DProvider:
+    rid: -2
+  m_SelectionSources:
+    rid: 1000
   m_FalloffIntensity: 1
   m_Color: {r: 0.3647059, g: 0.78039217, b: 1, a: 1}
   m_Intensity: 4
@@ -4926,6 +4933,19 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1000
+      type: {class: Light2DProviderSources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
+      data:
+        m_SelectedHashCode: 3
+        m_SelectedSource:
+          rid: -2
+        m_Provider2DCache:
+          rid: -2
 --- !u!1 &8664906978992796605
 GameObject:
   m_ObjectHideFlags: 0
@@ -4956,7 +4976,7 @@ Transform:
   m_GameObject: {fileID: 8664906978992796605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.37, y: 3.61, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4966,6 +4986,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5051021775096852526
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4984,6 +5005,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5005,9 +5028,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -9149507490923684789, guid: 5a8b07d7649e3bb418b9187206ea68e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5017,8 +5042,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!61 &7658523468425071060
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5067,7 +5092,7 @@ BoxCollider2D:
   m_EdgeRadius: 0
 --- !u!96 &1678754408100038842
 TrailRenderer:
-  serializedVersion: 3
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5086,6 +5111,8 @@ TrailRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5107,9 +5134,11 @@ TrailRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -5
+  m_MaskInteraction: 0
   m_Time: 1
   m_PreviewTimeScale: 1
   m_Parameters:
@@ -5177,7 +5206,6 @@ TrailRenderer:
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.1
-  m_MaskInteraction: 0
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
@@ -5193,22 +5221,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892dfd171180423f842e009ee4a9be35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 2
   whiteSpawnSprite: {fileID: 5777330351764753568, guid: 3bc55b0139f83b9489ffc76701e29d3c, type: 3}
   colorSpawnSprite: {fileID: 5777330351764753568, guid: 3bc55b0139f83b9489ffc76701e29d3c, type: 3}
-  _gettable: 0
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   GetTask:
+    useRealTime: 0
     tasks:
     - time: 0
       tasks:
       - rid: 8722662623975833678
+      - rid: 8985605506644836394
   ReleaseTask:
+    useRealTime: 0
     tasks:
     - time: 0
       tasks:
       - rid: 8722662623975833679
+      - rid: 8985605506644836494
   owner: {fileID: 0}
   damage: 0
   rotateOffset: -90
@@ -5226,11 +5258,11 @@ MonoBehaviour:
     - rid: 8722662623975833678
       type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
       data:
-        TargetObject: {fileID: 2507578616167794662, guid: abb4b4b3d733328409c67db391dfc355, type: 3}
+        TargetObject: {fileID: 4168969846195652150, guid: ddfd93a9ff0f039449c5d0b9fbc31b77, type: 3}
         position:
           rid: 8722662623975833681
         spawnTime:
-          rid: 8722662623975833686
+          rid: -2
         ID:
           rid: -2
         Category:
@@ -5242,7 +5274,7 @@ MonoBehaviour:
         position:
           rid: 8722662623975833680
         spawnTime:
-          rid: 8722662623975833687
+          rid: -2
         ID:
           rid: -2
         Category:
@@ -5251,46 +5283,58 @@ MonoBehaviour:
       type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: {x: 0, y: 0}
-        isValueCached: 0
         targetObject:
           rid: 8722662623975833685
     - rid: 8722662623975833681
       type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: {x: 0, y: 0}
-        isValueCached: 0
         targetObject:
           rid: 8722662623975833684
     - rid: 8722662623975833684
       type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: {fileID: 0}
-        isValueCached: 0
         obj: {fileID: 4892218887930490731}
     - rid: 8722662623975833685
       type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: {fileID: 0}
-        isValueCached: 0
         obj: {fileID: 4892218887930490731}
-    - rid: 8722662623975833686
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+    - rid: 8985605506644836394
+      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 0352cc172b9fb3d4cae37fdcc1bf7b5e, type: 3}
+        playOnThis: 1
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 8985605506644836494
+      type: {class: CameraShakeLerp, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+      data:
+        intensity:
+          rid: 8985605506644836496
+        speed:
+          rid: 8985605506644836498
+    - rid: 8985605506644836496
+      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0
-    - rid: 8722662623975833687
-      type: {class: UPureNumber, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        number: 5
+    - rid: 8985605506644836498
+      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 0
+        number: 5
 --- !u!50 &5806326358947056895
 Rigidbody2D:
   serializedVersion: 5

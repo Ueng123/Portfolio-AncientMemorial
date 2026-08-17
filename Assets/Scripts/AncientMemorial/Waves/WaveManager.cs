@@ -8,12 +8,13 @@ using UnityEngine;
 
 namespace AncientMemorial.Waves {
 	public class WaveManager : Manager<WaveManager> {
-		public  List<Wave>  waves = new List<Wave>();
+		public  List<Wave>  waves     = new List<Wave>();
 		private Queue<Wave> waveQueue = new Queue<Wave>();
 		public  Wave        currentWave;
+		private bool        isWavePlaying;
 		
 		public override void Initialize() {
-			waveQueue                                       = new Queue<Wave>(waves);
+			waveQueue = new Queue<Wave>(waves);
 			
 			PlayWave();
 		}
@@ -28,33 +29,31 @@ namespace AncientMemorial.Waves {
 			}
 
 			currentWave = waveQueue.Dequeue();
-			
 			PlayWave();
 		}
 
+		// 0에 NextWave있음
+		// 결국 안끝나고 웨이브 지속 PlayWave [ NextWave f -> PlayWave [ ... ] t ] t -- ok
+		// 끝남 PlayWave [ NextWave f -> PlayWave [ NextWave f -> CLEAR! ]] -- ok
 		private void PlayWave() {
-			GameManager.UValueFloatVariables["timeElapsed"] = new UPureNumber { number = 0 };
-			currentWave.waveTasks.Execute(GlobalCoroutineRunner.instance);
+			GameManager.UValueFloatVariables["timeElapsed"] = new UPureFloat { number = 0 };
+			currentWave.waveTasks.Execute(CoroutineRunner.instance);
 		}
 		
 		public void GameEnd() {
 			AudioManager.instance.PlaySFX("clear");
 			GameManager.SetTimeScale(0);
-			UUIObjectPool.instance.Open("ClearUI", GameManager.instance.mainScreenCanvas);
+			UUIPool.instance.Open("ClearUI", GameManager.instance.mainScreenCanvas);
 		}
 		
 		public override void ManagerUpdate() {
 			if (!currentWave) return;
 			
-			GameManager.UValueFloatVariables["timeElapsed"] = new UPureNumber {
+			GameManager.UValueFloatVariables["timeElapsed"] = new UPureFloat {
 				number = GameManager.UValueFloatVariables["timeElapsed"].value + Time.deltaTime
 			};
 
 			foreach (ConditionalTask condition in currentWave.alwaysConditionalTasks) { condition.Execute(this); }
-		}
-
-		public override void ManagerFixedUpdate() {
-			// there's nothing to do yay
 		}
 	}
 }

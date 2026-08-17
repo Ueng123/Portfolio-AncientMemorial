@@ -1,6 +1,7 @@
 ﻿using System;
 using UengSystem.Logic.UValues;
 using UengSystem.Objects;
+using UengSystem.UDebug;
 using UnityEngine;
 
 namespace UengSystem.Logic.Tasks {
@@ -8,35 +9,35 @@ namespace UengSystem.Logic.Tasks {
 	public class ConfigureRigidbody : TaskComponent {
 		public bool throwErrorIfNoRigidbody;
 
+		public bool thisObject;
 		[SerializeReference] [SubclassSelector]
 		public UValue<UObject> obj;
-
-		public bool changeVelocity;
+		
 		[SerializeReference] [SubclassSelector]
 		public UValue<Vector2> velocity;
 		
-		public bool addForce;
 		[SerializeReference] [SubclassSelector]
 		public UValue<Vector2> force;
 		
-		public bool addTorque;
 		[SerializeReference] [SubclassSelector]
 		public UValue<float> torque;
 		
 		public override void Execute(ITaskable self) {
-			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
-			Debug.Log($" >>> Given Data\n"                                        +
-					  $" > obj = {obj.value.name}\n"                              +
-					  (changeVelocity ? $" > velocity = {velocity.value}\n" : "") + 
-					  (addForce       ? $" > force    = {force.value}\n"    : "") +
-					  (addTorque      ? $" > torque   = {torque.value}\n"   : "") +
-					  $"");
+			UObject uObject = thisObject ? (UObject)self : obj.value;
 			
-			if (!obj.value.rigidbody2D && throwErrorIfNoRigidbody) throw new NullReferenceException("No rigidbody found");
+			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			DebugManager.Log($" >>> Given Data\n"                                          +
+							 $" > obj = {uObject.name}\n"                                  +
+							 (velocity != null ? $" > velocity = {velocity.value}\n" : "") +
+							 (force    != null ? $" > force    = {force.value}\n" : "")    +
+							 (torque   != null ? $" > torque   = {torque.value}\n" : "")   +
+							 $"");
 			
-			if (changeVelocity) obj.value.rigidbody2D.linearVelocity = velocity.value;
-			if (addForce) obj.value.rigidbody2D.AddForce(force.value, ForceMode2D.Impulse);
-			if (addTorque) obj.value.rigidbody2D.AddTorque(torque.value);
+			if (!uObject.rigidbody2D && throwErrorIfNoRigidbody) throw new NullReferenceException("No rigidbody found");
+			
+			if (velocity != null) uObject.rigidbody2D.linearVelocity = velocity.value;
+			if (force    != null) uObject.rigidbody2D.AddForce(force.value, ForceMode2D.Impulse);
+			if (torque   != null) uObject.rigidbody2D.AddTorque(torque.value);
 		}
 	}
 }

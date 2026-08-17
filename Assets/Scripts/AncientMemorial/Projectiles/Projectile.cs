@@ -1,4 +1,5 @@
 ﻿using AncientMemorial.Entities;
+using UengSystem.Events;
 using UengSystem.Objects;
 using UnityEngine;
 using Events_Event = UengSystem.Events.Event;
@@ -28,6 +29,24 @@ namespace AncientMemorial.Projectiles {
 			if (obj) OnCollideObject(obj);
 		}
 
-		public override void EventRoutine(Events_Event e) { }
+		protected void SendAttackMultiplyEvent(Entity targetEntity, float damageMult) {
+			SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, (int)EventPriority.Hit, new EntityHitData(
+						  null,
+						  this,
+						  targetEntity,
+						  damage * damageMult,
+						  new Vector2(targetEntity.transform.position.x - transform.position.x, 0).normalized
+					  ));
+		}
+
+		protected void SendAttackEvent(Entity targetEntity, float damageMult) {
+			SendEvent(UengSystem.Events.EventType.Entity_Behaviour_Hit, (int)EventPriority.Hit, new EntityHitData(
+						  null,
+						  this,
+						  targetEntity,
+						  damageMult,
+						  new Vector2(targetEntity.transform.position.x - transform.position.x, 0).normalized
+					  ));
+		}
 	}
 }
