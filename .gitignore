@@ -13,6 +13,11 @@
 /[Aa]seprite/
 *.log
 
+# 자꾸 생겨서 귀찮아서 막음
+Assets/Resources
+Assets/Resources.meta
+Assets/Unity.VisualScripting.Generated/VisualScripting.Core.meta
+
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
 *.blend1.meta
