@@ -1,13 +1,14 @@
 ﻿using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
+using AncientMemorial.Objects;
 using UengSystem.ObjectPool;
 using UengSystem.Utility;
 using UnityEngine;
 
 namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 	public class FallStrike : PlayerWeaponAttack {
-		private DelayedAction attackAction;
+		private AttackAware attackAction;
 		
 		private Vector2 downDir = Vector2.down;
 
@@ -18,7 +19,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 
 		public override float attackTime       => 0.75f;
 		public override float attackAfterTime  => 0;
-		public override float usingAttackSpeed => 1;
+		public override float attackSpeed => 1;
 
 		public override    void OnEnter() {
 			base.OnEnter();

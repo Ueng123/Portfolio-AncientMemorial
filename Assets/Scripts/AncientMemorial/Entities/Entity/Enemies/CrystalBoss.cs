@@ -53,9 +53,6 @@ namespace AncientMemorial.Entities {
 			CameraBrain.instance.ZoomLerp(-0.1f, 20f);
 		}
 		
-		public override void OnStunStart() { }
-		public override void OnStunEnd()   { }
-		
 		private DelayedAction EndGroggy;
 		protected override float GetRealDamage(float rawDamage) {
 			// if (groggyedEffect) {
@@ -110,18 +107,6 @@ namespace AncientMemorial.Entities {
 		// 	if (!player) return;
 		// 	// state           = EnemyState.Alert;
 		// }
-		
-		public virtual void AlertRoutine() {
-			if (!player) {
-				// state = EnemyState.Wander;
-				return;
-			}
-		
-			if (attackable) {
-				// state = EnemyState.Attack;
-				return;
-			}
-		}
 		
 		public virtual void AttackReadyRoutine() { }
 	}

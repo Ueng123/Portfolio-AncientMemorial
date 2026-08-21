@@ -34,7 +34,7 @@ namespace AncientMemorial.Entities {
 		private UUI playerUI;
 		
 		private bool _lookingLeft;
-
+		
 		public bool lookingLeft {
 			get => _lookingLeft;
 			set {
@@ -57,11 +57,11 @@ namespace AncientMemorial.Entities {
 				if (_targetInteraction == value) return;
 				
 				if (_targetInteraction) {
-					SendEvent(EventType.Interact_Untarget, (int)EventPriority.Remove, new EventValueData<Interaction>(_targetInteraction));
+					SendEvent(EventType.Interact_Untarget, (int)EventPriority.Remove, new ValueData<Interaction>(_targetInteraction));
 				}
 				
 				if (value) {
-					SendEvent(EventType.Interact_Target  , (int)EventPriority.Add, new EventValueData<Interaction>(value));
+					SendEvent(EventType.Interact_Target  , (int)EventPriority.Add, new ValueData<Interaction>(value));
 				}
 			
 				_targetInteraction = value;
@@ -104,7 +104,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		private void PrimaryAttack() {
-			SendEvent(EventType.Entity_Behaviour_PrimaryAttack, (int)EventPriority.Action);
+			SendEvent(EventType.Entity_Player_PrimaryAttack, (int)EventPriority.Action);
 			
 			weapon.PrimaryAttack();
 		}
@@ -112,7 +112,7 @@ namespace AncientMemorial.Entities {
 		// R CLICK
 		
 		private void SecondaryAttack() {
-			SendEvent(EventType.Entity_Behaviour_SecondaryAttack, (int)EventPriority.Action);
+			SendEvent(EventType.Entity_Player_SecondaryAttack, (int)EventPriority.Action);
 			
 			weapon.SecondaryAttack();
 		}
@@ -174,10 +174,10 @@ namespace AncientMemorial.Entities {
 		    if (InputManager.GetInput(ActionType.MouseRClick, PressType.Down) && weapon.CanSecondaryAttack()) SecondaryAttack();
 		    
 		    if (InputManager.GetInput(ActionType.Interact, PressType.Down))
-		       SendEvent(EventType.Interact_Start, (int)EventPriority.Start, new EventValueData<Interaction>(targetInteraction));
+		       SendEvent(EventType.Interact_Start, (int)EventPriority.Start, new ValueData<Interaction>(targetInteraction));
 		    
 		    if (InputManager.GetInput(ActionType.Interact, PressType.Up))
-		       SendEvent(EventType.Interact_Cancel, (int)EventPriority.Cancel, new EventValueData<Interaction>(targetInteraction));
+		       SendEvent(EventType.Interact_Cancel, (int)EventPriority.Cancel, new ValueData<Interaction>(targetInteraction));
 
 		    if (InputManager.GetInput(ActionType.Heal, PressType.Down) && CanHeal()) Heal();
 
@@ -260,42 +260,13 @@ namespace AncientMemorial.Entities {
 		
 		// OVERRIDING //
 
-		protected override DelayedAction AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool  awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
-			GameObject  awareObject = UObjectPool.instance.Get("AttackAware", hitboxPos);
-			AttackAware attackAware = awareObject.GetComponent<AttackAware>();
-			attackAware.initialColor        = new Color(0.1843137f, 0.509804f, 0.2422917f, 0);
+		protected override AttackAware AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool  awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
+			AttackAware attackAware = base.AttackArea(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum,
+													  awareLerpX, awareLerpY, ignoreInvincible);
 			attackAware.targetColor         = new Color(0.3536254f, 0.945098f, 0.2431372f, 0.6156863f);
-			attackAware.targetSize          = new Vector2(hitboxSize.x,      hitboxSize.y);
-			attackAware.transform.rotation  = Quaternion.Euler(0, 0, angle);
-			attackAware.spriteRenderer.size = hitboxSize;
-			attackAware.duration            = delay;
-			attackAware.lerpX               = awareLerpX;
-			attackAware.lerpY               = awareLerpY;
-			attackAware.Initialize();
+			attackAware.InitializeColor(new Color(0.1843137f, 0.509804f, 0.2422917f, 0));
 			
-			if (damageMult == 0) {
-				return new DelayedAction(
-					delay,
-					() => UObjectPool.instance.Release(awareObject, 0.1f),
-					() => UObjectPool.instance.Release(awareObject, 0.1f),
-					this).ExecuteDA();
-			}
-			
-			return new DelayedAction(
-				delay, () => {
-					UObjectPool.instance.Release(awareObject, 0.1f);
-					Collider2D[] hitColliders = Physics2D.OverlapBoxAll(hitboxPos, hitboxSize, angle);
-					foreach (Collider2D hit in hitColliders) {
-						if (!hit.CompareTag("Entity")) continue;
-						Entity entity     = hit.GetComponent<Entity>();
-						
-						if (!isAttackTarget(entity)) continue;
-
-						SendAttackMultiplyEvent(this, entity, damageMult, ignoreInvincible);
-						
-						if (--maxTargetNum == 0) return;
-					}
-				}, () => UObjectPool.instance.Release(awareObject, 0.1f), this).ExecuteDA();
+			return attackAware;
 		}
 
 		protected override EntityData GetData() {
@@ -329,6 +300,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		protected override void OnGrounded() {
+			player.SendEvent(EventType.Entity_Player_Land, (int)EventPriority.Stop);
 			PlaySFX("playerLand");
 		}
 

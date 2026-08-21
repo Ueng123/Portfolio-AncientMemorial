@@ -15,18 +15,18 @@ namespace UengSystem.Logic.Tasks {
 		private UObject coroutineRunner;
 		private Coroutine runningTask;
 		
-		private float waitedTime = 0f;
+		private float elapsed = 0f;
 		
 		public void Execute(ITaskable self, UObject coroutineRunner = null) {
 			this.coroutineRunner = coroutineRunner??CoroutineRunner.instance;
-			waitedTime           = 0f;
+			elapsed           = 0f;
 			runningTask          = this.coroutineRunner.StartCoroutine(ExecuteEnumerator(self));
 		}
 
 		public IEnumerator ExecuteEnumerator(ITaskable self) {
 			foreach (TaskListItem taskItem in tasks) {
-				float wait = taskItem.time - waitedTime;
-				waitedTime = taskItem.time;
+				float wait = taskItem.time - elapsed;
+				elapsed = taskItem.time;
 				if (wait != 0) yield return useRealTime?new WaitForSecondsRealtime(wait):new WaitForSeconds(wait);
 				foreach (TaskComponent task in taskItem.tasks) {
 					try { task?.Execute(self); }

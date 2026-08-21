@@ -1,49 +1,40 @@
 ﻿using AncientMemorial.Entities;
 using UengSystem.Utility;
+using UnityEngine.PlayerLoop;
 
 namespace UengSystem.States.EnemyStates {
 	public abstract class EnemyState : UState {
-		protected Enemy  enemy;
-		protected abstract Entity target { get; }
-		
-		private   StopWatch attackWatch = new StopWatch();
-		protected float attackDelay => enemy.entityData.attackCooldown;
+		public Enemy enemy;
+		protected EnemyStateMachine stateMachine;
 
-		protected bool CanAttack() {
-			return !attackWatch.Check(attackDelay);
+		public EnemyState Init(EnemyStateMachine stateMachine) {
+			this.stateMachine = stateMachine;
+			enemy             = stateMachine.enemy;
+			return this;
 		}
-
+		
 		protected EnemyState GetState() {
-			if (!target) return enemy.GetWander();
+			Entity target = stateMachine.GetTarget.Invoke();
+			if (!target) return stateMachine.wanderState;
 
-			bool canAttack = CanAttack();
-			if (!canAttack) return enemy.GetAware();
+			bool canAttack = stateMachine.CanAttack();
+			if (!canAttack) return stateMachine.awareState;
 
-			return enemy.GetAttackReady();
+			return stateMachine.attackReadyState;
 		}
 		
-		public override void OnEnter() {
-			enemy = (Enemy)owner;
-		}
+		public override void OnEnter() { }
 		
 		public override void OnEarlyRoutine() {
 			if (enemy.state != GetState()) enemy.state = GetState();
 		}
 
-		public override void OnRoutine() {
-			
-		}
+		public override void OnRoutine() { }
 
-		public override void OnLateRoutine() {
-			
-		}
+		public override void OnLateRoutine() { }
 
-		public override void OnFixedRoutine() {
-			
-		}
+		public override void OnFixedRoutine() { }
 
-		public override void OnExit() {
-			
-		}
+		public override void OnExit() { }
 	}
 }

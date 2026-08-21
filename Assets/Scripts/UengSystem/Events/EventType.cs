@@ -1,11 +1,14 @@
 ﻿namespace UengSystem.Events {
 	public enum EventType {
-		Entity_Behaviour_Jump,
-		Entity_Behaviour_PrimaryAttack,
-		Entity_Behaviour_SecondaryAttack,
-		Entity_Behaviour_Move,
-		Entity_Behaviour_Dash,
-		Entity_Behaviour_Hit,
+		Entity_Hit,
+		
+		Entity_Player_Jump,
+		Entity_Player_Land,
+		Entity_Player_PrimaryAttack,
+		Entity_Player_SecondaryAttack,
+		Entity_Player_MoveStart,
+		Entity_Player_MoveStop,
+		Entity_Player_Dash,
 		
 		Interact_Start,
 		Interact_Cancel,

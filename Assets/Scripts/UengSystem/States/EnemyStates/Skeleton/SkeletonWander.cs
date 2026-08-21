@@ -5,10 +5,9 @@ using UnityEngine;
 namespace UengSystem.States.EnemyStates.Skeleton {
 	public class SkeletonWander : SkeletonState {
 		
-		public SkeletonWander(float maxOffsetSize, float updatePositionTerm, string[] footstepSpriteNames) {
+		public SkeletonWander(float maxOffsetSize, float updatePositionTerm) {
 			this.maxOffsetSize = maxOffsetSize;
 			this.updatePositionTerm = updatePositionTerm;
-			this.footstepSpriteNames = footstepSpriteNames;
 		}
 		
 		private float maxOffsetSize;

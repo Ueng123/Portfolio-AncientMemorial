@@ -2,7 +2,7 @@
 using Random = UnityEngine.Random;
 
 namespace UengSystem.Utility {
-	public static class Shuffle {
+	public static class ShuffleUtil {
 		public static int[] NewShuffledArray(int n) {
 			int[] array = new int[n];
 			for (int i = 0; i < n; i++) { array[i] = i; }
@@ -47,6 +47,11 @@ namespace UengSystem.Utility {
 			}
 
 			return list;
+		}
+
+		public static T[] Shuffle<T>(this T[] array) {
+			array = ShuffleArray<T>(array);
+			return array;
 		}
 	}
 }

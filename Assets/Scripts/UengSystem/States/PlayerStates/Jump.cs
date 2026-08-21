@@ -9,7 +9,7 @@ namespace UengSystem.States.PlayerStates {
 		private const float   jumpLengthMax = 0.75f;
 		
 		public override    void OnEnter() {
-			player.SendEvent(EventType.Entity_Behaviour_Jump, (int)EventPriority.Action);
+			player.SendEvent(EventType.Entity_Player_Jump, (int)EventPriority.Action);
 			player.PlaySFX("playerJump");
 
 			player.rigidbody2D.linearVelocityY = player.entityStat.jumpPower;

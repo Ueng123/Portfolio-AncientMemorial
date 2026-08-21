@@ -1,5 +1,5 @@
 ﻿namespace UengSystem.States.EnemyStates.Skeleton.Tank {
-	public class SkeletonTankImpact {
+	public class TankSkeletonSpawn : EnemyState {
 		
 	}
 }

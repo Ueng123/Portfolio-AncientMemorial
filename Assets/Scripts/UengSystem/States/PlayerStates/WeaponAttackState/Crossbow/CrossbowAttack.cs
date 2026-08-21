@@ -17,7 +17,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
 		private const             float     skillBonus = 1.5f;
 		private                   float     skillDuration => 3 * (1f + Mathf.Log10(player.entityStat.attackSpeed));
 		
-		public override float usingAttackSpeed => player.entityStat.attackSpeed * (skillTimer.Check(skillDuration)?skillBonus:1f);
+		public override float attackSpeed => player.entityStat.attackSpeed * (skillTimer.Check(skillDuration)?skillBonus:1f);
 		
 		protected GameObject GetArrowDebris(Vector2 position, float angle) {
 			GameObject obj = UObjectPool.instance.Get("ArrowDebris", position);
@@ -145,7 +145,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
 		public override void OnEnter() {
 			base.OnEnter();
 			oldAnimatorSpeed = player.animator.speed;
-			player.animator.speed = usingAttackSpeed;
+			player.animator.speed = attackSpeed;
 			player.animator.SetBool(Attacking, true);
 		}
 

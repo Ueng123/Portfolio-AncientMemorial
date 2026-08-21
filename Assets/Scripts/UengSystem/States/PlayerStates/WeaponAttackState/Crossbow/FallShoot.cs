@@ -1,8 +1,8 @@
 ﻿namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
 	public class FallShoot : CrossbowAttack {
 		public override float attackTime       => 0.2f;
-		public override float attackAfterTime  => 1.5f;
-		public override float usingAttackSpeed => 1f;
+		public override float attackAfterTime  => 0;
+		public override float attackSpeed => 1f;
 		
 		private const int   shootNum    = 3;
 		private const float shootDamage = 2f;

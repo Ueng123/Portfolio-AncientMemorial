@@ -8,7 +8,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 	public class ShieldJump : PlayerWeaponAttack {
 		public override float attackTime       => 0.2f;
 		public override float attackAfterTime  => 5f;
-		public override float usingAttackSpeed => player.entityStat.attackSpeed / 3f;
+		public override float attackSpeed => player.entityStat.attackSpeed / 3f;
 
 		public override    void OnEnter() {
 			base.OnEnter();
@@ -17,7 +17,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 				player.SendAttackEvent(player, Mathf.Round(player.entityData.hp *0.2f), false);
 			}
 			
-			player.SendEvent(EventType.Entity_Behaviour_Jump, (int)EventPriority.Action);
+			player.SendEvent(EventType.Entity_Player_Jump, (int)EventPriority.Action);
 			player.PlaySFX("shieldSkill");
 			Vector2 footPosition = player.groundChecker.transform.position;
 			UObjectPool.instance.Get("ShieldSkillEffect", footPosition);

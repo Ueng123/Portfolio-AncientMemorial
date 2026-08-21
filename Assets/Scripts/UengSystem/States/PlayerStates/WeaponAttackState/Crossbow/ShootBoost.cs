@@ -2,7 +2,7 @@
 	public class ShootBoost : CrossbowAttack {
 		public override float attackTime       => 0f;
 		public override float attackAfterTime  => 10f;
-		public override float usingAttackSpeed => 1f;
+		public override float attackSpeed => 1f;
 
 		public override void OnEnter() {
 			base.OnEnter();

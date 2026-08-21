@@ -20,7 +20,7 @@ namespace UengSystem.States.PlayerStates {
 		private int dashSign;
 		
 		public override void OnEnter() {
-			player.SendEvent(EventType.Entity_Behaviour_Dash, (int)EventPriority.Action);
+			player.SendEvent(EventType.Entity_Player_Dash, (int)EventPriority.Action);
 			player.PlaySFX("playerDash");
 			player.Invincible(dashTime+0.3f);
 			

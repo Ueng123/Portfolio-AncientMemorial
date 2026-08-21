@@ -125,6 +125,11 @@ MonoBehaviour:
   lerpX: 1
   lerpY: 1
   duration: 5
+  attacker: {fileID: 0}
+  damageMult: 0
+  maxTargetNum: 0
+  ignoreInvincible: 0
+  invisible: 0
   references:
     version: 2
     RefIds: []

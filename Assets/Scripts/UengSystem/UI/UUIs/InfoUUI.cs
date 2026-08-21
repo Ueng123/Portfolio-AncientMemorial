@@ -20,7 +20,7 @@ namespace UengSystem.UI {
 				textAction.text          = new UPureString  { Text  = info.text };
 				
 				if (i == 0 && animator.GetCurrentAnimatorStateInfo(0).IsName("addInfo")) continue;
-				float alpha = Mathf.Clamp(infoDuration - info.stopWatch.Tock(), 0f, 1f);
+				float alpha = Mathf.Clamp(infoDuration - info.stopWatch.TryTock(infoDuration), 0f, 1f);
 				textComponent.text.alpha = alpha;
 			}
 		}

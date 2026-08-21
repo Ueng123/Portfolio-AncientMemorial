@@ -19,6 +19,12 @@ namespace UengSystem.Utility {
 			return Time.time - tickTime;
 		}
 
+		public float TryTock(float baseValue) {
+			if (!ticked) return baseValue;
+			
+			return Time.time - tickTime;
+		}
+
 		public void Pause() {
 			if (!ticked) return;
 			if (paused) return;

@@ -2,5 +2,5 @@
 
 namespace UengSystem.Events {
 	[Serializable]
-	public record EventValueData<T>(T value):EventData();
+	public record ValueData<T>(T value):EventData();
 }

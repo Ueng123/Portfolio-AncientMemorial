@@ -47,6 +47,8 @@ namespace AncientMemorial.Weapons {
 			InitializeAttacks();
 		}
 
+		public virtual void Uninitialize() { }
+
 		public virtual void PrimaryAttack() {
 			bool isFirstAttack = currPrimaryAttackStage == -1;
 			bool isTimeOver    = !primaryAttackWatch.Check(GetPrimaryAttackDelay(currPrimaryAttackStage) + 2);

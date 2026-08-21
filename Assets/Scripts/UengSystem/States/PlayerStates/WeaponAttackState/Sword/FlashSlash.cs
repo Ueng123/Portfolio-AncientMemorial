@@ -1,6 +1,7 @@
 ﻿using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
+using AncientMemorial.Objects;
 using UengSystem.Inputs;
 using UengSystem.ObjectPool;
 using UengSystem.Utility;
@@ -8,11 +9,11 @@ using UnityEngine;
 
 namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 	public class FlashSlash : PlayerWeaponAttack {
-		private DelayedAction skillAttack;
+		private AttackAware skillAttack;
 
 		public override float attackTime       => 0f;
 		public override float attackAfterTime  => 0f;
-		public override float usingAttackSpeed => 0f;
+		public override float attackSpeed => 0f;
 
 		private Vector2 hitboxPos;
 		private Vector2 hitboxSize;

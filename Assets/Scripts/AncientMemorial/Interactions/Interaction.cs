@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using System.Collections.Generic;
 using AncientMemorial.Entities;
 using UengSystem.Events;
@@ -14,7 +15,7 @@ using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
 using UnityEngine;
-using Events_Event = UengSystem.Events.Event;
+using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.Interactions {
@@ -128,29 +129,33 @@ namespace AncientMemorial.Interactions {
 
 		public override void Initialize() {
 			interactable = prefabInteractable;
+
+			interactStart    ??= InteractStartEvent;
+			interactCancel   ??= InteractCancelEvent;
+			interactTarget   ??= InteractTargetEvent;
+			interactUntarget ??= InteractUntargetEvent;
 			
-			EventManager.instance.RegisterEvent(EventType.Interact_Start, InteractStartEvent);
-			EventManager.instance.RegisterEvent(EventType.Interact_Cancel, InteractCancelEvent);
-			EventManager.instance.RegisterEvent(EventType.Interact_Target, InteractTargetEvent);
-			EventManager.instance.RegisterEvent(EventType.Interact_Untarget, InteractUntargetEvent);
-			
+			EventType.Interact_Start.AddListener(interactStart);
+			EventType.Interact_Cancel.AddListener(interactCancel);
+			EventType.Interact_Target.AddListener(interactTarget);
+			EventType.Interact_Untarget.AddListener(interactUntarget);
+    
 			base.Initialize();
 		}
 
 		protected override void OnRelease() {
 			interactable = false;
-			
-			EventManager.instance.UnregisterEvent(EventType.Interact_Start,    InteractStartEvent);
-			EventManager.instance.UnregisterEvent(EventType.Interact_Cancel,   InteractCancelEvent);
-			EventManager.instance.UnregisterEvent(EventType.Interact_Target,   InteractTargetEvent);
-			EventManager.instance.UnregisterEvent(EventType.Interact_Untarget, InteractUntargetEvent);
-			
+    
+			EventType.Interact_Start.RemoveListener(interactStart);
+			EventType.Interact_Cancel.RemoveListener(interactCancel);
+			EventType.Interact_Target.RemoveListener(interactTarget);
+			EventType.Interact_Untarget.RemoveListener(interactUntarget);
+    
 			base.OnRelease();
-			
-			if (!interactUI) return;
-			Untargetted();
+    
+			if (interactUI) Untargetted();
 		}
-
+		
 		public override void Uninitialize() {
 			base.Uninitialize();
 
@@ -165,25 +170,36 @@ namespace AncientMemorial.Interactions {
 			if (CheckInteractable()) InteractableInteractions.Add(this);
 		}
 
-		private void InteractStartEvent(Events_Event e) {
-			if (((EventValueData<Interaction>)e.data).value != this) return;
+		// EVENT METHODS //
+
+		private Action<Event> interactStart;
+		private Action<Event> interactCancel;
+		private Action<Event> interactTarget;
+		private Action<Event> interactUntarget;
+		
+		private void InteractStartEvent(Event e) {
+			if (e.GetData<ValueData<Interaction>>().value != this) return;
+			
 			InteractStart();
 			interactAction.ExecuteDA();
 		}
 
-		private void InteractCancelEvent(Events_Event e) {
-			if (((EventValueData<Interaction>)e.data).value != this) return;
+		private void InteractCancelEvent(Event e) {
+			if (e.GetData<ValueData<Interaction>>().value != this) return;
+			
 			if (!interactAction.Executing) return;
 			interactAction.Cancel();
 		}
 
-		private void InteractTargetEvent(Events_Event e) {
-			if (((EventValueData<Interaction>)e.data).value != this) return;
+		private void InteractTargetEvent(Event e) {
+			if (e.GetData<ValueData<Interaction>>().value != this) return;
+			
 			Targetted();
 		}
 
-		private void InteractUntargetEvent(Events_Event e) {
-			if (((EventValueData<Interaction>)e.data).value != this) return;
+		private void InteractUntargetEvent(Event e) {
+			if (e.GetData<ValueData<Interaction>>().value != this) return;
+			
 			Untargetted();
 			interactAction.Cancel();
 		}

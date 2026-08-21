@@ -1,5 +1,7 @@
-﻿using UengSystem.Inputs;
+﻿using UengSystem.Events;
+using UengSystem.Inputs;
 using UnityEngine;
+using EventType = UengSystem.Events.EventType;
 
 namespace UengSystem.States.PlayerStates {
 	public class Move : PlayerDefaultState {
@@ -19,6 +21,8 @@ namespace UengSystem.States.PlayerStates {
 		}
 		
 		public override    void OnEnter() {
+			player.SendEvent(EventType.Entity_Player_MoveStart, (int)EventPriority.Start);
+			
 			moveDir = InputManager.GetValue(ActionType.Move);
 			player.animator.SetBool(Moving, true);
 		}
@@ -54,6 +58,8 @@ namespace UengSystem.States.PlayerStates {
 		}
 
 		public override void OnExit() {
+			player.SendEvent(EventType.Entity_Player_MoveStop, (int)EventPriority.Stop);
+			
 			player.animator.SetBool(Moving, false);
 		}
 	}

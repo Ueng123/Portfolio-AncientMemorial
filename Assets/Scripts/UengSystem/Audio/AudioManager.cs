@@ -199,10 +199,12 @@ namespace UengSystem.Audio {
 			(AudioSource source, float? releaseTime) SFX    = playingSFX[sourceIndex];
 			AudioSource                              source = SFX.source;
 			
+			playingSFX.RemoveAt(sourceIndex);
+
+			if (!source) return;
 			if (!source.enabled) return;
 			if (source.isPlaying) source.Stop();
 			
-			playingSFX.RemoveAt(sourceIndex);
 			
 			source.panStereo    = 0f;
 			source.spread       = 0f;

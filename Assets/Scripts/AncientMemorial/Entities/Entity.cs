@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
@@ -16,8 +17,9 @@ using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
 using UnityEngine;
-using Events_Event = UengSystem.Events.Event;
+using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;
+using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
 	public abstract class Entity : UObject, IStateObject {
@@ -61,11 +63,11 @@ namespace AncientMemorial.Entities {
 		public List<AttatchObject> debrisAttached = new List<AttatchObject>();
 		
 		// Static Methods //
-		public static DelayedAction AttackArea(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
+		public static AttackAware AttackArea(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
 			return attacker.AttackArea(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum, awareLerpX, awareLerpY, ignoreInvincible);
 		}
 		
-		public static DelayedAction AttackAreaNoEffect(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
+		public static AttackAware AttackAreaNoEffect(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
 			return attacker.AttackAreaNoEffect(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum, ignoreInvincible);
 		}
 		
@@ -154,63 +156,45 @@ namespace AncientMemorial.Entities {
 			textSAction.Initialize(damageUI);
 		}
 		
-		protected virtual DelayedAction AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
-			
+		protected virtual AttackAware AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
 			GameObject  awareObject = UObjectPool.instance.Get("AttackAware", hitboxPos);
 			AttackAware attackAware = awareObject.GetComponent<AttackAware>();
-			attackAware.initialColor        = new Color(0.509434f, 0.1850303f, 0.1850303f, 0);
+			attackAware.InitializeColor(new Color(0.509434f, 0.1850303f, 0.1850303f, 0));
+			
 			attackAware.targetColor         = new Color(0.9433962f, 0.244749f,  0.244749f,  0.6156863f);
 			attackAware.targetSize          = new Vector2(hitboxSize.x,      hitboxSize.y);
 			attackAware.transform.rotation  = Quaternion.Euler(0, 0, angle);
 			attackAware.spriteRenderer.size = hitboxSize;
+			attackAware.damageMult          = damageMult;
+			attackAware.attacker            = this;
+			attackAware.maxTargetNum        = maxTargetNum;
+			attackAware.ignoreInvincible    = ignoreInvincible;
 			attackAware.duration            = delay;
 			attackAware.lerpX               = awareLerpX;
 			attackAware.lerpY               = awareLerpY;
-			attackAware.Initialize();
-			
-			if (damageMult == 0) {
-				return new DelayedAction(
-					delay,
-					() => UObjectPool.instance.Release(awareObject, 0.1f),
-					() => UObjectPool.instance.Release(awareObject, 0.1f),
-					this).ExecuteDA();
-			}
-			
-			return new DelayedAction(
-				delay, () => {
-					UObjectPool.instance.Release(awareObject, 0.1f);
-					Collider2D[] hitColliders = Physics2D.OverlapBoxAll(hitboxPos, hitboxSize, angle);
-					foreach (Collider2D hit in hitColliders) {
-						if (!hit.CompareTag("Entity")) continue;
-						Entity entity     = hit.GetComponent<Entity>();
-						
-						if (!isAttackTarget(entity)) continue;
+			attackAware.invisible           = false;
 
-						SendAttackMultiplyEvent(this, entity, damageMult, ignoreInvincible);
-						
-						if (--maxTargetNum == 0) return;
-					}
-				}, () => UObjectPool.instance.Release(awareObject, 0.1f), this).ExecuteDA();
+			return attackAware;
 		}
 		
-		protected DelayedAction AttackAreaNoEffect(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
-			return new DelayedAction(delay, () => {
-				Collider2D[] hitColliders = Physics2D.OverlapBoxAll(hitboxPos, hitboxSize, angle);
-				foreach (Collider2D hit in hitColliders) {
-					if (!hit.CompareTag("Entity")) continue;
-					Entity entity = hit.GetComponent<Entity>();
-					
-					if (!isAttackTarget(entity)) continue;
-
-					SendAttackMultiplyEvent(this, entity, damageMult, ignoreInvincible);
-					
-					if (--maxTargetNum == 0) return;
-				}
-			}, () => { }, this).ExecuteDA();
+		protected AttackAware AttackAreaNoEffect(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
+			GameObject  awareObject = UObjectPool.instance.Get("AttackAware", hitboxPos);
+			AttackAware attackAware = awareObject.GetComponent<AttackAware>();
+			attackAware.targetSize          = new Vector2(hitboxSize.x, hitboxSize.y);
+			attackAware.transform.rotation  = Quaternion.Euler(0, 0, angle);
+			attackAware.spriteRenderer.size = hitboxSize;
+			attackAware.damageMult          = damageMult;
+			attackAware.attacker            = this;
+			attackAware.maxTargetNum        = maxTargetNum;
+			attackAware.ignoreInvincible    = ignoreInvincible;
+			attackAware.duration            = delay;
+			attackAware.invisible           = true;
+			
+			return attackAware;
 		}
 
 		public static void SendAttackMultiplyEvent(Entity attacker, Entity target, float damageMult, bool ignoreInvincible, bool useProcess = true) {
-			EntityHitData hitData = new (
+			HitData hitData = new (
 				attacker,
 				null,
 				target,
@@ -222,10 +206,10 @@ namespace AncientMemorial.Entities {
 			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
 			
 			if (useProcess) {
-				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Behaviour_Hit, (int)EventPriority.Hit, hitData); });
+				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, (int)EventPriority.Hit, hitData); });
 			}
 			else {
-				attacker.SendEvent(EventType.Entity_Behaviour_Hit, (int)EventPriority.Hit, hitData);
+				attacker.SendEvent(EventType.Entity_Hit, (int)EventPriority.Hit, hitData);
 			}
 		}
 		
@@ -234,7 +218,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		public static void SendAttackEvent(Entity attacker, Entity target, float damage, bool ignoreInvincible, bool useProcess = true) {
-			EntityHitData hitData = new (
+			HitData hitData = new (
 				attacker,
 				null,
 				target,
@@ -246,10 +230,10 @@ namespace AncientMemorial.Entities {
 			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
 			
 			if (useProcess) {
-				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Behaviour_Hit, (int)EventPriority.Hit, hitData); });
+				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, (int)EventPriority.Hit, hitData); });
 			}
 			else {
-				attacker.SendEvent(EventType.Entity_Behaviour_Hit, (int)EventPriority.Hit, hitData);
+				attacker.SendEvent(EventType.Entity_Hit, (int)EventPriority.Hit, hitData);
 			}
 		}
 		
@@ -275,8 +259,9 @@ namespace AncientMemorial.Entities {
 			base.Initialize();
 			
 			Invincible(entityData.invincibleTime);
-			
-			EventManager.instance.RegisterEvent(EventType.Entity_Behaviour_Hit, HitEvent);
+
+			hitEvent ??= HitEvent;
+			EventType.Entity_Hit.AddListener(hitEvent);
 			
 			if (groundBoxSize == Vector2.zero) return;
 			Collider2D groundCheckTrigger = groundChecker.GetComponent<Collider2D>();
@@ -335,7 +320,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected override void OnRelease() {
-			EventManager.instance.UnregisterEvent(EventType.Entity_Behaviour_Hit, HitEvent);
+			EventType.Entity_Hit.RemoveListener(hitEvent);
 			
 			if (entityUI) UUIPool.instance.Close(entityUI.gameObject);
 			
@@ -416,8 +401,10 @@ namespace AncientMemorial.Entities {
 		protected virtual void OnHitFromProjectile(Projectile projectile, float    damage, Vector2? pushDir) { }
 		protected abstract void OnHeal(float amount);
 		protected abstract float GetRealDamage(float rawDamage);
-		public void HitEvent(Events_Event e) {
-			EntityHitData hitData = (EntityHitData)e.data;
+
+		private Action<Event> hitEvent;
+		private void HitEvent(Event e) {
+			HitData hitData = (HitData)e.data;
 			if (hitData.reciever != this) return;
 			if (invincible && !hitData.ignoreInvincible) return;
 					

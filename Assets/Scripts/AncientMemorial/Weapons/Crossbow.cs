@@ -4,6 +4,7 @@ using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
 using AncientMemorial.Objects;
+using UengSystem.Events;
 using UengSystem.Inputs;
 using UengSystem.Logic.UValues.UFloats;
 using UengSystem.ObjectPool;
@@ -12,11 +13,19 @@ using UengSystem.States;
 using UengSystem.States.PlayerStates.WeaponAttackState;
 using UengSystem.Utility;
 using UnityEngine;
+using Event = UengSystem.Events.Event;
+using EventType = UengSystem.Events.EventType;
 using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Weapons {
 	[CreateAssetMenu(fileName = "Crossbow", menuName = "Weapons/Crossbow")]
 	public class Crossbow : Weapon {
+
+		private Action<Event> onPlayerLand;
+		private void OnPlayerLand(Event e) {
+			
+		}
+		
 		public override void PrimaryAttack() {
 			base.PrimaryAttack();
 			if (!player.isGround) currPrimaryAttackStage--;
@@ -57,6 +66,14 @@ namespace AncientMemorial.Weapons {
 		protected override void InitializeAttacks() {
 			primaryAttackStageCount   = primaryAttacks.Length;
 			secondaryAttackStageCount = 1;
+			
+			onPlayerLand ??= OnPlayerLand;
+			
+			EventType.Entity_Player_Land.AddListener(onPlayerLand);
+		}
+
+		public override void Uninitialize() {
+			
 		}
 	}
 }

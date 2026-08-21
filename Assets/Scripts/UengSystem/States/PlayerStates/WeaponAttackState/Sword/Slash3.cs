@@ -8,14 +8,14 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 		
 		public override float attackTime       => 0.3f;
 		public override float attackAfterTime  => 0.4f;
-		public override float usingAttackSpeed => player.entityStat.attackSpeed / 2f;
+		public override float attackSpeed => player.entityStat.attackSpeed / 2f;
 
 		public override void OnEnter() {
 			base.OnEnter();
 			player.animator.Play("Dattack1"+(player.lookingLeft?"B":""), 0, 0);
 			
 			oldAnimatorSpeed      = player.animator.speed;
-			player.animator.speed = usingAttackSpeed;
+			player.animator.speed = attackSpeed;
 		}
 
 		public override void OnRoutine() {

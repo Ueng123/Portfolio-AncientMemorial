@@ -2,6 +2,7 @@
 using AncientMemorial.Cameras;
 using AncientMemorial.Map;
 using UengSystem.Logic.Tasks;
+using UengSystem.UDebug;
 using UnityEngine;
 
 namespace AncientMemorial.Tasks {
@@ -19,8 +20,8 @@ namespace AncientMemorial.Tasks {
 		public CameraSizingType SizingType;
 		
 		public override void Execute(ITaskable self) {
-			Debug.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
-			Debug.Log($" > Camera Lens Offset = {TargetCamLensOffset}\n" +
+			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
+			DebugManager.Log($" > Camera Lens Offset = {TargetCamLensOffset}\n" +
 					  $" > Camera Sizing Type = {SizingType}\n"          +
 					  $" > Align Type X = {TargetAlignTypeX}\n"          +
 					  $" > Align Type Y = {TargetAlignTypeY}\n"          +

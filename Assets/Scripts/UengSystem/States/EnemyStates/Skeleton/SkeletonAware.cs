@@ -1,4 +1,5 @@
-﻿using UengSystem.Utility;
+﻿using AncientMemorial.Entities;
+using UengSystem.Utility;
 using UnityEngine;
 
 namespace UengSystem.States.EnemyStates.Skeleton {
@@ -32,6 +33,8 @@ namespace UengSystem.States.EnemyStates.Skeleton {
 		}
 
 		public override void OnRoutine() {
+			Entity target = stateMachine.GetTarget.Invoke();
+			
 			if (!offsetTimer.Check(updateOffsetTerm)) {
 				offsetTimer.Tick();
 				UpdateOffset();

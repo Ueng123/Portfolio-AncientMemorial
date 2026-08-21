@@ -9,7 +9,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 		
 		public override float attackTime       => 0.5f;
 		public override float attackAfterTime  => 0.75f;
-		public override float usingAttackSpeed => player.entityStat.attackSpeed / 3f;
+		public override float attackSpeed => player.entityStat.attackSpeed / 3f;
 
 		public override void OnEnter() {
 			base.OnEnter();
@@ -17,7 +17,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 			player.rigidbody2D.linearVelocityX = 0;
 			
 			oldAnimatorSpeed      = player.animator.speed;
-			player.animator.speed = usingAttackSpeed;
+			player.animator.speed = attackSpeed;
 			
 			player.animator.Play(player.lookingLeft?"Sattack2B":"Sattack2", 0, 0);
 		}

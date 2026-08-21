@@ -4,11 +4,9 @@ using UnityEngine;
 
 namespace UengSystem.States.EnemyStates.Skeleton {
 	public abstract class SkeletonState : GroundEnemyState {
-		protected string[] footstepSpriteNames;
-		protected override bool     isFootstep => footstepSpriteNames.Contains(enemy.spriteRenderer.sprite.name);
-		
-		private static string[] footstepNames = { "footstep1", "footstep2", "footstep3" };
-		protected override string footstepSoundName => footstepNames[Random.Range(0, footstepNames.Length)];
-		protected override Entity target => Entity.player;
+		protected static readonly int attacking = Animator.StringToHash("attacking");
+		protected static readonly int attackF   = Animator.StringToHash("attackFrontEnd");
+		protected static readonly int attackB   = Animator.StringToHash("attackBackEnd");
+		protected static readonly int attack    = Animator.StringToHash("attack");
 	}
 }

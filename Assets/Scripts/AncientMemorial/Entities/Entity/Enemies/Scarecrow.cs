@@ -2,27 +2,15 @@
 using AncientMemorial.Cameras;
 using UengSystem.Logic.UValues.UFloats;
 using UengSystem.ObjectPool;
+using UengSystem.States.EnemyStates;
 using UnityEngine;
 
 namespace AncientMemorial.Entities {
 	public class Scarecrow : Enemy {
-		public override    void        OnStunStart() {}
 
-		public override    void        OnStunEnd() {}
-
-		protected override IEnumerator AttackEnumerator() { yield return null; }
-
-		protected override void OnAttackDone() {}
-
-		protected override void OnAttackCancel() {}
-
-		// public override void WanderRoutine() {}
-		//
-		// public override void AlertRoutine() {}
-		//
-		// public override void AttackReadyRoutine() {}
-		//
-		// public override void AttackRoutine() {}
+		public override Entity GetTargetEntity() => player;
+		
+		public override void Attack() { }
 
 		public override bool isAttackTarget(Entity entity) => false;
 
