@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using AncientMemorial.Cameras;
-using UengSystem.Logic.UValues.UFloats;
+﻿using AncientMemorial.Cameras;
+using UengSystem;
 using UengSystem.ObjectPool;
-using UengSystem.States.EnemyStates;
 using UnityEngine;
 
-namespace AncientMemorial.Entities {
+namespace AncientMemorial.Entities.Enemies {
 	public class Scarecrow : Enemy {
-
-		public override Entity GetTargetEntity() => player;
+		protected override Entity GetTargetEntity() => player;
 		
 		public override void Attack() { }
 
@@ -25,9 +22,8 @@ namespace AncientMemorial.Entities {
 			animator.Play("Hit");
 			
 			if (attacker != player) return;
-			if (entityStat.hp <= 0) {
+			if (entityStat.HP <= 0) {
 				UObjectPool.instance.Get("Explode2", transform.position);
-				GameManager.UValueFloatVariables["scarecrowDead"]   = new UPureFloat {number = GameManager.UValueFloatVariables["scarecrowDead"].value + 1};
 			}
 			
 			GameManager.SetTimeScale(0f, 0.05f);

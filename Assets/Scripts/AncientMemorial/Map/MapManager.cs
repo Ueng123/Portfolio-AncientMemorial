@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AncientMemorial.Map;
+using UnityEngine;
 using UengSystem.Managers;
 
 namespace AncientMemorial.Map {
@@ -55,7 +56,7 @@ namespace AncientMemorial.Map {
 		}
 		
 		public override void ManagerFixedUpdate() {
-			CurrMapSize = Vector2.Lerp(CurrMapSize, TargetMapSize,                  mapChangeSpeed);
+			CurrMapSize = Vector2.Lerp(CurrMapSize, TargetMapSize, mapChangeSpeed);
 			
 			CurrCamLens = Vector2.Lerp(CurrCamLens, TargetCamLens+(Vector2.one*CamLensOffset), mapChangeSpeed);
 			CurrCamPos  = Vector2.Lerp(CurrCamPos,  TargetCamPos,                   mapChangeSpeed*2);

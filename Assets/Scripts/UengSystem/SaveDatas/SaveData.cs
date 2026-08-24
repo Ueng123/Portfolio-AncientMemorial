@@ -1,6 +1,6 @@
-﻿using UengSystem.Settings;
+﻿using UengSystem.Utility;
 
-namespace UengSystem.GameSaveDatas {
+namespace UengSystem.SaveDatas {
 	public abstract class SaveData<INSTANCE, DATATYPE, ENUM> where INSTANCE:SaveData<INSTANCE, DATATYPE, ENUM>, new() {
 		protected static UJSON<DATATYPE> dataFile;
 		

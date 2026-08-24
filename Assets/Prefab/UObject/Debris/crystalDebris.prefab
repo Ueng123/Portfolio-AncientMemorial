@@ -283,10 +283,10 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 8985605350484083456
+      - rid: 5909658922870112987
     - time: 10
       tasks:
-      - rid: 8985605350484083469
+      - rid: 5909658922870112989
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -295,114 +295,85 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8985605350484083456
-      type: {class: ConfigureRigidbody, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112987
+      type: {class: ConfigureRigidbody, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         throwErrorIfNoRigidbody: 0
+        thisObject: 1
         obj:
-          rid: 8985605350484083459
-        changeVelocity: 0
+          rid: -2
         velocity:
           rid: -2
-        addForce: 1
         force:
-          rid: 8985605350484083458
-        addTorque: 1
+          rid: 5909658922870112993
         torque:
-          rid: 8985605350484083457
-    - rid: 8985605350484083457
-      type: {class: URandom, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+          rid: 5909658922870112995
+    - rid: 5909658922870112989
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        Min:
-          rid: 8985605434833633784
-        Max:
-          rid: 8985605434833633785
-    - rid: 8985605350484083458
-      type: {class: UNumberVector2, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: {x: 0, y: 0}
-        isValueCached: 0
-        x:
-          rid: 8985605350484083462
-        y:
-          rid: 8985605350484083463
-    - rid: 8985605350484083459
-      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: {fileID: 0}
-        isValueCached: 0
-        obj: {fileID: -5919083918332529333}
-    - rid: 8985605350484083462
-      type: {class: URandom, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        Min:
-          rid: 8985605434833633786
-        Max:
-          rid: 8985605434833633787
-    - rid: 8985605350484083463
-      type: {class: URandom, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        Min:
-          rid: 8985605434833633818
-        Max:
-          rid: 8985605434833633819
-    - rid: 8985605350484083469
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        releaseTime: 0
+        releaseTime: 1
         releaseThis: 1
         TargetObject:
           rid: -2
-    - rid: 8985605434833633784
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+    - rid: 5909658922870112993
+      type: {class: UNumberVector2, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: -1
-    - rid: 8985605434833633785
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        x:
+          rid: 5909658922870113002
+        y:
+          rid: 5909658922870113004
+    - rid: 5909658922870112995
+      type: {class: URandom, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 1
-    - rid: 8985605434833633786
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        Min:
+          rid: 5909658922870112997
+        Max:
+          rid: 5909658922870112999
+    - rid: 5909658922870112997
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: -1
-    - rid: 8985605434833633787
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        pureValue: -1
+    - rid: 5909658922870112999
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 1
-    - rid: 8985605434833633818
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        pureValue: 1
+    - rid: 5909658922870113002
+      type: {class: URandom, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 3
-    - rid: 8985605434833633819
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        Min:
+          rid: 5909658922870113006
+        Max:
+          rid: 5909658922870113008
+    - rid: 5909658922870113004
+      type: {class: URandom, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 5
+        Min:
+          rid: 5909658922870113011
+        Max:
+          rid: 5909658922870113013
+    - rid: 5909658922870113006
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: -1
+    - rid: 5909658922870113008
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 1
+    - rid: 5909658922870113011
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 3
+    - rid: 5909658922870113013
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 5

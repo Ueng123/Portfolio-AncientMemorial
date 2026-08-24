@@ -203,8 +203,8 @@ MonoBehaviour:
     tasks:
     - time: 1.617
       tasks:
-      - rid: 8985605504832111532
-      - rid: 5909658463911543018
+      - rid: 5909658922870113067
+      - rid: 5909658922870113065
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -213,37 +213,37 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658463911543018
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113065
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
-        releaseThis: 1
+        releaseThis: 0
         TargetObject:
           rid: -2
-    - rid: 8985605504832111532
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113067
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetObject: {fileID: 2128586633492397799, guid: befb2af89be8d794b84065c31055cb6d, type: 3}
         position:
-          rid: 8985605504832111556
+          rid: 5909658922870113068
         spawnTime:
-          rid: 8985605504832111536
+          rid: 5909658922870113070
         ID:
           rid: -2
         Category:
-          rid: 8985605504832111538
-    - rid: 8985605504832111536
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 0.001
-    - rid: 8985605504832111538
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: TankEnemy
-    - rid: 8985605504832111556
-      type: {class: UTransformPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+          rid: 5909658922870113072
+    - rid: 5909658922870113068
+      type: {class: UTransformPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         targetTransform: {fileID: 4849392889249501087}
+    - rid: 5909658922870113070
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 0.01
+    - rid: 5909658922870113072
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: SkeletonTankSpawned

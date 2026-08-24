@@ -1,9 +1,8 @@
 ﻿using System;
-using UengSystem.States.EnemyStates;
 
-namespace AncientMemorial.Entities {
+namespace AncientMemorial.Entities.Enemies {
 	public class CrystalPhase2 : CrystalBoss {
-		public override Entity GetTargetEntity() {
+		protected override Entity GetTargetEntity() {
 			throw new System.NotImplementedException();
 		}
 

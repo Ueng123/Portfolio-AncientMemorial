@@ -8035,9 +8035,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e90855da79deda49b56fbd4ff18652e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - {fileID: 11400000, guid: d7cda393d41c0344cb09cc4a0cb436ef, type: 2}
-  currentWave: {fileID: 11400000, guid: 71e1ef7c4794ada4eab7f4ecc75553db, type: 2}
+  waves: []
+  currentWave: {fileID: 11400000, guid: 20c3f3d3d258e864ea8803b819ae927e, type: 2}
 --- !u!1 &2009026533
 GameObject:
   m_ObjectHideFlags: 0

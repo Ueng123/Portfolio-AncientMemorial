@@ -90,14 +90,7 @@ MonoBehaviour:
   canvas: {fileID: 439209103324633250}
   onInteract:
     useRealTime: 0
-    tasks:
-    - time: 0
-      tasks:
-      - rid: 8985605422383366374
-      - rid: 8985605422383366416
-      - rid: 5909658476027314204
-      - rid: 8985605422383366723
-      - rid: 5909658463911543411
+    tasks: []
   onCancel:
     useRealTime: 0
     tasks: []
@@ -110,150 +103,13 @@ MonoBehaviour:
   onUnTarget:
     useRealTime: 0
     tasks: []
+  upgradeSuccessMessage: "<color=#F8BB30>\uCD5C\uB300 \uCCB4\uB825</color>\uC774
+    \uC99D\uAC00\uD558\uC600\uC2B5\uB2C8\uB2E4"
+  upgradeAmount: 5
+  upgradeStat: 1
   references:
     version: 2
-    RefIds:
-    - rid: 5909658463911543411
-      type: {class: AddUFloatVariableAsPure, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        key:
-          rid: 5909658463911543419
-        value:
-          rid: 5909658463911543427
-    - rid: 5909658463911543419
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: UpgradeCountMH
-    - rid: 5909658463911543427
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 1
-    - rid: 5909658476027314188
-      type: {class: UPlayerEntity, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-    - rid: 5909658476027314196
-      type: {class: UPlayerEntity, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-    - rid: 5909658476027314204
-      type: {class: SetEntityFloatStat, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
-      data:
-        targetEntity:
-          rid: 5909658476027314206
-        targetValue:
-          rid: 5909658476027314208
-        entityDataType: 2
-    - rid: 5909658476027314206
-      type: {class: UPlayerEntity, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-    - rid: 5909658476027314208
-      type: {class: UAdd, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        A:
-          rid: 5909658476027314210
-        B:
-          rid: 5909658476027314214
-    - rid: 5909658476027314210
-      type: {class: UEntityStat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetEntity:
-          rid: 5909658476027314212
-        type: 2
-    - rid: 5909658476027314212
-      type: {class: UPlayerEntity, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-    - rid: 5909658476027314214
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 7
-    - rid: 8985605422383366374
-      type: {class: AddInfoMessage, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
-      data:
-        message:
-          rid: 8985605422383366455
-    - rid: 8985605422383366416
-      type: {class: SetEntityFloatStat, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
-      data:
-        targetEntity:
-          rid: 5909658476027314188
-        targetValue:
-          rid: 8985605422383366436
-        entityDataType: 1
-    - rid: 8985605422383366436
-      type: {class: UAdd, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        A:
-          rid: 8985605422383366441
-        B:
-          rid: 8985605438051975466
-    - rid: 8985605422383366441
-      type: {class: UEntityStat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetEntity:
-          rid: 5909658476027314196
-        type: 1
-    - rid: 8985605422383366455
-      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        strings:
-        - rid: 8985605422383366461
-        - rid: 8985605422383366471
-    - rid: 8985605422383366461
-      type: {class: UColorText, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        text:
-          rid: 8985605422383366481
-        color:
-          rid: 8985605422383366476
-    - rid: 8985605422383366471
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: "\uC774 \uB354\uC6B1 \uB9CE\uC544\uC84C\uC2B5\uB2C8\uB2E4."
-    - rid: 8985605422383366476
-      type: {class: USimpleColor, ns: UengSystem.Logic.UValues.UColors, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        color: {r: 0.9245283, g: 0.7887304, b: 0.23985407, a: 1}
-    - rid: 8985605422383366481
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: "\uCD5C\uB300\uCCB4\uB825"
-    - rid: 8985605422383366723
-      type: {class: SetUBoolVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        key:
-          rid: 8985605422383366743
-        value:
-          rid: 8985605422383366731
-    - rid: 8985605422383366731
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 1
-    - rid: 8985605422383366743
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: UpgradeDone
-    - rid: 8985605438051975466
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 7
+    RefIds: []
 --- !u!1 &1285180016020843440
 GameObject:
   m_ObjectHideFlags: 0

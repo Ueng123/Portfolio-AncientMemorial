@@ -908,10 +908,10 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 5909658469114576918
+            - rid: 5909658922870112767
           - time: 2
             tasks:
-            - rid: 5909658604788515072
+            - rid: 5909658922870112769
     - rid: 5909658469114576917
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -923,12 +923,12 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 5909658469114576921
+            - rid: 5909658922870112766
           - time: 2
             tasks:
-            - rid: 5909658604788515073
-    - rid: 5909658469114576918
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+            - rid: 5909658922870112770
+    - rid: 5909658922870112766
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
         canvas: {fileID: 0}
@@ -936,8 +936,8 @@ MonoBehaviour:
           rid: -2
         Category:
           rid: -2
-    - rid: 5909658469114576921
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112767
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
         canvas: {fileID: 0}
@@ -945,11 +945,11 @@ MonoBehaviour:
           rid: -2
         Category:
           rid: -2
-    - rid: 5909658604788515072
-      type: {class: StartStage, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112769
+      type: {class: StartStage, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data: 
-    - rid: 5909658604788515073
-      type: {class: LoadMainMenu, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112770
+      type: {class: LoadMainMenu, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data: 
 --- !u!1 &6161630991780243820
 GameObject:

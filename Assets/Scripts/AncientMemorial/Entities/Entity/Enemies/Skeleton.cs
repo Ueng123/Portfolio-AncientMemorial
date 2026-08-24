@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using AncientMemorial.Cameras;
-using AncientMemorial.Map;
+using UengSystem;
 using UengSystem.ObjectPool;
-using UengSystem.Objects;
-using UengSystem.States.EnemyStates.Skeleton;
-using UengSystem.Utility;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AncientMemorial.Entities {
+namespace AncientMemorial.Entities.Enemies {
 	public abstract class Skeleton : Enemy {
 		protected static readonly int Landing   = Animator.StringToHash("landing");
 
@@ -22,7 +19,7 @@ namespace AncientMemorial.Entities {
 			
 			AddProcessToFixedUpdate(() => { rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse); });
 			
-			if (entityStat.hp <= 0) {
+			if (entityStat.HP <= 0) {
 				PlaySFX("skeletonDeath");
 				
 				if (attacker != player) return;

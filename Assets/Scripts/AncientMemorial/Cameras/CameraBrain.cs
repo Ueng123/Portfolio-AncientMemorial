@@ -1,5 +1,5 @@
 ﻿using UengSystem.Objects;
-using UengSystem.Settings;
+using UengSystem.SaveDatas.SettingDatas;
 using Unity.Cinemachine;
 using UnityEngine;
 

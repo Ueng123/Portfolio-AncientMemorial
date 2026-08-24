@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace UengSystem.Utility {
+namespace UengSystem.UAction {
 	public abstract class UAction {
 		public static int  runningActionCount;
 

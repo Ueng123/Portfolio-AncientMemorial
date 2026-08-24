@@ -3,7 +3,7 @@ using System.Collections;
 using UengSystem.Managers;
 using UnityEngine;
 
-namespace UengSystem.Utility {
+namespace UengSystem.UAction {
 	public class DelayedAction : UAction {
 		public static int runningDelayedActionCount = 0;
 		

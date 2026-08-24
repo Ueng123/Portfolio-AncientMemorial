@@ -1,7 +1,7 @@
 ﻿using System;
-using UengSystem.Logic.Tasks;
-using UengSystem.Logic.UValues;
 using UengSystem.Objects;
+using UengSystem.VisualScripting.Tasks;
+using UengSystem.VisualScripting.UValues;
 using UnityEngine;
 
 namespace UengSystem.UI.UToggles {

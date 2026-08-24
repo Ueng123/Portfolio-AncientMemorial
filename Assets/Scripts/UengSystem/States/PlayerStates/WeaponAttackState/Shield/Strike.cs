@@ -32,7 +32,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 				UObjectPool.instance.Get("Explode4", (Vector2)player.transform.position + new Vector2(0.35f*(player.lookingLeft?-1:1)+Random.Range(-0.05f, 0.05f),-0.4f+Random.Range(-0.05f, 0.05f)));
 			
 				// damage
-				float     damage          = Mathf.Pow(player.entityData.hp / 10f, 1.5f) / player.entityStat.attackDamage;
+				float     damage          = Mathf.Pow(player.entityData.HP / 10f, 1.5f) / player.entityStat.attackDamage;
 				const int maxTargetEntity = 2;
 				Entity.AttackAreaNoEffect(player, damage, 0, hitboxPos, hitboxSize, 0, maxTargetEntity);
 				player.PlaySFX("shieldSweep");

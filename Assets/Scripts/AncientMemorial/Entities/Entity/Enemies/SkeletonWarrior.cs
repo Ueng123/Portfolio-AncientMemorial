@@ -1,14 +1,8 @@
-﻿using System.Collections;
-using System.Linq;
-using UengSystem.Logic.UValues.UFloats;
-using UengSystem.States.EnemyStates;
+﻿using UengSystem.States.EnemyStates;
 using UengSystem.States.EnemyStates.Skeleton;
 using UengSystem.States.EnemyStates.Skeleton.Warrior;
-using UengSystem.Utility;
-using UnityEngine;
-using Vector2 = UnityEngine.Vector2;
 
-namespace AncientMemorial.Entities {
+namespace AncientMemorial.Entities.Enemies {
 	public class SkeletonWarrior : Skeleton {
 		private EnemyState pierce;
 		
@@ -24,7 +18,7 @@ namespace AncientMemorial.Entities {
 			pierce = new SkeletonWarriorPierce().Init(stateMachine);
 		}
 
-		public override Entity GetTargetEntity() => player;
+		protected override Entity GetTargetEntity() => player;
 
 		public override void Attack() {
 			state = pierce;

@@ -509,8 +509,28 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658469114577106
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112780
+      type: {class: ChangeSettingFloat, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        settingType: 2
+        number:
+          rid: 5909658922870112786
+    - rid: 5909658922870112782
+      type: {class: ChangeSettingFloat, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        settingType: 3
+        number:
+          rid: 5909658922870112788
+    - rid: 5909658922870112786
+      type: {class: USliderValue, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+    - rid: 5909658922870112788
+      type: {class: USliderValue, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+    - rid: 5909658922870112792
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
         playOnThis: 0
@@ -526,8 +546,8 @@ MonoBehaviour:
           rid: -2
         loop:
           rid: -2
-    - rid: 5909658469114577107
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112794
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
         playOnThis: 0
@@ -543,8 +563,47 @@ MonoBehaviour:
           rid: -2
         loop:
           rid: -2
-    - rid: 5909658469114577108
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112796
+      type: {class: ChangeSettingBool, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        settingType: 5
+        value:
+          rid: 5909658922870112802
+    - rid: 5909658922870112798
+      type: {class: ChangeSettingBool, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        settingType: 5
+        value:
+          rid: 5909658922870112800
+    - rid: 5909658922870112800
+      type: {class: UPureBool, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 1
+    - rid: 5909658922870112802
+      type: {class: UPureBool, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 0
+    - rid: 5909658922870112806
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658922870112810
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
         playOnThis: 0
@@ -560,59 +619,36 @@ MonoBehaviour:
           rid: -2
         loop:
           rid: -2
-    - rid: 5909658469114577109
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112819
+      type: {class: ChangeSettingBool, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
-        playOnThis: 0
-        audioPlayer:
-          rid: -2
-        volume:
-          rid: -2
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
-          rid: -2
-    - rid: 5909658469114577110
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+        settingType: 6
+        value:
+          rid: 5909658922870112820
+    - rid: 5909658922870112820
+      type: {class: UPureBool, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
       data:
-        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
-        playOnThis: 0
-        audioPlayer:
-          rid: -2
-        volume:
-          rid: -2
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
-          rid: -2
-    - rid: 5909658469114577111
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+        dynamicType: 0
+        pureValue: 0
+    - rid: 5909658922870112821
+      type: {class: ChangeSettingBool, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
-        playOnThis: 0
-        audioPlayer:
+        settingType: 6
+        value:
+          rid: 5909658922870112822
+    - rid: 5909658922870112822
+      type: {class: UPureBool, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 1
+    - rid: 5909658922870112833
+      type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 1
+        TargetUUI:
           rid: -2
-        volume:
-          rid: -2
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
-          rid: -2
-    - rid: 5909658469114577614
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112834
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetUUI: {fileID: 776431297840088385, guid: defa62083355c194fb8addb8a987ac2f, type: 3}
         canvas: {fileID: 0}
@@ -620,8 +656,14 @@ MonoBehaviour:
           rid: -2
         Category:
           rid: -2
-    - rid: 5909658469114577615
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112835
+      type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 1
+        TargetUUI:
+          rid: -2
+    - rid: 5909658922870112836
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetUUI: {fileID: 776431297840088385, guid: defa62083355c194fb8addb8a987ac2f, type: 3}
         canvas: {fileID: 0}
@@ -629,12 +671,148 @@ MonoBehaviour:
           rid: -2
         Category:
           rid: -2
+    - rid: 5909658922870112837
+      type: {class: LoadSettings, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data: 
+    - rid: 5909658922870112838
+      type: {class: SaveSettings, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data: 
+    - rid: 5909658922870112839
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658922870112840
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658922870112845
+      type: {class: ChangeSettingFloat, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        settingType: 1
+        number:
+          rid: 5909658922870112846
+    - rid: 5909658922870112846
+      type: {class: USliderValue, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+    - rid: 5909658922870112847
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658922870112848
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658922870112849
+      type: {class: ChangeSettingBool, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        settingType: 4
+        value:
+          rid: 5909658922870112851
+    - rid: 5909658922870112850
+      type: {class: ChangeSettingBool, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        settingType: 4
+        value:
+          rid: 5909658922870112852
+    - rid: 5909658922870112851
+      type: {class: UPureBool, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 1
+    - rid: 5909658922870112852
+      type: {class: UPureBool, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 0
+    - rid: 5909658922870112905
+      type: {class: UFloatFromSetting, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        type: 1
+    - rid: 5909658922870112906
+      type: {class: UFloatFromSetting, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        type: 2
+    - rid: 5909658922870112907
+      type: {class: UFloatFromSetting, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        type: 3
+    - rid: 5909658922870112908
+      type: {class: UBoolFromSetting, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        type: 4
+    - rid: 5909658922870112909
+      type: {class: UBoolFromSetting, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        type: 5
+    - rid: 5909658922870112910
+      type: {class: UBoolFromSetting, ns: UengSystem.VisualScripting.UValues.UBools, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        type: 6
     - rid: 8985605570991752192
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
         component: {fileID: 618178632740324773}
         initialValue:
-          rid: 8985605570991752193
+          rid: 5909658922870112905
         value:
           rid: -2
         color:
@@ -645,28 +823,13 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752194
-    - rid: 8985605570991752193
-      type: {class: UFloatFromSetting, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        type: 1
-    - rid: 8985605570991752194
-      type: {class: ChangeSettingFloat, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 1
-        number:
-          rid: 8985605570991752195
-    - rid: 8985605570991752195
-      type: {class: USliderValue, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
+            - rid: 5909658922870112845
     - rid: 8985605570991752196
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
         component: {fileID: 2146320249576374493}
         initialValue:
-          rid: 8985605570991752198
+          rid: 5909658922870112906
         value:
           rid: -2
         color:
@@ -677,13 +840,13 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752357
+            - rid: 5909658922870112780
     - rid: 8985605570991752197
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
         component: {fileID: 4211739481519624992}
         initialValue:
-          rid: 8985605570991752199
+          rid: 5909658922870112907
         value:
           rid: -2
         color:
@@ -694,77 +857,67 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752239
-    - rid: 8985605570991752198
-      type: {class: UFloatFromSetting, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        type: 2
-    - rid: 8985605570991752199
-      type: {class: UFloatFromSetting, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        type: 3
+            - rid: 5909658922870112782
     - rid: 8985605570991752200
       type: {class: UToggleAction, ns: UengSystem.UI.UToggles, asm: Assembly-CSharp}
       data:
         component: {fileID: 5697181973615169811}
         initialValue:
-          rid: 8985605570991752231
+          rid: 5909658922870112908
         OnToggleTrue:
           useRealTime: 0
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752232
-            - rid: 5909658469114577110
+            - rid: 5909658922870112847
+            - rid: 5909658922870112849
         OnToggleFalse:
           useRealTime: 0
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752234
-            - rid: 5909658469114577111
+            - rid: 5909658922870112848
+            - rid: 5909658922870112850
     - rid: 8985605570991752201
       type: {class: UToggleAction, ns: UengSystem.UI.UToggles, asm: Assembly-CSharp}
       data:
         component: {fileID: 7581652854901086746}
         initialValue:
-          rid: 8985605570991752236
+          rid: 5909658922870112909
         OnToggleTrue:
           useRealTime: 0
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752225
-            - rid: 5909658469114577106
+            - rid: 5909658922870112792
+            - rid: 5909658922870112798
         OnToggleFalse:
           useRealTime: 0
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752226
-            - rid: 5909658469114577107
+            - rid: 5909658922870112794
+            - rid: 5909658922870112796
     - rid: 8985605570991752202
       type: {class: UToggleAction, ns: UengSystem.UI.UToggles, asm: Assembly-CSharp}
       data:
         component: {fileID: 8396605309910205935}
         initialValue:
-          rid: 8985605570991752237
+          rid: 5909658922870112910
         OnToggleTrue:
           useRealTime: 0
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752223
-            - rid: 5909658469114577108
+            - rid: 5909658922870112810
+            - rid: 5909658922870112821
         OnToggleFalse:
           useRealTime: 0
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752221
-            - rid: 5909658469114577109
+            - rid: 5909658922870112806
+            - rid: 5909658922870112819
     - rid: 8985605570991752203
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -776,10 +929,10 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752215
-            - rid: 8985605570991752216
-            - rid: 8985605570991752217
-            - rid: 5909658469114577615
+            - rid: 5909658922870112839
+            - rid: 5909658922870112838
+            - rid: 5909658922870112835
+            - rid: 5909658922870112836
     - rid: 8985605570991752204
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -791,163 +944,10 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 8985605570991752218
-            - rid: 8985605570991752219
-            - rid: 8985605570991752220
-            - rid: 5909658469114577614
-    - rid: 8985605570991752215
-      type: {class: SaveSettings, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data: 
-    - rid: 8985605570991752216
-      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        closeThis: 1
-        TargetUUI:
-          rid: -2
-    - rid: 8985605570991752217
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
-        playOnThis: 0
-        audioPlayer:
-          rid: -2
-        volume:
-          rid: -2
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
-          rid: -2
-    - rid: 8985605570991752218
-      type: {class: LoadSettings, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data: 
-    - rid: 8985605570991752219
-      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        closeThis: 1
-        TargetUUI:
-          rid: -2
-    - rid: 8985605570991752220
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
-        playOnThis: 0
-        audioPlayer:
-          rid: -2
-        volume:
-          rid: -2
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
-          rid: -2
-    - rid: 8985605570991752221
-      type: {class: ChangeSettingBool, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 6
-        value:
-          rid: 8985605570991752222
-    - rid: 8985605570991752222
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 0
-    - rid: 8985605570991752223
-      type: {class: ChangeSettingBool, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 6
-        value:
-          rid: 8985605570991752224
-    - rid: 8985605570991752224
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 1
-    - rid: 8985605570991752225
-      type: {class: ChangeSettingBool, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 5
-        value:
-          rid: 8985605570991752228
-    - rid: 8985605570991752226
-      type: {class: ChangeSettingBool, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 5
-        value:
-          rid: 8985605570991752227
-    - rid: 8985605570991752227
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 0
-    - rid: 8985605570991752228
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 1
-    - rid: 8985605570991752231
-      type: {class: UBoolFromSetting, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        type: 4
-    - rid: 8985605570991752232
-      type: {class: ChangeSettingBool, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 4
-        value:
-          rid: 8985605570991752233
-    - rid: 8985605570991752233
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 1
-    - rid: 8985605570991752234
-      type: {class: ChangeSettingBool, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 4
-        value:
-          rid: 8985605570991752235
-    - rid: 8985605570991752235
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 0
-    - rid: 8985605570991752236
-      type: {class: UBoolFromSetting, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        type: 5
-    - rid: 8985605570991752237
-      type: {class: UBoolFromSetting, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        type: 6
-    - rid: 8985605570991752239
-      type: {class: ChangeSettingFloat, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 3
-        number:
-          rid: 8985605570991752240
-    - rid: 8985605570991752240
-      type: {class: USliderValue, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-    - rid: 8985605570991752357
-      type: {class: ChangeSettingFloat, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        settingType: 2
-        number:
-          rid: 8985605570991752358
-    - rid: 8985605570991752358
-      type: {class: USliderValue, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
+            - rid: 5909658922870112840
+            - rid: 5909658922870112837
+            - rid: 5909658922870112833
+            - rid: 5909658922870112834
 --- !u!1 &1105251211859212091
 GameObject:
   m_ObjectHideFlags: 0

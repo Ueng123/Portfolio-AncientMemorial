@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 3429928812280255733}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1058615380403253295}
@@ -318,7 +318,7 @@ MonoBehaviour:
       data:
         component: {fileID: 4626480128364574658}
         text:
-          rid: 5909658469114577315
+          rid: 5909658922870112607
     - rid: 5909658469114576914
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -330,29 +330,29 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 5909658469114576915
-    - rid: 5909658469114576915
-      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        closeThis: 1
-        TargetUUI:
-          rid: -2
+            - rid: 5909658922870112760
     - rid: 5909658469114577200
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 1744346307858358292}
         text:
-          rid: 5909658469114577316
-    - rid: 5909658469114577315
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 5909658922870112608
+    - rid: 5909658922870112607
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        Text: 
-    - rid: 5909658469114577316
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        pureValue: 
+    - rid: 5909658922870112608
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        Text: AnnounceUIInsideText
+        pureValue: 
+    - rid: 5909658922870112760
+      type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 1
+        TargetUUI:
+          rid: -2
 --- !u!1 &6817783773246402970
 GameObject:
   m_ObjectHideFlags: 0

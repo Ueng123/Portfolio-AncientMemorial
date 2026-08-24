@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using UengSystem.Logic.UValues.UStrings;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
+using UengSystem.VisualScripting.UValues.UStrings;
+// using UengSystem.VisualScripting.UValues.UStrings;
 using UnityEngine;
 
-namespace UengSystem.UI {
+namespace UengSystem.UI.UUIs {
 	public class InfoUUI : UUI {
 		public static   InfoUUI                                  instance;
 		public          float                                    infoDuration = 5f;
@@ -17,7 +18,7 @@ namespace UengSystem.UI {
 				UTextAction textAction    = GetAction<UTextAction>(i);
 				UText       textComponent = textAction.GetComponent<UText>();
 				
-				textAction.text          = new UPureString  { Text  = info.text };
+				textAction.text          = new UPureString  { pureValue  = info.text };
 				
 				if (i == 0 && animator.GetCurrentAnimatorStateInfo(0).IsName("addInfo")) continue;
 				float alpha = Mathf.Clamp(infoDuration - info.stopWatch.TryTock(infoDuration), 0f, 1f);

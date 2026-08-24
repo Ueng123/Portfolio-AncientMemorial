@@ -171,14 +171,15 @@ MonoBehaviour:
     tasks:
     - time: 4
       tasks:
-      - rid: 5909658463911543360
+      - rid: 5909658922870113074
     - time: 8
       tasks:
-      - rid: 5909658463911543361
+      - rid: 5909658922870113075
     - time: 12
       tasks:
-      - rid: 5909658463911543362
-      - rid: 5909658463911543373
+      - rid: 5909658922870113076
+      - rid: 5909658922870113077
+      - rid: 5909658922870113079
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -187,77 +188,56 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658463911543360
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113074
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetObject: {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
         position:
-          rid: 5909658463911543366
+          rid: -2
         spawnTime:
           rid: -2
         ID:
           rid: -2
         Category:
           rid: -2
-    - rid: 5909658463911543361
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113075
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetObject: {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
         position:
-          rid: 5909658463911543365
+          rid: -2
         spawnTime:
           rid: -2
         ID:
           rid: -2
         Category:
           rid: -2
-    - rid: 5909658463911543362
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113076
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetObject: {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
         position:
-          rid: 5909658463911543364
+          rid: -2
         spawnTime:
           rid: -2
         ID:
           rid: -2
         Category:
           rid: -2
-    - rid: 5909658463911543364
-      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+    - rid: 5909658922870113077
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        dynamicType: 0
-        targetObject:
-          rid: 5909658463911543369
-    - rid: 5909658463911543365
-      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetObject:
-          rid: 5909658463911543368
-    - rid: 5909658463911543366
-      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetObject:
-          rid: 5909658463911543367
-    - rid: 5909658463911543367
-      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        obj: {fileID: -2621902583758743258}
-    - rid: 5909658463911543368
-      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        obj: {fileID: -2621902583758743258}
-    - rid: 5909658463911543369
-      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        obj: {fileID: -2621902583758743258}
-    - rid: 5909658463911543373
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+        TargetObject: {fileID: 8283520507714977903, guid: d035da750255c1b489c7f46ec6210e58, type: 3}
+        position:
+          rid: -2
+        spawnTime:
+          rid: -2
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658922870113079
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
         releaseThis: 1

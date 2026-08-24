@@ -146,7 +146,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -25, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 50, z: 1}
+  m_LocalScale: {x: 50, y: 100, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 723782652}
@@ -332,7 +332,7 @@ Transform:
   m_GameObject: {fileID: 108502711}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 2.79, z: -10}
+  m_LocalPosition: {x: 0, y: 2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 286793672}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 1.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -519,7 +519,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 8.499996, y: 5.9999957}
+  m_Size: {x: 3, y: 3.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -881,7 +881,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 2.79, z: -10}
+  m_LocalPosition: {x: 0, y: 2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1058,7 +1058,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 1, y: 5}
+  m_Size: {x: 1, y: 2.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1195,7 +1195,7 @@ Transform:
   m_GameObject: {fileID: 562574004}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.249998, y: 3, z: 0}
+  m_LocalPosition: {x: 1.5, y: 1.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1258,7 +1258,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 1, y: 4.9999957}
+  m_Size: {x: 1, y: 2.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1303,12 +1303,12 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 3}
-    newSize: {x: 1, y: 4.9999957}
+    newSize: {x: 1, y: 2.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 7.0364995}
+  m_Size: {x: 0.5, y: 3.5}
   m_EdgeRadius: 0
 --- !u!114 &562574010
 MonoBehaviour:
@@ -1481,7 +1481,7 @@ Transform:
   m_GameObject: {fileID: 641390837}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.249998, y: 5.9999957, z: 0}
+  m_LocalPosition: {x: 1.5, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1750,7 +1750,7 @@ Transform:
   m_GameObject: {fileID: 723782651}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.249998, y: 3, z: 0}
+  m_LocalPosition: {x: -1.5, y: 1.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1813,7 +1813,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 1, y: 4.9999957}
+  m_Size: {x: 1, y: 2.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1858,12 +1858,12 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 3}
-    newSize: {x: 1, y: 4.9999957}
+    newSize: {x: 1, y: 2.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 7.0364995}
+  m_Size: {x: 0.5, y: 3.5}
   m_EdgeRadius: 0
 --- !u!114 &723782657
 MonoBehaviour:
@@ -2106,7 +2106,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 7.5, y: 1}
+  m_Size: {x: 2, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2198,7 +2198,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 7.5, y: 1}
+  m_Size: {x: 2, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2321,7 +2321,7 @@ Transform:
   m_GameObject: {fileID: 1045455007}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 2.79, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3076,7 +3076,7 @@ Transform:
   m_GameObject: {fileID: 1145342897}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.249998, y: 0, z: 0}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3288,7 +3288,7 @@ Transform:
   m_GameObject: {fileID: 1211999427}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.249998, y: 0, z: 0}
+  m_LocalPosition: {x: -1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3406,7 +3406,7 @@ Transform:
   m_GameObject: {fileID: 1245238432}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.249998, y: 5.9999957, z: 0}
+  m_LocalPosition: {x: -1.5, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3688,53 +3688,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - {fileID: 11400000, guid: dfa0b60534090e243a562100499003ab, type: 2}
-  - {fileID: 11400000, guid: affe245281ab22c40be79b6ce0339c92, type: 2}
-  - {fileID: 11400000, guid: a2ccdd06237144040ace8d22dcdc2efd, type: 2}
-  - {fileID: 11400000, guid: 0a76609898836ed4a94bb49f07f75c67, type: 2}
-  - {fileID: 11400000, guid: 32f6970b93a9126458ba76f312821802, type: 2}
-  - {fileID: 11400000, guid: 2a5d5e3a6a29eb44b9bfbda895fd637b, type: 2}
-  - {fileID: 11400000, guid: 22db638f1ea666b429f9b148751ee133, type: 2}
-  - {fileID: 11400000, guid: 2a5d5e3a6a29eb44b9bfbda895fd637b, type: 2}
-  - {fileID: 11400000, guid: 22db638f1ea666b429f9b148751ee133, type: 2}
-  - {fileID: 11400000, guid: 6910b069215e2904c9f2d3df995e2940, type: 2}
-  - {fileID: 11400000, guid: 895509df06b7191488ae40ae6ac06473, type: 2}
-  - {fileID: 11400000, guid: 901f3edf1d42f22438b5009bd2b57adf, type: 2}
-  - {fileID: 11400000, guid: 0a76609898836ed4a94bb49f07f75c67, type: 2}
-  - {fileID: 11400000, guid: e009b1a54a8409d4285c9cd240718794, type: 2}
-  - {fileID: 11400000, guid: 814cccc273d861e4eaa3a961156a2536, type: 2}
-  - {fileID: 11400000, guid: 22db638f1ea666b429f9b148751ee133, type: 2}
-  - {fileID: 11400000, guid: 814cccc273d861e4eaa3a961156a2536, type: 2}
-  - {fileID: 11400000, guid: 03d025abf19348743aceb30b64fbd25b, type: 2}
-  - {fileID: 11400000, guid: 814cccc273d861e4eaa3a961156a2536, type: 2}
-  - {fileID: 11400000, guid: 22db638f1ea666b429f9b148751ee133, type: 2}
-  - {fileID: 11400000, guid: 6910b069215e2904c9f2d3df995e2940, type: 2}
-  - {fileID: 11400000, guid: 895509df06b7191488ae40ae6ac06473, type: 2}
-  - {fileID: 11400000, guid: de01a87ad086c044789024d7df1c9f4d, type: 2}
-  - {fileID: 11400000, guid: 901f3edf1d42f22438b5009bd2b57adf, type: 2}
-  - {fileID: 11400000, guid: 0a76609898836ed4a94bb49f07f75c67, type: 2}
-  - {fileID: 11400000, guid: e873b32c1eac464449f5861bf6ff09e2, type: 2}
-  - {fileID: 11400000, guid: 895509df06b7191488ae40ae6ac06473, type: 2}
-  - {fileID: 11400000, guid: de01a87ad086c044789024d7df1c9f4d, type: 2}
-  - {fileID: 11400000, guid: de01a87ad086c044789024d7df1c9f4d, type: 2}
-  - {fileID: 11400000, guid: 901f3edf1d42f22438b5009bd2b57adf, type: 2}
-  - {fileID: 11400000, guid: 0a76609898836ed4a94bb49f07f75c67, type: 2}
-  - {fileID: 11400000, guid: dd83bf1a64173f74785433526a484475, type: 2}
-  - {fileID: 11400000, guid: 814cccc273d861e4eaa3a961156a2536, type: 2}
-  - {fileID: 11400000, guid: 22db638f1ea666b429f9b148751ee133, type: 2}
-  - {fileID: 11400000, guid: d72e2ccde5918bf46a96c670077be6cc, type: 2}
-  - {fileID: 11400000, guid: 5e34dc800d2122c4680b6249cc63f259, type: 2}
-  - {fileID: 11400000, guid: 814cccc273d861e4eaa3a961156a2536, type: 2}
-  - {fileID: 11400000, guid: 4dbda6791953b72458b203932d3e39be, type: 2}
-  - {fileID: 11400000, guid: 6910b069215e2904c9f2d3df995e2940, type: 2}
-  - {fileID: 11400000, guid: 895509df06b7191488ae40ae6ac06473, type: 2}
-  - {fileID: 11400000, guid: de01a87ad086c044789024d7df1c9f4d, type: 2}
-  - {fileID: 11400000, guid: de01a87ad086c044789024d7df1c9f4d, type: 2}
-  - {fileID: 11400000, guid: de01a87ad086c044789024d7df1c9f4d, type: 2}
-  - {fileID: 11400000, guid: 901f3edf1d42f22438b5009bd2b57adf, type: 2}
-  - {fileID: 11400000, guid: 0a76609898836ed4a94bb49f07f75c67, type: 2}
-  - {fileID: 11400000, guid: 89851b9005bef34488346a7c547c6b76, type: 2}
-  currentWave: {fileID: 11400000, guid: 71e1ef7c4794ada4eab7f4ecc75553db, type: 2}
+  - {fileID: 11400000, guid: 4b8300c4fb85304498875f20ff29ba90, type: 2}
+  - {fileID: 11400000, guid: 562bd9eb08f22164e8b97aabe80b8f03, type: 2}
+  - {fileID: 11400000, guid: 28c5f490a27e9e2409cb8d2fdd2c2d1f, type: 2}
+  - {fileID: 11400000, guid: 562bd9eb08f22164e8b97aabe80b8f03, type: 2}
+  - {fileID: 11400000, guid: 28c5f490a27e9e2409cb8d2fdd2c2d1f, type: 2}
+  - {fileID: 11400000, guid: b3e4f495133b19a48874bf09cbcb6573, type: 2}
+  - {fileID: 11400000, guid: 7586bbb8818e4c2429e34e68822333fd, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 3923080bb314b0e41ba7d92f653fee59, type: 2}
+  - {fileID: 11400000, guid: 3923080bb314b0e41ba7d92f653fee59, type: 2}
+  currentWave: {fileID: 11400000, guid: f09d3d44c74a4b74bb624f3e188a0442, type: 2}
 --- !u!1 &1401290527
 GameObject:
   m_ObjectHideFlags: 0
@@ -3900,7 +3865,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 8.499996, y: 5.9999957}
+  m_Size: {x: 3, y: 3.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3992,7 +3957,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 1, y: 4.9999957}
+  m_Size: {x: 1, y: 2.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -4052,7 +4017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a29f351bffbb524cb85f57ef1c86c73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetMapSize: {x: 7.5, y: 5}
+  TargetMapSize: {x: 2, y: 2.5}
   CamSizeMargin: {x: 5, y: 5}
   TargetCamLens: {x: 3.2272727, y: 4.4545455}
   CurrCamLens: {x: 3.2272706, y: 4.454541}
@@ -4279,7 +4244,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 7.5, y: 1}
+  m_Size: {x: 2, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -4324,12 +4289,12 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2, y: 1}
-    newSize: {x: 7.5, y: 1}
+    newSize: {x: 2, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 9.561271, y: 1}
+  m_Size: {x: 3, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1581402128
 MonoBehaviour:
@@ -4409,7 +4374,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 25, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 50, z: 1}
+  m_LocalScale: {x: 50, y: 100, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 562574005}
@@ -4974,7 +4939,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 1, y: 5}
+  m_Size: {x: 1, y: 2.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5158,7 +5123,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 8.5, y: 6}
+  m_Size: {x: 3, y: 3.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5250,7 +5215,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 1, y: 5}
+  m_Size: {x: 1, y: 2.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5319,9 +5284,6 @@ MonoBehaviour:
   - {fileID: 8480243640505895215, guid: 41686b3ad6a08ce449a614bd3d3a9d0b, type: 3}
   - {fileID: 5201704342810090500, guid: d06489f9130e3b7468fdf755d0c45800, type: 3}
   - {fileID: 4046758503276528221, guid: 5c55c59842da45c4d8217743e6e80f89, type: 3}
-  - {fileID: 4257326429148041538, guid: ce385bf25a2a5e9489730b4addf39091, type: 3}
-  - {fileID: 4257326429148041538, guid: 404473356c8812443bc35f6f3463de11, type: 3}
-  - {fileID: 3187900536203831007, guid: 021e8adb7751cba498115519e93feb46, type: 3}
   - {fileID: 4683694428465582068, guid: f8acc439a8ef37c4d8daaf2b33aa6706, type: 3}
   - {fileID: 60593518339071841, guid: c70d83c5a8491b04ba60058dbec3e52a, type: 3}
   - {fileID: 1391917594571327685, guid: d8a5e48d84bdcca4db71dfe59f75ed57, type: 3}
@@ -5355,8 +5317,7 @@ MonoBehaviour:
   - {fileID: 1591849220870830085, guid: fed88262b009fef48b32db629b75dd31, type: 3}
   - {fileID: 2882015269521695848, guid: 483b5c19012d1d243b7720363bec652a, type: 3}
   - {fileID: 7507467289219499174, guid: 8cbcfdb665302b440b05138b331d4ec5, type: 3}
-  - {fileID: 1515586066969814729, guid: 85f2d606019af2a4290002271ba1ed8c, type: 3}
-  - {fileID: 8848968210274877090, guid: f76ce0e8aaf93244e943d65994a58eda, type: 3}
+  - {fileID: 7507467289219499174, guid: 85fc066d9dd47a44488cdc7b53b6f0a3, type: 3}
   - {fileID: 4683390128711288932, guid: a9710d2c787281b4a83a95e12520473f, type: 3}
   - {fileID: 2509308578032280523, guid: d2693f0c5382fdb49b877b1d1e8cda23, type: 3}
   - {fileID: 2509308578032280523, guid: 355ef6fc6f738f6429eadd92c30174cd, type: 3}
@@ -5367,6 +5328,10 @@ MonoBehaviour:
   - {fileID: 7818673854775826448, guid: 62f94ff07258c454d9f734e766308930, type: 3}
   - {fileID: 869480975449446070, guid: ff007645b920a904ba2f1a8268d10d3e, type: 3}
   - {fileID: 731868469740665381, guid: 32e58e6720ab17f41af95d1906eab79a, type: 3}
+  - {fileID: 8408282419170865112, guid: e95fd2fe000239644a0b523bc647946a, type: 3}
+  - {fileID: 2615964334918560627, guid: 22f333208d243ff49a8396f9624f215e, type: 3}
+  - {fileID: 501905378013057294, guid: 946f85f2b83f8604e98227724e370eeb, type: 3}
+  - {fileID: 1591849220870830085, guid: d34f1b7901344694fa91b52fd32efb8e, type: 3}
 --- !u!1 &1988160301
 GameObject:
   m_ObjectHideFlags: 0
@@ -5396,7 +5361,7 @@ Transform:
   m_GameObject: {fileID: 1988160301}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.9999957, z: 0}
+  m_LocalPosition: {x: 0, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5459,7 +5424,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 7.5, y: 1}
+  m_Size: {x: 2, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5504,12 +5469,12 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 3, y: 1}
-    newSize: {x: 7.5, y: 1}
+    newSize: {x: 2, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 9.767843, y: 1}
+  m_Size: {x: 3, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1988160307
 MonoBehaviour:
@@ -5636,7 +5601,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 7.5, y: 1}
+  m_Size: {x: 2, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5895,7 +5860,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 7.4999957, y: 1}
+  m_Size: {x: 2, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5948,6 +5913,14 @@ PrefabInstance:
     - target: {fileID: 3653827025279136820, guid: c8bbf66898738cb4ab1bd3f67c47f2e6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3793273603714431931, guid: c8bbf66898738cb4ab1bd3f67c47f2e6, type: 3}
+      propertyPath: 'managedReferences[5909658915668230805]'
+      value: Assembly-CSharp UengSystem.VisualScripting.Tasks.NextWave
+      objectReference: {fileID: 0}
+    - target: {fileID: 3793273603714431931, guid: c8bbf66898738cb4ab1bd3f67c47f2e6, type: 3}
+      propertyPath: 'onInteract.tasks.Array.data[0].tasks.Array.data[0]'
+      value: 5909658915668230805
       objectReference: {fileID: 0}
     - target: {fileID: 7113938830686400928, guid: c8bbf66898738cb4ab1bd3f67c47f2e6, type: 3}
       propertyPath: m_Name

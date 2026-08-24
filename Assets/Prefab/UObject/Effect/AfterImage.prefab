@@ -115,9 +115,9 @@ MonoBehaviour:
   GetTask:
     useRealTime: 0
     tasks:
-    - time: 1
+    - time: 1.5
       tasks:
-      - rid: 8985605350484083421
+      - rid: 5909658922870113018
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -126,10 +126,10 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8985605350484083421
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113018
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        releaseTime: 0
+        releaseTime: 1
         releaseThis: 1
         TargetObject:
           rid: -2

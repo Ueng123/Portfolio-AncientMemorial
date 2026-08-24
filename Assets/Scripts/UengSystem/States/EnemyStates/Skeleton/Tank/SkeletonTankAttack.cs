@@ -36,7 +36,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 			enemy.PlaySFX("tankGroggy");
 			
 			// Process를 통해 다음 프레임 시작시 이벤트를 추가하므로 for문중 배열 변경 문제 없음.
-			Entity.SendAttackEvent(enemy, enemy, enemy.entityData.hp/15, true);
+			Entity.SendAttackEvent(enemy, enemy, enemy.entityData.HP/15, true);
 			
 			GameManager.SetTimeScale(0.05f, 0.75f);
 			CameraBrain.instance.ShakeLerp(5f, 3);

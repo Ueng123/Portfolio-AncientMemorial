@@ -1,14 +1,18 @@
 ﻿using System;
 using AncientMemorial;
-using UengSystem.Logic.Tasks;
-using UengSystem.Logic.UValues;
-using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Objects;
+using UengSystem.Utility;
+using UengSystem.VisualScripting.Tasks;
+using UengSystem.VisualScripting.UValues;
+using UengSystem.VisualScripting.UValues.UFloats;
+
+// using UengSystem.VisualScripting.UValues.UFloats;
 using UnityEngine;
 
 namespace UengSystem.UI.USliders {
 	[Serializable]
 	public class USliderAction : UUIAction {
+		private int SLIDER_VALUE = "SliderValue".GetHash();
 		
 		[SerializeReference] [SubclassSelector]
 		public UValue<float> initialValue;
@@ -32,17 +36,18 @@ namespace UengSystem.UI.USliders {
 			slider.SetValue(initialValue?.value??0);
 			slider.valueChanged = false;
 			
-			if (GameManager.UValueFloatVariables.TryGetValue("SliderValue", out UValue<float> v)) {
-				sliderValueVariable = (UPureFloat)v;
-			} 
-			else {
-				GameManager.UValueFloatVariables["SliderValue"] = new UPureFloat {
-					dynamicType = DynamicType.Dynamic,
-					number = 0
-				};
-
-				sliderValueVariable = (UPureFloat)GameManager.UValueFloatVariables["SliderValue"];
-			}
+			// if (GameManager.UValueFloatVariables.TryGetValue("SliderValue", out UValue<float> v)) {
+			// 	sliderValueVariable = (UPureFloat)v;
+			// } 
+			// else {
+			// 	GameManager.UValueFloatVariables["SliderValue"] = new UPureFloat {
+			// 		dynamicType = DynamicType.Dynamic,
+			// 		pureValue    = 0
+			// 	};
+			//
+			// 	sliderValueVariable = (UPureFloat)GameManager.UValueFloatVariables["SliderValue"];
+			// }
+			sliderValueVariable ??= UPureFloat.GetPureValue(SLIDER_VALUE).SetDynamicCache(DynamicType.Dynamic).To<UPureFloat>();
 		}
 
 		public override void Uninitialize(UObject self) {
@@ -56,7 +61,7 @@ namespace UengSystem.UI.USliders {
 			if (value!=null) slider.SetValue(value.value);
 			if (color!=null) slider.SetColor(color.value);
 			
-			sliderValueVariable.number = slider.GetValue();
+			sliderValueVariable.pureValue = slider.GetValue();
 			
 			switch (condition) {
 				case USliderTaskCondition.Never:

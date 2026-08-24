@@ -49,7 +49,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Text (TMP)
+    path: TopText
   m_FloatCurves:
   - serializedVersion: 2
     curve:
@@ -120,7 +120,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 271242783
+      path: 4034631807
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -266,7 +266,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: Text (TMP)
+    path: TopText
     classID: 224
     script: {fileID: 0}
     flags: 0
@@ -305,7 +305,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: Text (TMP)
+    path: TopText
     classID: 224
     script: {fileID: 0}
     flags: 0
@@ -344,7 +344,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: Text (TMP)
+    path: TopText
     classID: 224
     script: {fileID: 0}
     flags: 0

@@ -1,7 +1,6 @@
-﻿using AncientMemorial;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
-namespace UengSystem.Managers {
+namespace UengSystem.StageManager {
 	public static class USceneManager {
 		private static string currentUSceneName = "Game";
 

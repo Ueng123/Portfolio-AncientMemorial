@@ -1,7 +1,8 @@
 ﻿using System;
-using UengSystem.Logic.UValues;
 using UengSystem.Objects;
+using UengSystem.UAction;
 using UengSystem.Utility;
+using UengSystem.VisualScripting.UValues;
 using UnityEngine;
 
 namespace UengSystem.UI.UTexts {
@@ -26,15 +27,15 @@ namespace UengSystem.UI.UTexts {
 			textComponent = GetComponent<UText>();
 			textComponent.Initialize();
 			
-			textComponent.SetValue(text.value);
+			textComponent.SetValue(text?.value??"");
 		}
 
 		public override void Uninitialize(UObject self) {
-			textComponent.SetValue(text.value);
+			textComponent.SetValue(text?.value??"");
 		}
 		
 		public override void Routine(UObject self) {
-			textComponent.SetValue(text.value);
+			textComponent.SetValue(text?.value??"");
 		}
 	}
 }

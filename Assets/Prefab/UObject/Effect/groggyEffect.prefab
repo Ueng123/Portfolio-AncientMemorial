@@ -117,10 +117,10 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 8985605350484083478
+      - rid: -2
     - time: 0.8
       tasks:
-      - rid: 8985605350484083477
+      - rid: 5909658922870113044
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -129,34 +129,13 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8985605350484083477
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113044
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
         releaseThis: 1
         TargetObject:
           rid: -2
-    - rid: 8985605350484083478
-      type: {class: CameraSetZoomOffset, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        zoomOffset:
-          rid: 8985605434833633817
-        speed:
-          rid: 8985605434833633816
-    - rid: 8985605434833633816
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: 10
-    - rid: 8985605434833633817
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        valueCache: 0
-        isValueCached: 0
-        number: -0.2
 --- !u!95 &8338239954452307036
 Animator:
   serializedVersion: 7

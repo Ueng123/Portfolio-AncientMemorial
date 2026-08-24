@@ -116,10 +116,10 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 8985605512623030767
-    - time: 1
+      - rid: 5909658922870112985
+    - time: 2
       tasks:
-      - rid: 5909658579411927393
+      - rid: 5909658922870112986
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -128,15 +128,8 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658579411927393
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        releaseTime: 1
-        releaseThis: 1
-        TargetObject:
-          rid: -2
-    - rid: 8985605512623030767
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112985
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         clip: {fileID: 8300000, guid: 40da1bbcbc714c540a62403d0416c5ac, type: 3}
         playOnThis: 1
@@ -151,4 +144,11 @@ MonoBehaviour:
         spread:
           rid: -2
         loop:
+          rid: -2
+    - rid: 5909658922870112986
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        releaseTime: 1
+        releaseThis: 1
+        TargetObject:
           rid: -2

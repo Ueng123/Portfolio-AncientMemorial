@@ -2,20 +2,20 @@
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace UengSystem.Settings {
+namespace UengSystem.Utility {
 	public class UJSON<T> {
 		private string path;
 		public  T      data;
 
 		public static T LoadData(string path) {
-			string _path = Path.Combine(Application.streamingAssetsPath, $"{typeof(T).Name}.json");
+			string _path = Path.Combine(Application.streamingAssetsPath, path);
 			string jsonText = File.ReadAllText(_path);
 			
 			return JsonConvert.DeserializeObject<T>(jsonText);
 		}
 
 		public UJSON(string path) {
-			this.path = Path.Join(Application.streamingAssetsPath, $"{typeof(T).Name}.json");
+			this.path = Path.Join(Application.streamingAssetsPath, path);
 			LoadData();
 		}
 		

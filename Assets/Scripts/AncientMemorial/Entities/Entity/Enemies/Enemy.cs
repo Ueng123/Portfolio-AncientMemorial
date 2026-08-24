@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UengSystem.Logic.UValues.UFloats;
-using UengSystem.ObjectPool;
-using UengSystem.Objects;
-using UengSystem.States;
-using UengSystem.States.EnemyStates;
+﻿using UengSystem.States.EnemyStates;
+using UengSystem.UDebug;
 using UengSystem.Utility;
+using UengSystem.VisualScripting.UValues.UFloats;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace AncientMemorial.Entities {
+// using UengSystem.VisualScripting.UValues.UFloats;
+
+namespace AncientMemorial.Entities.Enemies {
 	public abstract class Enemy : Entity {
+
+		private readonly int ENEMY_DEAD = "EnemyDead".GetHash();
+		private          int ENEMYTYPE_DEAD;
+		private          int CATEGORY_DEAD;
 		
 		public float markYPos;
 
 		protected EnemyStateMachine stateMachine;
-		
-		public abstract Entity GetTargetEntity();
+
+		protected abstract Entity GetTargetEntity();
 		public abstract void  Attack();
 		
 		public void Stun(float duration) {
@@ -29,7 +28,6 @@ namespace AncientMemorial.Entities {
 		}
 
 		public static bool isTargettable(EntityType entity) => entity == EntityType.Player;
-		
 		
 		public override bool isAttackTarget(Entity entity) {
 			return entity != this && entity == player;
@@ -44,17 +42,29 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected override void Death() {
-			GameManager.UValueFloatVariables["EnemyDead"] = new UPureFloat {number = GameManager.UValueFloatVariables["EnemyDead"].value + 1};
-			if (Category == "WaveEnemy") {
-				GameManager.UValueFloatVariables["WaveEnemyDead"]   = new UPureFloat {number = GameManager.UValueFloatVariables["WaveEnemyDead"].value + 1};
+			UPureFloat.AddValue(ENEMY_DEAD, 1);
+			UPureFloat.AddValue(ENEMYTYPE_DEAD, 1);
+			if (!string.IsNullOrWhiteSpace(Category)) {
+				UPureFloat.AddValue(CATEGORY_DEAD, 1);
 			}
 			
 			base.Death();
 		}
-		
+
+		public override void OnFirstGet() {
+			base.OnFirstGet();
+			ENEMYTYPE_DEAD = $"{GetType().Name}Dead".GetHash();
+		}
+
 		public override void Initialize() {
 			base.Initialize();
 			state = stateMachine?.wanderState;
+		}
+
+		protected override void OnCategoryChanged(string category) {
+			if (!string.IsNullOrWhiteSpace(category)) {
+				CATEGORY_DEAD = $"{category}Dead".GetHash();
+			}
 		}
 	}
 }

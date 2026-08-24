@@ -8,11 +8,12 @@ using AncientMemorial;
 using AncientMemorial.Objects;
 using UengSystem.Audio;
 using UengSystem.Events;
-using UengSystem.Logic.Tasks;
 using UengSystem.ObjectPool;
 using UengSystem.States;
+using UengSystem.UAction;
 using UengSystem.UDebug;
 using UengSystem.Utility;
+using UengSystem.VisualScripting.Tasks;
 using UnityEngine;
 using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;	
@@ -46,8 +47,11 @@ namespace UengSystem.Objects {
 
 				IDTable[value] = this;
 				_ID            = value;
+				OnIdChanged(value);
 			}
 		}
+		
+		protected virtual void OnIdChanged(string id) { }
 
 		public string Category {
 			get => _Category;
@@ -69,8 +73,11 @@ namespace UengSystem.Objects {
 
 				CategoryTable[value].Add(this);
 				_Category = value;
+				OnCategoryChanged(value);
 			}
 		}
+
+		protected virtual void OnCategoryChanged(string category) { }
 
 		public Sprite whiteSpawnSprite;
 		public Sprite colorSpawnSprite;
@@ -265,18 +272,18 @@ namespace UengSystem.Objects {
 		}
 		
 		// IActionable //
-		private readonly List<UAction> runningActions = new();
+		private readonly List<UAction.UAction> runningActions = new();
 
-		public void RegisterAction(UAction action) {
+		public void RegisterAction(UAction.UAction action) {
 			runningActions.Add(action);
 		}
 		
-		public void UnregisterAction(UAction action) {
+		public void UnregisterAction(UAction.UAction action) {
 			runningActions.Remove(action);
 		}
 
 		public void StopAllUActions() {
-			foreach (UAction action in runningActions) { action.Cancel(); }
+			foreach (UAction.UAction action in runningActions) { action.Cancel(); }
 			runningActions.Clear();
 		}
 		
@@ -547,6 +554,7 @@ namespace UengSystem.Objects {
 		protected Color colorBeforeSpawnFX;
 
 		protected virtual void PrepareSpawnFX() {
+			if (rigidbody2D && rigidbody2D.bodyType!=RigidbodyType2D.Static) rigidbody2D.linearVelocity = Vector2.zero;
 			Freeze();
 			ToggleColliders(false);
 
@@ -584,8 +592,6 @@ namespace UengSystem.Objects {
 
 			ToggleColliders(true);
 			Unfreeze();
-
-			if (rigidbody2D && rigidbody2D.bodyType!=RigidbodyType2D.Static) rigidbody2D.linearVelocity = Vector2.zero;
 			
 			Initialize();
 		}

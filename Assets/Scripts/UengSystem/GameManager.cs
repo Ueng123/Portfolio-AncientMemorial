@@ -5,28 +5,26 @@ using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Interactions;
 using AncientMemorial.Map;
-using AncientMemorial.Tasks;
 using AncientMemorial.Waves;
 using AncientMemorial.Weapons;
 using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Inputs;
-using UengSystem.Logic.UValues;
-using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Managers;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.Settings;
+using UengSystem.SaveDatas.SettingDatas;
+using UengSystem.UAction;
 using UengSystem.UDebug;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
-using UengSystem.Utility;
+using UengSystem.VisualScripting.Tasks;
+using UengSystem.VisualScripting.UVariables;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace AncientMemorial {
+namespace UengSystem {
     public class GameManager : Manager<GameManager> {
        
        public Crystal    Crystal;
@@ -43,12 +41,6 @@ namespace AncientMemorial {
        
        public UpdateRoutineType      currentUpdatePhase;
        public FixedUpdateRoutineType currentFixedUpdatePhase;
-       
-       public static readonly Dictionary<string, UValue<float  >> UValueFloatVariables   = new ();
-       public static readonly Dictionary<string, UValue<string >> UValueStringVariables  = new ();
-       public static readonly Dictionary<string, UValue<bool   >> UValueBoolVariables    = new ();
-       public static readonly Dictionary<string, UValue<Color  >> UValueColorVariables   = new ();
-       public static readonly Dictionary<string, UValue<UObject>> UValueUObjectVariables = new ();
 
        public  int  initializeID;
        private bool initialized = false;
@@ -247,7 +239,7 @@ namespace AncientMemorial {
        
        private IEnumerator InitializeGame() {
           SetTimeScale(1);
-          UValueFloatVariables["InitializeLoading"] = new UPureFloat { number = 0 };
+          // UPureFloat.SetValue("InitializeLoading", 0);
           
           int   iCount    = initializeFunctions[initializeID].Length;
           float iComplete = 0;
@@ -273,11 +265,7 @@ namespace AncientMemorial {
           CameraBrain.instance = null;
           
           // GameManager
-          UValueFloatVariables.Clear();
-          UValueStringVariables.Clear();
-          UValueBoolVariables.Clear();
-          UValueColorVariables.Clear();
-          UValueUObjectVariables.Clear();
+          IUValueVariable.Clear();
           
           // Entity
           Entity.player   = null;

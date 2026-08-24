@@ -1,27 +1,12 @@
 ﻿using System;
-using System.Collections;
 using AncientMemorial.Cameras;
-using AncientMemorial.Projectiles;
-using UengSystem.Audio;
-using UengSystem.Logic.UValues.UFloats;
-using UengSystem.Logic.UValues.UStrings;
-using UengSystem.ObjectPool;
-using UengSystem.Objects;
-using UengSystem.States;
+using UengSystem;
 using UengSystem.States.EnemyStates;
 using UengSystem.States.EnemyStates.Skeleton;
-using UengSystem.States.EnemyStates.Skeleton.Archer;
 using UengSystem.States.EnemyStates.Skeleton.Tank;
-using UengSystem.States.EnemyStates.Skeleton.Warrior;
-using UengSystem.UDebug;
-using UengSystem.UI;
-using UengSystem.UI.UTexts;
-using UengSystem.Utility;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
-namespace AncientMemorial.Entities {
+namespace AncientMemorial.Entities.Enemies {
 	public class SkeletonTank : Skeleton {
 
 		private int        attackPhase = 0;
@@ -49,7 +34,7 @@ namespace AncientMemorial.Entities {
 			attackPhase = 0;
 		}
 
-		public override Entity GetTargetEntity() => player;
+		protected override Entity GetTargetEntity() => player;
 		
 		public override void Attack() {
 			state = attackPhase switch {
@@ -73,7 +58,7 @@ namespace AncientMemorial.Entities {
 			if (groggy) ShowCriticalDamageUI(damage);
 			else ShowDamageUI(damage);
 			
-			if (entityStat.hp <= 0) {
+			if (entityStat.HP <= 0) {
 				PlaySFX("tankDeath");
 				
 				if (attacker != player) return;

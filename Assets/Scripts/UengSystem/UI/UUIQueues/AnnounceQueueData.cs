@@ -1,5 +1,5 @@
-﻿using UengSystem.Logic.UValues;
-using UengSystem.UI.UTexts;
+﻿using UengSystem.UI.UTexts;
+using UengSystem.VisualScripting.UValues;
 
 namespace UengSystem.UI.UUIQueues {
 	public record AnnounceQueueData(UValue<string> topTitle, UValue<string> insideTitle) : UUIQueueData {

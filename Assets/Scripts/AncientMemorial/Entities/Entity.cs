@@ -3,19 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
+using UengSystem;
 using UengSystem.Events;
-using UengSystem.Logic.UValues;
-using UengSystem.Logic.UValues.UFloats;
-using UengSystem.Logic.UValues.UObjects;
-using UengSystem.Logic.UValues.UStrings;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.States;
+using UengSystem.UAction;
 using UengSystem.UDebug;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
+using UengSystem.VisualScripting.UValues;
+using UengSystem.VisualScripting.UValues.UFloats;
+using UengSystem.VisualScripting.UValues.UObjects;
+using UengSystem.VisualScripting.UValues.UStrings;
+// using UengSystem.VisualScripting.UValues.UFloats;
+// using UengSystem.VisualScripting.UValues.UObjects;
+// using UengSystem.VisualScripting.UValues.UStrings;
 using UnityEngine;
 using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;
@@ -85,10 +90,10 @@ namespace AncientMemorial.Entities {
 			UTextAction   entityTextAction = entityUI.GetAction<UTextAction>("EntityName");
 			USliderAction entityHPAction   = entityUI.GetAction<USliderAction>("EntityHP");
 			
-			entityTextAction.text = new UPureString {Text = entityData.name};
+			entityTextAction.text = new UPureString {pureValue = entityData.name};
 			entityTextAction.Initialize(entityUI);
 			
-			entityHPAction.component.GetComponent<RectTransform>().sizeDelta = new Vector2(100*Mathf.Log(entityData.hp, 2) , 30);
+			entityHPAction.component.GetComponent<RectTransform>().sizeDelta = new Vector2(100*Mathf.Log(entityData.HP, 2) , 30);
 			entityHPAction.value = new UDiv {
 				dynamicType = DynamicType.Dynamic,
 				A = new UEntityStat {
@@ -129,7 +134,7 @@ namespace AncientMemorial.Entities {
 			
 			string healSign = isHeal ? "+" : "";
 			
-			textAction.text = textSAction.text = new UPureString {Text = $"{Mathf.Floor(damage*100)/100f}<size=10><i> {healSign}</i></size>"};
+			textAction.text = textSAction.text = new UPureString {pureValue = $"{Mathf.Floor(damage*100)/100f}<size=10><i> {healSign}</i></size>"};
 			textAction.Initialize(damageUI);
 			textSAction.Initialize(damageUI);
 		}
@@ -151,7 +156,7 @@ namespace AncientMemorial.Entities {
 			
 			string healSign = isHeal ? "+" : "";
 			
-			textAction.text = textSAction.text = new UPureString {Text = $"{Mathf.Floor(damage*100)/100f}<size=10><i> {healSign}!!</i></size>"};
+			textAction.text = textSAction.text = new UPureString {pureValue = $"{Mathf.Floor(damage*100)/100f}<size=10><i> {healSign}!!</i></size>"};
 			textAction.Initialize(damageUI);
 			textSAction.Initialize(damageUI);
 		}
@@ -286,7 +291,7 @@ namespace AncientMemorial.Entities {
 			entityData = GetData();
 			
 			entityStat      = new EntityStat(
-				entityData.hp,
+				entityData.HP,
 				entityData.moveSpeed,
 				entityData.jumpPower,
 				entityData.attackSpeed,
@@ -394,7 +399,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		public virtual void ChangeHP(float amount) {
-			entityStat.hp = Mathf.Clamp(entityStat.hp + amount, 0, entityData.hp);
+			entityStat.HP = Mathf.Clamp(entityStat.HP + amount, 0, entityData.HP);
 		}
 		public abstract void OnHit(Entity attacker, float damage, Vector2? pushDir = null);
 		protected virtual void OnHitFromEntity(Entity     attacker,   float    damage, Vector2? pushDir) { }
@@ -424,7 +429,7 @@ namespace AncientMemorial.Entities {
 			spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, (invincible)?0.5f:1f);
 			gameObject.layer = invincible?8:7;
 			
-			if (entityStat.hp <= 0) {
+			if (entityStat.HP <= 0) {
 				state = null;
 				Death();
 			}

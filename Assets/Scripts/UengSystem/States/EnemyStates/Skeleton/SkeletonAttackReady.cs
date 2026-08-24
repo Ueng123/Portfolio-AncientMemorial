@@ -2,7 +2,7 @@
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton.Warrior {
+namespace UengSystem.States.EnemyStates.Skeleton {
 	public class SkeletonAttackReady : SkeletonState {
 		public SkeletonAttackReady(float targetDistance, float margin, float offsetMax, float offsetMin, float updateOffsetTerm) {
 			this.targetDistance   = targetDistance;

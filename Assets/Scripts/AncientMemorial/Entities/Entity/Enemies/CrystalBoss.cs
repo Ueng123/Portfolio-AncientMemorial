@@ -1,11 +1,11 @@
 ﻿using AncientMemorial.Cameras;
 using AncientMemorial.Projectiles;
+using UengSystem;
 using UengSystem.ObjectPool;
-using UengSystem.Objects;
-using UengSystem.Utility;
+using UengSystem.UAction;
 using UnityEngine;
 
-namespace AncientMemorial.Entities {
+namespace AncientMemorial.Entities.Enemies {
 	public abstract class CrystalBoss : Enemy {
 		protected override void        OnGrounded() { }
 
@@ -20,7 +20,7 @@ namespace AncientMemorial.Entities {
 				ShowDamageUI(damage);
 			}
 			
-			if (entityStat.hp <= 0) {
+			if (entityStat.HP <= 0) {
 				GameManager.SetTimeScale(0.5f, 0.25f);
 				CameraBrain.instance.ShakeLerp(5, 1);
 				CameraBrain.instance.ZoomLerp(-1f, 7.5f);

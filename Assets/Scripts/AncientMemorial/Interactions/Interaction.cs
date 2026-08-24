@@ -4,16 +4,21 @@ using System;
 using System.Collections.Generic;
 using AncientMemorial.Entities;
 using UengSystem.Events;
-using UengSystem.Logic.Tasks;
-using UengSystem.Logic.UValues;
-using UengSystem.Logic.UValues.UColors;
-using UengSystem.Logic.UValues.UObjects;
-using UengSystem.Logic.UValues.UStrings;
 using UengSystem.Objects;
+using UengSystem.UAction;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
 using UengSystem.Utility;
+using UengSystem.VisualScripting.Tasks;
+using UengSystem.VisualScripting.UValues;
+using UengSystem.VisualScripting.UValues.UColors;
+using UengSystem.VisualScripting.UValues.UFloats;
+using UengSystem.VisualScripting.UValues.UObjects;
+using UengSystem.VisualScripting.UValues.UStrings;
+// using UengSystem.VisualScripting.UValues.UColors;
+// using UengSystem.VisualScripting.UValues.UObjects;
+// using UengSystem.VisualScripting.UValues.UStrings;
 using UnityEngine;
 using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;
@@ -81,10 +86,10 @@ namespace AncientMemorial.Interactions {
                 	
                 USliderAction sliderAction = interactUI.GetAction<USliderAction>("Bar");
                 sliderAction.value = interactProgressValue;
-                ((UNumberColor)sliderAction.color).a = interactProgressValue;
+                sliderAction.color.To<UNumberColor>().a = interactProgressValue;
 				
 				UTextAction textAction = interactUI.GetAction<UTextAction>("TextLabel");
-				interactionText ??= new UPureString { Text = interactString };
+				interactionText ??= new UPureString { pureValue = interactString };
 				textAction.text =   interactionText;
 				textAction.Initialize(interactUI);
 			}

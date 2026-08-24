@@ -154,8 +154,10 @@ MonoBehaviour:
   entityUIHeight: 160
   groundChecker: {fileID: 1977062401253102610}
   debrisAttached: []
-  isWaveEnemy: 0
   markYPos: 1
+  footstepSprites:
+  - {fileID: -4131446148706359260, guid: ed45b7adecbac6742b91d86a80de0e85, type: 3}
+  - {fileID: -5858814840136118323, guid: ed45b7adecbac6742b91d86a80de0e85, type: 3}
   references:
     version: 2
     RefIds: []

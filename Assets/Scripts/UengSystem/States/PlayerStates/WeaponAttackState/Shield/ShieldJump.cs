@@ -13,8 +13,8 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 		public override    void OnEnter() {
 			base.OnEnter();
 			
-			if (player.entityStat.hp > player.entityData.hp * 0.5f) {
-				player.SendAttackEvent(player, Mathf.Round(player.entityData.hp *0.2f), false);
+			if (player.entityStat.HP > player.entityData.HP * 0.5f) {
+				player.SendAttackEvent(player, Mathf.Round(player.entityData.HP *0.2f), false);
 			}
 			
 			player.SendEvent(EventType.Entity_Player_Jump, (int)EventPriority.Action);
@@ -22,8 +22,8 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 			Vector2 footPosition = player.groundChecker.transform.position;
 			UObjectPool.instance.Get("ShieldSkillEffect", footPosition);
 
-			player.rigidbody2D.linearVelocityY = 2 + player.entityData.jumpPower*player.entityStat.moveSpeed*(player.entityData.hp - player.entityStat.hp)/
-												 (player.entityData.hp*2.5f);
+			player.rigidbody2D.linearVelocityY = 2 + player.entityData.jumpPower*player.entityStat.moveSpeed*(player.entityData.HP - player.entityStat.HP)/
+												 (player.entityData.HP*2.5f);
 		}
 
 		public override void OnEarlyRoutine() {

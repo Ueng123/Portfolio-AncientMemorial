@@ -1,4 +1,4 @@
-﻿namespace UengSystem.Settings {
+﻿namespace UengSystem.SaveDatas.SettingDatas {
 	public enum SettingType {
 		playerName,
 		Master,

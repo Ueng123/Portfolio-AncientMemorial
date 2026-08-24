@@ -157,36 +157,36 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658491678359775
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+    - rid: 5909658922870112972
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 1
+        pureValue: 1
+    - rid: 5909658922870113244
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 1
     - rid: 8985605461560001423
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 1417411076128888617}
         text:
-          rid: 8985605461560001518
+          rid: -2
     - rid: 8985605461560001425
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
         component: {fileID: 5138797963125562758}
         initialValue:
-          rid: 5909658491678359775
+          rid: 5909658922870113244
         value:
-          rid: -2
+          rid: 5909658922870112972
         color:
           rid: -2
         condition: 0
         taskOnValueChanged:
           useRealTime: 0
           tasks: []
-    - rid: 8985605461560001518
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
 --- !u!95 &7353956501363239835
 Animator:
   serializedVersion: 7

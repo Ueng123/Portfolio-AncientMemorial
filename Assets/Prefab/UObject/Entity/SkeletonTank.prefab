@@ -268,12 +268,12 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 5909658463911543386
-      - rid: 5909658463911543392
+      - rid: 5909658922870113052
+      - rid: 5909658922870113058
   entityType: 6
   entityData:
     name: 
-    hp: 0
+    HP: 0
     moveSpeed: 0
     jumpPower: 0
     attackCooldown: 0
@@ -284,9 +284,8 @@ MonoBehaviour:
     groundBoxOffsetY: 0
     groundBoxSizeX: 0
     groundBoxSizeY: 0
-    aggroThreshold: 0
   entityStat:
-    hp: 0
+    HP: 0
     moveSpeed: 0
     jumpPower: 0
     attackSpeed: 0
@@ -297,40 +296,41 @@ MonoBehaviour:
   entityUIHeight: 220
   groundChecker: {fileID: 6265980885284654929}
   debrisAttached: []
-  isWaveEnemy: 0
   markYPos: 1.6
-  attackPhase: 1
+  footstepSprites:
+  - {fileID: -6380232630893654169, guid: 240e0ee2da17df749802711e142f5da1, type: 3}
+  - {fileID: -1995340536043823812, guid: 240e0ee2da17df749802711e142f5da1, type: 3}
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658463911543386
-      type: {class: KillAllEntity, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113052
+      type: {class: KillAllEntity, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         exceptPlayer: 0
         exceptFriendly: 0
         targetTypes: 
         targetCategory:
-          rid: 5909658463911543388
+          rid: 5909658922870113060
         targetEntity:
           rid: -2
-    - rid: 5909658463911543388
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: TankEnemy
-    - rid: 5909658463911543392
-      type: {class: ReleaseObjects, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113058
+      type: {class: ReleaseObjects, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
         Category:
-          rid: 5909658463911543394
-    - rid: 5909658463911543394
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 5909658922870113062
+    - rid: 5909658922870113060
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        Text: skeletonSpawnObject
+        pureValue: 
+    - rid: 5909658922870113062
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 
 --- !u!114 &3760007967640774674
 MonoBehaviour:
   m_ObjectHideFlags: 0

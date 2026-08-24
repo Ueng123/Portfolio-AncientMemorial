@@ -4861,10 +4861,10 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 8985605512623030755
+      - rid: -2
     - time: 5
       tasks:
-      - rid: 8985605350484083474
+      - rid: 5909658922870113043
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -4873,34 +4873,12 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658555648573671
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 0.4
-    - rid: 8985605350484083474
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113043
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
         releaseThis: 1
         TargetObject:
-          rid: -2
-    - rid: 8985605512623030755
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: 5b6d17535f988eb408663cb109d04bd0, type: 3}
-        playOnThis: 1
-        audioPlayer:
-          rid: -2
-        volume:
-          rid: 5909658555648573671
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
           rid: -2
 --- !u!1 &6018074970192362533
 GameObject:
@@ -5041,7 +5019,7 @@ MonoBehaviour:
     tasks:
     - time: 1
       tasks:
-      - rid: 8985605369154765483
+      - rid: -2
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -5050,10 +5028,3 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8985605369154765483
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        releaseTime: 0
-        releaseThis: 1
-        TargetObject:
-          rid: -2

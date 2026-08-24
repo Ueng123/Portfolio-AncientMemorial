@@ -162,69 +162,65 @@ MonoBehaviour:
       data:
         component: {fileID: 2131951806108181785}
         initialValue:
-          rid: 5909658469114577166
+          rid: -2
         value:
-          rid: 5909658469114577149
+          rid: 5909658915668230782
         color:
-          rid: 5909658469114577160
+          rid: 5909658915668230765
         condition: 0
         taskOnValueChanged:
           useRealTime: 0
           tasks: []
-    - rid: 5909658469114577149
-      type: {class: InteractProgressValue, ns: AncientMemorial.Interactions, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        interactObject:
-          rid: -2
     - rid: 5909658469114577158
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 7193954444277158016}
         text:
-          rid: 5909658469114577159
-    - rid: 5909658469114577159
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
-    - rid: 5909658469114577160
-      type: {class: UNumberColor, ns: UengSystem.Logic.UValues.UColors, asm: Assembly-CSharp}
+          rid: 5909658915668230796
+    - rid: 5909658915668230765
+      type: {class: UNumberColor, ns: UengSystem.VisualScripting.UValues.UColors, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         r:
-          rid: 5909658469114577161
+          rid: 5909658915668230794
         g:
-          rid: 5909658469114577162
+          rid: 5909658915668230793
         b:
-          rid: 5909658469114577164
+          rid: 5909658915668230792
         a:
-          rid: 5909658469114577165
-    - rid: 5909658469114577161
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+          rid: 5909658915668230795
+    - rid: 5909658915668230782
+      type: {class: InteractProgressValue, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 1
-    - rid: 5909658469114577162
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        interactObject:
+          rid: -2
+    - rid: 5909658915668230792
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 1
-    - rid: 5909658469114577164
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        pureValue: 1
+    - rid: 5909658915668230793
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 1
-    - rid: 5909658469114577165
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        pureValue: 1
+    - rid: 5909658915668230794
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 0
-    - rid: 5909658469114577166
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        pureValue: 1
+    - rid: 5909658915668230795
+      type: {class: InteractProgressValue, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 0
+        interactObject:
+          rid: -2
+    - rid: 5909658915668230796
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: A
 --- !u!1 &1661297399338291499
 GameObject:
   m_ObjectHideFlags: 0

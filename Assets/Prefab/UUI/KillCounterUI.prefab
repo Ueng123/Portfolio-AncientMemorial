@@ -325,54 +325,42 @@ MonoBehaviour:
       data:
         component: {fileID: 7803877894156244012}
         text:
-          rid: 5909658469114576934
-    - rid: 5909658469114576934
-      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 5909658922870112961
+    - rid: 5909658922870112961
+      type: {class: UString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         strings:
-        - rid: 5909658469114576941
-        - rid: 5909658469114576935
-        - rid: 5909658469114576940
-    - rid: 5909658469114576935
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        - rid: 5909658922870112967
+        - rid: 5909658922870112962
+        - rid: 5909658922870112965
+    - rid: 5909658922870112962
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        Text: ' / '
-    - rid: 5909658469114576940
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        pureValue: ' / '
+    - rid: 5909658922870112965
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
-        dynamicType: 0
+        dynamicType: 1
         number:
-          rid: 5909658469114576942
-    - rid: 5909658469114576941
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 5909658922870112966
+    - rid: 5909658922870112966
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
+        variableName: WaveEnemyCount
+    - rid: 5909658922870112967
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 1
         number:
-          rid: 5909658469114576943
-    - rid: 5909658469114576942
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+          rid: 5909658922870112968
+    - rid: 5909658922870112968
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        varID:
-          rid: 5909658469114576945
-    - rid: 5909658469114576943
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        varID:
-          rid: 5909658469114576944
-    - rid: 5909658469114576944
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: WaveEnemyDead
-    - rid: 5909658469114576945
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: WaveEnemyCount
+        variableName: WaveEnemyDead
 --- !u!1 &4708675863230024693
 GameObject:
   m_ObjectHideFlags: 0

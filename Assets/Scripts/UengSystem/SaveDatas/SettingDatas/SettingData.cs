@@ -1,4 +1,4 @@
-﻿namespace UengSystem.Settings {
+﻿namespace UengSystem.SaveDatas.SettingDatas {
 	public class SettingData {
 		public string playerName;
 		public float  Master;

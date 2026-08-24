@@ -1,4 +1,5 @@
 ﻿using AncientMemorial.Entities;
+using AncientMemorial.Entities.Enemies;
 using UengSystem.Utility;
 using UnityEngine.PlayerLoop;
 

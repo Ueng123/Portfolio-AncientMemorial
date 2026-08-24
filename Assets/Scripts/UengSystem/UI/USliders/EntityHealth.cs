@@ -1,8 +1,7 @@
-﻿using UengSystem.UI.USliders;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace AncientMemorial.UI {
+namespace UengSystem.UI.USliders {
 	public class EntityHealth : USlider {
 		public Slider subSlider;
 		public Image  background;

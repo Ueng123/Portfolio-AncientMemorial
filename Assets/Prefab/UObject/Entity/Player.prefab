@@ -127,11 +127,14 @@ MonoBehaviour:
     tasks: []
   ReleaseTask:
     useRealTime: 0
-    tasks: []
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 5909658915668230636
   entityType: 0
   entityData:
     name: 
-    hp: 0
+    HP: 0
     moveSpeed: 0
     jumpPower: 0
     attackCooldown: 0
@@ -144,7 +147,7 @@ MonoBehaviour:
     groundBoxSizeY: 0
     aggroThreshold: 0
   entityStat:
-    hp: 0
+    HP: 0
     moveSpeed: 0
     jumpPower: 0
     attackSpeed: 0
@@ -159,12 +162,28 @@ MonoBehaviour:
   handAnimator: {fileID: 4394597504205628774}
   weaponSpriteRenderer: {fileID: 7956512550515136028}
   weapon: {fileID: 11400000, guid: 08a41439bc493e6418935180344dfb75, type: 2}
-  dashing: 0
   maxInteractableDistance: 2
   getInput: 1
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 5909658915668230636
+      type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 0
+        TargetUUI:
+          rid: 5909658915668230639
+    - rid: 5909658915668230639
+      type: {class: UUIByID, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        ID:
+          rid: 5909658915668230642
+    - rid: 5909658915668230642
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: PlayerUI
 --- !u!95 &3425632738243857007
 Animator:
   serializedVersion: 7

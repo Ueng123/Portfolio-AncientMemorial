@@ -4928,10 +4928,10 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 8985605512623030756
+      - rid: 5909658922870113039
     - time: 5
       tasks:
-      - rid: 8985605350484083474
+      - rid: 5909658922870113040
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -4940,18 +4940,11 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8985605350484083474
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113039
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        releaseTime: 0
-        releaseThis: 1
-        TargetObject:
-          rid: -2
-    - rid: 8985605512623030756
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: 24e8bf6290ea882459e7713bf4b6be94, type: 3}
-        playOnThis: 1
+        clip: {fileID: 0}
+        playOnThis: 0
         audioPlayer:
           rid: -2
         volume:
@@ -4963,6 +4956,13 @@ MonoBehaviour:
         spread:
           rid: -2
         loop:
+          rid: -2
+    - rid: 5909658922870113040
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        releaseTime: 0
+        releaseThis: 1
+        TargetObject:
           rid: -2
 --- !u!1001 &5148907050696678981
 PrefabInstance:

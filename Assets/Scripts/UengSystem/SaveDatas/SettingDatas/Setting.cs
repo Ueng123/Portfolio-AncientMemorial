@@ -1,8 +1,6 @@
 ﻿using System;
-using AncientMemorial;
-using UengSystem.GameSaveDatas;
 
-namespace UengSystem.Settings {
+namespace UengSystem.SaveDatas.SettingDatas {
 	public class Setting : SaveData<Setting, SettingData, SettingType> {
 		public static bool Loaded = false;
 

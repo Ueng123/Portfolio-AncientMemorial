@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using UengSystem.Logic.Tasks;
 using UengSystem.Objects;
+using UengSystem.VisualScripting.Tasks;
 using UnityEngine;
 
 namespace UengSystem.Managers {

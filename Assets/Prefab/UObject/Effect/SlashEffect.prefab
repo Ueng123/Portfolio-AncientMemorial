@@ -79,7 +79,7 @@ MonoBehaviour:
     tasks:
     - time: 0.25
       tasks:
-      - rid: 8985605350484083474
+      - rid: 5909658922870113050
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -88,8 +88,8 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8985605350484083474
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870113050
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
         releaseThis: 1

@@ -334,72 +334,72 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 5909658915668230652
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 
+    - rid: 5909658915668230653
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 
+    - rid: 5909658915668230654
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 
+    - rid: 5909658915668230655
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 
+    - rid: 5909658915668230656
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 
+    - rid: 5909658915668230657
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 
     - rid: 8722662772965376085
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 4547384240855670255}
         text:
-          rid: 8722662772965376092
+          rid: 5909658915668230652
     - rid: 8722662772965376086
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 7943366028785180865}
         text:
-          rid: 8722662772965376093
+          rid: 5909658915668230653
     - rid: 8722662772965376087
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 8263512886402992963}
         text:
-          rid: 8722662772965376094
+          rid: 5909658915668230654
     - rid: 8722662772965376088
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 5197853665446477527}
         text:
-          rid: 8722662772965376095
+          rid: 5909658915668230655
     - rid: 8722662772965376089
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 7323062846145217729}
         text:
-          rid: 8722662772965376096
+          rid: 5909658915668230656
     - rid: 8722662772965376090
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 3323592674963823069}
         text:
-          rid: 8722662772965376097
-    - rid: 8722662772965376092
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
-    - rid: 8722662772965376093
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
-    - rid: 8722662772965376094
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
-    - rid: 8722662772965376095
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
-    - rid: 8722662772965376096
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
-    - rid: 8722662772965376097
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
+          rid: 5909658915668230657
 --- !u!95 &6496077742332316475
 Animator:
   serializedVersion: 7

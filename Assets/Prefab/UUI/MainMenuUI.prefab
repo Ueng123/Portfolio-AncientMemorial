@@ -1323,11 +1323,11 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 5909658469114576949
-            - rid: 5909658469114576954
+            - rid: 5909658922870112895
+            - rid: 5909658922870112896
           - time: 2
             tasks:
-            - rid: 5909658469114576952
+            - rid: 5909658922870112897
     - rid: 5909658469114576947
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -1339,9 +1339,9 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 5909658469114576962
-            - rid: 5909658469114576961
-            - rid: 5909658579411927578
+            - rid: 5909658922870112893
+            - rid: 5909658922870112892
+            - rid: 5909658922870112894
     - rid: 5909658469114576948
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -1353,75 +1353,11 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: 5909658469114576967
-            - rid: 5909658469114576966
-            - rid: 5909658469114576965
-    - rid: 5909658469114576949
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: 0a352d3250d3547458a652c1e59c5ed3, type: 3}
-        playOnThis: 0
-        audioPlayer:
-          rid: -2
-        volume:
-          rid: -2
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
-          rid: -2
-    - rid: 5909658469114576952
-      type: {class: EndGame, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data: 
-    - rid: 5909658469114576954
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
-        canvas: {fileID: 0}
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 5909658469114576961
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 2014505629007714483, guid: 236bc008bed361d4b9febdaf1eab44b2, type: 3}
-        canvas: {fileID: 0}
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 5909658469114576962
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
-        playOnThis: 0
-        audioPlayer:
-          rid: -2
-        volume:
-          rid: -2
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
-          rid: -2
-    - rid: 5909658469114576965
-      type: {class: OpenUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetUUI: {fileID: 776431297840088385, guid: c045c6ddc61114543ae8960a3785dfe5, type: 3}
-        canvas: {fileID: 0}
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 5909658469114576966
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+            - rid: 5909658922870112889
+            - rid: 5909658922870112890
+            - rid: 5909658922870112891
+    - rid: 5909658922870112889
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         clip: {fileID: 8300000, guid: e1f498080da03ed40bb0cd2c90450d36, type: 3}
         playOnThis: 0
@@ -1437,12 +1373,76 @@ MonoBehaviour:
           rid: -2
         loop:
           rid: -2
-    - rid: 5909658469114576967
-      type: {class: LoadSettings, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112890
+      type: {class: LoadSettings, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data: 
-    - rid: 5909658579411927578
-      type: {class: CloseUI, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658922870112891
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 776431297840088385, guid: c045c6ddc61114543ae8960a3785dfe5, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658922870112892
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 2014505629007714483, guid: 236bc008bed361d4b9febdaf1eab44b2, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658922870112893
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: e1f498080da03ed40bb0cd2c90450d36, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658922870112894
+      type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         closeThis: 1
         TargetUUI:
           rid: -2
+    - rid: 5909658922870112895
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 0a352d3250d3547458a652c1e59c5ed3, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658922870112896
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658922870112897
+      type: {class: EndGame, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data: 

@@ -33,18 +33,15 @@ namespace UengSystem.ObjectPool {
 						},
 						actionOnGet: (obj) => {  },
 						actionOnRelease: (obj) => {  },
-						actionOnDestroy: (obj) => {
-							Destroy(obj);
-						},
+						actionOnDestroy: Destroy,
 						collectionCheck: true,
-						defaultCapacity: 0,
-						maxSize: 100
+						defaultCapacity: 10,
+						maxSize: 50
 				); 
 			}
 		}
 		
 		public GameObject Get(string key, Vector2 position, float time = 0) {
-			List<GameObject> willReleaseObjects = new();
 			GameObject       obj                = pools[key].Get();
 			IObjectPoolable  script             = obj.GetComponent<IObjectPoolable>();
 			

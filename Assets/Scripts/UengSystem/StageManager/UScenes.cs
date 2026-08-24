@@ -1,4 +1,4 @@
-﻿namespace UengSystem.Managers {
+﻿namespace UengSystem.StageManager {
 	public enum UScenes {
 		Game,
 		SkeletonTankChallenge,

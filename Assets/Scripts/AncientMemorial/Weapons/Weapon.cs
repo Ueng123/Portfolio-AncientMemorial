@@ -1,7 +1,8 @@
 ﻿using AncientMemorial.Entities;
-using UengSystem.Logic.UValues.UFloats;
 using UengSystem.States;
 using UengSystem.Utility;
+using UengSystem.VisualScripting.UValues.UFloats;
+// using UengSystem.VisualScripting.UValues.UFloats;
 using UnityEngine;
 
 namespace AncientMemorial.Weapons {
@@ -9,6 +10,8 @@ namespace AncientMemorial.Weapons {
 		public RuntimeAnimatorController PlayerAnimatorController;
 		public Sprite             WeaponSprite;
 
+		private readonly int SKILL_COOLDOWN_TIME = "SkillCooldownTime".GetHash();
+		
 		public static int selectedWeaponID = 0;
 		
 		protected int currPrimaryAttackStage;
@@ -72,7 +75,8 @@ namespace AncientMemorial.Weapons {
 			else currSecondaryAttackStage = (currSecondaryAttackStage + 1) % secondaryAttackStageCount;
 
 			player.state = GetSecondaryAttackAction(currSecondaryAttackStage);
-			GameManager.UValueFloatVariables["SkillCooldownTime"] = new UPureFloat { number = Time.time + GetSecondaryAttackDelay(currSecondaryAttackStage) };
+			UPureFloat.SetValue(SKILL_COOLDOWN_TIME, Time.time + GetSecondaryAttackDelay(currSecondaryAttackStage));
+			
 			secondaryAttackWatch.Tick();
 		}
 		

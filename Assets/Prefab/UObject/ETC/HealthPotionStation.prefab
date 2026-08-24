@@ -114,16 +114,13 @@ MonoBehaviour:
   animator: {fileID: 0}
   GetTask:
     useRealTime: 0
-    tasks:
-    - time: 0
-      tasks:
-      - rid: 8985605503527420074
+    tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
   interactable: 1
   showInteractUI: 1
-  interactString: "\uD558\uB098\uB9CC \uAC00\uC838\uAC00\uC2DC\uC624"
+  interactString: "\uAC00\uC838\uAC00\uAE30"
   timeToInteract: 0.25
   cooldownToInteract: 0.2
   canvas: {fileID: 1416814511569535545}
@@ -132,7 +129,11 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 8985605503527420077
+      - rid: 5909658915668230599
+      - rid: 5909658915668230601
+      - rid: 5909658915668230602
+      - rid: 5909658915668230603
+      - rid: 5909658915668230604
   onCancel:
     useRealTime: 0
     tasks: []
@@ -150,11 +151,28 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658452586660192
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658915668230599
+      type: {class: AddInfoMessage, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        message:
+          rid: 5909658915668230600
+    - rid: 5909658915668230600
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: "<color=#F8BB30>\uCCB4\uB825 \uD68C\uBCF5 \uBB3C\uC57D</color>\uC744
+          \uAC00\uC838\uAC14\uB2E4."
+    - rid: 5909658915668230601
+      type: {class: AddUFloatVariableAsPure, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        variableName: HealthPotionCount
+        value:
+          rid: 5909658915668230607
+    - rid: 5909658915668230602
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         clip: {fileID: 8300000, guid: b3fb9916556e978499f0df65f72aa4ff, type: 3}
-        playOnThis: 1
+        playOnThis: 0
         audioPlayer:
           rid: -2
         volume:
@@ -167,255 +185,46 @@ MonoBehaviour:
           rid: -2
         loop:
           rid: -2
-    - rid: 8985605503527420074
-      type: {class: SetUBoolVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658915668230603
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        key:
-          rid: 8985605503527420075
-        value:
-          rid: 8985605503527420076
-    - rid: 8985605503527420075
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: HealthPotionTaken
-    - rid: 8985605503527420076
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 0
-    - rid: 8985605503527420077
-      type: {class: ConditionalTask, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        boolean:
-          rid: 8985605503527420078
-        taskOnTrue:
-          useRealTime: 0
-          tasks:
-          - time: 0
-            tasks:
-            - rid: 8985605503527420102
-        taskOnFalse:
-          useRealTime: 0
-          tasks:
-          - time: 0
-            tasks:
-            - rid: 8985605503527420080
-            - rid: 8985605503527420087
-            - rid: 8985605503527420090
-            - rid: 5909658452586660192
-        type: 0
-    - rid: 8985605503527420078
-      type: {class: UBoolFromVariable, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        varID:
-          rid: 8985605503527420079
-    - rid: 8985605503527420079
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: HealthPotionTaken
-    - rid: 8985605503527420080
-      type: {class: SetUBoolVariable, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        key:
-          rid: 8985605503527420082
-        value:
-          rid: 8985605503527420083
-    - rid: 8985605503527420082
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: HealthPotionTaken
-    - rid: 8985605503527420083
-      type: {class: UPureBool, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        boolValue: 1
-    - rid: 8985605503527420087
-      type: {class: AddUFloatVariableAsPure, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        key:
-          rid: 8985605503527420088
-        value:
-          rid: 8985605503527420089
-    - rid: 8985605503527420088
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: healthPotionNum
-    - rid: 8985605503527420089
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 3
-    - rid: 8985605503527420090
-      type: {class: AddInfoMessage, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
-      data:
-        message:
-          rid: 8985605503527420091
-    - rid: 8985605503527420091
-      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        strings:
-        - rid: 8985605503527420094
-        - rid: 8985605503527420092
-    - rid: 8985605503527420092
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: " \uAC1C \uCC59\uACBC\uB2E4."
-    - rid: 8985605503527420094
-      type: {class: UColorText, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        text:
-          rid: 8985605503527420095
-        color:
-          rid: 8985605503527420096
-    - rid: 8985605503527420095
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 3
-    - rid: 8985605503527420096
-      type: {class: USimpleColor, ns: UengSystem.Logic.UValues.UColors, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        color: {r: 1, g: 0.911591, b: 0.3254717, a: 1}
-    - rid: 8985605503527420102
-      type: {class: ConditionalTask, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        boolean:
-          rid: 8985605503527420103
-        taskOnTrue:
-          useRealTime: 0
-          tasks:
-          - time: 0
-            tasks:
-            - rid: 8985605503527420115
-            - rid: 8985605503527420107
-            - rid: 8985605503527420117
-            - rid: 8985605503527420120
-        taskOnFalse:
-          useRealTime: 0
-          tasks:
-          - time: 0
-            tasks:
-            - rid: 8985605503527420109
-            - rid: 8985605503527420108
-        type: 0
-    - rid: 8985605503527420103
-      type: {class: CompareNumbers, ns: UengSystem.Logic.UValues.UBools, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        A:
-          rid: 8985605503527420104
-        B:
-          rid: 8985605503527420105
-        uCompareType: 1
-    - rid: 8985605503527420104
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        varID:
-          rid: 8985605503527420106
-    - rid: 8985605503527420105
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 10
-    - rid: 8985605503527420106
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: criminalCount
-    - rid: 8985605503527420107
-      type: {class: AddUFloatVariableAsPure, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        key:
-          rid: 8985605503527420113
-        value:
-          rid: 8985605503527420114
-    - rid: 8985605503527420108
-      type: {class: AddUFloatVariableAsPure, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        key:
-          rid: 8985605503527420111
-        value:
-          rid: 8985605503527420112
-    - rid: 8985605503527420109
-      type: {class: AddInfoMessage, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
-      data:
-        message:
-          rid: 8985605503527420110
-    - rid: 8985605503527420110
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: "\uC774\uBBF8 \uD06C\uB098\uD070 \uBC94\uC8C4\uB97C \uC800\uC9C8\uB800\uB2E4."
-    - rid: 8985605503527420111
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: criminalCount
-    - rid: 8985605503527420112
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 1
-    - rid: 8985605503527420113
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: healthPotionNum
-    - rid: 8985605503527420114
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 8
-    - rid: 8985605503527420115
-      type: {class: AddInfoMessage, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
-      data:
-        message:
-          rid: 8985605503527420116
-    - rid: 8985605503527420116
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: "\uD14C\uC774\uBE14\uC774 \uC090\uC84C\uC2B5\uB2C8\uB2E4. \uC4F0\uB808\uAE30."
-    - rid: 8985605503527420117
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetObject: {fileID: 6301149579103193317, guid: c6924125cf32e8044b6ad4e5bdb5ae22, type: 3}
+        TargetObject: {fileID: 7507467289219499174, guid: 85fc066d9dd47a44488cdc7b53b6f0a3, type: 3}
         position:
-          rid: 8985605503527420118
+          rid: 5909658915668230605
         spawnTime:
           rid: -2
         ID:
           rid: -2
         Category:
-          rid: -2
-    - rid: 8985605503527420118
-      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+          rid: 5909658915668230825
+    - rid: 5909658915668230604
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        dynamicType: 0
-        targetObject:
-          rid: 8985605503527420119
-    - rid: 8985605503527420119
-      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        obj: {fileID: 5939352058028712888}
-    - rid: 8985605503527420120
-      type: {class: ReleaseObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        releaseTime: 0
+        releaseTime: 0.1
         releaseThis: 1
         TargetObject:
           rid: -2
+    - rid: 5909658915668230605
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 5909658915668230606
+    - rid: 5909658915668230606
+      type: {class: UObjectSerialized, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        obj: {fileID: 5939352058028712888}
+    - rid: 5909658915668230607
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 4
+    - rid: 5909658915668230825
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: WaveDecoration
 --- !u!1001 &765936575746668150
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
+using UengSystem;
 using UengSystem.Audio;
-using UengSystem.Logic.Tasks;
-using UengSystem.Logic.UValues.UFloats;
 using UengSystem.Managers;
 using UengSystem.UI;
+using UengSystem.Utility;
+using UengSystem.VisualScripting.Tasks;
+using UengSystem.VisualScripting.UValues.UFloats;
+// using UengSystem.VisualScripting.UValues.UFloats;
 using UnityEngine;
 
 namespace AncientMemorial.Waves {
 	public class WaveManager : Manager<WaveManager> {
+		private int TIME_ELAPSED = "timeElapsed".GetHash();
+		
 		public  List<Wave>  waves     = new List<Wave>();
 		private Queue<Wave> waveQueue = new Queue<Wave>();
 		public  Wave        currentWave;
@@ -36,7 +41,7 @@ namespace AncientMemorial.Waves {
 		// 결국 안끝나고 웨이브 지속 PlayWave [ NextWave f -> PlayWave [ ... ] t ] t -- ok
 		// 끝남 PlayWave [ NextWave f -> PlayWave [ NextWave f -> CLEAR! ]] -- ok
 		private void PlayWave() {
-			GameManager.UValueFloatVariables["timeElapsed"] = new UPureFloat { number = 0 };
+			UPureFloat.SetValue(TIME_ELAPSED, 0);
 			currentWave.waveTasks.Execute(CoroutineRunner.instance);
 		}
 		
@@ -49,9 +54,7 @@ namespace AncientMemorial.Waves {
 		public override void ManagerUpdate() {
 			if (!currentWave) return;
 			
-			GameManager.UValueFloatVariables["timeElapsed"] = new UPureFloat {
-				number = GameManager.UValueFloatVariables["timeElapsed"].value + Time.deltaTime
-			};
+			UPureFloat.AddValue(TIME_ELAPSED, Time.deltaTime);
 
 			foreach (ConditionalTask condition in currentWave.alwaysConditionalTasks) { condition.Execute(this); }
 		}

@@ -6,17 +6,20 @@ using AncientMemorial.Map;
 using AncientMemorial.Objects;
 using AncientMemorial.Waves;
 using AncientMemorial.Weapons;
+using UengSystem;
 using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.Inputs;
-using UengSystem.Logic.UValues;
-using UengSystem.Logic.UValues.UFloats;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.Settings;
+using UengSystem.SaveDatas.SettingDatas;
 using UengSystem.States.PlayerStates;
+using UengSystem.UAction;
 using UengSystem.UI;
+using UengSystem.UI.UUIs;
 using UengSystem.Utility;
+using UengSystem.VisualScripting.UValues.UFloats;
+// using UengSystem.VisualScripting.UValues.UFloats;
 using UnityEngine;
 using DebugManager = UengSystem.UDebug.DebugManager;
 using EventType = UengSystem.Events.EventType;
@@ -24,6 +27,7 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
 	public class Player : Entity {
+		private int HEALTH_POTION_COUNT = "HealthPotionCount".GetHash();
 		
 		[Header("Hand")]
 		public GameObject hand;
@@ -88,7 +92,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		private bool CanHeal() {
-			if (GameManager.UValueFloatVariables["healthPotionNum"].value <= 0) return false;
+			if (UPureFloat.GetValue(HEALTH_POTION_COUNT) <= 0) return false;
 			if (healAction.Executing) return false;
 			if (!weapon.isAttacking) return false;
 			
@@ -124,7 +128,7 @@ namespace AncientMemorial.Entities {
 				SendAttackEvent(this, -3, true);
 			}, () => {}, this);
 			
-			GameManager.UValueFloatVariables["healthPotionNum"] = new UPureFloat { number = GameManager.UValueFloatVariables["healthPotionNum"].value - 1 };
+			UPureFloat.AddValue(HEALTH_POTION_COUNT, -1);
 			
 			handAnimator.Play(lookingLeft?"healB":"heal", 0, 0);
 			SetArm();
@@ -194,20 +198,20 @@ namespace AncientMemorial.Entities {
 
 		    if (InputManager.GetInput(ActionType.Debug_HealthUp, PressType.Up)) {
 		       SendAttackEvent(this, -5, true);
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {entityStat.hp}]");
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {entityStat.HP}]");
 		    }
 		    if (InputManager.GetInput(ActionType.Debug_HealthDown, PressType.Up)) {
 		       SendAttackEvent(this, 5, true);
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {entityStat.hp}]");
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {entityStat.HP}]");
 		    }
 		    
 		    if (InputManager.GetInput(ActionType.Debug_MaxHealthUp, PressType.Up)) {
-		       entityData.hp += 5;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {entityData.hp}]");
+		       entityData.HP += 5;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {entityData.HP}]");
 		    }
 		    if (InputManager.GetInput(ActionType.Debug_MaxHealthDown, PressType.Up)) {
-		       entityData.hp -= 5;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {entityData.hp}]");
+		       entityData.HP -= 5;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {entityData.HP}]");
 		    }
 		    
 		    if (InputManager.GetInput(ActionType.Debug_MoveSpeedUp, PressType.Up)) {
@@ -234,9 +238,8 @@ namespace AncientMemorial.Entities {
 		    }
 		    
 		    if (InputManager.GetInput(ActionType.Debug_AddHealPotion, PressType.Up)) {
-		       GameManager.UValueFloatVariables["healthPotionNum"] =
-		          new UPureFloat { number = GameManager.UValueFloatVariables["healthPotionNum"].value + 1 };
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : now you have {GameManager.UValueFloatVariables["healthPotionNum"].value} potions");
+				UPureFloat.AddValue(HEALTH_POTION_COUNT, 1);
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : now you have {UPureFloat.GetValue(HEALTH_POTION_COUNT)} potions");
 		    }
 		}
 
@@ -324,7 +327,7 @@ namespace AncientMemorial.Entities {
 			
 			PlaySFX("playerHit");
 
-			bool isHurt = damage > entityData.hp * 0.3f;
+			bool isHurt = damage > entityData.HP * 0.3f;
 			playerUI.animator.Play(isHurt?"hitHard":"hit", 0, 0);
 			
 			GameManager.SetTimeScale(0.05f, 0.3f);

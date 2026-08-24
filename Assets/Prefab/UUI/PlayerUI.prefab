@@ -914,10 +914,10 @@ MonoBehaviour:
   - key: HealthPotionShadowText
     action:
       rid: 8985605447328989354
-  - key: CrossbowCooltimeText
+  - key: SkillCooldownTime
     action:
       rid: 8985605447328989425
-  - key: CrossbowCooltimeShadowText
+  - key: SkillCooldownTimeShadow
     action:
       rid: 8985605447328989426
   - key: AttackDamageUpgradeCount
@@ -942,122 +942,252 @@ MonoBehaviour:
       data:
         component: {fileID: 3553437854965654400}
         text:
-          rid: 5909658463911543491
+          rid: 5909658915668230723
     - rid: 5909658463911543488
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 6177900665896205478}
         text:
-          rid: 5909658463911543492
+          rid: 5909658915668230724
     - rid: 5909658463911543489
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 5422488037671325103}
         text:
-          rid: 5909658463911543493
+          rid: 5909658915668230725
     - rid: 5909658463911543490
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 3693129724740663912}
         text:
-          rid: 5909658463911543494
-    - rid: 5909658463911543491
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 5909658915668230726
+    - rid: 5909658915668230714
+      type: {class: UTimerString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetTime:
+          rid: 5909658915668230722
+        saveFloatDigit: 1
+        textOnDone:
+          rid: 5909658915668230718
+        unit:
+          rid: 5909658915668230719
+    - rid: 5909658915668230715
+      type: {class: UTimerString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 1
+        targetTime:
+          rid: 5909658915668230721
+        saveFloatDigit: 1
+        textOnDone:
+          rid: 5909658915668230717
+        unit:
+          rid: 5909658915668230716
+    - rid: 5909658915668230716
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: s
+    - rid: 5909658915668230717
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: READY
+    - rid: 5909658915668230718
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: READY
+    - rid: 5909658915668230719
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: s
+    - rid: 5909658915668230721
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 1
+        variableName: SkillCooldownTime
+    - rid: 5909658915668230722
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        variableName: SkillCooldownTime
+    - rid: 5909658915668230723
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         number:
-          rid: 5909658463911543495
-    - rid: 5909658463911543492
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 5909658915668230730
+    - rid: 5909658915668230724
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         number:
-          rid: 5909658463911543496
-    - rid: 5909658463911543493
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 5909658915668230729
+    - rid: 5909658915668230725
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         number:
-          rid: 5909658463911543497
-    - rid: 5909658463911543494
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: 5909658915668230728
+    - rid: 5909658915668230726
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         number:
-          rid: 5909658463911543498
-    - rid: 5909658463911543495
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+          rid: 5909658915668230727
+    - rid: 5909658915668230727
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        varID:
-          rid: 5909658463911543499
-    - rid: 5909658463911543496
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        variableName: MHUpgradeCount
+    - rid: 5909658915668230728
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        varID:
-          rid: 5909658463911543500
-    - rid: 5909658463911543497
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        variableName: MSUpgradeCount
+    - rid: 5909658915668230729
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        varID:
-          rid: 5909658463911543501
-    - rid: 5909658463911543498
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        variableName: ASUpgradeCount
+    - rid: 5909658915668230730
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        varID:
-          rid: 5909658463911543502
-    - rid: 5909658463911543499
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        variableName: ADUpgradeCount
+    - rid: 5909658915668230732
+      type: {class: UString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        Text: UpgradeCountAD
-    - rid: 5909658463911543500
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        strings:
+        - rid: 5909658915668230735
+        - rid: 5909658915668230737
+    - rid: 5909658915668230733
+      type: {class: UString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        Text: UpgradeCountAS
-    - rid: 5909658463911543501
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        strings:
+        - rid: 5909658915668230734
+        - rid: 5909658915668230740
+    - rid: 5909658915668230734
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        Text: UpgradeCountMS
-    - rid: 5909658463911543502
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+        pureValue: x
+    - rid: 5909658915668230735
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        Text: UpgradeCountMH
-    - rid: 5909658491678359784
-      type: {class: UPlayerEntity, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+        pureValue: x
+    - rid: 5909658915668230737
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-    - rid: 5909658491678359785
-      type: {class: UPlayerEntity, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+        number:
+          rid: 5909658915668230739
+    - rid: 5909658915668230739
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-    - rid: 5909658491678359787
-      type: {class: UPlayerEntity, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+        variableName: HealthPotionCount
+    - rid: 5909658915668230740
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-    - rid: 5909658555648574056
-      type: {class: UFloatToInt, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        number:
+          rid: 5909658915668230741
+    - rid: 5909658915668230741
+      type: {class: UFloatFromVariable, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        floatValue:
-          rid: 5909658555648574057
-        saveFloatDigits: 2
-        floatToIntegerMode: 1
-    - rid: 5909658555648574057
-      type: {class: UEntityStat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        variableName: HealthPotionCount
+    - rid: 5909658915668230742
+      type: {class: UString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        strings:
+        - rid: 5909658915668230744
+        - rid: 5909658915668230743
+        - rid: 5909658915668230745
+    - rid: 5909658915668230743
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: ' / '
+    - rid: 5909658915668230744
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        number:
+          rid: 5909658915668230746
+    - rid: 5909658915668230745
+      type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        number:
+          rid: 5909658915668230747
+    - rid: 5909658915668230746
+      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         targetEntity:
-          rid: 5909658555648574058
+          rid: 5909658915668230749
         type: 2
-    - rid: 5909658555648574058
-      type: {class: UPlayerEntity, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+    - rid: 5909658915668230747
+      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetEntity:
+          rid: 5909658915668230748
+        type: 1
+    - rid: 5909658915668230748
+      type: {class: UPlayerEntity, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+    - rid: 5909658915668230749
+      type: {class: UPlayerEntity, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+    - rid: 5909658915668230750
+      type: {class: UDiv, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        A:
+          rid: 5909658915668230752
+        B:
+          rid: 5909658915668230751
+    - rid: 5909658915668230751
+      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetEntity:
+          rid: 5909658915668230756
+        type: 1
+    - rid: 5909658915668230752
+      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetEntity:
+          rid: 5909658915668230755
+        type: 2
+    - rid: 5909658915668230753
+      type: {class: UStringFromSetting, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        type: 0
+    - rid: 5909658915668230754
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 1
+    - rid: 5909658915668230755
+      type: {class: UPlayerEntity, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+    - rid: 5909658915668230756
+      type: {class: UPlayerEntity, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
       data:
         dynamicType: 0
     - rid: 8985605447328989325
@@ -1065,9 +1195,9 @@ MonoBehaviour:
       data:
         component: {fileID: 4079831938248585896}
         initialValue:
-          rid: 8985605447328989327
+          rid: 5909658915668230754
         value:
-          rid: 8985605447328989329
+          rid: 5909658915668230750
         color:
           rid: -2
         condition: 0
@@ -1079,223 +1209,37 @@ MonoBehaviour:
       data:
         component: {fileID: 4009985289631922236}
         text:
-          rid: 8985605447328989336
-    - rid: 8985605447328989327
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 1
-    - rid: 8985605447328989329
-      type: {class: UDiv, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        A:
-          rid: 8985605447328989331
-        B:
-          rid: 8985605447328989330
-    - rid: 8985605447328989330
-      type: {class: UEntityStat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetEntity:
-          rid: 5909658491678359785
-        type: 1
-    - rid: 8985605447328989331
-      type: {class: UEntityStat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetEntity:
-          rid: 5909658491678359784
-        type: 2
-    - rid: 8985605447328989336
-      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        strings:
-        - rid: 8985605483456364708
-        - rid: 8985605483456364710
-        - rid: 8985605483456364709
+          rid: 5909658915668230742
     - rid: 8985605447328989354
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 9032031347464784970}
         text:
-          rid: 8985605447328989355
-    - rid: 8985605447328989355
-      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        strings:
-        - rid: 8985605447328989356
-        - rid: 8985605447328989357
-    - rid: 8985605447328989356
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: x
-    - rid: 8985605447328989357
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number:
-          rid: 8985605447328989358
-    - rid: 8985605447328989358
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        varID:
-          rid: 8985605447328989359
-    - rid: 8985605447328989359
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: healthPotionNum
+          rid: 5909658915668230733
     - rid: 8985605447328989360
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 918871657518699113}
         text:
-          rid: 8985605447328989361
-    - rid: 8985605447328989361
-      type: {class: UString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        strings:
-        - rid: 8985605447328989362
-        - rid: 8985605447328989363
-    - rid: 8985605447328989362
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: x
-    - rid: 8985605447328989363
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number:
-          rid: 8985605447328989365
-    - rid: 8985605447328989365
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        varID:
-          rid: 8985605447328989366
-    - rid: 8985605447328989366
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: healthPotionNum
+          rid: 5909658915668230732
     - rid: 8985605447328989425
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 961590478184308126}
         text:
-          rid: 8985605447328989484
+          rid: 5909658915668230714
     - rid: 8985605447328989426
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 7926167116340368835}
         text:
-          rid: 8985605447328989486
-    - rid: 8985605447328989484
-      type: {class: UTimerString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetTime:
-          rid: 8985605447328989485
-        saveFloatDigit: 1
-        textOnDone:
-          rid: 8985605447328989494
-        unit:
-          rid: 8985605447328989497
-    - rid: 8985605447328989485
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        varID:
-          rid: 8985605447328989489
-    - rid: 8985605447328989486
-      type: {class: UTimerString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetTime:
-          rid: 8985605447328989487
-        saveFloatDigit: 1
-        textOnDone:
-          rid: 8985605447328989495
-        unit:
-          rid: 8985605447328989498
-    - rid: 8985605447328989487
-      type: {class: UFloatFromVariable, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        varID:
-          rid: 8985605447328989488
-    - rid: 8985605447328989488
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: SkillCooldownTime
-    - rid: 8985605447328989489
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: SkillCooldownTime
-    - rid: 8985605447328989494
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: READY
-    - rid: 8985605447328989495
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: READY
-    - rid: 8985605447328989497
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: s
-    - rid: 8985605447328989498
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: s
-    - rid: 8985605483456364708
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number:
-          rid: 5909658555648574056
-    - rid: 8985605483456364709
-      type: {class: UNumberString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number:
-          rid: 8985605483456364711
-    - rid: 8985605483456364710
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: ' / '
-    - rid: 8985605483456364711
-      type: {class: UEntityStat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetEntity:
-          rid: 5909658491678359787
-        type: 1
+          rid: 5909658915668230715
     - rid: 8985605506644836608
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 872267733026701413}
         text:
-          rid: 8985605570991752288
-    - rid: 8985605570991752288
-      type: {class: UStringFromSetting, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        type: 0
+          rid: 5909658915668230753
 --- !u!1 &1667187089031782729
 GameObject:
   m_ObjectHideFlags: 0
