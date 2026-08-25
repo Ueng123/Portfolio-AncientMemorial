@@ -5,4 +5,4 @@
 <p>제작 기간 : 2026. 03 ~ 2026. 09</p>
 
 ---
-NOTION : (링크)
+[NOTION](https://app.notion.com/p/ANCIENT-MEMORIAL-303a09304bae804d81fadb1f80b07689?source=copy_link)
