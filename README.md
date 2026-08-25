@@ -1,11 +1,7 @@
-# UENG PORTFOLIO #1
-`청강문화산업대학교`에 제출될 포트폴리오
-
-장르 : `SOLO-SideView-Roguelike`
-게임 이름 : `Ancient_Memorial`
-
-2025년 11월 23일에 시작됨.
-COMMENT :
-```
-comment will filled when project fully well-maden.
-```
+# Ancient Memorial
+---
+## 프로젝트 정보
+개인 / 팀 : 개인
+제작 기간 : `2026. 03` ~ `2026. 09`
+---
+NOTION : (링크)
