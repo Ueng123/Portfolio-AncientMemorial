@@ -371,6 +371,7 @@ namespace UengSystem {
        }
        
        public static void OnSceneUnload() {
+          Time.timeScale = 1;
           SetTimeScale(1);
           ResetStaticVariables();
        }

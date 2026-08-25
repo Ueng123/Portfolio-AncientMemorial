@@ -6,7 +6,7 @@
 		public override void OnRoutine() {
 			if (step == 0 && isProgress(0)) {
 
-				Shoot(1f);
+				Shoot(1.25f);
 				Kick(0.05f);
 				
 				step = 1;
@@ -14,7 +14,7 @@
 			
 			if (step == 1 && isProgress(0.5f)) {
 
-				Shoot(1f);
+				Shoot(1.25f);
 				Kick(0.1f);
 				
 				step = 2;

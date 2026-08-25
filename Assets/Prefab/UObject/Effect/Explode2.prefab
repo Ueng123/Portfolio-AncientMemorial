@@ -4850,7 +4850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
-  whenInitialize: 0
+  whenInitialize: 3
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -4861,7 +4861,7 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: -2
+      - rid: 5909658970921631940
     - time: 5
       tasks:
       - rid: 5909658922870113041
@@ -4879,6 +4879,23 @@ MonoBehaviour:
         releaseTime: 0
         releaseThis: 1
         TargetObject:
+          rid: -2
+    - rid: 5909658970921631940
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: c2514edb11211f44cacd950a80964872, type: 3}
+        playOnThis: 1
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
           rid: -2
 --- !u!1001 &8446229316382602945
 PrefabInstance:

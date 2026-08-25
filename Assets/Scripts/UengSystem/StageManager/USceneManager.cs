@@ -10,6 +10,7 @@ namespace UengSystem.StageManager {
 		}
 
 		public static void LoadMainMenu() {
+			GameManager.OnSceneUnload();
 			SceneManager.LoadScene("MainMenuBridge");
 		}
 		

@@ -4917,7 +4917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
-  whenInitialize: 0
+  whenInitialize: 3
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -4943,8 +4943,8 @@ MonoBehaviour:
     - rid: 5909658922870113039
       type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        clip: {fileID: 0}
-        playOnThis: 0
+        clip: {fileID: 8300000, guid: 24e8bf6290ea882459e7713bf4b6be94, type: 3}
+        playOnThis: 1
         audioPlayer:
           rid: -2
         volume:

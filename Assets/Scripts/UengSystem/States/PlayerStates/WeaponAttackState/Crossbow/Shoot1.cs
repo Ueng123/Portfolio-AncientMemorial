@@ -7,7 +7,7 @@
 		public override void OnRoutine() {
 			if (step == 0) {
 
-				Shoot(1.3f);
+				Shoot(2f);
 				Kick(0.1f);
 				
 				step = 1;

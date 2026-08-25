@@ -291,7 +291,7 @@ MonoBehaviour:
     - rid: 5909658922870112772
       type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        clip: {fileID: 0}
+        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
         playOnThis: 0
         audioPlayer:
           rid: -2
@@ -306,6 +306,99 @@ MonoBehaviour:
         loop:
           rid: -2
     - rid: 5909658922870112773
+      type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        closeThis: 1
+        TargetUUI:
+          rid: -2
+    - rid: 5909658970921631872
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658970921631873
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658970921631874
+      type: {class: StartStage, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data: 
+    - rid: 5909658970921631876
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: affbd880096ac064eacc43a01bfea780, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658970921631877
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 776431297840088385, guid: 34d681e61dd957b48ade1354d07b8aff, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658970921631878
+      type: {class: LoadSettings, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data: 
+    - rid: 5909658970921631879
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 86af6836713ce1743ac83658e2692ea1, type: 3}
+        playOnThis: 0
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2
+    - rid: 5909658970921631880
+      type: {class: OpenUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetUUI: {fileID: 6223700616463536429, guid: e4a6ec3f3cebce8449a4e4d9472795e2, type: 3}
+        canvas: {fileID: 0}
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909658970921631881
+      type: {class: LoadMainMenu, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data: 
+    - rid: 5909658970921631900
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         closeThis: 1
@@ -336,12 +429,11 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: -2
-            - rid: -2
-            - rid: -2
+            - rid: 5909658970921631872
+            - rid: 5909658970921631873
           - time: 2
             tasks:
-            - rid: -2
+            - rid: 5909658970921631874
     - rid: 8985605570991752306
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -353,12 +445,11 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: -2
-            - rid: -2
-            - rid: -2
+            - rid: 5909658970921631879
+            - rid: 5909658970921631880
           - time: 2
             tasks:
-            - rid: -2
+            - rid: 5909658970921631881
     - rid: 8985605570991752308
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -370,9 +461,10 @@ MonoBehaviour:
           tasks:
           - time: 0
             tasks:
-            - rid: -2
-            - rid: -2
-            - rid: -2
+            - rid: 5909658970921631876
+            - rid: 5909658970921631878
+            - rid: 5909658970921631877
+            - rid: 5909658970921631900
 --- !u!1 &4149314555569580471
 GameObject:
   m_ObjectHideFlags: 0

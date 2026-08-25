@@ -5067,7 +5067,7 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: -2
+      - rid: 5909658970921631941
     - time: 5
       tasks:
       - rid: 5909658922870113042
@@ -5085,4 +5085,21 @@ MonoBehaviour:
         releaseTime: 0
         releaseThis: 1
         TargetObject:
+          rid: -2
+    - rid: 5909658970921631941
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: 5b6d17535f988eb408663cb109d04bd0, type: 3}
+        playOnThis: 1
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
           rid: -2

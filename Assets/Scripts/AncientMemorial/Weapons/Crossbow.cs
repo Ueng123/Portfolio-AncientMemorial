@@ -20,16 +20,25 @@ namespace AncientMemorial.Weapons {
 	[CreateAssetMenu(fileName = "Crossbow", menuName = "Weapons/Crossbow")]
 	public class Crossbow : Weapon {
 
+		private bool          canFallAttack = false;
 		private Action<Event> onPlayerLand;
 		private void OnPlayerLand(Event e) {
-			
+			canFallAttack = true;
 		}
-		
+
+		public override bool CanPrimaryAttack() {
+			if (!player.isGround && !canFallAttack) return false;
+			return base.CanPrimaryAttack();
+		}
+
 		public override void PrimaryAttack() {
 			base.PrimaryAttack();
-			if (!player.isGround) currPrimaryAttackStage--;
+			if (!player.isGround) {
+				canFallAttack = false;
+				currPrimaryAttackStage--;
+			}
 		}
-		
+
 		private readonly PlayerWeaponAttack[] primaryAttacks = {
 			PlayerWeaponAttack.shoot1, 
 			PlayerWeaponAttack.shoot2, 

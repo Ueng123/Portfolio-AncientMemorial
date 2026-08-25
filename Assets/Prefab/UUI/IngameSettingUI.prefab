@@ -363,7 +363,7 @@ GameObject:
   - component: {fileID: 659811592768720505}
   - component: {fileID: 356775662148244375}
   m_Layer: 6
-  m_Name: IngameSettingUI
+  m_Name: InGameSettingUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

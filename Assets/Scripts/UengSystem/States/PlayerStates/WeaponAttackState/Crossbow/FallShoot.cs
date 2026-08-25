@@ -1,7 +1,7 @@
 ﻿namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
 	public class FallShoot : CrossbowAttack {
 		public override float attackTime       => 0.2f;
-		public override float attackAfterTime  => 0;
+		public override float attackAfterTime  => 1;
 		public override float attackSpeed => 1f;
 		
 		private const int   shootNum    = 3;
@@ -15,7 +15,6 @@
 			if (step == 0 && isProgress(0)) {
 				for (int i = 0; i < shootNum-1; i ++) {
 					player.animator.SetBool(Attacking, true);
-					
 					
 					ShootWithoutEffect(shootDamage, startOffset + offsetStage * i);
 				}
