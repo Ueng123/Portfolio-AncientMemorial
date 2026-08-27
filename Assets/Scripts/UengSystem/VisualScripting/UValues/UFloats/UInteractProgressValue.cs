@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UengSystem.VisualScripting.UValues.UFloats {
 	[Serializable]
-	public class InteractProgressValue : UValue<float> {
+	public class UInteractProgressValue : UValue<float> {
 		protected override bool getIsDynamic => true;
 
 		[SerializeReference] [SubclassSelector]

@@ -272,9 +272,9 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   cam: {fileID: 108502714}
-  AlignTypeX: 1
-  AlignTypeY: 1
-  SizingType: 3
+  AlignTypeX: 0
+  AlignTypeY: 0
+  SizingType: 2
   lensOffset: 1
   mainCameraTransform: {fileID: 1045455008}
   references:
@@ -3698,7 +3698,29 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
   - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
   - {fileID: 11400000, guid: 3923080bb314b0e41ba7d92f653fee59, type: 2}
+  - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
+  - {fileID: 11400000, guid: 7cb46e7271bf9df4cb32ddab315bf8b0, type: 2}
+  - {fileID: 11400000, guid: 2468d109cbe33fa4eac9bb03584a1526, type: 2}
+  - {fileID: 11400000, guid: 28c5f490a27e9e2409cb8d2fdd2c2d1f, type: 2}
+  - {fileID: 11400000, guid: f84bc2a1c194f05448fba9e03425349a, type: 2}
+  - {fileID: 11400000, guid: 28c5f490a27e9e2409cb8d2fdd2c2d1f, type: 2}
+  - {fileID: 11400000, guid: b3e4f495133b19a48874bf09cbcb6573, type: 2}
+  - {fileID: 11400000, guid: 7586bbb8818e4c2429e34e68822333fd, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
   - {fileID: 11400000, guid: 3923080bb314b0e41ba7d92f653fee59, type: 2}
+  - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
+  - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
+  - {fileID: 11400000, guid: 7586bbb8818e4c2429e34e68822333fd, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
+  - {fileID: 11400000, guid: 3923080bb314b0e41ba7d92f653fee59, type: 2}
+  - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
+  - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
   currentWave: {fileID: 11400000, guid: f09d3d44c74a4b74bb624f3e188a0442, type: 2}
 --- !u!1 &1401290527
 GameObject:

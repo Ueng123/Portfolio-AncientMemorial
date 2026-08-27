@@ -121,7 +121,7 @@ MonoBehaviour:
   interactable: 1
   showInteractUI: 1
   interactString: "\uC2A4\uCF08\uB808\uD1A4(\uAC80) \uC18C\uD658"
-  timeToInteract: 0
+  timeToInteract: 0.1
   cooldownToInteract: 0.1
   canvas: {fileID: 8278893685132045479}
   onInteract:
@@ -129,7 +129,7 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 5909658555648573821
+      - rid: 5909658992151888094
   onCancel:
     useRealTime: 0
     tasks: []
@@ -147,34 +147,34 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5909658555648573821
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909658992151888094
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         TargetObject: {fileID: 131187581413603052, guid: 7284a2e7c8e68344d8813715f00f9697, type: 3}
         position:
-          rid: 5909658555648573822
+          rid: 5909658992151888100
         spawnTime:
-          rid: 5909658555648573824
+          rid: 5909658992151888147
         ID:
           rid: -2
         Category:
           rid: -2
-    - rid: 5909658555648573822
-      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
+    - rid: 5909658992151888100
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         targetObject:
-          rid: 5909658555648573823
-    - rid: 5909658555648573823
-      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
+          rid: 5909658992151888141
+    - rid: 5909658992151888141
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        obj: {fileID: 7682960740378988457}
-    - rid: 5909658555648573824
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        pureValue: {fileID: 7682960740378988457}
+    - rid: 5909658992151888147
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 1
+        pureValue: 1
 --- !u!1001 &7776634612144822504
 PrefabInstance:
   m_ObjectHideFlags: 0

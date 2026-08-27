@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UengSystem.VisualScripting.UValues.UStrings {
 	[Serializable]
-	public class UColorText : UValue<string> {
+	public class UColorString : UValue<string> {
 		protected override bool getIsDynamic {
 			get {
 				text.parent  = this;

@@ -34,7 +34,7 @@ namespace AncientMemorial.Waves {
 			}
 
 			currentWave = waveQueue.Dequeue();
-			PlayWave();
+				PlayWave();
 		}
 
 		// 0에 NextWave있음

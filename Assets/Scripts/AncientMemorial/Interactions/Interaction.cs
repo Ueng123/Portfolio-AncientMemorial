@@ -29,7 +29,7 @@ namespace AncientMemorial.Interactions {
 		public static List<Interaction> InteractableInteractions = new ();
 		
 		public  DelayedAction         interactAction;
-		private InteractProgressValue interactProgressValue;
+		private UInteractProgressValue _uInteractProgressValue;
 		private UUI                   interactUI;
 
 		[Header("Interaction")]
@@ -82,11 +82,11 @@ namespace AncientMemorial.Interactions {
 		protected virtual void Targetted() {
 			if (showInteractUI && !interactUI) {
 				interactUI = UUIPool.instance.Open("InteractUI", canvas).GetComponent<UUI>();
-                interactProgressValue ??= new InteractProgressValue { interactObject = new UObjectSerialized { obj = this } };
+                _uInteractProgressValue ??= new UInteractProgressValue { interactObject = new UPureObject { pureValue = this } };
                 	
                 USliderAction sliderAction = interactUI.GetAction<USliderAction>("Bar");
-                sliderAction.value = interactProgressValue;
-                sliderAction.color.To<UNumberColor>().a = interactProgressValue;
+                sliderAction.value = _uInteractProgressValue;
+                sliderAction.color.To<UNumberColor>().a = _uInteractProgressValue;
 				
 				UTextAction textAction = interactUI.GetAction<UTextAction>("TextLabel");
 				interactionText ??= new UPureString { pureValue = interactString };

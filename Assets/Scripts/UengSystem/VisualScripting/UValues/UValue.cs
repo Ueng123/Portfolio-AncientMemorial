@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UengSystem.VisualScripting.UValues {
 	[Serializable]
-	public abstract class UValue<T> : ISerializationCallbackReceiver, IUValue { // ISerializ... : 런타임에서 캐싱이 되면 그게 초기화 안됨.
+	public abstract class UValue<T> : InspectorItem, IUValue { // ISerializ... : 런타임에서 캐싱이 되면 그게 초기화 안됨.
 		public IUValue parent;
 
 		protected abstract bool  getIsDynamic { get; }
@@ -62,9 +62,7 @@ namespace UengSystem.VisualScripting.UValues {
 			parent?.Dirty();
 		}
 		
-		public virtual void OnBeforeSerialize() { }
-
-		public virtual void OnAfterDeserialize() {
+		public override void OnAfterDeserialize() {
 			isValueCached  = false;
 			isDynamicCache = null;
 		}

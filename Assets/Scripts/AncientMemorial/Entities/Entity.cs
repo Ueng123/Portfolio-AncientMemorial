@@ -97,22 +97,14 @@ namespace AncientMemorial.Entities {
 			entityHPAction.value = new UDiv {
 				dynamicType = DynamicType.Dynamic,
 				A = new UEntityStat {
-					dynamicType = DynamicType.Dynamic,
-					targetEntity = new UEntityByUObject {
-						obj = new UObjectSerialized {
-							obj = this
-						}
-					},
-					type = EntityDataType.HP
+					dynamicType  = DynamicType.Dynamic,
+					targetEntity = new UEntityByUObject { obj = new UPureObject { pureValue = this } },
+					type         = EntityDataType.HP
 				},
 				B = new UEntityStat {
-					dynamicType = DynamicType.Dynamic,
-					targetEntity = new UEntityByUObject {
-						obj = new UObjectSerialized {
-							obj = this
-						}
-					},
-					type = EntityDataType.MAXHP
+					dynamicType  = DynamicType.Dynamic,
+					targetEntity = new UEntityByUObject { obj = new UPureObject { pureValue = this } },
+					type         = EntityDataType.MAXHP
 				},
 			};
 		}
@@ -130,7 +122,6 @@ namespace AncientMemorial.Entities {
 			damageUI.rectTransform.localScale = Vector3.one*UIScale;
 			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
 			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIPool.instance.Close(damageUI.gameObject)).ExecuteDA();
 			
 			string healSign = isHeal ? "+" : "";
 			
@@ -152,7 +143,6 @@ namespace AncientMemorial.Entities {
 			damageUI.rectTransform.localScale = Vector3.one*UIScale;
 			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
 			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
-			new DelayedAction(0.5f, () => UUIPool.instance.Close(damageUI.gameObject)).ExecuteDA();
 			
 			string healSign = isHeal ? "+" : "";
 			

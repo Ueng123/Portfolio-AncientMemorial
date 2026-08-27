@@ -91,6 +91,8 @@ namespace UengSystem.UI {
 				actionDict[action.key] = action.action;
 			}
 			
+			GetTask.Execute(this);
+			
 			rectTransform = GetComponent<RectTransform>();
 			
 			rectTransform.anchoredPosition = initialPosition;
@@ -101,6 +103,8 @@ namespace UengSystem.UI {
 			foreach (UUIActionListItem action in actions) {
 				action.action.Uninitialize(this);
 			}
+			
+			ReleaseTask.Execute(this);
 			
 			UCategory = null;
 			base.OnRelease();

@@ -47,11 +47,11 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 			if (step == 0 && isProgress(preparePercent)) {
 				projectileSpawnObject1 = UObjectPool.instance.Get("EnergyBallSpawn", attackPos1);
 				projectileSpawnObject1.transform.rotation = Quaternion.Euler(0f, 0f, 90 * Random.Range(0, 5));
-				projectileSpawnObject1.GetComponent<Animator>().speed = 1 / (shootPercent - preparePercent);
+				projectileSpawnObject1.GetComponent<Animator>().speed = 1 / GetDelay(shootPercent - preparePercent);
 
 				projectileSpawnObject2 = UObjectPool.instance.Get("EnergyBallSpawn", attackPos2);
 				projectileSpawnObject2.transform.rotation = Quaternion.Euler(0f, 0f, 90 * Random.Range(0, 5));
-				projectileSpawnObject2.GetComponent<Animator>().speed = 1 / (shootPercent - preparePercent);
+				projectileSpawnObject2.GetComponent<Animator>().speed = 1 / GetDelay(shootPercent - preparePercent);
 				
 				step = 1;
 			}

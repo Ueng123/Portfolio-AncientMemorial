@@ -8,13 +8,13 @@ namespace UengSystem.States.EnemyStates {
 		public Enemy enemy;
 		protected EnemyStateMachine stateMachine;
 
-		public EnemyState Init(EnemyStateMachine stateMachine) {
+		public virtual EnemyState Init(EnemyStateMachine stateMachine) {
 			this.stateMachine = stateMachine;
 			enemy             = stateMachine.enemy;
 			return this;
 		}
 		
-		protected EnemyState GetState() {
+		protected virtual EnemyState GetState() {
 			Entity target = stateMachine.GetTarget.Invoke();
 			if (!target) return stateMachine.wanderState;
 

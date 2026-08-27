@@ -1,9 +1,10 @@
 ﻿using System;
+using UengSystem.Objects;
 using UnityEngine;
 
 namespace UengSystem.VisualScripting.UValues.UObjects {
 	[Serializable]
-	public class UObjectByID : UValue<Objects.UObject> {
+	public class UObjectByID : UValue<UObject> {
 		protected override bool getIsDynamic {
 			get {
 				ID.parent = this;
@@ -14,6 +15,6 @@ namespace UengSystem.VisualScripting.UValues.UObjects {
 		[SerializeReference][SubclassSelector]
 		public UValue<string> ID;
 
-		protected override Objects.UObject getValue => Objects.UObject.GetUObject(ID.value);
+		protected override UObject getValue => UObject.GetUObject(ID.value);
 	}
 }

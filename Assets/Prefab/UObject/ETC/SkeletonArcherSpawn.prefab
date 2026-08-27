@@ -217,7 +217,7 @@ MonoBehaviour:
       type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         releaseTime: 0
-        releaseThis: 0
+        releaseThis: 1
         TargetObject:
           rid: -2
     - rid: 5909658922870113067

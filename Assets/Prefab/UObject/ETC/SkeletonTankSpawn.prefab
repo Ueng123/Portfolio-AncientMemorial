@@ -178,7 +178,6 @@ MonoBehaviour:
     - time: 12
       tasks:
       - rid: 5909658922870113076
-      - rid: 5909658922870113077
       - rid: 5909658922870113079
   ReleaseTask:
     useRealTime: 0
@@ -193,7 +192,7 @@ MonoBehaviour:
       data:
         TargetObject: {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
         position:
-          rid: -2
+          rid: 5909658992151888134
         spawnTime:
           rid: -2
         ID:
@@ -205,7 +204,7 @@ MonoBehaviour:
       data:
         TargetObject: {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
         position:
-          rid: -2
+          rid: 5909658992151888131
         spawnTime:
           rid: -2
         ID:
@@ -217,19 +216,7 @@ MonoBehaviour:
       data:
         TargetObject: {fileID: 3067441117667633097, guid: 3f3f95ec036dc174c829ffff5572d755, type: 3}
         position:
-          rid: -2
-        spawnTime:
-          rid: -2
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 5909658922870113077
-      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetObject: {fileID: 8283520507714977903, guid: d035da750255c1b489c7f46ec6210e58, type: 3}
-        position:
-          rid: -2
+          rid: 5909658992151888128
         spawnTime:
           rid: -2
         ID:
@@ -243,3 +230,36 @@ MonoBehaviour:
         releaseThis: 1
         TargetObject:
           rid: -2
+    - rid: 5909658992151888128
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 5909658992151888129
+    - rid: 5909658992151888129
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: {fileID: -2621902583758743258}
+    - rid: 5909658992151888131
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 5909658992151888132
+    - rid: 5909658992151888132
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: {fileID: -2621902583758743258}
+    - rid: 5909658992151888134
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 5909658992151888135
+    - rid: 5909658992151888135
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: {fileID: -2621902583758743258}

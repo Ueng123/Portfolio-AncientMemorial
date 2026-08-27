@@ -325,12 +325,12 @@ MonoBehaviour:
       type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        pureValue: 
+        pureValue: SkeletonTankSpawned
     - rid: 5909658922870113062
       type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        pureValue: 
+        pureValue: SkeletonSpawnObject
 --- !u!114 &3760007967640774674
 MonoBehaviour:
   m_ObjectHideFlags: 0

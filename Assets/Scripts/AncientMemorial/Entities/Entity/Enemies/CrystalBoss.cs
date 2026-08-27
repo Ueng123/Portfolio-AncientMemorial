@@ -10,15 +10,13 @@ namespace AncientMemorial.Entities.Enemies {
 		protected override void        OnGrounded() { }
 
 		protected bool groggy;
-		protected bool groggyedEffect;
+		public void SetGroggy(bool value) {
+			groggy = value;
+		}
 		
-		public override    void        OnHit(Entity        attacker, float damage, Vector2? pushDir = null) {
-			if (groggy) {
-				ShowCriticalDamageUI(damage);
-			}
-			else {
-				ShowDamageUI(damage);
-			}
+		public override void OnHit(Entity        attacker, float damage, Vector2? pushDir = null) {
+			if (groggy) { ShowCriticalDamageUI(damage); }
+			else { ShowDamageUI(damage); }
 			
 			if (entityStat.HP <= 0) {
 				GameManager.SetTimeScale(0.5f, 0.25f);
@@ -28,16 +26,6 @@ namespace AncientMemorial.Entities.Enemies {
 			}
 
 			PlaySFX("crystalHit1");
-			
-			if (groggyedEffect) {
-				groggyedEffect = false;
-				
-				if (attacker != player) return;
-				GameManager.SetTimeScale(0f, 0.05f);
-				CameraBrain.instance.ShakeLerp(2, 10);
-				CameraBrain.instance.ZoomLerp(-0.1f);
-				return;
-			}
 			
 			if (groggy) {
 				if (attacker != player) return;
@@ -53,61 +41,8 @@ namespace AncientMemorial.Entities.Enemies {
 			CameraBrain.instance.ZoomLerp(-0.1f, 20f);
 		}
 		
-		private DelayedAction EndGroggy;
 		protected override float GetRealDamage(float rawDamage) {
-			// if (groggyedEffect) {
-			// 	groggyedEffect        = false;
-			// 	((UObject)this).state = Stun(5);
-			// 	state                 = EnemyState.Stun;
-			// 	
-			// 	EndGroggy ??= new DelayedAction(5, () => {
-			// 		groggy = false;
-			// 		state  = EnemyState.Alert;
-			// 	});
-			//
-			// 	EndGroggy.ExecuteDA();
-			// 	
-			// 	return entityData.hp / 20f;
-			// }
-			//
-			// if (groggy) return rawDamage*1.5f;
-			return rawDamage;
+			return rawDamage * (groggy ? 2 : 1);
 		}
-
-		protected void ShootMissile(Vector2 pos, float rot, float speed = 13.5f, float timeBeforeLockOn = 0.01f, float lockOnDuration = 0f) {
-			GameObject missile = UObjectPool.instance.Get("CrystalMissile", pos);
-			
-			CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
-			crystalMissile.owner              = this;
-			crystalMissile.damage             = entityStat.attackDamage;
-			crystalMissile.offset             = 0;
-			crystalMissile.expectAttack       = false;
-			crystalMissile.TimeBeforeLockOn   = timeBeforeLockOn;
-			crystalMissile.LockOnDuration     = lockOnDuration;
-			crystalMissile.initialSpeed       = speed;
-			crystalMissile.transform.rotation = Quaternion.Euler(0, 0, rot);
-			crystalMissile.Category           = "crystalMissile";
-		}
-		protected void ShootBigMissile(Vector2 pos, float rot, float speed = 13.5f, float timeBeforeLockOn = 0.01f, float lockOnDuration = 0f) {
-			GameObject missile = UObjectPool.instance.Get("CrystalBigMissile", pos);
-			
-			CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
-			crystalMissile.owner              = this;
-			crystalMissile.damage             = entityStat.attackDamage;
-			crystalMissile.offset             = 0;
-			crystalMissile.expectAttack       = false;
-			crystalMissile.TimeBeforeLockOn   = timeBeforeLockOn;
-			crystalMissile.LockOnDuration     = lockOnDuration;
-			crystalMissile.initialSpeed       = speed;
-			crystalMissile.transform.rotation = Quaternion.Euler(0, 0, rot);
-			crystalMissile.Category           = "crystalMissile";
-		}
-		
-		// public virtual void WanderRoutine() {
-		// 	if (!player) return;
-		// 	// state           = EnemyState.Alert;
-		// }
-		
-		public virtual void AttackReadyRoutine() { }
 	}
 }

@@ -121,7 +121,10 @@ MonoBehaviour:
   animator: {fileID: 0}
   GetTask:
     useRealTime: 0
-    tasks: []
+    tasks:
+    - time: 0.5
+      tasks:
+      - rid: 5909658992151888278
   ReleaseTask:
     useRealTime: 0
     tasks: []
@@ -141,28 +144,26 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 5909658469114576927
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 263317259813806649}
         text:
-          rid: 5909658469114576929
+          rid: -2
     - rid: 5909658469114576928
       type: {class: UTextAction, ns: UengSystem.UI.UTexts, asm: Assembly-CSharp}
       data:
         component: {fileID: 2985755807005308903}
         text:
-          rid: 5909658469114576930
-    - rid: 5909658469114576929
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
+          rid: -2
+    - rid: 5909658992151888278
+      type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        dynamicType: 0
-        Text: 
-    - rid: 5909658469114576930
-      type: {class: UPureString, ns: UengSystem.Logic.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        Text: 
+        closeThis: 1
+        TargetUUI:
+          rid: -2
 --- !u!1 &5676730801021025776
 GameObject:
   m_ObjectHideFlags: 0

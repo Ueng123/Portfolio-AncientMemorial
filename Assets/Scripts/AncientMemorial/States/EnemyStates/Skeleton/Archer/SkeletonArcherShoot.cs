@@ -41,9 +41,9 @@ namespace UengSystem.States.EnemyStates.Skeleton.Archer {
 			float x0 = enemy.transform.position.x;
 			float xl = x1 - x0;
 
-			float              dirX = xl * v * v + Mathf.Sign(xl) * Mathf.Sqrt(D(v, targetPosition));
-			float              dirY = xl * xl * g;
-			Vector2            dir  = new (dirX, dirY);
+			float   dirX = xl * v * v - Mathf.Sign(xl) * Mathf.Sqrt(D(v, targetPosition));
+			float   dirY = xl * xl * g;
+			Vector2 dir  = new(dirX, dirY);
 			
 			return dir.normalized * v;
 		}

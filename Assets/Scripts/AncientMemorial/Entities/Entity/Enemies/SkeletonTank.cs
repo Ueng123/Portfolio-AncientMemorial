@@ -25,12 +25,13 @@ namespace AncientMemorial.Entities.Enemies {
 
 			InitializeStateMachine(wanderState, awareState, attackReadyState);
 
-			stomp       = new TankStomp().Init(stateMachine);
-			energyBurst = new TankEnergyBurst().Init(stateMachine);
+			stomp         = new TankStomp().Init(stateMachine);
+			energyBurst   = new TankEnergyBurst().Init(stateMachine);
+			skeletonSpawn = new TankSkeletonSpawn().Init(stateMachine);
 		}
 
 		public override void Initialize() {
-			base.Initialize(); 
+			base.Initialize();
 			attackPhase = 0;
 		}
 
@@ -38,10 +39,10 @@ namespace AncientMemorial.Entities.Enemies {
 		
 		public override void Attack() {
 			state = attackPhase switch {
-				0 => energyBurst,
-				1 => energyBurst,
-				2 => stomp, // e..
-				3 => stomp, // s..
+				0 => stomp,
+				1 => stomp,
+				2 => energyBurst,
+				3 => skeletonSpawn,
 				_ => throw new NotImplementedException(),
 			};
 			
