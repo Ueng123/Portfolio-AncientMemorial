@@ -4883,7 +4883,7 @@ MonoBehaviour:
     - rid: 5909658970921631940
       type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        clip: {fileID: 8300000, guid: c2514edb11211f44cacd950a80964872, type: 3}
+        clip: {fileID: 8300000, guid: 8ba79be157d00944e8134c5d9ba56e95, type: 3}
         playOnThis: 1
         audioPlayer:
           rid: -2

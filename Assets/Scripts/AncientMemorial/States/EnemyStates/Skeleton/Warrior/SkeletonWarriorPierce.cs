@@ -15,16 +15,16 @@ namespace UengSystem.States.EnemyStates.Skeleton.Warrior {
 
 		private const float attackProgress = 6f / 11f;
 
-		private AttackAware attackAware;
+		private AttackArea _attackArea;
 		
 		public override void OnEnter() {
 			base.OnEnter();
-			Entity target = stateMachine.GetTarget.Invoke();
+			Entity target = stateMachine.getTarget.Invoke();
 			
 			isFlipped    = (int)Mathf.Sign(target.transform.position.x - enemy.transform.position.x) == -1;
 			
 			oldAnimSpeed         = enemy.animator.speed;
-			enemy.animator.speed = enemy.entityStat.attackSpeed;
+			enemy.animator.speed = enemy.stat.attackSpeed;
 			
 			attackAnimation = isFlipped ? attackF : attackB;
 			enemy.animator.SetBool(attackAnimation, true);
@@ -32,7 +32,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Warrior {
 			
 			hitboxPos   = (Vector2)enemy.transform.position + new Vector2(0.5395f * (isFlipped ? -1 : 1), -0.155f);
 			hitboxSize  = new Vector2(1.46f, 0.31f);
-			attackAware = Entity.AttackArea(enemy, 1, GetDelay(attackProgress), hitboxPos, hitboxSize, 0, 1, false, true);
+			_attackArea = Entity.AttackArea(enemy, 1, GetDelay(attackProgress), hitboxPos, hitboxSize, 0, 1, false, true);
 		}
 		
 		public override void OnRoutine() {
@@ -44,7 +44,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Warrior {
 			}
 
 			if (step == 1 && isProgress(1)) {
-				attackAware = null;
+				_attackArea = null;
 				enemy.state = GetState();
 			}
 		}
@@ -52,7 +52,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Warrior {
 		public override void OnExit() {
 			base.OnExit();
 			
-			attackAware?.Cancel();
+			_attackArea?.Cancel();
 			
 			enemy.animator.speed = oldAnimSpeed;
 			enemy.animator.SetBool(attackAnimation, false);

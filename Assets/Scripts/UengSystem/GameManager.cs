@@ -333,11 +333,6 @@ namespace UengSystem {
           catch (Exception e) {
              DebugManager.LogError("LateUpdate > GameManager.ClearFramePerLists()", e, gameObject);
           }
-          
-          try { ClearFramePerLists(); }
-          catch (Exception e) {
-             DebugManager.LogError("LateUpdate > GameManager.ClearFramePerLists()", e, gameObject);
-          }
        }
 
        private void LateUpdate() {

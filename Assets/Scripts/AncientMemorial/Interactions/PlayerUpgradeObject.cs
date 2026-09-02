@@ -30,20 +30,20 @@ namespace AncientMemorial.Interactions {
 			switch (upgradeStat) {
 				case EntityDataType.AttackDamage:
 					UPureFloat.AddValue(AD_UPGRADE_COUNT, 1);
-					Entity.player.entityStat.attackDamage += upgradeAmount;
+					Entity.player.stat.attackDamage += upgradeAmount;
 					break;
 				case EntityDataType.AttackSpeed:
 					UPureFloat.AddValue(AS_UPGRADE_COUNT, 1);
-					Entity.player.entityStat.attackSpeed += upgradeAmount;
+					Entity.player.stat.attackSpeed += upgradeAmount;
 					break;
 				case EntityDataType.MoveSpeed:
 					UPureFloat.AddValue(MS_UPGRADE_COUNT, 1);
-					Entity.player.entityStat.moveSpeed += upgradeAmount;
+					Entity.player.stat.moveSpeed += upgradeAmount;
 					break;
 				case EntityDataType.MAXHP:
 					UPureFloat.AddValue(MH_UPGRADE_COUNT, 1);
-					Entity.player.entityData.HP += upgradeAmount;
-					Entity.player.entityStat.HP += upgradeAmount;
+					Entity.player.data.HP += upgradeAmount;
+					Entity.player.stat.HP += upgradeAmount;
 					break;
 			}
 		}

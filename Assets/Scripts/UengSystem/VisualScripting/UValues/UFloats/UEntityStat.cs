@@ -20,13 +20,13 @@ namespace UengSystem.VisualScripting.UValues.UFloats {
 				}
 				
 				return type switch {
-					EntityDataType.MAXHP          => targetEntity.value.entityData.HP,
-					EntityDataType.HP             => targetEntity.value.entityStat.HP,
-					EntityDataType.MoveSpeed      => targetEntity.value.entityStat.moveSpeed,
-					EntityDataType.JumpPower      => targetEntity.value.entityStat.jumpPower,
-					EntityDataType.AttackSpeed    => targetEntity.value.entityStat.attackSpeed,
-					EntityDataType.AttackDamage   => targetEntity.value.entityStat.attackDamage,
-					EntityDataType.AttackCooldown => targetEntity.value.entityData.attackCooldown,
+					EntityDataType.MAXHP          => targetEntity.value.data.HP,
+					EntityDataType.HP             => targetEntity.value.stat.HP,
+					EntityDataType.MoveSpeed      => targetEntity.value.stat.moveSpeed,
+					EntityDataType.JumpPower      => targetEntity.value.stat.jumpPower,
+					EntityDataType.AttackSpeed    => targetEntity.value.stat.attackSpeed,
+					EntityDataType.AttackDamage   => targetEntity.value.stat.attackDamage,
+					EntityDataType.AttackCooldown => targetEntity.value.data.attackCooldown,
 					_                             => throw new ArgumentOutOfRangeException()
 				};
 			}

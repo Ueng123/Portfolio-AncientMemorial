@@ -4883,12 +4883,12 @@ MonoBehaviour:
     - rid: 5909658970921631942
       type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        clip: {fileID: 8300000, guid: c2514edb11211f44cacd950a80964872, type: 3}
+        clip: {fileID: 8300000, guid: 5b6d17535f988eb408663cb109d04bd0, type: 3}
         playOnThis: 1
         audioPlayer:
           rid: -2
         volume:
-          rid: 5909658970921631943
+          rid: 5909659015183860112
         pitch:
           rid: -2
         pan:
@@ -4897,7 +4897,7 @@ MonoBehaviour:
           rid: -2
         loop:
           rid: -2
-    - rid: 5909658970921631943
+    - rid: 5909659015183860112
       type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0

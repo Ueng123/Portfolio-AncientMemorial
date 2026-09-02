@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 	public class FallStrike : PlayerWeaponAttack {
-		private AttackAware attackAction;
+		private AttackArea attackAction;
 		
 		private Vector2 downDir = Vector2.down;
 
@@ -39,7 +39,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 		
 			Vector2 hitboxSize = new (3, 0.5f);
 			Vector2 hitboxPos  = hit.point + Vector2.up*0.25f;
-			float   damage     = moveDistance * Mathf.Pow(player.entityData.HP / 10f, 1.7f) / (player.entityStat.attackDamage * 2);
+			float   damage     = moveDistance * Mathf.Pow(player.data.HP / 10f, 1.7f) / (player.stat.attackDamage * 2);
 			
 			const int maxTargetEntity = 3;
 			attackAction = Entity.AttackArea(player, damage, 0.5f, hitboxPos, hitboxSize, 0, maxTargetEntity);

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 	public class FlashSlash : PlayerWeaponAttack {
-		private AttackAware skillAttack;
+		private AttackArea skillAttack;
 
 		public override float attackTime       => 0f;
 		public override float attackAfterTime  => 0f;
@@ -37,7 +37,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 			Vector2 playerPos     = player.transform.position;
 			Vector2 mousePos      = InputManager.mousePosition;
 			Vector2 mouseDir      = (mousePos - playerPos).normalized;
-			flashDistance = 3f + player.entityStat.moveSpeed*0.2f;
+			flashDistance = 3f + player.stat.moveSpeed*0.2f;
 			
 			RaycastHit2D hit = Physics2D.Raycast(playerPos, mouseDir, flashDistance, LayerMask.GetMask("Map"));
 			
@@ -65,13 +65,13 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 			hitboxSize  = new Vector2(flashDistance, 0.4f);
 			hitboxAngle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
 
-			sweepDuration = Mathf.Max(0.8f / player.entityStat.attackSpeed, 0.05f);
+			sweepDuration = Mathf.Max(0.8f / player.stat.attackSpeed, 0.05f);
 			
-			skillAttack = Entity.AttackArea(player, player.entityStat.attackSpeed, sweepDuration, hitboxPos, hitboxSize, hitboxAngle);
+			skillAttack = Entity.AttackArea(player, player.stat.attackSpeed, sweepDuration, hitboxPos, hitboxSize, hitboxAngle);
 		}
 
 		public override void OnRoutine() {
-			if (step == 0 && !stateTimer.Check(sweepDuration)) {
+			if (step == 0 && stateTimer.CheckOut(sweepDuration)) {
 				CameraBrain.instance.ShakeLerp(1.5f, 10);
                 CameraBrain.instance.ZoomLerp(-1f, 15);
                 

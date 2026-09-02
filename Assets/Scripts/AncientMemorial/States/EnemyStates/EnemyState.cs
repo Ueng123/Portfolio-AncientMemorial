@@ -15,7 +15,7 @@ namespace UengSystem.States.EnemyStates {
 		}
 		
 		protected virtual EnemyState GetState() {
-			Entity target = stateMachine.GetTarget.Invoke();
+			Entity target = stateMachine.getTarget.Invoke();
 			if (!target) return stateMachine.wanderState;
 
 			bool canAttack = stateMachine.CanAttack();

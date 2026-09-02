@@ -19,15 +19,7 @@ namespace AncientMemorial.Entities.Enemies {
 			
 			AddProcessToFixedUpdate(() => { rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse); });
 			
-			if (entityStat.HP <= 0) {
-				PlaySFX("skeletonDeath");
-				
-				if (attacker != player) return;
-				GameManager.SetTimeScale(0f, 0.05f);
-				CameraBrain.instance.ShakeLerp(2f, 10);
-				CameraBrain.instance.ZoomLerp(-0.2f);
-			}
-			else {
+			if (stat.HP > 0) {
 				PlaySFX("skeletonExcited");
 				
 				if (attacker != player) return;
@@ -41,7 +33,17 @@ namespace AncientMemorial.Entities.Enemies {
 			return rawDamage;
 		}
 
+		public override void Initialize() {
+			base.Initialize();
+		}
+
 		protected override void Death() {
+			PlaySFX("skeletonDeath");
+
+			GameManager.SetTimeScale(0f, 0.05f);
+			CameraBrain.instance.ShakeLerp(2f, 10);
+			CameraBrain.instance.ZoomLerp(-0.2f);
+
 			GameObject doogaegol = UObjectPool.instance.Get("doogaegol", (Vector2)transform.position +  new Vector2(-0.03125f, 0.21875f));
 			Rigidbody2D doogaegolRB = doogaegol.GetComponent<Rigidbody2D>();
 			

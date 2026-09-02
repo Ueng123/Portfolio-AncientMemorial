@@ -25,7 +25,7 @@ namespace UengSystem.VisualScripting.Tasks {
 				if (targetTypes    != null && targetTypes.Length != 0 && !targetTypes.Contains(e.entityType)) continue;
 				if (targetCategory != null && e.Category         != targetCategory.value) continue;
 				if (targetEntity   != null && e                  != targetEntity.value) continue;
-				e.entityStat.HP = 0;
+				e.stat.HP = 0;
 			}
 		}
 	}

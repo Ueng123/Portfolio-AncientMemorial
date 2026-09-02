@@ -15,9 +15,9 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
 		
 		protected static readonly StopWatch skillTimer = new StopWatch();
 		private const             float     skillBonus = 1.5f;
-		private                   float     skillDuration => 3 * (1f + Mathf.Log10(player.entityStat.attackSpeed));
+		private                   float     skillDuration => 3 * (1f + Mathf.Log10(player.stat.attackSpeed));
 		
-		public override float attackSpeed => player.entityStat.attackSpeed * (skillTimer.Check(skillDuration)?skillBonus:1f);
+		public override float attackSpeed => player.stat.attackSpeed * (skillTimer.CheckIn(skillDuration) ? skillBonus : 1f);
 		
 		protected GameObject GetArrowDebris(Vector2 position, float angle) {
 			GameObject obj = UObjectPool.instance.Get("ArrowDebris", position);
@@ -44,7 +44,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
 			
 			Vector2 handDir        = (mousePos - playerPos).normalized;
 			
-			player.rigidbody2D.linearVelocity = handDir * -(player.entityStat.jumpPower * offset);
+			player.rigidbody2D.linearVelocity = handDir * -(player.stat.jumpPower * offset);
 		}
 
 		protected void HitEffect() {

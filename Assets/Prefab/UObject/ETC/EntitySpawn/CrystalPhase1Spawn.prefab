@@ -150,7 +150,7 @@ MonoBehaviour:
     - rid: 5909658992151888089
       type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        TargetObject: {fileID: 1968355926200569856}
+        TargetObject: {fileID: 7121936188299108062, guid: 3cb538ce53c14a648ac07b4a46c1f24a, type: 3}
         position:
           rid: 5909658992151888095
         spawnTime:
@@ -169,12 +169,12 @@ MonoBehaviour:
       type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        pureValue: {fileID: 8216830848229296942, guid: 3cb538ce53c14a648ac07b4a46c1f24a, type: 3}
+        pureValue: {fileID: 5881736239199759352}
     - rid: 5909658992151888142
       type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        pureValue: 1
+        pureValue: 0.1
 --- !u!1001 &4449336297910316632
 PrefabInstance:
   m_ObjectHideFlags: 0

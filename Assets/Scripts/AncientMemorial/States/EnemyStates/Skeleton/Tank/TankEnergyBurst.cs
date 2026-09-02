@@ -31,7 +31,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 			weakTime = Random.Range(6f, 17f)/43f;
 			
 			oldAnimSpeed         = enemy.animator.speed;
-			enemy.animator.speed = enemy.entityStat.attackSpeed;
+			enemy.animator.speed = enemy.stat.attackSpeed;
 			
 			enemy.animator.SetBool(attack2ing, true );
 			enemy.animator.SetTrigger(attack2);
@@ -70,13 +70,13 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 				
 				GameObject projectile1     = UObjectPool.instance.Get("EnergyBall", attackPos1);
 				EnergyBall bossProjectile1 = projectile1.GetComponent<EnergyBall>();
-				bossProjectile1.damage               = enemy.entityStat.attackDamage * 5 / 2;
+				bossProjectile1.damage               = enemy.stat.attackDamage * 5 / 2;
 				bossProjectile1.spriteRenderer.flipX = false;
 				bossProjectile1.owner                = enemy;
 				
 				GameObject projectile2     = UObjectPool.instance.Get("EnergyBall", attackPos2);
 				EnergyBall bossProjectile2 = projectile2.GetComponent<EnergyBall>();
-				bossProjectile2.damage               = enemy.entityStat.attackDamage * 5 / 2;
+				bossProjectile2.damage               = enemy.stat.attackDamage * 5 / 2;
 				bossProjectile2.spriteRenderer.flipX = true;
 				bossProjectile2.owner                = enemy;
 

@@ -8,7 +8,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 		
 		public override float attackTime       => 0.3f;
 		public override float attackAfterTime  => 0.2f;
-		public override float attackSpeed => player.entityStat.attackSpeed / 2f;
+		public override float attackSpeed => player.stat.attackSpeed / 2f;
 		
 		public override    void OnEnter() {
 			base.OnEnter();

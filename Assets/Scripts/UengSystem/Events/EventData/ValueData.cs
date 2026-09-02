@@ -1,6 +1,13 @@
 ﻿using System;
+using UengSystem.Events;
 
 namespace UengSystem.Events {
 	[Serializable]
-	public record ValueData<T>(T value):EventData();
+	public struct ValueData<T> : IEventData {
+		public T value;
+		
+		public ValueData(T value) {
+			this.value = value;
+		}
+	}
 }

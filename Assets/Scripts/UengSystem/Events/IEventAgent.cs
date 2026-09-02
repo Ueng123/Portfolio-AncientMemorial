@@ -1,5 +1,5 @@
 ﻿namespace UengSystem.Events {
 	public interface IEventAgent {
-		public void SendEvent(EventType type, int layer, EventData data);
+		public void SendEvent(EventType type, EventPriority layer, IEventData data);
 	}	
 }

@@ -14,7 +14,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 
 		public float oldAnimSpeed;
 		
-		public AttackAware attackAware;
+		public AttackArea AttackArea;
 
 		public override void OnEnter() {
 			base.OnEnter();
@@ -22,14 +22,14 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 			weakTime = Random.Range(0.25f, 0.35f);
 			
 			oldAnimSpeed         = enemy.animator.speed;
-			enemy.animator.speed = enemy.entityStat.attackSpeed;
+			enemy.animator.speed = enemy.stat.attackSpeed;
 			
 			enemy.animator.SetBool(attacking, true );
 			enemy.animator.SetTrigger(attack);
 			
 			Vector2 hitboxPos  = (Vector2)enemy.transform.position + new Vector2(0, -0.985f);
 			Vector2 hitboxSize = new(15f, 0.7f);
-			attackAware = Entity.AttackArea(enemy, 1, GetDelay(attackPercent), hitboxPos, hitboxSize);
+			AttackArea = Entity.AttackArea(enemy, 1, GetDelay(attackPercent), hitboxPos, hitboxSize);
 		}
 
 		public override void OnRoutine() {
@@ -51,7 +51,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 			}
 
 			if (step == 2 && isProgress(1)) {
-				attackAware = null;
+				AttackArea = null;
 				enemy.state = GetState();
 			}
 		}
@@ -59,7 +59,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 		public override void OnExit() {
 			base.OnExit();
 			
-			attackAware?.Cancel();
+			AttackArea?.Cancel();
 
 			enemy.animator.speed = oldAnimSpeed;
 			enemy.animator.SetBool(attacking, false);

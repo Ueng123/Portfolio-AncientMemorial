@@ -8,9 +8,15 @@ namespace UengSystem.Utility {
 		private float stopTime;
 		private bool  paused;
 
-		public void Tick() {
+		public StopWatch Tick() {
 			ticked = true;
 			tickTime = Time.time;
+
+			return this;
+		}
+
+		public StopWatch TryTick() {
+			return ticked ? this : Tick();
 		}
 
 		public float Tock() {
@@ -41,9 +47,13 @@ namespace UengSystem.Utility {
 			tickTime += totalStoppedTime;
 			return totalStoppedTime;
 		}
+		
+		public bool CheckIn(float margin, bool baseValue = false) {
+			return ticked?Tock() < margin:baseValue;
+		}
 
-		public bool Check(float margin, float time = 0) {
-			return ticked && Mathf.Abs(Tock() - time) < margin;
+		public bool CheckOut(float margin, bool baseValue = false) {
+			return ticked?Tock() >= margin:baseValue;
 		}
 	}
 }

@@ -61,11 +61,11 @@ namespace AncientMemorial.Entities {
 				if (_targetInteraction == value) return;
 				
 				if (_targetInteraction) {
-					SendEvent(EventType.Interact_Untarget, (int)EventPriority.Remove, new ValueData<Interaction>(_targetInteraction));
+					SendEvent(EventType.Interact_Untarget, EventPriority.Remove, new ValueData<Interaction>(_targetInteraction));
 				}
 				
 				if (value) {
-					SendEvent(EventType.Interact_Target  , (int)EventPriority.Add, new ValueData<Interaction>(value));
+					SendEvent(EventType.Interact_Target  , EventPriority.Add, new ValueData<Interaction>(value));
 				}
 			
 				_targetInteraction = value;
@@ -86,7 +86,7 @@ namespace AncientMemorial.Entities {
 		
 		private bool CanDash() {
 			if (state == PlayerState.dash) return false;
-			if (PlayerState.dash.stateTimer.Check(Dash.dashTime * 4f)) return false;
+			if (PlayerState.dash.stateTimer.CheckIn(Dash.dashTime * 4f)) return false;
 
 			return true;
 		}
@@ -108,7 +108,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		private void PrimaryAttack() {
-			SendEvent(EventType.Entity_Player_PrimaryAttack, (int)EventPriority.Action);
+			SendEvent(EventType.Entity_Player_PrimaryAttack, EventPriority.Action);
 			
 			weapon.PrimaryAttack();
 		}
@@ -116,7 +116,7 @@ namespace AncientMemorial.Entities {
 		// R CLICK
 		
 		private void SecondaryAttack() {
-			SendEvent(EventType.Entity_Player_SecondaryAttack, (int)EventPriority.Action);
+			SendEvent(EventType.Entity_Player_SecondaryAttack, EventPriority.Action);
 			
 			weapon.SecondaryAttack();
 		}
@@ -141,7 +141,7 @@ namespace AncientMemorial.Entities {
 		private StopWatch targetInteractSync     = new StopWatch();
 		private float     targetInteractSyncTime = 0.1f;
 		private void SetTargetInteract() {
-			if (targetInteractSync.Check(targetInteractSyncTime)) return;
+			if (targetInteractSync.CheckIn(targetInteractSyncTime)) return;
 			targetInteractSync.Tick();
 			
 			float minDistSQR = float.MaxValue;
@@ -178,58 +178,58 @@ namespace AncientMemorial.Entities {
 		    if (InputManager.GetInput(ActionType.MouseRClick, PressType.Down) && weapon.CanSecondaryAttack()) SecondaryAttack();
 		    
 		    if (InputManager.GetInput(ActionType.Interact, PressType.Down))
-		       SendEvent(EventType.Interact_Start, (int)EventPriority.Start, new ValueData<Interaction>(targetInteraction));
+		       SendEvent(EventType.Interact_Start, EventPriority.Start, new ValueData<Interaction>(targetInteraction));
 		    
 		    if (InputManager.GetInput(ActionType.Interact, PressType.Up))
-		       SendEvent(EventType.Interact_Cancel, (int)EventPriority.Cancel, new ValueData<Interaction>(targetInteraction));
+		       SendEvent(EventType.Interact_Cancel, EventPriority.Cancel, new ValueData<Interaction>(targetInteraction));
 
 		    if (InputManager.GetInput(ActionType.Heal, PressType.Down) && CanHeal()) Heal();
 
 		    if (!DebugManager.instance.debugMode) return;
 		    
 		    if (InputManager.GetInput(ActionType.Debug_DamageUp, PressType.Up)) { 
-		       entityStat.attackDamage += 1;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackDamage is now {entityStat.attackDamage}]");
+		       stat.attackDamage += 1;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackDamage is now {stat.attackDamage}]");
 		    }
 		    if (InputManager.GetInput(ActionType.Debug_DamageDown, PressType.Up)) {
-		       entityStat.attackDamage -= 1;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackDamage is now {entityStat.attackDamage}]");
+		       stat.attackDamage -= 1;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackDamage is now {stat.attackDamage}]");
 		    }
 
 		    if (InputManager.GetInput(ActionType.Debug_HealthUp, PressType.Up)) {
 		       SendAttackEvent(this, -5, true);
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {entityStat.HP}]");
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {stat.HP}]");
 		    }
 		    if (InputManager.GetInput(ActionType.Debug_HealthDown, PressType.Up)) {
 		       SendAttackEvent(this, 5, true);
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {entityStat.HP}]");
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {stat.HP}]");
 		    }
 		    
 		    if (InputManager.GetInput(ActionType.Debug_MaxHealthUp, PressType.Up)) {
-		       entityData.HP += 5;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {entityData.HP}]");
+		       data.HP += 5;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {data.HP}]");
 		    }
 		    if (InputManager.GetInput(ActionType.Debug_MaxHealthDown, PressType.Up)) {
-		       entityData.HP -= 5;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {entityData.HP}]");
+		       data.HP -= 5;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {data.HP}]");
 		    }
 		    
 		    if (InputManager.GetInput(ActionType.Debug_MoveSpeedUp, PressType.Up)) {
-		       entityStat.moveSpeed += 0.5f;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : moveSpeed is now {entityStat.moveSpeed}]");
+		       stat.moveSpeed += 0.5f;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : moveSpeed is now {stat.moveSpeed}]");
 		    }
 		    if (InputManager.GetInput(ActionType.Debug_MoveSpeedDown, PressType.Up)) {
-		       entityStat.moveSpeed -= 0.5f;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : moveSpeed is now {entityStat.moveSpeed}]");
+		       stat.moveSpeed -= 0.5f;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : moveSpeed is now {stat.moveSpeed}]");
 		    }
 		    
 		    if (InputManager.GetInput(ActionType.Debug_AttackSpeedUp, PressType.Up)) {
-		       entityStat.attackSpeed += 0.5f;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackSpeed is now {entityStat.attackSpeed}]");
+		       stat.attackSpeed += 0.5f;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackSpeed is now {stat.attackSpeed}]");
 		    }
 		    if (InputManager.GetInput(ActionType.Debug_AttackSpeedDown, PressType.Up)) {
-		       entityStat.attackSpeed -= 0.5f;
-		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackSpeed is now {entityStat.attackSpeed}]");
+		       stat.attackSpeed -= 0.5f;
+		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackSpeed is now {stat.attackSpeed}]");
 		    }
 		    
 		    if (InputManager.GetInput(ActionType.Debug_Damage, PressType.Up)) {
@@ -263,13 +263,13 @@ namespace AncientMemorial.Entities {
 		
 		// OVERRIDING //
 
-		protected override AttackAware AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool  awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
-			AttackAware attackAware = base.AttackArea(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum,
+		protected override AttackArea AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool  awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
+			AttackArea attackArea = base.AttackArea(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum,
 													  awareLerpX, awareLerpY, ignoreInvincible);
-			attackAware.targetColor         = new Color(0.3536254f, 0.945098f, 0.2431372f, 0.6156863f);
-			attackAware.InitializeColor(new Color(0.1843137f, 0.509804f, 0.2422917f, 0));
+			attackArea.targetColor         = new Color(0.3536254f, 0.945098f, 0.2431372f, 0.6156863f);
+			attackArea.InitializeColor(new Color(0.1843137f, 0.509804f, 0.2422917f, 0));
 			
-			return attackAware;
+			return attackArea;
 		}
 
 		protected override EntityData GetData() {
@@ -303,7 +303,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		protected override void OnGrounded() {
-			player.SendEvent(EventType.Entity_Player_Land, (int)EventPriority.Stop);
+			player.SendEvent(EventType.Entity_Player_Land, EventPriority.Stop);
 			PlaySFX("playerLand");
 		}
 
@@ -327,7 +327,7 @@ namespace AncientMemorial.Entities {
 			
 			PlaySFX("playerHit");
 
-			bool isHurt = damage > entityData.HP * 0.3f;
+			bool isHurt = damage > data.HP * 0.3f;
 			playerUI.animator.Play(isHurt?"hitHard":"hit", 0, 0);
 			
 			GameManager.SetTimeScale(0.05f, 0.3f);
@@ -355,7 +355,6 @@ namespace AncientMemorial.Entities {
 		
 		protected override void Routine() {
 			base.Routine();
-			
 			
 			SetTargetInteract();
 		}

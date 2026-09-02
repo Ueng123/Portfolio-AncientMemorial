@@ -50,7 +50,8 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		protected override float GetRealDamage(float rawDamage) {
-			return rawDamage * (state == stateMachine.stunState ? 2f : 1f);
+			bool groggy = (state == stateMachine.stunState);
+			return rawDamage * (groggy ? 2f : 1f);
 		}
 
 		public override void OnHit(Entity attacker, float damage, Vector2? pushDir = null) {
@@ -59,15 +60,7 @@ namespace AncientMemorial.Entities.Enemies {
 			if (groggy) ShowCriticalDamageUI(damage);
 			else ShowDamageUI(damage);
 			
-			if (entityStat.HP <= 0) {
-				PlaySFX("tankDeath");
-				
-				if (attacker != player) return;
-				GameManager.SetTimeScale(0f, 0.05f);
-				CameraBrain.instance.ShakeLerp(2f, 10);
-				CameraBrain.instance.ZoomLerp(-0.2f);
-			}
-			else {
+			if (stat.HP > 0) {
 				PlaySFX(groggy?"tankCritical":"tankHit");
 				
 				if (attacker != player) return;
@@ -75,6 +68,16 @@ namespace AncientMemorial.Entities.Enemies {
 				CameraBrain.instance.ShakeLerp(1f, 10f);
 				CameraBrain.instance.ZoomLerp(-0.1f);
 			}
+		}
+
+		protected override void Death() {
+			PlaySFX("tankDeath");
+
+			GameManager.SetTimeScale(0f, 0.05f);
+			CameraBrain.instance.ShakeLerp(2f, 10);
+			CameraBrain.instance.ZoomLerp(-0.2f);
+
+			base.Death();
 		}
 	}
 }

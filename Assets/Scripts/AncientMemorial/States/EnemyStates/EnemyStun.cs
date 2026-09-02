@@ -8,13 +8,17 @@ namespace UengSystem.States.EnemyStates {
 		private GameObject stunEffect;
 		private float stunDuration;
 
-		public void SetDuration(float targetDuration) {
-			stunDuration = targetDuration;
+		public EnemyStun Setup(float duration) {
+			stunDuration = duration;
+			return this;
+		}
+		
+		protected override EnemyState GetState() {
+			stateMachine.AttackWatchTick();
+			return base.GetState();
 		}
 		
 		public override void OnEnter() {
-			base.OnEnter();
-
 			enemy.rigidbody2D.linearVelocityX = 0;
 			
 			stunEffect = UObjectPool.instance.Get("StunEffect", enemy.transform.position + Vector3.up * enemy.markYPos);
@@ -24,12 +28,11 @@ namespace UengSystem.States.EnemyStates {
 		public override void OnEarlyRoutine() { }
 
 		public override void OnRoutine() {
-			if (stateTimer.Check(stunDuration)) return;
+			if (stateTimer.CheckIn(stunDuration)) return;
 			enemy.state = GetState();
 		}
 
 		public override void OnExit() {
-			base.OnExit();
 			UObjectPool.instance.Release(stunEffect);
 		}
 	}

@@ -12,8 +12,6 @@ namespace AncientMemorial.Projectiles {
 		public float TimeBeforeLockOn;
 		public float LockOnDuration;
 		public float initialSpeed;
-		public bool  expectAttack;
-		public bool  noLockOn;
 
 		private bool _lockOn;
 		private bool lockOn {
@@ -70,18 +68,20 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected override void EarlyRoutine() { }
+
+		private float GetVelocity() {
+			if (lockOn) return initialSpeed / 2;
+			float a = initialSpeed + 1f;
+			float b = stopWatch.Tock() - (LockOnDuration / 2 + TimeBeforeLockOn);
+			return a - initialSpeed / (b * b * 0.1f + 1);
+		}
 		
 		private StopWatch stopWatch = new ();
 		protected override void Routine() {
-			if (noLockOn) return;
-			lockOn = !stopWatch.Check(LockOnDuration + TimeBeforeLockOn);
-			if (stopWatch.Check(LockOnDuration + TimeBeforeLockOn) && !stopWatch.Check(TimeBeforeLockOn)) { LockOn(); }
-			rigidbody2D.linearVelocity = transform.up *
-										 (!lockOn
-											  ? initialSpeed+1f - initialSpeed /
-												(Mathf.Pow(stopWatch.Tock() - (LockOnDuration / 2 + TimeBeforeLockOn),
-														   2) * 0.1f + 1)
-											  : initialSpeed/2);
+			lockOn = stopWatch.CheckOut(LockOnDuration + TimeBeforeLockOn);
+			if (stopWatch.CheckIn(LockOnDuration + TimeBeforeLockOn) && stopWatch.CheckOut(TimeBeforeLockOn)) { LockOn(); }
+			
+			rigidbody2D.linearVelocity = transform.up * GetVelocity();
 		}
 
 		protected override void LateRoutine() { }

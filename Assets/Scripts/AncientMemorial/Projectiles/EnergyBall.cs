@@ -22,7 +22,7 @@ namespace AncientMemorial.Projectiles {
 		}
 		
 		protected override void EarlyRoutine() {
-			if (stopWatch.Check(boomTime)) return;
+			if (stopWatch.CheckIn(boomTime)) return;
 			Boom();
 		}
 

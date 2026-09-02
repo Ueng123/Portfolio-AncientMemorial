@@ -127,7 +127,7 @@ namespace AncientMemorial.Interactions {
 
 		private bool prefabInteractable;
 		public override void OnFirstGet() {
-			interactAction = new DelayedAction(timeToInteract, () => { Interact(); SendEvent(UengSystem.Events.EventType.Interact_Stop, (int)EventPriority.Stop); }, Cancel, this);
+			interactAction = new DelayedAction(timeToInteract, () => { Interact(); SendEvent(UengSystem.Events.EventType.Interact_Stop, EventPriority.Stop); }, Cancel, this);
 			prefabInteractable = interactable;
 			base.OnFirstGet();
 		}

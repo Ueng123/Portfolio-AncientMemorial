@@ -17,12 +17,12 @@ namespace UengSystem.VisualScripting.Tasks {
 		
 		public override void Execute(ITaskable self) {
 			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
-			DebugManager.Log($" >>> Given Data\n"                                                +
-							 (ID       != null ? $" > ID = {ID.value}\n" : "")                   +
-							 (Category != null ? $" > Category = {Category.value}\n" : "")       +
-							 $" > targetPrefab = {TargetObject.name}\n"                          +
-							 $" > position = {position.value}\n"                                 +
-							 $" > duration = {spawnTime?.value??0}\n" +
+			DebugManager.Log($" >>> Given Data\n"                        +
+							 $" > ID = {ID?.value}\n"                    +
+							 $" > Category = {Category?.value}\n"        +
+							 $" > targetPrefab = {TargetObject?.name}\n" +
+							 $" > position = {position?.value}\n"        +
+							 $" > duration = {spawnTime?.value ?? 0}\n"  +
 							 $"");
 			
 			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime?.value??0);

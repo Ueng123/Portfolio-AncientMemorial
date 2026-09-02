@@ -1,6 +1,7 @@
 ﻿namespace UengSystem.Events {
 	public enum EventType {
 		Entity_Hit,
+		Entity_Dead,
 		
 		Entity_Player_Jump,
 		Entity_Player_Land,
@@ -15,5 +16,7 @@
 		Interact_Target,
 		Interact_Untarget,
 		Interact_Stop,
+
+		Crystal_Gimmick_Success,
 	}
 }

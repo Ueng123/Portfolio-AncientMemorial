@@ -20,7 +20,7 @@ namespace UengSystem.States.PlayerStates {
 		private int dashSign;
 		
 		public override void OnEnter() {
-			player.SendEvent(EventType.Entity_Player_Dash, (int)EventPriority.Action);
+			player.SendEvent(EventType.Entity_Player_Dash, EventPriority.Action);
 			player.PlaySFX("playerDash");
 			player.Invincible(dashTime+0.3f);
 			
@@ -39,27 +39,27 @@ namespace UengSystem.States.PlayerStates {
 		}
 
 		public override void OnEarlyRoutine() {
-			if (stateTimer.Check(dashTime)) return;
+			if (stateTimer.CheckIn(dashTime)) return;
 
 			player.state = GetDefaultState();
 		}
 
 		public override void OnRoutine() {
-			if (effectTime.Check(dashEffectTime)) return;
+			if (effectTime.CheckIn(dashEffectTime)) return;
 			effectTime.Tick();
 			
 			player.SpawnAfterImage();
 		}
 
 		public override void OnFixedRoutine() {
-			player.rigidbody2D.linearVelocity = Vector2.right * ((10 + player.entityStat.moveSpeed * 0.75f)* dashSign);
+			player.rigidbody2D.linearVelocity = Vector2.right * ((10 + player.stat.moveSpeed * 0.75f)* dashSign);
 		}
 
 		public override    void OnExit() {
 			player.animator.SetBool(Moving, false);
 			
 			player.rigidbody2D.gravityScale   = oldGravityScale;
-			player.rigidbody2D.linearVelocity = Vector2.right * (player.entityStat.moveSpeed * dashSign);
+			player.rigidbody2D.linearVelocity = Vector2.right * (player.stat.moveSpeed * dashSign);
 		}
 	}
 }

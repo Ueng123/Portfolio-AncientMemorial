@@ -33,8 +33,8 @@ namespace AncientMemorial.Weapons {
 		
 		public virtual bool isAttacking => player.state == primaryAttack || player.state == secondaryAttack;
 		
-		public virtual bool CanPrimaryAttack()   => !primaryAttackWatch  .Check(primaryDelay);
-		public virtual bool CanSecondaryAttack() => !secondaryAttackWatch.Check(secondaryDelay);
+		public virtual bool CanPrimaryAttack()   => primaryAttackWatch  .CheckOut(primaryDelay, true);
+		public virtual bool CanSecondaryAttack() => secondaryAttackWatch.CheckOut(secondaryDelay, true);
 		
 		public void Initialize() {
 			currPrimaryAttackStage   = -1;
@@ -54,7 +54,7 @@ namespace AncientMemorial.Weapons {
 
 		public virtual void PrimaryAttack() {
 			bool isFirstAttack = currPrimaryAttackStage == -1;
-			bool isTimeOver    = !primaryAttackWatch.Check(GetPrimaryAttackDelay(currPrimaryAttackStage) + 2);
+		bool isTimeOver    = primaryAttackWatch.CheckOut(GetPrimaryAttackDelay(currPrimaryAttackStage) + 2);
 			
 			if (!isFirstAttack&&isTimeOver) OnPrimaryAttackComboEnd(); // 콤보 끊김
 			else currPrimaryAttackStage = (currPrimaryAttackStage + 1) % primaryAttackStageCount;
@@ -69,7 +69,7 @@ namespace AncientMemorial.Weapons {
 		
 		public virtual void SecondaryAttack() {
 			bool isFirstAttack = currSecondaryAttackStage == -1;
-			bool isTimeOver    = !secondaryAttackWatch.Check(GetSecondaryAttackDelay(currSecondaryAttackStage) + 10);
+			bool isTimeOver    = secondaryAttackWatch.CheckOut(GetSecondaryAttackDelay(currSecondaryAttackStage) + 10);
 			
 			if (!isFirstAttack&&isTimeOver) OnSecondaryAttackComboEnd(); // 콤보 끊김
 			else currSecondaryAttackStage = (currSecondaryAttackStage + 1) % secondaryAttackStageCount;
@@ -83,8 +83,8 @@ namespace AncientMemorial.Weapons {
 		public virtual void OnSecondaryAttackComboEnd() {
 			currSecondaryAttackStage = 0;
 		}
-		
-		protected abstract void            InitializeAttacks();
+
+		protected abstract void InitializeAttacks();
 		
 		protected abstract UState GetPrimaryAttackAction(int attackStage);
 		protected abstract UState GetSecondaryAttackAction(int attackStage);

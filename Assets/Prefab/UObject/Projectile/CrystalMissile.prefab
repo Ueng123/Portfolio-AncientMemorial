@@ -386,15 +386,15 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 8722662612876394576
-      - rid: 8985605504832111584
+      - rid: 5909659015183860073
+      - rid: 5909659015183860075
   ReleaseTask:
     useRealTime: 0
     tasks:
     - time: 0
       tasks:
-      - rid: 8722662612876394580
-      - rid: 8722662761769205832
+      - rid: 5909659015183860077
+      - rid: 5909659015183860079
   owner: {fileID: 0}
   damage: 0
   TimeBeforeLockOn: 0
@@ -408,66 +408,8 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8722662612876394576
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
-        position:
-          rid: 8722662612876394577
-        spawnTime:
-          rid: 8985605483456365144
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 8722662612876394577
-      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetObject:
-          rid: 8722662612876394578
-    - rid: 8722662612876394578
-      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        obj: {fileID: -7196851070278143718}
-    - rid: 8722662612876394580
-      type: {class: GetObject, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
-        position:
-          rid: 8722662612876394582
-        spawnTime:
-          rid: -2
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 8722662612876394582
-      type: {class: UObjectPosition, ns: UengSystem.Logic.UValues.UVector2s, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetObject:
-          rid: 8722662612876394583
-    - rid: 8722662612876394583
-      type: {class: UObjectSerialized, ns: UengSystem.Logic.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        obj: {fileID: -7196851070278143718}
-    - rid: 8722662761769205832
-      type: {class: CameraShakeLerp, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
-      data:
-        intensity:
-          rid: 8985605506644836458
-        speed:
-          rid: 8985605506644836460
-    - rid: 8985605483456365144
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        number: 0
-    - rid: 8985605504832111584
-      type: {class: PlaySFX, ns: UengSystem.Logic.Tasks, asm: Assembly-CSharp}
+    - rid: 5909659015183860073
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
         clip: {fileID: 8300000, guid: c2514edb11211f44cacd950a80964872, type: 3}
         playOnThis: 1
@@ -483,16 +425,69 @@ MonoBehaviour:
           rid: -2
         loop:
           rid: -2
-    - rid: 8985605506644836458
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+    - rid: 5909659015183860075
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
+        position:
+          rid: 5909659015183860122
+        spawnTime:
+          rid: -2
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909659015183860077
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
+        position:
+          rid: 5909659015183860474
+        spawnTime:
+          rid: -2
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 5909659015183860079
+      type: {class: CameraShakeLerp, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        intensity:
+          rid: 5909659015183860081
+        speed:
+          rid: 5909659015183860085
+    - rid: 5909659015183860081
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 1
-    - rid: 8985605506644836460
-      type: {class: UPureFloat, ns: UengSystem.Logic.UValues.UFloats, asm: Assembly-CSharp}
+        pureValue: 0.25
+    - rid: 5909659015183860085
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        number: 10
+        pureValue: 10
+    - rid: 5909659015183860122
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 5909659015183860124
+    - rid: 5909659015183860124
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: {fileID: -7196851070278143718}
+    - rid: 5909659015183860474
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 5909659015183860476
+    - rid: 5909659015183860476
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: {fileID: -7196851070278143718}
 --- !u!50 &-6947518095727087325
 Rigidbody2D:
   serializedVersion: 5

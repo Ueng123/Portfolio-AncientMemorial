@@ -8,22 +8,22 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 	public class ShieldJump : PlayerWeaponAttack {
 		public override float attackTime       => 0.2f;
 		public override float attackAfterTime  => 5f;
-		public override float attackSpeed => player.entityStat.attackSpeed / 3f;
+		public override float attackSpeed => player.stat.attackSpeed / 3f;
 
 		public override    void OnEnter() {
 			base.OnEnter();
 			
-			if (player.entityStat.HP > player.entityData.HP * 0.5f) {
-				player.SendAttackEvent(player, Mathf.Round(player.entityData.HP *0.2f), false);
+			if (player.stat.HP > player.data.HP * 0.5f) {
+				player.SendAttackEvent(player, Mathf.Round(player.data.HP *0.2f), false);
 			}
 			
-			player.SendEvent(EventType.Entity_Player_Jump, (int)EventPriority.Action);
+			player.SendEvent(EventType.Entity_Player_Jump, EventPriority.Action);
 			player.PlaySFX("shieldSkill");
 			Vector2 footPosition = player.groundChecker.transform.position;
 			UObjectPool.instance.Get("ShieldSkillEffect", footPosition);
 
-			player.rigidbody2D.linearVelocityY = 2 + player.entityData.jumpPower*player.entityStat.moveSpeed*(player.entityData.HP - player.entityStat.HP)/
-												 (player.entityData.HP*2.5f);
+			player.rigidbody2D.linearVelocityY = 2 + player.data.jumpPower*player.stat.moveSpeed*(player.data.HP - player.stat.HP)/
+												 (player.data.HP*2.5f);
 		}
 
 		public override void OnEarlyRoutine() {
@@ -34,11 +34,11 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 
 		public override void OnRoutine() {
 			float moveDir = InputManager.GetValue(ActionType.Move);
-			Vector2 moveVec = new (moveDir * player.entityStat.moveSpeed, player.rigidbody2D.linearVelocity.y);
+			Vector2 moveVec = new (moveDir * player.stat.moveSpeed, player.rigidbody2D.linearVelocity.y);
 			
 			if (moveDir != 0) player.rigidbody2D.AddForce(new Vector2(moveVec.x*50, 0)*Time.deltaTime, ForceMode2D.Force);
 			
-			float maxSpeed = player.entityStat.moveSpeed * 1.2f;
+			float maxSpeed = player.stat.moveSpeed * 1.2f;
 			player.rigidbody2D.linearVelocityX = Mathf.Clamp(player.rigidbody2D.linearVelocityX, -maxSpeed, maxSpeed);
 		}
 		

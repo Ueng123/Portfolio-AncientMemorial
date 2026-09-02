@@ -69,9 +69,7 @@ namespace UengSystem.UI {
 		public static void ResetUUI() {
 			UCategoryTable.Clear();
 		}
-
-		// FUCK NAZETE WORK 안함 REALLY YAMA ROTATING FUCK
-		// Done :_)
+		
 		protected override void Routine() {
 			foreach (UUIAction action in actionDict.Values) {
 				action.Routine(this);
@@ -81,7 +79,12 @@ namespace UengSystem.UI {
 		public override void Get(float time) {
 			OnGet();
 			gameObject.SetActive(true);
-			if (time == 0) return;
+			
+			if (time == 0) {
+				Initialize();
+				return;
+			}
+			
 			StartCoroutine(SpawnFX(time));
 		}
 		

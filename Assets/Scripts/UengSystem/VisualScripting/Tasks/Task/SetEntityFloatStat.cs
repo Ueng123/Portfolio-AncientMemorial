@@ -17,22 +17,22 @@ namespace UengSystem.VisualScripting.Tasks {
 		public override void Execute(ITaskable self) {
 			switch (entityDataType) {
 				case EntityDataType.MAXHP:
-					targetEntity.value.entityData.HP = (int)targetValue.value;
+					targetEntity.value.data.HP = (int)targetValue.value;
 					break;
 				case EntityDataType.HP:
-					targetEntity.value.entityStat.HP = (int)targetValue.value;
+					targetEntity.value.stat.HP = (int)targetValue.value;
 					break;
 				case EntityDataType.MoveSpeed:
-					targetEntity.value.entityStat.moveSpeed = targetValue.value;
+					targetEntity.value.stat.moveSpeed = targetValue.value;
 					break;
 				case EntityDataType.JumpPower:
-					targetEntity.value.entityStat.jumpPower = targetValue.value;
+					targetEntity.value.stat.jumpPower = targetValue.value;
 					break;
 				case EntityDataType.AttackSpeed:
-					targetEntity.value.entityStat.attackSpeed = targetValue.value;
+					targetEntity.value.stat.attackSpeed = targetValue.value;
 					break;
 				case EntityDataType.AttackDamage:
-					targetEntity.value.entityStat.attackDamage = targetValue.value;
+					targetEntity.value.stat.attackDamage = targetValue.value;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

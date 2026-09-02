@@ -7,7 +7,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 		
 		public override float attackTime       => 0.5f;
 		public override float attackAfterTime  => 0.5f;
-		public override float attackSpeed => player.entityStat.attackSpeed / 3f;
+		public override float attackSpeed => player.stat.attackSpeed / 3f;
 
 		public override    void OnEnter() {
 			base.OnEnter();

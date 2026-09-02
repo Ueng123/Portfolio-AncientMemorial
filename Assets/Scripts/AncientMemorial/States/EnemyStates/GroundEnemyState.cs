@@ -31,7 +31,7 @@ namespace UengSystem.States.EnemyStates {
 		}
 
 		protected void Move(float targetPositionX, float mapMargin, float moveMargin) {
-			Entity target = stateMachine.GetTarget.Invoke();
+			Entity target = stateMachine.getTarget.Invoke();
 			targetPositionX = Mathf.Clamp(targetPositionX, MapManager.leftWall + mapMargin, MapManager.rightWall - mapMargin);
 			
 			Transform      transform      = enemy.transform;
@@ -55,7 +55,7 @@ namespace UengSystem.States.EnemyStates {
 				bool willMove    = Mathf.Abs(targetPositionX - transform.position.x) > moveMargin;
 				if (!willMove) return;
 				
-				rigidbody2D.linearVelocityX = enemy.entityStat.moveSpeed * signT * (movingBackward ? 0.5f : 1f);
+				rigidbody2D.linearVelocityX = enemy.stat.moveSpeed * signT * (movingBackward ? 0.5f : 1f);
 				// Debug.Log($"[Entity Velocity] HE IS MOVING {mi++}");
 			}
 			else {
@@ -69,7 +69,7 @@ namespace UengSystem.States.EnemyStates {
 				// 안움직일 경우 거르기
 				if (!movingB) return;
 				
-				rigidbody2D.linearVelocityX = enemy.entityStat.moveSpeed * signT;
+				rigidbody2D.linearVelocityX = enemy.stat.moveSpeed * signT;
 				// Debug.Log($"[Entity Velocity] HE IS MOVING {mi++}");
 			}
 		}

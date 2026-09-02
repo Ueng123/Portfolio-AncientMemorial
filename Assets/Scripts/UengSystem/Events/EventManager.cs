@@ -8,14 +8,14 @@ namespace UengSystem.Events {
 	public class EventManager : Manager<EventManager> {
 		
 		[Header("EventManager")]	
-		public readonly List<List<Event>> events = new (5);
+		public readonly List<List<Event>> events = new (6);
 		public List<Event> GetEvents(int layer) => events[layer];
 
 		private Dictionary<EventType, BufferedList<Action<Event>>> EventActions = new ();
 
 		public override void Initialize() {
 			base.Initialize();
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 6; i++) {
 				events.Add(new List<Event>());
 			}
 		}
@@ -29,12 +29,14 @@ namespace UengSystem.Events {
 			EventActions[type].Remove(func);
 		}
 
-		public void AddEvent(Event e, int layer) {
+		public void AddEvent(Event e, EventPriority layer) {
+			int layerN = (int)layer;
+			
 			if (e.sender == null) throw new ArgumentException("event must have sender", nameof(e));
 			int currSize = events.Count;
-			if (currSize - 1 < layer) { for (int i = 0; i < layer - currSize + 1; i++) events.Add(new List<Event>(10));}
+			if (currSize - 1 < layerN) { for (int i = 0; i < layerN - currSize + 1; i++) events.Add(new List<Event>(10));}
 
-			if (!events[layer].Contains(e)) events[layer].Add(e);
+			if (!events[layerN].Contains(e)) events[layerN].Add(e);
 		}
 
 		public void RemoveAllEvents() {

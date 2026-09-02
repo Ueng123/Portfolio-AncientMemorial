@@ -30,7 +30,7 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected void SendAttackMultiplyEvent(Entity targetEntity, float damageMult) {
-			SendEvent(UengSystem.Events.EventType.Entity_Hit, (int)EventPriority.Hit, new HitData(
+			SendEvent(UengSystem.Events.EventType.Entity_Hit, EventPriority.Hit, new HitData(
 						  null,
 						  this,
 						  targetEntity,
@@ -40,7 +40,7 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected void SendAttackEvent(Entity targetEntity, float damageMult) {
-			SendEvent(UengSystem.Events.EventType.Entity_Hit, (int)EventPriority.Hit, new HitData(
+			SendEvent(UengSystem.Events.EventType.Entity_Hit, EventPriority.Hit, new HitData(
 						  null,
 						  this,
 						  targetEntity,

@@ -5,11 +5,16 @@ namespace UengSystem.States.EnemyStates.Skeleton {
 		protected int step;
 
 		public abstract float attackTime  { get; }
-		public          float attackSpeed => enemy.entityStat.attackSpeed;
+		public          float attackSpeed => enemy.stat.attackSpeed;
 
 		public float GetDelay(float   percent) => percent * attackTime / attackSpeed;
-		public bool isProgress(float percent) => !stateTimer.Check(GetDelay(percent));
+		public bool isProgress(float percent) => stateTimer.CheckOut(GetDelay(percent));
 
+		protected override EnemyState GetState() {
+			stateMachine.AttackWatchTick();
+			return base.GetState();
+		}
+		
 		public override void OnEnter() {
 			step = 0;
 		}

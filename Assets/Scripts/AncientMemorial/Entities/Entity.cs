@@ -34,8 +34,8 @@ namespace AncientMemorial.Entities {
 		protected static readonly int                Falling  = Animator.StringToHash("falling");
 
 		public EntityType entityType;
-		public EntityData entityData;
-		public EntityStat entityStat;
+		public EntityData data;
+		public EntityStat stat;
 		public bool       Friendly;
 
 		public UUI     entityUI;
@@ -68,11 +68,11 @@ namespace AncientMemorial.Entities {
 		public List<AttatchObject> debrisAttached = new List<AttatchObject>();
 		
 		// Static Methods //
-		public static AttackAware AttackArea(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
+		public static AttackArea AttackArea(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
 			return attacker.AttackArea(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum, awareLerpX, awareLerpY, ignoreInvincible);
 		}
 		
-		public static AttackAware AttackAreaNoEffect(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
+		public static AttackArea AttackAreaNoEffect(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
 			return attacker.AttackAreaNoEffect(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum, ignoreInvincible);
 		}
 		
@@ -90,10 +90,10 @@ namespace AncientMemorial.Entities {
 			UTextAction   entityTextAction = entityUI.GetAction<UTextAction>("EntityName");
 			USliderAction entityHPAction   = entityUI.GetAction<USliderAction>("EntityHP");
 			
-			entityTextAction.text = new UPureString {pureValue = entityData.name};
+			entityTextAction.text = new UPureString {pureValue = data.name};
 			entityTextAction.Initialize(entityUI);
 			
-			entityHPAction.component.GetComponent<RectTransform>().sizeDelta = new Vector2(100*Mathf.Log(entityData.HP, 2) , 30);
+			entityHPAction.component.GetComponent<RectTransform>().sizeDelta = new Vector2(100*Mathf.Log(data.HP, 2) , 30);
 			entityHPAction.value = new UDiv {
 				dynamicType = DynamicType.Dynamic,
 				A = new UEntityStat {
@@ -151,41 +151,41 @@ namespace AncientMemorial.Entities {
 			textSAction.Initialize(damageUI);
 		}
 		
-		protected virtual AttackAware AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
+		protected virtual AttackArea AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
 			GameObject  awareObject = UObjectPool.instance.Get("AttackAware", hitboxPos);
-			AttackAware attackAware = awareObject.GetComponent<AttackAware>();
-			attackAware.InitializeColor(new Color(0.509434f, 0.1850303f, 0.1850303f, 0));
+			AttackArea attackArea = awareObject.GetComponent<AttackArea>();
+			attackArea.InitializeColor(new Color(0.509434f, 0.1850303f, 0.1850303f, 0));
 			
-			attackAware.targetColor         = new Color(0.9433962f, 0.244749f,  0.244749f,  0.6156863f);
-			attackAware.targetSize          = new Vector2(hitboxSize.x,      hitboxSize.y);
-			attackAware.transform.rotation  = Quaternion.Euler(0, 0, angle);
-			attackAware.spriteRenderer.size = hitboxSize;
-			attackAware.damageMult          = damageMult;
-			attackAware.attacker            = this;
-			attackAware.maxTargetNum        = maxTargetNum;
-			attackAware.ignoreInvincible    = ignoreInvincible;
-			attackAware.duration            = delay;
-			attackAware.lerpX               = awareLerpX;
-			attackAware.lerpY               = awareLerpY;
-			attackAware.invisible           = false;
+			attackArea.targetColor         = new Color(0.9433962f, 0.244749f,  0.244749f,  0.6156863f);
+			attackArea.targetSize          = new Vector2(hitboxSize.x,      hitboxSize.y);
+			attackArea.transform.rotation  = Quaternion.Euler(0, 0, angle);
+			attackArea.spriteRenderer.size = hitboxSize;
+			attackArea.damageMult          = damageMult;
+			attackArea.attacker            = this;
+			attackArea.maxTargetNum        = maxTargetNum;
+			attackArea.ignoreInvincible    = ignoreInvincible;
+			attackArea.duration            = delay;
+			attackArea.lerpX               = awareLerpX;
+			attackArea.lerpY               = awareLerpY;
+			attackArea.invisible           = false;
 
-			return attackAware;
+			return attackArea;
 		}
 		
-		protected AttackAware AttackAreaNoEffect(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
+		protected AttackArea AttackAreaNoEffect(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
 			GameObject  awareObject = UObjectPool.instance.Get("AttackAware", hitboxPos);
-			AttackAware attackAware = awareObject.GetComponent<AttackAware>();
-			attackAware.targetSize          = new Vector2(hitboxSize.x, hitboxSize.y);
-			attackAware.transform.rotation  = Quaternion.Euler(0, 0, angle);
-			attackAware.spriteRenderer.size = hitboxSize;
-			attackAware.damageMult          = damageMult;
-			attackAware.attacker            = this;
-			attackAware.maxTargetNum        = maxTargetNum;
-			attackAware.ignoreInvincible    = ignoreInvincible;
-			attackAware.duration            = delay;
-			attackAware.invisible           = true;
+			AttackArea attackArea = awareObject.GetComponent<AttackArea>();
+			attackArea.targetSize          = new Vector2(hitboxSize.x, hitboxSize.y);
+			attackArea.transform.rotation  = Quaternion.Euler(0, 0, angle);
+			attackArea.spriteRenderer.size = hitboxSize;
+			attackArea.damageMult          = damageMult;
+			attackArea.attacker            = this;
+			attackArea.maxTargetNum        = maxTargetNum;
+			attackArea.ignoreInvincible    = ignoreInvincible;
+			attackArea.duration            = delay;
+			attackArea.invisible           = true;
 			
-			return attackAware;
+			return attackArea;
 		}
 
 		public static void SendAttackMultiplyEvent(Entity attacker, Entity target, float damageMult, bool ignoreInvincible, bool useProcess = true) {
@@ -193,7 +193,7 @@ namespace AncientMemorial.Entities {
 				attacker,
 				null,
 				target,
-				attacker.entityStat.attackDamage * damageMult,
+				attacker.stat.attackDamage * damageMult,
 				new Vector2(target.transform.position.x - attacker.transform.position.x, 0).normalized,
 				ignoreInvincible
 			);
@@ -201,10 +201,10 @@ namespace AncientMemorial.Entities {
 			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
 			
 			if (useProcess) {
-				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, (int)EventPriority.Hit, hitData); });
+				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData); });
 			}
 			else {
-				attacker.SendEvent(EventType.Entity_Hit, (int)EventPriority.Hit, hitData);
+				attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData);
 			}
 		}
 		
@@ -225,10 +225,10 @@ namespace AncientMemorial.Entities {
 			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
 			
 			if (useProcess) {
-				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, (int)EventPriority.Hit, hitData); });
+				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData); });
 			}
 			else {
-				attacker.SendEvent(EventType.Entity_Hit, (int)EventPriority.Hit, hitData);
+				attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData);
 			}
 		}
 		
@@ -251,9 +251,10 @@ namespace AncientMemorial.Entities {
 		// ETC. Override //
 
 		public override void Initialize() {
+			deathHandled = false;
 			base.Initialize();
 			
-			Invincible(entityData.invincibleTime);
+			Invincible(data.invincibleTime);
 
 			hitEvent ??= HitEvent;
 			EventType.Entity_Hit.AddListener(hitEvent);
@@ -267,8 +268,8 @@ namespace AncientMemorial.Entities {
 		}
 
 		public override void Uninitialize() {
-			entityStat = default;
-			entityData = default;
+			stat = default;
+			data = default;
 			
 			base.Uninitialize();
 		}
@@ -278,24 +279,24 @@ namespace AncientMemorial.Entities {
 		}
 		
 		public override void OnGet() {
-			entityData = GetData();
+			data = GetData();
 			
-			entityStat      = new EntityStat(
-				entityData.HP,
-				entityData.moveSpeed,
-				entityData.jumpPower,
-				entityData.attackSpeed,
-				entityData.attackDamage
+			stat      = new EntityStat(
+				data.HP,
+				data.moveSpeed,
+				data.jumpPower,
+				data.attackSpeed,
+				data.attackDamage
 			);
 			
 			groundBoxOffset = new Vector2(
-				entityData.groundBoxOffsetX,
-				entityData.groundBoxOffsetY
+				data.groundBoxOffsetX,
+				data.groundBoxOffsetY
 			);
 			
 			groundBoxSize   = new Vector2(
-				entityData.groundBoxSizeX,
-				entityData.groundBoxSizeY
+				data.groundBoxSizeX,
+				data.groundBoxSizeY
 			);
 			
 			OpenEntityUI();
@@ -348,20 +349,12 @@ namespace AncientMemorial.Entities {
 				spriteRenderer.color.b,
 				1);
 		}
-
-		private static int  idnum = 0;
-		private        int  currIDNum;
-		private        bool id = false;
+		
 		private readonly StopWatch debrisCheckTimer = new StopWatch();
 		protected override void EarlyRoutine() {
-			if (!id) {
-				currIDNum = idnum++;
-				id = true;
-			}
-
 			state?.OnEarlyRoutine();
 			
-			if (debrisCheckTimer.Check(5f)) return;
+			if (debrisCheckTimer.CheckIn(5f)) return;
 			debrisCheckTimer.Tick();
 			CheckDebris();
 			// Debug.Log($"[Entity Velocity] {curridnum} : {rigidbody2D.linearVelocity}");
@@ -372,24 +365,23 @@ namespace AncientMemorial.Entities {
 		}
 
 		private   bool forceInvincible;
-		protected bool invincible => invincibleTimer.Check(invincibleTime) || forceInvincible;
+		protected bool invincible => invincibleTimer.CheckIn(invincibleTime) || forceInvincible;
 
 		private readonly StopWatch invincibleTimer = new StopWatch();
 		private          float     invincibleTime;
 		public void Invincible(float time) {
-			
-			float timeLeft = invincible ? invincibleTime - invincibleTimer.Tock() : 0;
+			float timeLeft = invincible ? invincibleTime - invincibleTimer.TryTock(0) : 0;
 			if (timeLeft > time) return;
 			
 			invincibleTimer.Tick();
 			invincibleTime = time;
 		}
-		public void ForceInvincibleTrue(bool target) {
+		public void Invincible(bool target) {
 			forceInvincible = target;
 		}
 
 		public virtual void ChangeHP(float amount) {
-			entityStat.HP = Mathf.Clamp(entityStat.HP + amount, 0, entityData.HP);
+			stat.HP = Mathf.Clamp(stat.HP + amount, 0, data.HP);
 		}
 		public abstract void OnHit(Entity attacker, float damage, Vector2? pushDir = null);
 		protected virtual void OnHitFromEntity(Entity     attacker,   float    damage, Vector2? pushDir) { }
@@ -415,13 +407,17 @@ namespace AncientMemorial.Entities {
 			else OnHeal(-realDamage);
 		}
 		
+		private bool deathHandled;
+		
 		protected override void LateRoutine() {
 			spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, (invincible)?0.5f:1f);
 			gameObject.layer = invincible?8:7;
 			
-			if (entityStat.HP <= 0) {
+			if (!deathHandled && stat.HP <= 0) {
+				deathHandled = true;
 				state = null;
 				Death();
+				SendEvent(EventType.Entity_Dead, EventPriority.Death);
 			}
 			
 			state?.OnLateRoutine();

@@ -22,13 +22,14 @@ namespace AncientMemorial.Entities.Enemies {
 			animator.Play("Hit");
 			
 			if (attacker != player) return;
-			if (entityStat.HP <= 0) {
-				UObjectPool.instance.Get("Explode2", transform.position);
-			}
-			
 			GameManager.SetTimeScale(0f, 0.05f);
 			CameraBrain.instance.ShakeLerp(1, 5);
 			CameraBrain.instance.ZoomLerp(-0.1f);
+		}
+
+		protected override void Death() {
+			UObjectPool.instance.Get("Explode2", transform.position);
+			base.Death();
 		}
 
 		public override void ChangeHP(float amount) {

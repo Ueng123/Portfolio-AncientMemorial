@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32d9b715afd4413d847e8e48cc7c2f22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
+  whenInitialize: 3
   whiteSpawnSprite: {fileID: 5293031974318352618, guid: e1a1fb6a99dd94348a00a12a35813a1e, type: 3}
   colorSpawnSprite: {fileID: 5293031974318352618, guid: e1a1fb6a99dd94348a00a12a35813a1e, type: 3}
   rigidbody2D: {fileID: 0}
@@ -353,7 +353,7 @@ MonoBehaviour:
   entityType: 7
   entityData:
     name: 
-    hp: 0
+    HP: 0
     moveSpeed: 0
     jumpPower: 0
     attackCooldown: 0
@@ -364,9 +364,8 @@ MonoBehaviour:
     groundBoxOffsetY: 0
     groundBoxSizeX: 0
     groundBoxSizeY: 0
-    aggroThreshold: 0
   entityStat:
-    hp: 0
+    HP: 0
     moveSpeed: 0
     jumpPower: 0
     attackSpeed: 0
@@ -377,7 +376,6 @@ MonoBehaviour:
   entityUIHeight: 240
   groundChecker: {fileID: 0}
   debrisAttached: []
-  isWaveEnemy: 0
   markYPos: 2
   hideOnDeath:
   - {fileID: 3981097627943833926}

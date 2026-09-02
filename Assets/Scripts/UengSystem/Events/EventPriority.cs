@@ -2,15 +2,15 @@
 	public enum EventPriority {
 		Cancel = 0,
 		
-		Stop = 1, // Interaction Stop
+		Stop = 1,
 		Remove = 1,
 		
-		Start = 2, // Interaction Start
+		Start = 2,
 		Add = 2,
 		
-		Action = 3, // Jump, Primary/Secondary Attack, Dash, etc. 
-		State = 3, // Move
+		Action = 3,
 		
 		Hit = 4,
+		Death = 5,
 	}
 }

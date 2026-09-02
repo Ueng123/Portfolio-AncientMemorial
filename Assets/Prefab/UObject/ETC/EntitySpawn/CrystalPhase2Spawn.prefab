@@ -150,7 +150,7 @@ MonoBehaviour:
     - rid: 5909658992151888090
       type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        TargetObject: {fileID: 1454850116889365771}
+        TargetObject: {fileID: 7121936188299108062, guid: 5954484ccd295814da65dbd6bc43efb7, type: 3}
         position:
           rid: 5909658992151888096
         spawnTime:
@@ -169,7 +169,7 @@ MonoBehaviour:
       type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
       data:
         dynamicType: 0
-        pureValue: {fileID: 3471628839309448801, guid: 5954484ccd295814da65dbd6bc43efb7, type: 3}
+        pureValue: {fileID: 5544291948832688323}
     - rid: 5909658992151888143
       type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:

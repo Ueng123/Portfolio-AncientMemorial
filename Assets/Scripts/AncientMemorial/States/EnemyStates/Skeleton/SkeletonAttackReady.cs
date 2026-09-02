@@ -32,9 +32,9 @@ namespace UengSystem.States.EnemyStates.Skeleton {
 		}
 
 		public override void OnRoutine() {
-			Entity target = stateMachine.GetTarget.Invoke();
+			Entity target = stateMachine.getTarget.Invoke();
 			
-			if (!offsetTimer.Check(updateOffsetTerm)) {
+			if (offsetTimer.CheckOut(updateOffsetTerm)) {
 				offsetTimer.Tick();
 				UpdateOffset();
 			}

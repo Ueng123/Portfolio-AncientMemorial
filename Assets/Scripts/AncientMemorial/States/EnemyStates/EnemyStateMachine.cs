@@ -6,13 +6,13 @@ using UengSystem.Utility;
 namespace UengSystem.States.EnemyStates {
 	public class EnemyStateMachine {
 		public Enemy       enemy;
-		public Func<Entity> GetTarget;
+		public Func<Entity> getTarget;
 		
 		private   StopWatch attackWatch = new StopWatch();
-		protected float     attackDelay => enemy.entityData.attackCooldown;
+		protected float     attackDelay => enemy.data.attackCooldown;
 
 		public bool CanAttack() {
-			return !attackWatch.Check(attackDelay);
+			return attackWatch.CheckOut(attackDelay);
 		}
 
 		public void AttackWatchTick() {
@@ -29,8 +29,8 @@ namespace UengSystem.States.EnemyStates {
 		public EnemyStun  stunState;
 		
 		public EnemyStateMachine(Enemy enemy, Func<Entity> getTarget, EnemyState wanderState, EnemyState awareState, EnemyState attackReadyState, EnemyStun stunState) {
-			this.enemy            = enemy;
-			GetTarget             = getTarget;
+			this.enemy     = enemy;
+			this.getTarget = getTarget;
 			
 			this.wanderState      = wanderState;
 			this.awareState       = awareState;

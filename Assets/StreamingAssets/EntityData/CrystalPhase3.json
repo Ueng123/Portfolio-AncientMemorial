@@ -3,7 +3,7 @@
   "HP" : 5,
   "MoveSpeed" : 10,
   "JumpPower" : 0,
-  "AttackCooldown" : 2,
+  "AttackCooldown" : 20,
   "AttackSpeed" : 1,
   "AttackDamage" : 2,
   "InvincibleTime" : 3,

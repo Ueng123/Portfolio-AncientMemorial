@@ -17,7 +17,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Archer {
 
 		private const float attackProgress = 6f / 11f;
 
-		private AttackAware attackAware;
+		private AttackArea _attackArea;
 
 		private float D(float v, Vector2 targetPosition) {
 			float g  = Mathf.Abs(Physics2D.gravity.y);
@@ -57,24 +57,24 @@ namespace UengSystem.States.EnemyStates.Skeleton.Archer {
 			Arrow      arrow       = arrowObject.GetComponent<Arrow>();
 			
 			arrow.rigidbody2D.linearVelocity = GetArrowDir(v, targetPosition);
-			arrow.damage                     = enemy.entityData.attackDamage;
+			arrow.damage                     = enemy.data.attackDamage;
 			arrow.owner                      = enemy;
 		}
 		
 		public override void OnEnter() {
 			base.OnEnter();
-			Entity target = stateMachine.GetTarget.Invoke();
+			Entity target = stateMachine.getTarget.Invoke();
 			
 			isFlipped    = (int)Mathf.Sign(target.transform.position.x - enemy.transform.position.x) == -1;
 			
 			oldAnimSpeed         = enemy.animator.speed;
-			enemy.animator.speed = enemy.entityStat.attackSpeed;
+			enemy.animator.speed = enemy.stat.attackSpeed;
 			enemy.animator.SetBool(attacking, true);
 		}
 		
 		public override void OnRoutine() {
 			enemy.rigidbody2D.linearVelocityX = 0;
-			Entity target = stateMachine.GetTarget.Invoke();
+			Entity target = stateMachine.getTarget.Invoke();
 
 			if (step == 0 && isProgress(0.5f)) {
 				
@@ -92,7 +92,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Archer {
 		public override void OnExit() {
 			base.OnExit();
 			
-			attackAware?.Cancel();
+			_attackArea?.Cancel();
 			
 			enemy.animator.speed = oldAnimSpeed;
 			enemy.animator.SetBool(attacking, false);

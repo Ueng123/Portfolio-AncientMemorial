@@ -19,7 +19,7 @@ namespace AncientMemorial.Objects {
 		
 		protected override void Routine() {
 			bool downCondition = InputManager.GetInput(ActionType.MouseLClick, PressType.Down);
-			bool holdCondition = InputManager.GetInput(ActionType.MouseLClick, PressType.Hold) && !spawnTimer.Check(0.1f);
+			bool holdCondition = InputManager.GetInput(ActionType.MouseLClick, PressType.Hold) && spawnTimer.CheckOut(0.1f);
 
 			if (!downCondition && !holdCondition) return;
 			

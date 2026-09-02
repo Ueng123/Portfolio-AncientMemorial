@@ -22,9 +22,7 @@ namespace AncientMemorial.Entities.Enemies {
 		
 		public void Stun(float duration) {
 			EnemyStun stunState = stateMachine.stunState;
-			stunState.SetDuration(duration);
-			
-			state = stunState;
+			state = stunState.Setup(duration);
 		}
 
 		public static bool isTargettable(EntityType entity) => entity == EntityType.Player;
@@ -56,9 +54,13 @@ namespace AncientMemorial.Entities.Enemies {
 			ENEMYTYPE_DEAD = $"{GetType().Name}Dead".GetHash();
 		}
 
+		public virtual void InitializeState() {
+			state = stateMachine?.wanderState;
+		}
+		
 		public override void Initialize() {
 			base.Initialize();
-			state = stateMachine?.wanderState;
+			InitializeState();
 		}
 
 		protected override void OnCategoryChanged(string category) {

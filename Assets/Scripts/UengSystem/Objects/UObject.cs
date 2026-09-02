@@ -292,6 +292,10 @@ namespace UengSystem.Objects {
 		[HideInInspector] public SpriteRenderer spriteRenderer;
 		[HideInInspector] public Animator       animator;
 
+		public static bool TryGetUObject(string id, out UObject obj) {
+			return IDTable.TryGetValue(id, out obj);
+		}
+		
 		public static UObject GetUObject(string id) {
 			return IDTable.GetValueOrDefault(id);
 		}
@@ -321,7 +325,7 @@ namespace UengSystem.Objects {
 		}
 
 		// IEventAgent Method //
-		public void SendEvent(EventType type, int layer, EventData data = default) {
+		public void SendEvent(EventType type, EventPriority layer, IEventData data = null) {
 			EventManager.instance.AddEvent(new Event(type, this, data), layer);
 		}
 		

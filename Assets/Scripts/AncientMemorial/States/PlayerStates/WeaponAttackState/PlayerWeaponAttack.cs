@@ -32,7 +32,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState {
 
 		 public float GetCooldown() => (attackTime + attackAfterTime) / attackSpeed;
 		 public float GetDelay(float   percent) => percent * attackTime / attackSpeed;
-		 public bool  isProgress(float percent) => !stateTimer.Check(GetDelay(percent));
+		 public bool  isProgress(float percent) => stateTimer.CheckOut(GetDelay(percent));
 		 
 		protected int step;
 

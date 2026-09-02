@@ -30,7 +30,7 @@ namespace UengSystem.States.EnemyStates.Skeleton {
 		}
 
 		public override void OnRoutine() {
-			if (!wanderingTimer.Check(updatePositionTerm)) {
+			if (wanderingTimer.CheckOut(updatePositionTerm)) {
 				wanderingTimer.Tick();
 				ResetRandomMapPos();
 			}

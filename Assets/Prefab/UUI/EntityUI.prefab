@@ -143,7 +143,7 @@ MonoBehaviour:
   rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
-  openTime: 1.5
+  openTime: 0
   closeTime: 1.5
   actions:
   - key: EntityName

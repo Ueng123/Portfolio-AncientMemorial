@@ -60,7 +60,7 @@ namespace AncientMemorial.Weapons {
 				-1 => 0f,
 				0  => 0.5f,
 				1 => 0.5f,
-				2  => Mathf.Max(0.5f, skillEndCooldown  / player.entityStat.attackSpeed),
+				2  => Mathf.Max(0.5f, skillEndCooldown  / player.stat.attackSpeed),
 				_  => throw new ArgumentOutOfRangeException(nameof(attackStage), attackStage, null)
 			};
 		}
