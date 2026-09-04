@@ -75,6 +75,9 @@ namespace AncientMemorial.Entities {
 		// ANIMATOR //
 		private static readonly int  BACKWARD  = Animator.StringToHash("backward");
 		
+		// HEAL //
+		private StopWatch healTimer = new ();
+
 		// METHOD //
 		
 		private bool CanJump() {
@@ -93,8 +96,8 @@ namespace AncientMemorial.Entities {
 
 		private bool CanHeal() {
 			if (UPureFloat.GetValue(HEALTH_POTION_COUNT) <= 0) return false;
-			if (healAction.Executing) return false;
 			if (!weapon.isAttacking) return false;
+			if (healTimer.CheckIn(0.5f)) return false;
 			
 			return true;
 		}
@@ -121,21 +124,12 @@ namespace AncientMemorial.Entities {
 			weapon.SecondaryAttack();
 		}
 
-		private DelayedAction healAction;
 		private void Heal() {
-			healAction??=new DelayedAction(0.4f, () => {
-				PlaySFX("playerHeal");
-				SendAttackEvent(this, -3, true);
-			}, () => {}, this);
-			
+			healTimer.Tick();
+			SendAttackEvent(this, -3, true);
 			UPureFloat.AddValue(HEALTH_POTION_COUNT, -1);
-			
-			handAnimator.Play(lookingLeft?"healB":"heal", 0, 0);
-			SetArm();
-			
 			PlaySFX("playerBottleOpen");
-			
-			healAction.ExecuteDA();
+			UObjectPool.instance.Get("healEffect", transform.position);
 		}
 
 		private StopWatch targetInteractSync     = new StopWatch();
