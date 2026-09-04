@@ -44,8 +44,6 @@ namespace UengSystem.States.EnemyStates.Crystal {
 			crystalMissile.transform.rotation = Quaternion.Euler(0, 0, rot);
 			crystalMissile.Category           = "crystalMissile";
 		}
-		
-		
 
 		protected virtual void ClearMissiles() {
 			List<UObject> missiles = UObject.GetUObjects("crystalMissile");

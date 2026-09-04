@@ -6,19 +6,12 @@
 	public class CrystalFinalD : CrystalPhase3Attack {
 		private StopWatch barrageMissileTimer  = new StopWatch();
 		private float     barrageMissileTime   = 1f;
-		private StopWatch semiHugeMissileTimer = new StopWatch();
-		private float     semiHugeMissileTime  = 1f;
 		private StopWatch bigMissileTimer      = new StopWatch();
 		private float     bigMissileTime       = 1f;
 
 		private void UpdateBarrageMissileTime() {
 			barrageMissileTimer.Tick();
 			barrageMissileTime = 1f;
-		}
-
-		private void UpdateSemiHugeMissileTime() {
-			semiHugeMissileTimer.Tick();
-			semiHugeMissileTime = 1f;
 		}
 
 		private void UpdateBigMissileTime() {
@@ -29,13 +22,7 @@
 		private void BarrageMissileRoutine() {
 			if (barrageMissileTimer.CheckIn(barrageMissileTime)) return;
 			UpdateBarrageMissileTime();
-			ShootBarrageMissile(crystal.transform.position, 1);
-		}
-
-		private void SemiHugeMissileRoutine() {
-			if (semiHugeMissileTimer.CheckIn(semiHugeMissileTime)) return;
-			UpdateSemiHugeMissileTime();
-			ShootSemiHugeMissile(crystal.transform.position, Random.Range(0f, 360f));
+			ShootBarrageMissile(crystal.transform.position, 15);
 		}
 
 		private void BigMissileRoutine() {
@@ -48,15 +35,20 @@
 		}
 		public override void OnEnter() {
 			base.OnEnter();
+			
+			SetMoveMode(CrystalMoveMode.CircleOnCenter);
+			
+			SpawnRay(4, 3f,    90, effect:true);
+			SpawnRay(4, 0.75f, 0);
+			SpawnRay(4, 0.75f, 180);
+			
 			barrageMissileTimer.Tick();
-			semiHugeMissileTimer.Tick();
 			bigMissileTimer.Tick();
 		}
 
 		public override void OnRoutine() {
 			base.OnRoutine();
 			BarrageMissileRoutine();
-			SemiHugeMissileRoutine();
 			BigMissileRoutine();
 
 			if (isProgress(1)) {
@@ -69,7 +61,7 @@
 			ClearRays();
 		}
 
-		public override float attackTime => 0f;
+		public override float attackTime => 10f;
 		
 	}
 }

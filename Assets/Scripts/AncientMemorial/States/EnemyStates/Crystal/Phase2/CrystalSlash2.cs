@@ -80,6 +80,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 		}
 		
 		private void SlashEffect() {
+			crystal.PlaySFX("crystalSlash");
+			
 			foreach ((Vector2 pos, float rot, float length) in slashData) {
 				GameObject slash = UObjectPool.instance.Get("SlashEffect", pos);
 				slash.transform.rotation   = Quaternion.Euler(0, 0, rot);

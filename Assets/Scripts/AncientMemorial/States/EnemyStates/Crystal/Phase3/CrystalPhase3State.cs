@@ -79,7 +79,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
             }
         }
         
-        protected CrystalRay SpawnRay(float radius, float angularVelocity, float offsetRadian, Vector2? pos = null, bool effect = false) {
+        protected CrystalRay SpawnRay(float radius, float angularVelocity, float offsetDegrees, Vector2? pos = null, bool effect = false) {
             Vector2 mapSize = MapManager.instance.GetMapSize();
             
             GameObject    ultRayObj = UObjectPool.instance.Get(RayPoolKey, pos ?? new Vector2(0, mapSize.y / 2), 0.001f);
@@ -87,7 +87,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
             ray.owner           = crystal;
             ray.radius          = radius;
             ray.angularVelocity = angularVelocity;
-            ray.angleOffset     = Mathf.Repeat(offsetRadian, 2*Mathf.PI);
+            ray.angleOffset     = Mathf.Repeat(offsetDegrees*Mathf.Deg2Rad, 2*Mathf.PI);
             ray.showEffect      = effect;
 			
             rays.Add(ray);

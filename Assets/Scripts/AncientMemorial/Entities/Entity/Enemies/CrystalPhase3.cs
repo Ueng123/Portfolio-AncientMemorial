@@ -43,7 +43,7 @@ namespace AncientMemorial.Entities.Enemies {
 				return;
 			}
 			
-			UUI damageUI = UUIPool.instance.Open("DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
+			UUI damageUI = UUIPool.instance.Open("CrystalPhase3DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
 			damageUI.GetComponent<RectTransform>().anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
 			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
@@ -75,19 +75,19 @@ namespace AncientMemorial.Entities.Enemies {
 			base.OnFirstGet();
 
 			InitializeCrystalStateMachine(new CrystalPhase3Idle());
-			spawnEnergy   = new CrystalSpawnEnergy().Init(stateMachine).To<CrystalSpawnEnergy>(); // DONE
-			semiHugeSweep = new CrystalSemiHugeSweep().Init(stateMachine);                        // DONE
-			semiHugeCross = new CrystalSemiHugeCross().Init(stateMachine);                        // DONE
-			rayCross      = new CrystalRayCross().Init(stateMachine);                             // DONE
-			deathAttack   = new CrystalDeathAttack().Init(stateMachine);                          // DONE
+			spawnEnergy   = new CrystalSpawnEnergy().Init(stateMachine).To<CrystalSpawnEnergy>(); 
+			semiHugeSweep = new CrystalSemiHugeSweep().Init(stateMachine);                        
+			semiHugeCross = new CrystalSemiHugeCross().Init(stateMachine);                        
+			rayCross      = new CrystalRayCross().Init(stateMachine);                             
+			deathAttack   = new CrystalDeathAttack().Init(stateMachine);                          
 			final         = new CrystalFinalA().Init(stateMachine);
 		}
 		
 		protected override Entity GetTargetEntity() => player;
 		
 		public override void Attack() {
-			// bool isFinalPhase = (int)stat.HP == 1;
-			bool isFinalPhase = true;
+			bool isFinalPhase = (int)stat.HP == 1;
+			// bool isFinalPhase = true;
 			if (isFinalPhase) {
 				state = final;
 				return;
@@ -123,6 +123,7 @@ namespace AncientMemorial.Entities.Enemies {
 
 		public void StartGimmick(int energyCount) {
 			if (gimmickActive) return;
+			Debug.Log("[CRYSTAL GIMMICK] START GIMMICK");
 			UPureFloat.SetValue(CRYSTAL_ENERGY_DEAD, 0);
 			
 			remainingCrystalEnergy = energyCount;
@@ -132,6 +133,8 @@ namespace AncientMemorial.Entities.Enemies {
 		public void StopGimmick() {
 			if (!gimmickActive) return;
 			gimmickActive = false;
+			
+			Debug.Log("[CRYSTAL GIMMICK] GIMMICK END");
 
 			foreach (UObject obj in GetUObjects("crystalEnergy")) {
 				CrystalEnergy crystalEnergy = (CrystalEnergy)obj;
@@ -140,6 +143,8 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		private void OnGimmickDone() {
+			Debug.Log("[CRYSTAL GIMMICK] GIMMICK DONE");
+			
 			StopGimmick();
 			attackPhase = 0;
 			
@@ -184,6 +189,8 @@ namespace AncientMemorial.Entities.Enemies {
 			GameManager.SetTimeScale(0.1f, 1.5f);
 			shakeAfterTimescale.ExecuteDA(true);
 			CameraBrain.instance.ZoomLerp(-5f);
+
+			UObjectPool.instance.Get("BrokenCrystal", new Vector2(transform.position.x, 0.75f));
 			
 			base.Death();
 		}

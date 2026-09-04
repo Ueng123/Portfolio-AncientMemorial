@@ -130,7 +130,7 @@ MonoBehaviour:
     tasks:
     - time: 0
       tasks:
-      - rid: 8985605434833633829
+      - rid: 350172543122669839
   onCancel:
     useRealTime: 0
     tasks: []
@@ -146,8 +146,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8985605434833633829
-      type: {class: NextWave, ns: AncientMemorial.Tasks, asm: Assembly-CSharp}
+    - rid: 350172543122669839
+      type: {class: NextWave, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data: 
 --- !u!1 &5687123949146964215
 GameObject:

@@ -1,9 +1,14 @@
-﻿namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+﻿using AncientMemorial.Map;
+
+namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 	using AncientMemorial.Objects;
 	using UengSystem.Utility;
 	using UnityEngine;
 
 	public class CrystalFinalA : CrystalPhase3Attack {
+		
+		public override float attackTime => 10f;
+		
 		private StopWatch barrageMissileTimer  = new StopWatch();
 		private float     barrageMissileTime   = 1f;
 		private StopWatch semiHugeMissileTimer = new StopWatch();
@@ -13,29 +18,35 @@
 
 		private void UpdateBarrageMissileTime() {
 			barrageMissileTimer.Tick();
-			barrageMissileTime = 1f;
+			barrageMissileTime = 1.5f;
 		}
 
 		private void UpdateSemiHugeMissileTime() {
 			semiHugeMissileTimer.Tick();
-			semiHugeMissileTime = 1f;
+			semiHugeMissileTime = Random.Range(0.25f, 0.75f);
 		}
 
 		private void UpdateBigMissileTime() {
 			bigMissileTimer.Tick();
-			bigMissileTime = 1f;
+			bigMissileTime = 1.5f;
 		}
 
 		private void BarrageMissileRoutine() {
 			if (barrageMissileTimer.CheckIn(barrageMissileTime)) return;
 			UpdateBarrageMissileTime();
-			ShootBarrageMissile(crystal.transform.position, 1);
+			ShootBarrageMissile(crystal.transform.position, 10);
 		}
 
 		private void SemiHugeMissileRoutine() {
 			if (semiHugeMissileTimer.CheckIn(semiHugeMissileTime)) return;
 			UpdateSemiHugeMissileTime();
-			ShootSemiHugeMissile(crystal.transform.position, Random.Range(0f, 360f));
+
+			Vector2 mapSize = MapManager.instance.GetTargetMapSize();
+			float   posX    = Random.Range(-0.45f, 0.45f) * mapSize.x;
+			float   posY    = mapSize.y                   * 0.8f;
+			Vector2 pos     = new (posX, posY);
+			
+			ShootSemiHugeMissile(pos, Random.Range(175f, 185f));
 		}
 
 		private void BigMissileRoutine() {
@@ -47,7 +58,14 @@
 			ShootBigMissile(pos, rot);
 		}
 		public override void OnEnter() {
+			MapManager.instance.SetMapSize(new Vector2(15, 15), 0.025f);
+			SetMoveMode(CrystalMoveMode.CircleOnCenter);
+			
 			base.OnEnter();
+
+			SpawnRay(2, 0, 90, effect:true);
+			SpawnRay(2, 0, 270);
+			
 			barrageMissileTimer.Tick();
 			semiHugeMissileTimer.Tick();
 			bigMissileTimer.Tick();
@@ -68,8 +86,5 @@
 			base.OnExit();
 			ClearRays();
 		}
-
-		public override float attackTime => 0f;
-		
 	}
 }

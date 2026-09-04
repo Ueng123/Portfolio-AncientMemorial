@@ -45,9 +45,9 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 			bigMissileTimer.Tick();
 			barrageMissileTimer.Tick();
 			SpawnRay(4, 1f, 0, effect:true);
-			SpawnRay(4, 1f, 90  * Mathf.Deg2Rad);
-			SpawnRay(4, 1f, 180 * Mathf.Deg2Rad);
-			SpawnRay(4, 1f, 270 * Mathf.Deg2Rad);
+			SpawnRay(4, 1f, 90);
+			SpawnRay(4, 1f, 180);
+			SpawnRay(4, 1f, 270);
 		}
 		
 		public override void OnRoutine() {

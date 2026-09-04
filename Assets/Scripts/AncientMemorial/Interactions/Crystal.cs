@@ -8,12 +8,12 @@ namespace AncientMemorial.Interactions {
 
 		public override void Interactable() {
 			base.Interactable();
-			animator.SetBool(Enabled, true);
+			animator?.SetBool(Enabled, true);
 		}
 
 		public override void UnInteractable() {
 			base.UnInteractable();
-			animator.SetBool(Enabled, false);
+			animator?.SetBool(Enabled, false);
 		}
 
 		protected override void OnInteractStart() { }
