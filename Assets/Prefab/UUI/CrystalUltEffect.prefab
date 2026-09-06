@@ -129,6 +129,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
   openTime: 10
+  GettingAnimation: Open
   closeTime: 0.5
   actions: []
   references:

@@ -2,6 +2,7 @@
 using AncientMemorial.Map;
 using UengSystem;
 using UengSystem.Objects;
+using UengSystem.Objects.LifeCycle;
 using UnityEngine;
 
 namespace AncientMemorial.Objects {
@@ -15,23 +16,16 @@ namespace AncientMemorial.Objects {
 			MatchWithMapSize();
 		}
 
-		protected override IEnumerator SpawnFX(float duration) {
-			float elapsed = 0f;
+		public override void OnFirstGet() {
+			SetDefaultStates(GettingState: new WoodGetting(this));
+			base.OnFirstGet();
+		}
 
-			while (elapsed < duration) {
-				elapsed += Time.deltaTime;
-				
-				float t = elapsed / duration;
-
-				Color color = new(Mathf.Lerp(GameManager.instance.spawnColor.r, 1, t),
-								  Mathf.Lerp(GameManager.instance.spawnColor.g, 1, t),
-								  Mathf.Lerp(GameManager.instance.spawnColor.b, 1, t),
-								  Mathf.Lerp(0,                                 1, t));
-				
-				MatchWithMapSize();
-				if (spriteRenderer) spriteRenderer.color = color;
-				
-				yield return null;
+		private sealed class WoodGetting : DefaultGetting {
+			public WoodGetting(WoodStructure Target) : base(Target) { }
+			protected override void OnEffectRoutine(float DeltaTime) {
+				((WoodStructure)target).MatchWithMapSize();
+				base.OnEffectRoutine(DeltaTime);
 			}
 		}
 

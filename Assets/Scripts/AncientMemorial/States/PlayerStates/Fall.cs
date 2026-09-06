@@ -1,7 +1,7 @@
 ﻿using UengSystem.Inputs;
 using UnityEngine;
 
-namespace UengSystem.States.PlayerStates {
+namespace AncientMemorial.States.PlayerStates {
 	public class Fall : PlayerDefaultState {
 		public override void OnEnter() { }
 

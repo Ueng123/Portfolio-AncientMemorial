@@ -1,8 +1,10 @@
-﻿using System.Collections;
+using UengSystem.UI;
+using System.Collections;
 using System.Collections.Generic;
 using AncientMemorial.Entities;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
+using UengSystem.Objects.LifeCycle;
 using UengSystem.UI.UUIs;
 using UengSystem.Utility;
 using UengSystem.VisualScripting.UValues.UBools;
@@ -56,35 +58,32 @@ namespace AncientMemorial.Interactions {
 
 			for (int i = playerUpgradeObjects.Count - 1; i >= 0; i--) {
 				UObject upgradeObject = playerUpgradeObjects[i];
-				UObjectPool.instance.Release(upgradeObject.gameObject, 1f);
+				upgradeObject.Release(PlayEffect: true);
 			}
 		}
 
-		protected override void PrepareSpawnFX() { }
-		
-		protected override IEnumerator SpawnFX(float duration) {
-			animator.Play("spawn");
-			animator.speed = 2f/duration;
-			
-			yield return new WaitForSeconds(duration);
+		public override void OnFirstGet() {
+			SetDefaultStates(new AnimationGetting(this, "spawn", "idle", 2), new UpgradeReleasing(this));
+			base.OnFirstGet();
 		}
 
-		protected override void        FinishSpawnFX() {
-			animator.Play("idle");
-			animator.speed = 1;
-			
-			Initialize();
+		public override void OnGet() {
+			selected = false;
+			base.OnGet();
 		}
 
-		protected override void        PrepareDespawnFX() { }
-		protected override IEnumerator DespawnFX(float duration) {
-			animator.Play(selected?"select":"break");
-			animator.speed = 1f/duration;
-			selected       = false;
-			
-			yield return new WaitForSeconds(duration);
-			
-			UObjectPool.instance.Release(gameObject, -1);
+		private sealed class UpgradeReleasing : Releasing {
+			private float InitialSpeed;
+			public UpgradeReleasing(PlayerUpgradeObject Target) : base(Target) { }
+			protected override void OnStartEffect() {
+				InitialSpeed = target.animator.speed;
+				target.animator.speed = duration > 0 ? 1 / duration : 1;
+				target.animator.Play(((PlayerUpgradeObject)target).selected ? "select" : "break", 0, 0);
+			}
+			protected override void ClearEffect() {
+				if (hasStartedEffect && target.animator) target.animator.speed = InitialSpeed;
+				((PlayerUpgradeObject)target).selected = false;
+			}
 		}
 	}
 }

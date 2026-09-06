@@ -31,6 +31,7 @@ namespace UengSystem.UAction {
        
        public WaitAction ExecuteWA() {
           if (Executing) return this;
+          if (executor is Objects.UObject Owner && !Owner.canStartOwnedWork) return this;
           
           if (checkCondition.Invoke()) {
              actionToDelay();
@@ -44,6 +45,7 @@ namespace UengSystem.UAction {
           Executing = true;
           
           Execute(executor);
+          if (!Executing) return this;
           process = CoroutineRunner.instance.StartCoroutine(ActionEnumerator());
           return this;
        }
@@ -56,8 +58,10 @@ namespace UengSystem.UAction {
           runningActionCount     -= 1;
           runningWaitActionCount -= 1;
           
-          if (stopCoroutine) CoroutineRunner.instance.StopCoroutine(process);
+          if (stopCoroutine && process != null && CoroutineRunner.instance) CoroutineRunner.instance.StopCoroutine(process);
+          process = null;
           Executing = false;
+          executor?.UnregisterAction(this);
           actionToDelay.Invoke();
        }
        
@@ -68,8 +72,9 @@ namespace UengSystem.UAction {
           runningWaitActionCount -= 1;
           
           Executing = false;
+          executor?.UnregisterAction(this);
           if (process != null) {
-             CoroutineRunner.instance.StopCoroutine(process);
+             if (CoroutineRunner.instance) CoroutineRunner.instance.StopCoroutine(process);
              process = null;
           }
           actionOnCancel?.Invoke();

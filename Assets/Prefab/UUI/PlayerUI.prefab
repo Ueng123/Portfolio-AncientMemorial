@@ -897,6 +897,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 20}
   initialScale: {x: 0.75, y: 0.75, z: 1}
   openTime: 0.01
+  GettingAnimation: pOpen
   closeTime: 1.5
   actions:
   - key: Name

@@ -3,7 +3,7 @@ using UengSystem.Inputs;
 using UnityEngine;
 using EventType = UengSystem.Events.EventType;
 
-namespace UengSystem.States.PlayerStates {
+namespace AncientMemorial.States.PlayerStates {
 	public class Jump : PlayerState {
 		private const float   jumpLengthMin = 0.1f;
 		private const float   jumpLengthMax = 0.75f;
@@ -23,7 +23,7 @@ namespace UengSystem.States.PlayerStates {
 			bool jumpLoopEnd = isTimeOver || keyInput || player.isGround;
 
 			if (jumpLoopEnd && !isTimeLess) {
-				player.state = GetDefaultState();
+				player.entityState = GetDefaultState();
 			}
 		}
 

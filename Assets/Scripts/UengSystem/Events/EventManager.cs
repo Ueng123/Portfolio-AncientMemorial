@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UengSystem.Managers;
+using UengSystem.UDebug;
 using UengSystem.Utility;
 
 namespace UengSystem.Events {
@@ -11,7 +12,7 @@ namespace UengSystem.Events {
 		public readonly List<List<Event>> events = new (6);
 		public List<Event> GetEvents(int layer) => events[layer];
 
-		private Dictionary<EventType, BufferedList<Action<Event>>> EventActions = new ();
+		private Dictionary<EventType, SyncList<Action<Event>>> EventActions = new ();
 
 		public override void Initialize() {
 			base.Initialize();
@@ -21,11 +22,12 @@ namespace UengSystem.Events {
 		}
 
 		public void AddListener(EventType type, Action<Event> func) {
-			EventActions.TryAdd(type, new BufferedList<Action<Event>>(20, 5));
+			EventActions.TryAdd(type, new SyncList<Action<Event>>(20));
 			EventActions[type].Add(func);
 		}
 
 		public void RemoveListener(EventType type, Action<Event> func) {
+			
 			EventActions[type].Remove(func);
 		}
 
@@ -36,7 +38,7 @@ namespace UengSystem.Events {
 			int currSize = events.Count;
 			if (currSize - 1 < layerN) { for (int i = 0; i < layerN - currSize + 1; i++) events.Add(new List<Event>(10));}
 
-			if (!events[layerN].Contains(e)) events[layerN].Add(e);
+			events[layerN].Add(e);
 		}
 
 		public void RemoveAllEvents() {
@@ -48,11 +50,15 @@ namespace UengSystem.Events {
 		public void EventRoutine() {
 			foreach (List<Event> eventList in events) {
 				foreach (Event e in eventList) {
-					if (!EventActions.TryGetValue(e.type, out BufferedList<Action<Event>> actions)) return;
-					actions.Apply();
+					if (!EventActions.TryGetValue(e.type, out SyncList<Action<Event>> actions)) continue;
+					actions.Synchronize();
+					
 					for (int i = 0; i < actions.Count; i++) {
 						Action<Event> action = actions[i];
-						action.Invoke(e);
+						try { action.Invoke(e); }
+						catch (Exception exception) {
+							DebugManager.LogError($"Update > EventManager.EventRoutine > {e.GetType().Name}", exception, gameObject);
+						}
 					}
 				}
 			}

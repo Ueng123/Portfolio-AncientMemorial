@@ -259,18 +259,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f699aac109b4a45863976023e26764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   cam: {fileID: 108502714}
   AlignTypeX: 0
   AlignTypeY: 0
@@ -418,7 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8c37708b5534d68a7ce6baf605094fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UDebug.DebugManager
-  debugMode: 0
+  debugMode: 1
   Logging: 0
 --- !u!114 &185566328 stripped
 MonoBehaviour:
@@ -562,6 +564,8 @@ Transform:
   - {fileID: 1697232781}
   - {fileID: 1482948670}
   - {fileID: 1398142902}
+  - {fileID: 473051274}
+  - {fileID: 1701840766}
   - {fileID: 417905998}
   - {fileID: 181414990}
   m_Father: {fileID: 0}
@@ -755,6 +759,54 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c4e8f591f1d158f4b948b6466b74c188, type: 3}
   SourceBGM: {fileID: 681847103}
   SourceSFX: {fileID: 1708983660}
+--- !u!1 &473051273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 473051274}
+  - component: {fileID: 473051275}
+  m_Layer: 0
+  m_Name: WaveManagerTank
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &473051274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473051273}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 322624907}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &473051275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473051273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e90855da79deda49b56fbd4ff18652e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves:
+  - {fileID: 11400000, guid: 050b26d641efc0e4d8cdcba579185179, type: 2}
+  - {fileID: 11400000, guid: 5c2f52595c589444098ed3f84ba088c4, type: 2}
+  currentWave: {fileID: 11400000, guid: f09d3d44c74a4b74bb624f3e188a0442, type: 2}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,18 +998,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1e89ad6c9621345af005c4476c2f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   currCamera: {fileID: 108502714}
   cameraBrain: {fileID: 519420035}
   mainCamera: {fileID: 108502713}
@@ -1136,18 +1190,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6df24da7f8a949449e332fe702e2837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   references:
     version: 2
     RefIds: []
@@ -1334,18 +1390,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   references:
     version: 2
     RefIds: []
@@ -1889,18 +1947,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   references:
     version: 2
     RefIds: []
@@ -3534,6 +3594,8 @@ MonoBehaviour:
   - {fileID: 4147965585229853653, guid: 757920a162c0a644bb978ab1e1882512, type: 3}
   - {fileID: 8173116676957819873, guid: 5d5e836c19c0a194e86d7b518569bd44, type: 3}
   - {fileID: 5563641607689058674, guid: 4b0b0019fbc15ee4f94e568656872c40, type: 3}
+  - {fileID: 1206949724922398755, guid: 42a3c562faf90a84d9a945fc0c44b3a4, type: 3}
+  - {fileID: 5025638713572249089, guid: 00a3301e011138e4aba5a3f713713533, type: 3}
   - {fileID: 5025638713572249089, guid: 0c503a92d59de8648b36ddf39ee72eb7, type: 3}
   - {fileID: 5025638713572249089, guid: 2ec36d3ab2d60b042beec78015e5ad22, type: 3}
   - {fileID: 997904975485824716, guid: d9789123bef624840bfb5c9d3a7427bb, type: 3}
@@ -3550,7 +3612,6 @@ MonoBehaviour:
   - {fileID: 648730197601624296, guid: d741c2f180c48c84ca5b647dde6aea90, type: 3}
   - {fileID: 809868351365438745, guid: 133b0775ea256904599d0abb8b4cb4a5, type: 3}
   - {fileID: 3048477992783884676, guid: 7b8a8e32f3a8eff4a90570dbca221941, type: 3}
-  - {fileID: 1206949724922398755, guid: 42a3c562faf90a84d9a945fc0c44b3a4, type: 3}
 --- !u!1 &1374926263
 GameObject:
   m_ObjectHideFlags: 0
@@ -3659,7 +3720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1398142902
 Transform:
   m_ObjectHideFlags: 0
@@ -3713,14 +3774,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
   - {fileID: 11400000, guid: 3923080bb314b0e41ba7d92f653fee59, type: 2}
   - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
-  - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
+  - {fileID: 11400000, guid: 050b26d641efc0e4d8cdcba579185179, type: 2}
+  - {fileID: 11400000, guid: 5c2f52595c589444098ed3f84ba088c4, type: 2}
   - {fileID: 11400000, guid: 7586bbb8818e4c2429e34e68822333fd, type: 2}
   - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
   - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
   - {fileID: 11400000, guid: 9299ff1cb6b4d3b4cb40ab00ee9b4853, type: 2}
   - {fileID: 11400000, guid: 3923080bb314b0e41ba7d92f653fee59, type: 2}
   - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
-  - {fileID: 11400000, guid: bb26d3ea7300655469d2c455e163acf3, type: 2}
+  - {fileID: 11400000, guid: d5f19a87ba421674682807297b9854fc, type: 2}
   currentWave: {fileID: 11400000, guid: f09d3d44c74a4b74bb624f3e188a0442, type: 2}
 --- !u!1 &1401290527
 GameObject:
@@ -4354,18 +4416,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   references:
     version: 2
     RefIds: []
@@ -4505,6 +4569,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ae8a31662332f4ba893e44daed2c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1701840765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1701840766}
+  - component: {fileID: 1701840767}
+  m_Layer: 0
+  m_Name: WaveManagerCrystal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1701840766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701840765}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 322624907}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1701840767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701840765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e90855da79deda49b56fbd4ff18652e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves:
+  - {fileID: 11400000, guid: d5f19a87ba421674682807297b9854fc, type: 2}
+  currentWave: {fileID: 11400000, guid: f09d3d44c74a4b74bb624f3e188a0442, type: 2}
 --- !u!1 &1708983658
 GameObject:
   m_ObjectHideFlags: 0
@@ -5354,6 +5465,7 @@ MonoBehaviour:
   - {fileID: 2615964334918560627, guid: 22f333208d243ff49a8396f9624f215e, type: 3}
   - {fileID: 501905378013057294, guid: 946f85f2b83f8604e98227724e370eeb, type: 3}
   - {fileID: 1591849220870830085, guid: d34f1b7901344694fa91b52fd32efb8e, type: 3}
+  - {fileID: 1289615646294412503, guid: 09edaf521b125a34dbae6b7b2b3520e9, type: 3}
 --- !u!1 &1988160301
 GameObject:
   m_ObjectHideFlags: 0
@@ -5522,18 +5634,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   references:
     version: 2
     RefIds: []
@@ -5896,6 +6010,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3417821801068807836, guid: c8bbf66898738cb4ab1bd3f67c47f2e6, type: 3}
+      propertyPath: ID
+      value: CrystalInteraction
+      objectReference: {fileID: 0}
     - target: {fileID: 3653827025279136820, guid: c8bbf66898738cb4ab1bd3f67c47f2e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

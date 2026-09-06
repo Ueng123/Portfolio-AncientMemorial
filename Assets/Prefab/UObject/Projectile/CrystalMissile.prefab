@@ -376,6 +376,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whenInitialize: 2
+  GettingDuration: 1
+  ReleasingDuration: 1
   whiteSpawnSprite: {fileID: -3652470903748484028, guid: 86b75d544ec6132488539d9186c21221, type: 3}
   colorSpawnSprite: {fileID: -3652470903748484028, guid: 86b75d544ec6132488539d9186c21221, type: 3}
   rigidbody2D: {fileID: 0}
@@ -431,8 +433,7 @@ MonoBehaviour:
         TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
         position:
           rid: 5909659015183860122
-        spawnTime:
-          rid: -2
+        PlayEffect: 0
         ID:
           rid: -2
         Category:
@@ -443,8 +444,7 @@ MonoBehaviour:
         TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
         position:
           rid: 5909659015183860474
-        spawnTime:
-          rid: -2
+        PlayEffect: 0
         ID:
           rid: -2
         Category:

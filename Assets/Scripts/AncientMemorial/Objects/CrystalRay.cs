@@ -6,6 +6,7 @@ using AncientMemorial.Map;
 using UengSystem.Audio;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
+using UengSystem.Objects.LifeCycle;
 using UengSystem.UAction;
 using UengSystem.Utility;
 using UnityEngine;
@@ -89,6 +90,9 @@ namespace AncientMemorial.Objects {
 		public const float rayShootTime = rayShootAnimLength * rayShootKeyframe;
 		public override void Initialize() {
 			base.Initialize();
+			rayShooting = false;
+			hitCooldownTable.Clear();
+			rayAnimator.ResetTrigger(End);
 
 			contactFilter = new ContactFilter2D { layerMask = LayerMask.GetMask("Entity"), useLayerMask = true };
 			theta         = 0;
@@ -103,41 +107,40 @@ namespace AncientMemorial.Objects {
 			}, () => { }, this).ExecuteDA();
 		}
 		
-		private const    float     despawnAnimTime = 2f;
-		private readonly StopWatch stopWatch       = new ();
+		public override float releasingDuration => 2;
+
+		public override void OnFirstGet() {
+			SetDefaultStates(ReleasingState: new RayReleasing(this));
+			base.OnFirstGet();
+		}
 
 		protected override void OnRelease() {
-			if (showEffect) {
+			rayShooting = false;
+			if (ambientSource && AudioManager.instance) {
 				AudioManager.instance.StopSFX(ambientSource);
 			}
+			ambientSource = null;
+			base.OnRelease();
 		}
 
-		protected override void PrepareDespawnFX() {
-			ToggleColliders(false);
-
-			if (rigidbody2D) {
-				rigidbody2D.bodyType        = RigidbodyType2D.Kinematic;
-				rigidbody2D.linearVelocity  = Vector2.zero;
-				rigidbody2D.angularVelocity = 0;
+		private sealed class RayReleasing : Releasing {
+			private CrystalRay ray => (CrystalRay)target;
+			public RayReleasing(CrystalRay Target) : base(Target) { }
+			protected override void OnStartEffect() {
+				if (ray.showEffect && CameraBrain.instance) CameraBrain.instance.ZoomLerp(0.15f, 1);
+				ray.rayAnimator.SetTrigger(End);
 			}
-			
-			CameraBrain.instance.ZoomLerp(0.15f, 1);
-			rayShooting = false;
-			rayAnimator.SetTrigger(End);
-			stopWatch.Tick();
-		}
-
-		protected override IEnumerator DespawnFX(float duration) {
-			
-			while (stopWatch.CheckIn(despawnAnimTime)) {
-				theta                      = Mathf.Repeat(theta + angularVelocity * Time.deltaTime, 2*pi);
-				float thetaUse             = theta + angleOffset;
-				rayTransform.localPosition = new Vector3(radius*Mathf.Cos(thetaUse), radius*Mathf.Sin(thetaUse), 0);
-				rayTransform.localRotation = Quaternion.Euler(0f, 0f, 90 + thetaUse*Mathf.Rad2Deg);
-				yield return null;
+			protected override void OnEffectRoutine(float DeltaTime) {
+				ray.theta = Mathf.Repeat(ray.theta + ray.angularVelocity * DeltaTime, 2 * pi);
+				float Theta = ray.theta + ray.angleOffset;
+				ray.rayTransform.localPosition = new Vector3(ray.radius * Mathf.Cos(Theta), ray.radius * Mathf.Sin(Theta), 0);
+				ray.rayTransform.localRotation = Quaternion.Euler(0, 0, 90 + Theta * Mathf.Rad2Deg);
 			}
-			
-			UObjectPool.instance.Release(gameObject, -1);
+			protected override void ClearEffect() {
+				ray.rayShooting = false;
+				if (ray.blackBG) ray.blackBG.SetActive(false);
+				if (ray.rayAnimator) ray.rayAnimator.ResetTrigger(End);
+			}
 		}
 	}
 }

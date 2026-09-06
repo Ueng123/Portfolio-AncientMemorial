@@ -1,8 +1,9 @@
-﻿using AncientMemorial.Entities;
+using UengSystem.Objects;
+using AncientMemorial.Entities;
 using UengSystem.ObjectPool;
 using UnityEngine;
 
-namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
+namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class Strike : PlayerWeaponAttack {
 
 		public float oldAnimatorSpeed;
@@ -29,7 +30,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 				
 				Vector2 hitboxSize = new (1.75f, 0.4f);
 				
-				UObjectPool.instance.Get("Explode4", (Vector2)player.transform.position + new Vector2(0.35f*(player.lookingLeft?-1:1)+Random.Range(-0.05f, 0.05f),-0.4f+Random.Range(-0.05f, 0.05f)));
+				UObject.Get("Explode4", (Vector2)player.transform.position + new Vector2(0.35f*(player.lookingLeft?-1:1)+Random.Range(-0.05f, 0.05f),-0.4f+Random.Range(-0.05f, 0.05f)), PlayEffect: false);
 			
 				// damage
 				float     damage          = Mathf.Pow(player.data.HP / 10f, 1.5f) / player.stat.attackDamage;
@@ -41,7 +42,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 			}
 
 			if (step == 1 && isProgress(1)) {
-				player.state = GetDefaultState();
+				player.entityState = GetDefaultState();
 			}
 		}
 		

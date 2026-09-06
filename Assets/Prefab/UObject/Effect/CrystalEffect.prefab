@@ -70,6 +70,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObjectAnimator
   whenInitialize: 0
+  GettingDuration: 3
+  ReleasingDuration: 1
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}

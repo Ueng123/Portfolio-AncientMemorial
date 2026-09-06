@@ -144,6 +144,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
   openTime: 0.05
+  GettingAnimation: Open
   closeTime: 0.667
   actions:
   - key: Bar

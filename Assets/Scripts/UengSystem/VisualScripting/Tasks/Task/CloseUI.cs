@@ -7,12 +7,17 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class CloseUI : TaskComponent {
+		public bool PlayEffect = true;
 
 		public                                        bool        closeThis;
 		[SerializeReference][SubclassSelector] public UValue<UUI> TargetUUI;
 		
 		public override void Execute(ITaskable self) {
 			UUI target = closeThis? (UUI)self : TargetUUI.value;
+			if (!target) {
+				DebugManager.LogWarning($"[TaskLog : {GetType()}] No Target");
+				return;
+			}
 			
 			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");
 			DebugManager.Log($" >>> Given Data\n"                      +
@@ -27,7 +32,8 @@ namespace UengSystem.VisualScripting.Tasks {
 				DebugManager.LogWarning($"[TaskLog : {GetType()}] Object given is released already");
 				return;
 			}
-			UUIPool.instance.Close(target.gameObject);
+			
+			target.Release(PlayEffect);
 		}
 	}
 }

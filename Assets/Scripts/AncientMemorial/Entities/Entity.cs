@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
+using AncientMemorial.States;
 using UengSystem;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
+using UengSystem.Objects.LifeCycle;
+using System.Linq;
 using UengSystem.States;
 using UengSystem.UAction;
 using UengSystem.UDebug;
@@ -30,7 +33,7 @@ namespace AncientMemorial.Entities {
 	public abstract class Entity : UObject, IStateObject {
 
 		public static           Player               player;
-		public static           BufferedList<Entity> entities = new BufferedList<Entity>();
+		public static           SyncList<Entity> entities = new SyncList<Entity>();
 		protected static readonly int                Falling  = Animator.StringToHash("falling");
 
 		public EntityType entityType;
@@ -39,6 +42,8 @@ namespace AncientMemorial.Entities {
 		public bool       Friendly;
 
 		public UUI     entityUI;
+		private long EntityUiLife;
+		private readonly Dictionary<AttackArea, long> AttackAreas = new();
 		public UCanvas entityUICanvas;
 		public int     entityUIHeight;
 
@@ -84,14 +89,13 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected virtual void OpenEntityUI() {
-			entityUI = UUIPool.instance.Open("EntityUI", entityUICanvas).GetComponent<UUI>();
-			entityUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, entityUIHeight, 0);
+			entityUI = UUI.Get("EntityUI", entityUICanvas, Configure: Ui => {
+			Ui.rectTransform.anchoredPosition = new Vector3(0, entityUIHeight, 0);
 			
-			UTextAction   entityTextAction = entityUI.GetAction<UTextAction>("EntityName");
-			USliderAction entityHPAction   = entityUI.GetAction<USliderAction>("EntityHP");
+			UTextAction   entityTextAction = Ui.GetAction<UTextAction>("EntityName");
+			USliderAction entityHPAction   = Ui.GetAction<USliderAction>("EntityHP");
 			
 			entityTextAction.text = new UPureString {pureValue = data.name};
-			entityTextAction.Initialize(entityUI);
 			
 			entityHPAction.component.GetComponent<RectTransform>().sizeDelta = new Vector2(100*Mathf.Log(data.HP, 2) , 30);
 			entityHPAction.value = new UDiv {
@@ -107,6 +111,8 @@ namespace AncientMemorial.Entities {
 					type         = EntityDataType.MAXHP
 				},
 			};
+			}).GetComponent<UUI>();
+			EntityUiLife = entityUI.lifeNumber;
 		}
 
 		protected void ShowDamageUI(float damage) {
@@ -117,17 +123,16 @@ namespace AncientMemorial.Entities {
 
 			float UIScale = 1 + Mathf.Log(damage, 100);
 			
-			UUI damageUI = UUIPool.instance.Open(isHeal?"HealUI":"DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
-			damageUI.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
-			damageUI.rectTransform.localScale = Vector3.one*UIScale;
-			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
-			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
+			UUI.Get(isHeal?"HealUI":"DamageUI", GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
+			DamageUi.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
+			DamageUi.rectTransform.localScale = Vector3.one*UIScale;
+			UTextAction textAction  = DamageUi.GetAction<UTextAction>("DamageDisplay");
+			UTextAction textSAction = DamageUi.GetAction<UTextAction>("DamageDisplayShadow");
 			
 			string healSign = isHeal ? "+" : "";
 			
 			textAction.text = textSAction.text = new UPureString {pureValue = $"{Mathf.Floor(damage*100)/100f}<size=10><i> {healSign}</i></size>"};
-			textAction.Initialize(damageUI);
-			textSAction.Initialize(damageUI);
+			});
 		}
 		
 		protected void ShowCriticalDamageUI(float damage) {
@@ -138,22 +143,21 @@ namespace AncientMemorial.Entities {
 			
 			float UIScale = (1 + Mathf.Log(damage, 100))*1.2f;
 			
-			UUI damageUI = UUIPool.instance.Open(isHeal?"HealUI":"DamageUI", GameManager.instance.mainWorldCanvas).GetComponent<UUI>();
-			damageUI.GetComponent<RectTransform>().anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
-			damageUI.rectTransform.localScale = Vector3.one*UIScale;
-			UTextAction textAction  = damageUI.GetAction<UTextAction>("DamageDisplay");
-			UTextAction textSAction = damageUI.GetAction<UTextAction>("DamageDisplayShadow");
+			UUI.Get(isHeal?"HealUI":"DamageUI", GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
+			DamageUi.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
+			DamageUi.rectTransform.localScale = Vector3.one*UIScale;
+			UTextAction textAction  = DamageUi.GetAction<UTextAction>("DamageDisplay");
+			UTextAction textSAction = DamageUi.GetAction<UTextAction>("DamageDisplayShadow");
 			
 			string healSign = isHeal ? "+" : "";
 			
 			textAction.text = textSAction.text = new UPureString {pureValue = $"{Mathf.Floor(damage*100)/100f}<size=10><i> {healSign}!!</i></size>"};
-			textAction.Initialize(damageUI);
-			textSAction.Initialize(damageUI);
+			});
 		}
 		
 		protected virtual AttackArea AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
-			GameObject  awareObject = UObjectPool.instance.Get("AttackAware", hitboxPos);
-			AttackArea attackArea = awareObject.GetComponent<AttackArea>();
+			GameObject awareObject = UObject.Get("AttackAware", hitboxPos, PlayEffect: false, Configure: Obj => {
+			AttackArea attackArea = (AttackArea)Obj;
 			attackArea.InitializeColor(new Color(0.509434f, 0.1850303f, 0.1850303f, 0));
 			
 			attackArea.targetColor         = new Color(0.9433962f, 0.244749f,  0.244749f,  0.6156863f);
@@ -168,13 +172,14 @@ namespace AncientMemorial.Entities {
 			attackArea.lerpX               = awareLerpX;
 			attackArea.lerpY               = awareLerpY;
 			attackArea.invisible           = false;
+			});
 
-			return attackArea;
+			return awareObject.GetComponent<AttackArea>();
 		}
 		
 		protected AttackArea AttackAreaNoEffect(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
-			GameObject  awareObject = UObjectPool.instance.Get("AttackAware", hitboxPos);
-			AttackArea attackArea = awareObject.GetComponent<AttackArea>();
+			GameObject awareObject = UObject.Get("AttackAware", hitboxPos, PlayEffect: false, Configure: Obj => {
+			AttackArea attackArea = (AttackArea)Obj;
 			attackArea.targetSize          = new Vector2(hitboxSize.x, hitboxSize.y);
 			attackArea.transform.rotation  = Quaternion.Euler(0, 0, angle);
 			attackArea.spriteRenderer.size = hitboxSize;
@@ -184,9 +189,13 @@ namespace AncientMemorial.Entities {
 			attackArea.ignoreInvincible    = ignoreInvincible;
 			attackArea.duration            = delay;
 			attackArea.invisible           = true;
+			});
 			
-			return attackArea;
+			return awareObject.GetComponent<AttackArea>();
 		}
+
+		internal void RegisterAttackArea(AttackArea Area) => AttackAreas[Area] = Area.lifeNumber;
+		internal void UnregisterAttackArea(AttackArea Area) => AttackAreas.Remove(Area);
 
 		public static void SendAttackMultiplyEvent(Entity attacker, Entity target, float damageMult, bool ignoreInvincible, bool useProcess = true) {
 			HitData hitData = new (
@@ -239,25 +248,35 @@ namespace AncientMemorial.Entities {
 		public abstract bool isAttackTarget(Entity entity);
 		
 		protected virtual void Death() {
-			UObjectPool.instance.Release(gameObject, 2f);
-
-			if (!entityUI) return;
-			if (instances.GetList().Contains(entityUI)) entityUI.GetAction<USliderAction>("EntityHP").GetComponent<USlider>().SetValue(0);
-			else Destroy(entityUI.gameObject);
+			if (entityUI && entityUI.lifeNumber == EntityUiLife && entityUI.isActive)
+				entityUI.GetAction<USliderAction>("EntityHP").GetComponent<USlider>().SetValue(0);
+			Release(PlayEffect: true);
 		}
 
 		protected abstract void OnGrounded();
 		
 		// ETC. Override //
 
+		private bool HitSubscribed;
+		private bool EntityRegistered;
+		public override float releasingDuration => 2;
+
+		public override void OnFirstGet() {
+			SetDefaultStates(ReleasingState: new EntityReleasing(this));
+			base.OnFirstGet();
+		}
+
 		public override void Initialize() {
-			deathHandled = false;
+			hasDied = false;
 			base.Initialize();
+			entities.Add(this);
+			EntityRegistered = true;
 			
 			Invincible(data.invincibleTime);
 
 			hitEvent ??= HitEvent;
 			EventType.Entity_Hit.AddListener(hitEvent);
+			HitSubscribed = true;
 			
 			if (groundBoxSize == Vector2.zero) return;
 			Collider2D groundCheckTrigger = groundChecker.GetComponent<Collider2D>();
@@ -301,7 +320,6 @@ namespace AncientMemorial.Entities {
 			
 			OpenEntityUI();
 			
-			entities.Add(this);
 			
 			DebugManager.Log($"[OnGet] velocity = {rigidbody2D.linearVelocity}");
 			DebugManager.Log($"[OnGet] isGround = {isGround}");
@@ -316,43 +334,51 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected override void OnRelease() {
-			EventType.Entity_Hit.RemoveListener(hitEvent);
+			entityState = null;
+			foreach (var Entry in AttackAreas.ToArray()) {
+				if (Entry.Key && Entry.Key.lifeNumber == Entry.Value) Entry.Key.Release(false);
+			}
+			AttackAreas.Clear();
+			if (HitSubscribed) { EventType.Entity_Hit.RemoveListener(hitEvent); HitSubscribed = false; }
 			
-			if (entityUI) UUIPool.instance.Close(entityUI.gameObject);
+			if (entityUI && entityUI.lifeNumber == EntityUiLife) entityUI.Release(PlayEffect: true);
+			entityUI = null;
 			
 			for (int i = 0; i < debrisAttached.Count; i++) {
 				AttatchObject debris = debrisAttached[i];
 				debris.transform.SetParent(null);
 				if (debris.isReleased) continue;
-				UObjectPool.instance.Release(debris.gameObject);
+				debris.Release(PlayEffect: false);
 			}
 
 			debrisAttached.Clear();
-			entities.Remove(this);
+			if (EntityRegistered) { entities.Remove(this); EntityRegistered = false; }
 			isGround = false;
 			base.OnRelease();
 		}
 		
-		protected override IEnumerator DespawnFX(float duration) {
-			spriteRenderer.color = new Color(
-				spriteRenderer.color.r,
-				spriteRenderer.color.g,
-				spriteRenderer.color.b,
-				0);
-			
-			yield return new WaitForSeconds(duration);
-			
-			UObjectPool.instance.Release(gameObject, -1);
-			spriteRenderer.color = new Color(
-				spriteRenderer.color.r,
-				spriteRenderer.color.g,
-				spriteRenderer.color.b,
-				1);
+		private sealed class EntityReleasing : Releasing {
+			private Color InitialColor;
+			public EntityReleasing(Entity Target) : base(Target) { }
+			protected override void OnStartEffect() {
+				if (target.spriteRenderer) {
+					InitialColor = target.spriteRenderer.color;
+					Color Color = InitialColor;
+					Color.a = 0;
+					target.spriteRenderer.color = Color;
+				}
+				target.FreezeAnimator();
+			}
+			protected override void ClearEffect() {
+				if (!hasStartedEffect) return;
+				if (target.spriteRenderer) target.spriteRenderer.color = InitialColor;
+				target.UnfreezeAnimator();
+			}
 		}
 		
 		private readonly StopWatch debrisCheckTimer = new StopWatch();
 		protected override void EarlyRoutine() {
-			state?.OnEarlyRoutine();
+			entityState?.OnEarlyRoutine();
 			
 			if (debrisCheckTimer.CheckIn(5f)) return;
 			debrisCheckTimer.Tick();
@@ -361,7 +387,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		protected override void Routine() {
-			state?.OnRoutine();
+			entityState?.OnRoutine();
 		}
 
 		private   bool forceInvincible;
@@ -391,6 +417,7 @@ namespace AncientMemorial.Entities {
 
 		private Action<Event> hitEvent;
 		private void HitEvent(Event e) {
+			if (!isActive) return;
 			HitData hitData = (HitData)e.data;
 			if (hitData.reciever != this) return;
 			if (invincible && !hitData.ignoreInvincible) return;
@@ -407,20 +434,20 @@ namespace AncientMemorial.Entities {
 			else OnHeal(-realDamage);
 		}
 		
-		private bool deathHandled;
+		private bool hasDied;
 		
 		protected override void LateRoutine() {
 			spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, (invincible)?0.5f:1f);
 			gameObject.layer = invincible?8:7;
 			
-			if (!deathHandled && stat.HP <= 0) {
-				deathHandled = true;
-				state = null;
+			if (!hasDied && stat.HP <= 0) {
+				hasDied = true;
+				entityState = null;
 				Death();
 				SendEvent(EventType.Entity_Dead, EventPriority.Death);
 			}
 			
-			state?.OnLateRoutine();
+			entityState?.OnLateRoutine();
 		}
 		
 		// FIXED UPDATE ROUTINE //
@@ -428,19 +455,19 @@ namespace AncientMemorial.Entities {
 		protected override void FixedRoutine() {
 			if (groundBoxSize != Vector2.zero) isGround = groundChecker.isThereStandable;
 			
-			state?.OnFixedRoutine();
+			entityState?.OnFixedRoutine();
 		}
 
-		private UState _state;
-		public UState state {
-			get => _state;
+		private UState _entityState;
+		public UState entityState {
+			get => _entityState;
 			set {
-				if (_state == value) return;
+				if (_entityState == value) return;
 				
-				DebugManager.Log($"[State Changed] {name} : {_state?.GetType()} -> {value?.GetType()}");
+				DebugManager.Log($"[State Changed] {name} : {_entityState?.GetType()} -> {value?.GetType()}");
 				
-				_state?.Exit();
-				_state = value;
+				_entityState?.Exit();
+				_entityState = value;
 				value?.Enter();
 			}
 		}

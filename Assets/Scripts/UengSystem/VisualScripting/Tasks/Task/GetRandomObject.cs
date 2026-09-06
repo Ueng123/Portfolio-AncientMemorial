@@ -11,18 +11,17 @@ namespace UengSystem.VisualScripting.Tasks {
 	public class GetRandomObject : TaskComponent {
 		[FormerlySerializedAs("prefabs")]      public GameObject[]    TargetObjects;
 		[SerializeReference][SubclassSelector] public UValue<Vector2> position;
-		[SerializeReference][SubclassSelector] public UValue<float>   spawnTime;
+		public bool PlayEffect = true;
 		
 		[SerializeReference][SubclassSelector] public UValue<string> ID;
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
 		
 		public override void Execute(ITaskable self) {
 			GameObject TargetObject = TargetObjects[Random.Range(0, TargetObjects.Length)];
-			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime.value);
-			UObject    uobj = obj.GetComponent<UObject>();
-
-			if (!string.IsNullOrWhiteSpace(ID?.value)) uobj.ID             = ID.value;
-			if (!string.IsNullOrWhiteSpace(Category?.value)) uobj.Category = Category.value;
+			UObject.Get(TargetObject.name, position.value, PlayEffect, Obj => {
+				if (!string.IsNullOrWhiteSpace(ID?.value)) Obj.ID = ID.value;
+				if (!string.IsNullOrWhiteSpace(Category?.value)) Obj.Category = Category.value;
+			});
 		}
 	}
 }

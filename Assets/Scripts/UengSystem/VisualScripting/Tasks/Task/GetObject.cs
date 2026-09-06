@@ -10,7 +10,7 @@ namespace UengSystem.VisualScripting.Tasks {
 	public class GetObject : TaskComponent {
 		public                                        GameObject      TargetObject;
 		[SerializeReference][SubclassSelector] public UValue<Vector2> position;
-		[SerializeReference][SubclassSelector] public UValue<float>   spawnTime;
+		public bool PlayEffect = true;
 		
 		[SerializeReference][SubclassSelector] public UValue<string> ID;
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
@@ -22,14 +22,13 @@ namespace UengSystem.VisualScripting.Tasks {
 							 $" > Category = {Category?.value}\n"        +
 							 $" > targetPrefab = {TargetObject?.name}\n" +
 							 $" > position = {position?.value}\n"        +
-							 $" > duration = {spawnTime?.value ?? 0}\n"  +
+							 $" > PlayEffect = {PlayEffect}\n"  +
 							 $"");
 			
-			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime?.value??0);
-			UObject    uObj = obj.GetComponent<UObject>();
-
-			if (!string.IsNullOrWhiteSpace(ID?.value)) uObj.ID             = ID.value;
-			if (!string.IsNullOrWhiteSpace(Category?.value)) uObj.Category = Category.value;
+			UObject.Get(TargetObject.name, position.value, PlayEffect, Obj => {
+				if (!string.IsNullOrWhiteSpace(ID?.value)) Obj.ID = ID.value;
+				if (!string.IsNullOrWhiteSpace(Category?.value)) Obj.Category = Category.value;
+			});
 		}
 	}
 }

@@ -107,6 +107,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Interactions.Interaction
   whenInitialize: 3
+  GettingDuration: 1
+  ReleasingDuration: 0.1
   whiteSpawnSprite: {fileID: 7992437581705748484, guid: 042c1bc8e64c86e4dacc5696ba249625, type: 3}
   colorSpawnSprite: {fileID: 7992437581705748484, guid: 042c1bc8e64c86e4dacc5696ba249625, type: 3}
   rigidbody2D: {fileID: 0}
@@ -151,6 +153,11 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 350172562700894592
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: {fileID: 5939352058028712888}
     - rid: 5909658915668230599
       type: {class: AddInfoMessage, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
@@ -191,8 +198,7 @@ MonoBehaviour:
         TargetObject: {fileID: 7507467289219499174, guid: 85fc066d9dd47a44488cdc7b53b6f0a3, type: 3}
         position:
           rid: 5909658915668230605
-        spawnTime:
-          rid: -2
+        PlayEffect: 0
         ID:
           rid: -2
         Category:
@@ -200,7 +206,7 @@ MonoBehaviour:
     - rid: 5909658915668230604
       type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        releaseTime: 0.1
+        PlayEffect: 1
         releaseThis: 1
         TargetObject:
           rid: -2
@@ -209,12 +215,7 @@ MonoBehaviour:
       data:
         dynamicType: 0
         targetObject:
-          rid: 5909658915668230606
-    - rid: 5909658915668230606
-      type: {class: UObjectSerialized, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        obj: {fileID: 5939352058028712888}
+          rid: 350172562700894592
     - rid: 5909658915668230607
       type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
       data:

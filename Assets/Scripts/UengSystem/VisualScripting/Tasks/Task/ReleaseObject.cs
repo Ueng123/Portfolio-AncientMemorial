@@ -8,7 +8,7 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class ReleaseObject : TaskComponent {
-		public float releaseTime;
+		public bool PlayEffect = true;
 
 		public bool releaseThis;
 		
@@ -25,7 +25,7 @@ namespace UengSystem.VisualScripting.Tasks {
 							 $" > --- Category = {target.Category}\n" +
 							 $"");
 		
-			UObjectPool.instance.Release(target.gameObject, releaseTime);
+			target.Release(PlayEffect);
 		}
 	}
 }

@@ -20,10 +20,10 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		private void Break(Transform parent = null, bool isEntity = false) {
-			GameObject obj = UObjectPool.instance.Get("ArrowDebris", transform.position);
+			GameObject obj = UObject.Get("ArrowDebris", transform.position, PlayEffect: false);
 			
 			if (isEntity) {
-				GameObject eff = UObjectPool.instance.Get("ArrowHitEffect", transform.position);
+				GameObject eff = UObject.Get("ArrowHitEffect", transform.position, PlayEffect: false);
 				eff.transform.rotation = transform.rotation;
 			}
 			
@@ -32,11 +32,11 @@ namespace AncientMemorial.Projectiles {
 				obj.transform.SetParent(parent, true);
 			}
 			
-			new DelayedAction(10, () => UObjectPool.instance.Release(obj), () => { }, obj.GetComponent<UObject>())
+			new DelayedAction(10, () => obj.GetComponent<UObject>().Release(PlayEffect: false), () => { }, obj.GetComponent<UObject>())
 				.ExecuteDA();
 			
 			obj.transform.rotation = transform.rotation;
-			UObjectPool.instance.Release(gameObject);
+			Release(PlayEffect: false);
 		}
 
 		public override void Initialize() {

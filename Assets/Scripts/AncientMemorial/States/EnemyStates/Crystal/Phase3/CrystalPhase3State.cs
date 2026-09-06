@@ -1,4 +1,4 @@
-﻿using System;
+using UengSystem.Objects;
 using System.Collections.Generic;
 using AncientMemorial.Entities;
 using AncientMemorial.Entities.Enemies;
@@ -6,16 +6,11 @@ using AncientMemorial.Map;
 using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
 using UengSystem.ObjectPool;
-using UengSystem.Objects;
-using UengSystem.Events;
-using UnityEngine;
 using UengSystem.Utility;
-
-using Event = UengSystem.Events.Event;
-using EventType = UengSystem.Events.EventType;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
     public abstract class CrystalPhase3State : CrystalState {
         private readonly List<AttackArea> missileAttackAreas = new();
 
@@ -43,7 +38,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
             float        dist      = Vector2.Distance(pos, hit.point) - 0.5f;
             float        timeToHit = dist / speed;
 			
-            GameObject obj = UObjectPool.instance.Get(MissilePoolKey, pos);
+            GameObject obj = UObject.Get(MissilePoolKey, pos, PlayEffect: false);
             obj.transform.rotation = Quaternion.Euler(0, 0, rot);
             
             BasicProjectile semiHugeMissile = obj.GetComponent<BasicProjectile>();
@@ -82,7 +77,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
         protected CrystalRay SpawnRay(float radius, float angularVelocity, float offsetDegrees, Vector2? pos = null, bool effect = false) {
             Vector2 mapSize = MapManager.instance.GetMapSize();
             
-            GameObject    ultRayObj = UObjectPool.instance.Get(RayPoolKey, pos ?? new Vector2(0, mapSize.y / 2), 0.001f);
+            GameObject    ultRayObj = UObject.Get(RayPoolKey, pos ?? new Vector2(0, mapSize.y / 2), PlayEffect: true);
             CrystalRay ray    = ultRayObj.GetComponent<CrystalRay>();
             ray.owner           = crystal;
             ray.radius          = radius;
@@ -96,7 +91,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 
         protected void ClearRays() {
             foreach (CrystalRay ray in rays) {
-                UObjectPool.instance.Release(ray.gameObject, 4);
+                ray.Release(PlayEffect: true);
             }
             
             rays.Clear();
@@ -105,7 +100,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
         protected void ReleaseRay(CrystalRay ray) {
             rays.Remove(ray);
             
-            UObjectPool.instance.Release(ray.gameObject, 4);
+            ray.Release(PlayEffect: true);
         } 
         
         public override void OnEnter() {

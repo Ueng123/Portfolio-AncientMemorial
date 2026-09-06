@@ -48,7 +48,7 @@ namespace AncientMemorial.Waves {
 		public void GameEnd() {
 			AudioManager.instance.PlaySFX("clear");
 			GameManager.SetTimeScale(0);
-			UUIPool.instance.Open("ClearUI", GameManager.instance.mainScreenCanvas);
+			UUI.Get("ClearUI", GameManager.instance.mainScreenCanvas);
 		}
 		
 		public override void ManagerUpdate() {

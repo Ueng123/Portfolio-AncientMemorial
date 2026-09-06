@@ -2,7 +2,7 @@
 using AncientMemorial.Map;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates {
+namespace AncientMemorial.States.EnemyStates {
 	public abstract class GroundEnemyState : EnemyState {
 		private static readonly int moving   = Animator.StringToHash("moving");
 		private static readonly int backward = Animator.StringToHash("backward");

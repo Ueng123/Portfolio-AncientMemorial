@@ -255,6 +255,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whenInitialize: 2
+  GettingDuration: 1
+  ReleasingDuration: 2
   whiteSpawnSprite: {fileID: -6380232630893654169, guid: 240e0ee2da17df749802711e142f5da1, type: 3}
   colorSpawnSprite: {fileID: -6380232630893654169, guid: 240e0ee2da17df749802711e142f5da1, type: 3}
   rigidbody2D: {fileID: 0}
@@ -271,7 +273,7 @@ MonoBehaviour:
       - rid: 5909658922870113052
       - rid: 5909658922870113058
   entityType: 6
-  entityData:
+  data:
     name: 
     HP: 0
     moveSpeed: 0
@@ -284,7 +286,7 @@ MonoBehaviour:
     groundBoxOffsetY: 0
     groundBoxSizeX: 0
     groundBoxSizeY: 0
-  entityStat:
+  stat:
     HP: 0
     moveSpeed: 0
     jumpPower: 0
@@ -318,7 +320,7 @@ MonoBehaviour:
     - rid: 5909658922870113058
       type: {class: ReleaseObjects, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        releaseTime: 0
+        PlayEffect: 0
         Category:
           rid: 5909658922870113062
     - rid: 5909658922870113060

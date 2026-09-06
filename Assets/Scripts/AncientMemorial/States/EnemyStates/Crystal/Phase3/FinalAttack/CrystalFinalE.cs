@@ -1,10 +1,6 @@
 ﻿using UengSystem.Audio;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
-	using AncientMemorial.Objects;
-	using UengSystem.Utility;
-	using UnityEngine;
-
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack {
 	public class CrystalFinalE : CrystalPhase3Attack {
 		public override float attackTime => 10f;
 		
@@ -28,7 +24,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 			
 			if (isProgress(1)) {
 				stateMachine.AttackWatchTick();
-				crystal.state = GetState();
+				crystal.entityState = GetState();
 			}
 		}
 

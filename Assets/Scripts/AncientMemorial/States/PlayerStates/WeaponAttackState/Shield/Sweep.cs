@@ -1,7 +1,7 @@
 ﻿using AncientMemorial.Entities;
 using UnityEngine;
 
-namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
+namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class Sweep : PlayerWeaponAttack {
 		private float oldAnimatorSpeed;
 		
@@ -36,7 +36,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 			}
 
 			if (step == 1 && isProgress(1)) {
-				player.state = GetDefaultState();
+				player.entityState = GetDefaultState();
 			} 
 		}
 

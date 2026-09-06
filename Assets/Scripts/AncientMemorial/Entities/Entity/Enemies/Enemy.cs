@@ -1,4 +1,4 @@
-﻿using UengSystem.States.EnemyStates;
+﻿using AncientMemorial.States.EnemyStates;
 using UengSystem.UDebug;
 using UengSystem.Utility;
 using UengSystem.VisualScripting.UValues.UFloats;
@@ -22,7 +22,7 @@ namespace AncientMemorial.Entities.Enemies {
 		
 		public void Stun(float duration) {
 			EnemyStun stunState = stateMachine.stunState;
-			state = stunState.Setup(duration);
+			entityState = stunState.Setup(duration);
 		}
 
 		public static bool isTargettable(EntityType entity) => entity == EntityType.Player;
@@ -55,7 +55,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		public virtual void InitializeState() {
-			state = stateMachine?.wanderState;
+			entityState = stateMachine?.wanderState;
 		}
 		
 		public override void Initialize() {

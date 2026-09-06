@@ -48,7 +48,7 @@ namespace UengSystem.VisualScripting.Tasks {
 					getTask.Execute(self);
 				}
 
-				yield return waitSecondCache ?? new WaitForSeconds(term.value);
+				yield return self is UI.UUI ? new WaitForSecondsRealtime(term?.value ?? 0) : waitSecondCache ?? new WaitForSeconds(term.value);
 			}
 		}
 	}

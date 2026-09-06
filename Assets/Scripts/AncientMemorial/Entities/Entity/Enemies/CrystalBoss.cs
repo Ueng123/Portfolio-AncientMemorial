@@ -1,9 +1,10 @@
-﻿using AncientMemorial.Cameras;
+using UengSystem.Objects;
+using AncientMemorial.Cameras;
 using AncientMemorial.Projectiles;
+using AncientMemorial.States.EnemyStates;
+using AncientMemorial.States.EnemyStates.Crystal;
 using UengSystem;
 using UengSystem.ObjectPool;
-using UengSystem.States.EnemyStates;
-using UengSystem.States.EnemyStates.Crystal;
 using UengSystem.UAction;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 		
 		public override void OnHit(Entity        attacker, float damage, Vector2? pushDir = null) {
-			bool groggy = (state == stateMachine.stunState);
+			bool groggy = (entityState == stateMachine.stunState);
 			
 			if (groggy) { ShowCriticalDamageUI(damage); }
 			else { ShowDamageUI(damage); }
@@ -34,7 +35,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 		
 		protected override float GetRealDamage(float rawDamage) {
-			bool groggy = (state == stateMachine.stunState);
+			bool groggy = (entityState == stateMachine.stunState);
 			return rawDamage * (groggy ? 2 : 1);
 		}
 
@@ -58,7 +59,7 @@ namespace AncientMemorial.Entities.Enemies {
 			}
 			
 			for (int i = 0; i < 10; i++) {
-				UObjectPool.instance.Get("crystalDebris", (Vector2)transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)));
+				UObject.Get("crystalDebris", (Vector2)transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), PlayEffect: false);
 			}
 			
 			base.Death();

@@ -1,13 +1,15 @@
-﻿using AncientMemorial.Cameras;
+using UengSystem.Objects;
+using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Entities.Enemies;
 using AncientMemorial.Map;
+using UengSystem;
 using UengSystem.ObjectPool;
 using UengSystem.UI;
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalDeathAttack : CrystalPhase3Attack {
 		public override float attackTime => 10;
 
@@ -21,7 +23,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 			crystal.PlaySFX("crystalDeathAttack");
 			crystal.To<CrystalPhase3>().StopGimmick();
 			
-			attackEffect = UUIPool.instance.Open("CrystalUltEffect", GameManager.instance.mainScreenCanvas);
+			attackEffect = UUI.Get("CrystalUltEffect", GameManager.instance.mainScreenCanvas);
 		}
 		
 		public override void OnRoutine() {
@@ -31,10 +33,10 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 				
 				Entity.SendAttackEvent(crystal, target, target.stat.HP*5f, true);
 				
-				GameObject eff1 = UObjectPool.instance.Get("SlashEffect", crystal.transform.position);
+				GameObject eff1 = UObject.Get("SlashEffect", crystal.transform.position, PlayEffect: false);
 				eff1.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(40, 50));
 				eff1.transform.localScale = new Vector3(mapSize.x*1.1f, mapSize.y*1.2f, 1f);
-				GameObject eff2 = UObjectPool.instance.Get("SlashEffect", crystal.transform.position);
+				GameObject eff2 = UObject.Get("SlashEffect", crystal.transform.position, PlayEffect: false);
 				eff2.transform.rotation   = Quaternion.Euler(0, 0, -Random.Range(40, 50));
 				eff2.transform.localScale = new Vector3(mapSize.x*1.1f, mapSize.y*1.2f, 1f);
 			
@@ -49,9 +51,9 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 			if (step == 1 && isProgress(1)) {
 				ClearMissiles();
 			
-				UUIPool.instance.Close(attackEffect, true);
+				attackEffect.GetComponent<UUI>().Release(PlayEffect: false);
 
-				crystal.state = GetState();
+				crystal.entityState = GetState();
 			}
 		}
 	}

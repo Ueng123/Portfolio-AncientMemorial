@@ -1296,6 +1296,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
   openTime: 1.5
+  GettingAnimation: open
   closeTime: 0.5
   actions:
   - key: Setting

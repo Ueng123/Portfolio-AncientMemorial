@@ -20,7 +20,7 @@ namespace AncientMemorial.Projectiles {
 				if (value == _lockOn) return;
 
 				if (value) {
-					GameObject eff = UObjectPool.instance.Get("LockOnEffect", transform.position);
+					GameObject eff = UObject.Get("LockOnEffect", transform.position, PlayEffect: false);
 					eff.transform.rotation = transform.rotation;
 				}
 
@@ -40,7 +40,7 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		private void Break() {
-			UObjectPool.instance.Release(gameObject);
+			Release(PlayEffect: false);
 		}
 
 		public float offset;

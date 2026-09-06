@@ -1,4 +1,4 @@
-﻿namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+﻿namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public enum CrystalMoveMode {
 		LissajousPath = 0,
 		FollowTarget = 1,

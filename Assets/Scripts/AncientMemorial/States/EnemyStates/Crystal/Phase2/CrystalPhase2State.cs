@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using UengSystem.Objects;
+using System.Collections.Generic;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
 using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
 using UengSystem.ObjectPool;
-using UengSystem.States.EnemyStates.Crystal;
 using UengSystem.Utility;
 using UnityEngine;
 
@@ -26,7 +26,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 		protected void ShootHugeMissile(Vector2 hitboxPos, Vector2 hitboxSize) {
 			Vector2 mapSize = MapManager.instance.GetTargetMapSize();
 			
-			GameObject      obj = UObjectPool.instance.Get("CrystalHugeMissile", new Vector2(hitboxPos.x, mapSize.y-2));
+			GameObject      obj = UObject.Get("CrystalHugeMissile", new Vector2(hitboxPos.x, mapSize.y-2), PlayEffect: false);
 			BasicProjectile hugeMissile = obj.GetComponent<BasicProjectile>();
 			hugeMissile.Category = "crystalMissile";
 			

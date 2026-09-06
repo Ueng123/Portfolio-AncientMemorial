@@ -4,7 +4,7 @@ using UengSystem.Utility;
 using UnityEngine;
 using EventType = UengSystem.Events.EventType;
 
-namespace UengSystem.States.PlayerStates {
+namespace AncientMemorial.States.PlayerStates {
 	public class Dash : PlayerState {
 		
 		private static readonly int Moving   = Animator.StringToHash("moving");
@@ -41,7 +41,7 @@ namespace UengSystem.States.PlayerStates {
 		public override void OnEarlyRoutine() {
 			if (stateTimer.CheckIn(dashTime)) return;
 
-			player.state = GetDefaultState();
+			player.entityState = GetDefaultState();
 		}
 
 		public override void OnRoutine() {

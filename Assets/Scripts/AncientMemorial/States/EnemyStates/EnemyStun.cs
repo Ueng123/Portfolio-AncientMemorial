@@ -1,8 +1,8 @@
-﻿using AncientMemorial.Entities;
+using UengSystem.Objects;
 using UengSystem.ObjectPool;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates {
+namespace AncientMemorial.States.EnemyStates {
 	public class EnemyStun : EnemyState {
 
 		private GameObject stunEffect;
@@ -21,7 +21,7 @@ namespace UengSystem.States.EnemyStates {
 		public override void OnEnter() {
 			enemy.rigidbody2D.linearVelocityX = 0;
 			
-			stunEffect = UObjectPool.instance.Get("StunEffect", enemy.transform.position + Vector3.up * enemy.markYPos);
+			stunEffect = UObject.Get("StunEffect", enemy.transform.position + Vector3.up * enemy.markYPos, PlayEffect: false);
 			stunEffect.transform.SetParent(enemy.transform);
 		}
 
@@ -29,11 +29,11 @@ namespace UengSystem.States.EnemyStates {
 
 		public override void OnRoutine() {
 			if (stateTimer.CheckIn(stunDuration)) return;
-			enemy.state = GetState();
+			enemy.entityState = GetState();
 		}
 
 		public override void OnExit() {
-			UObjectPool.instance.Release(stunEffect);
+			stunEffect.GetComponent<UObject>().Release(PlayEffect: false);
 		}
 	}
 }

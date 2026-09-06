@@ -28,8 +28,8 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		private void Break() {
-			if (breakObject) UObjectPool.instance.Get(breakObject.name, transform.position);
-			UObjectPool.instance.Release(gameObject);
+			if (breakObject) UObject.Get(breakObject.name, transform.position, PlayEffect: false);
+			Release(PlayEffect: false);
 		}
 
 		public override void Initialize() {
@@ -62,7 +62,7 @@ namespace AncientMemorial.Projectiles {
 			}
 
 			if (breakOnHit && --hitableNum == 0) { Break(); return; }
-			if (hitObject) UObjectPool.instance.Get(hitObject.name, transform.position);
+			if (hitObject) UObject.Get(hitObject.name, transform.position, PlayEffect: false);
 		}
 		
 		protected override void OnCollideObject(UObject obj) {

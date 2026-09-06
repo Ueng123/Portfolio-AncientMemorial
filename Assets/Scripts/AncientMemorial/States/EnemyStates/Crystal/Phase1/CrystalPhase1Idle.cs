@@ -1,10 +1,8 @@
-﻿using System;
-using AncientMemorial.Entities.Enemies;
-using UengSystem.Utility;
+﻿using UengSystem.Utility;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase1 {
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase1 {
 	public class CrystalPhase1Idle : CrystalState {
 		
 		private StopWatch missileTimer     = new StopWatch();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using UengSystem.Objects;
+using System.Collections.Generic;
 using AncientMemorial.Cameras;
 using UengSystem;
 using UengSystem.ObjectPool;
@@ -44,7 +45,7 @@ namespace AncientMemorial.Entities.Enemies {
 			CameraBrain.instance.ShakeLerp(2f, 10);
 			CameraBrain.instance.ZoomLerp(-0.2f);
 
-			GameObject doogaegol = UObjectPool.instance.Get("doogaegol", (Vector2)transform.position +  new Vector2(-0.03125f, 0.21875f));
+			GameObject doogaegol = UObject.Get("doogaegol", (Vector2)transform.position +  new Vector2(-0.03125f, 0.21875f), PlayEffect: false);
 			Rigidbody2D doogaegolRB = doogaegol.GetComponent<Rigidbody2D>();
 			
 			doogaegolRB.AddForce(new Vector2(Random.Range(-2f, 2f), Random.Range(4f, 6f)), ForceMode2D.Impulse);

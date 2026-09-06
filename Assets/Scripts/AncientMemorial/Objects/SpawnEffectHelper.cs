@@ -42,7 +42,7 @@ namespace AncientMemorial.Objects {
 			t_n =  Mathf.Clamp01(t / t_s);
 
 			if (t > t_s) {
-				UObjectPool.instance.Release(gameObject);
+				Release(PlayEffect: false);
 				return;
 			}
 			

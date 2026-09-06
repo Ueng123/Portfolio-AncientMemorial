@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whenInitialize: 3
+  GettingDuration: 1
+  ReleasingDuration: 2
   whiteSpawnSprite: {fileID: -4131446148706359260, guid: ed45b7adecbac6742b91d86a80de0e85, type: 3}
   colorSpawnSprite: {fileID: -4131446148706359260, guid: ed45b7adecbac6742b91d86a80de0e85, type: 3}
   rigidbody2D: {fileID: 0}

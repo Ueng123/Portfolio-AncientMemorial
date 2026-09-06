@@ -1,3 +1,3 @@
-﻿namespace UengSystem.States.EnemyStates {
+﻿namespace AncientMemorial.States.EnemyStates {
 	public class EmptyEnemyState : EnemyState { }
 }

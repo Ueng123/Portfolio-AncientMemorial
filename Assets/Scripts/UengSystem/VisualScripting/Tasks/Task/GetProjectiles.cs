@@ -2,6 +2,7 @@
 using AncientMemorial.Entities;
 using AncientMemorial.Projectiles;
 using UengSystem.ObjectPool;
+using UengSystem.Objects;
 using UengSystem.VisualScripting.UValues;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace UengSystem.VisualScripting.Tasks {
 	public class GetProjectiles : TaskComponent {
 		public                                        GameObject      TargetObject;
 		[SerializeReference][SubclassSelector] public UValue<Vector2> position;
-		[SerializeReference][SubclassSelector] public UValue<float>   spawnTime;
+		public bool PlayEffect = true;
 		
 		[SerializeReference][SubclassSelector] public UValue<string> ID;
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
@@ -26,17 +27,16 @@ namespace UengSystem.VisualScripting.Tasks {
 					  $" > Category = {Category.value}\n"        + 
 					  $" > targetPrefab = {TargetObject.name}\n" + 
 					  $" > position = {position}\n"              + 
-					  $" > duration = {spawnTime.value}\n"       + 
+					  $" > PlayEffect = {PlayEffect}\n"       + 
 					  $"");
 			
-			GameObject obj  = UObjectPool.instance.Get(TargetObject.name, position.value, spawnTime.value);
-			Projectile proj = obj.GetComponent<Projectile>();
-			
-			proj.owner  = owner.value;
-			proj.damage = damage.value;
-
-			if (ID       !=null) proj.ID       = ID.value;
-			if (Category !=null) proj.Category = Category.value;
+			UObject.Get(TargetObject.name, position.value, PlayEffect, Obj => {
+				Projectile Projectile = (Projectile)Obj;
+				Projectile.owner = owner.value;
+				Projectile.damage = damage.value;
+				if (!string.IsNullOrWhiteSpace(ID?.value)) Projectile.ID = ID.value;
+				if (!string.IsNullOrWhiteSpace(Category?.value)) Projectile.Category = Category.value;
+			});
 		}
 	}
 }

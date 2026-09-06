@@ -1,9 +1,9 @@
 ﻿using System;
 using AncientMemorial.Cameras;
+using AncientMemorial.States.EnemyStates;
+using AncientMemorial.States.EnemyStates.Skeleton;
+using AncientMemorial.States.EnemyStates.Skeleton.Tank;
 using UengSystem;
-using UengSystem.States.EnemyStates;
-using UengSystem.States.EnemyStates.Skeleton;
-using UengSystem.States.EnemyStates.Skeleton.Tank;
 using UnityEngine;
 
 namespace AncientMemorial.Entities.Enemies {
@@ -38,7 +38,7 @@ namespace AncientMemorial.Entities.Enemies {
 		protected override Entity GetTargetEntity() => player;
 		
 		public override void Attack() {
-			state = attackPhase switch {
+			entityState = attackPhase switch {
 				0 => stomp,
 				1 => stomp,
 				2 => energyBurst,
@@ -50,12 +50,12 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		protected override float GetRealDamage(float rawDamage) {
-			bool groggy = (state == stateMachine.stunState);
+			bool groggy = (entityState == stateMachine.stunState);
 			return rawDamage * (groggy ? 2f : 1f);
 		}
 
 		public override void OnHit(Entity attacker, float damage, Vector2? pushDir = null) {
-			bool groggy = (state == stateMachine.stunState);
+			bool groggy = (entityState == stateMachine.stunState);
 			
 			if (groggy) ShowCriticalDamageUI(damage);
 			else ShowDamageUI(damage);
@@ -73,9 +73,9 @@ namespace AncientMemorial.Entities.Enemies {
 		protected override void Death() {
 			PlaySFX("tankDeath");
 
-			GameManager.SetTimeScale(0f, 0.05f);
-			CameraBrain.instance.ShakeLerp(2f, 10);
-			CameraBrain.instance.ZoomLerp(-0.2f);
+			GameManager.SetTimeScale(0.25f, 1f);
+			CameraBrain.instance.ShakeLerp(5f, 10);
+			CameraBrain.instance.ZoomLerp(-1f);
 
 			base.Death();
 		}

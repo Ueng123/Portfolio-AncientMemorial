@@ -9,6 +9,7 @@ namespace UengSystem.VisualScripting.Tasks {
 	public class OpenUI : TaskComponent {
 		public GameObject TargetUUI;
 		public UCanvas canvas;
+		public bool PlayEffect = true;
 		
 		[SerializeReference][SubclassSelector] public UValue<string> ID;
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
@@ -24,11 +25,10 @@ namespace UengSystem.VisualScripting.Tasks {
 							 $" > canvas = {canvas.name}\n"          +
 							 $"");
 			
-			GameObject ui  = UUIPool.instance.Open(TargetUUI.name, canvas);
-			UUI        uui = ui.GetComponent<UUI>();
-
-			if (ID       !=null &&ID.value       !="") uui.ID       = ID.value;
-			if (Category !=null &&Category.value !="") uui.Category = Category.value;
+			UUI.Get(TargetUUI.name, canvas, PlayEffect, Ui => {
+				if (!string.IsNullOrWhiteSpace(ID?.value)) Ui.ID = ID.value;
+				if (!string.IsNullOrWhiteSpace(Category?.value)) Ui.Category = Category.value;
+			});
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
+﻿namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 	public class FallShoot : CrossbowAttack {
 		public override float attackTime       => 0.2f;
 		public override float attackAfterTime  => 1;
@@ -25,7 +25,7 @@
 			}
 
 			if (step == 1 && isProgress(1)) {
-				player.state = GetDefaultState();
+				player.entityState = GetDefaultState();
 			}
 		}
 	}

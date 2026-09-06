@@ -1,8 +1,9 @@
-﻿using UengSystem;
+﻿using AncientMemorial.Cameras;
+using AncientMemorial.States.EnemyStates;
+using AncientMemorial.States.EnemyStates.Crystal.Phase1;
+using UengSystem;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.States.EnemyStates;
-using UengSystem.States.EnemyStates.Crystal.Phase1;
 using UengSystem.UI;
 using UengSystem.VisualScripting.UValues.UBools;
 using UnityEngine;
@@ -19,15 +20,32 @@ namespace AncientMemorial.Entities.Enemies {
 			crystalSpawn = new CrystalSpawn().Init(stateMachine);
 		}
 
+		public override void Initialize() {
+			base.Initialize();
+			
+			GameObject sEff      = UObject.Get("SlashEffect", transform.position, PlayEffect: false);
+			sEff.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(-5f, 5f));
+			sEff.transform.localScale = new Vector3(2f, 10f);
+			
+			GameObject sEff2      = UObject.Get("SlashEffect", transform.position, PlayEffect: false);
+			sEff2.transform.rotation   = Quaternion.Euler(0, 0, 90+Random.Range(-5f, 5f));
+			sEff2.transform.localScale = new Vector3(2f, 10f);
+			
+			CameraBrain.instance.ShakeLerp(5, 10);
+			CameraBrain.instance.ZoomLerp(-2f, 3);
+
+			PlaySFX("crystalSlash");
+		}
+
 		protected override Entity GetTargetEntity() => player;
 
 		public override void Attack() {
-			state = crystalSpawn;
+			entityState = crystalSpawn;
 		}
 
 		protected override void Death() {
 
-			CrystalBoss crystal = UObjectPool.instance.Get("CrystalPhase2", transform.position).GetComponent<CrystalBoss>();
+			CrystalBoss crystal = UObject.Get("CrystalPhase2", transform.position, PlayEffect: false).GetComponent<CrystalBoss>();
 
 			if (!string.IsNullOrEmpty(ID)) {
 				string id = ID;
@@ -36,9 +54,9 @@ namespace AncientMemorial.Entities.Enemies {
 			}
 			
 			if (TryGetUObject("CrystalBossBar", out UObject bossBar)) {
-				UUIPool.instance.Close(bossBar.gameObject);
-				UUI newBossBar = UUIPool.instance.Open("CrystalP2UI", GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
-				newBossBar.Category = "CrystalBossBar";
+				bossBar.Release(PlayEffect: true);
+				UUI newBossBar = UUI.Get("CrystalP2UI", GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
+				newBossBar.ID = "CrystalBossBar";
 			}
 			
 			base.Death();

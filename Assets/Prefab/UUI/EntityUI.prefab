@@ -144,6 +144,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
   openTime: 0
+  GettingAnimation: open
   closeTime: 1.5
   actions:
   - key: EntityName

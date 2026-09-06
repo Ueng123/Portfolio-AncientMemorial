@@ -2,6 +2,7 @@
 using UengSystem;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
+using UengSystem.Objects.LifeCycle;
 using UnityEngine;
 
 namespace AncientMemorial.Objects {
@@ -12,28 +13,17 @@ namespace AncientMemorial.Objects {
 			transform.position += Vector3.up * (leviateStep * Time.deltaTime);
 		}
 		
-		protected override IEnumerator DespawnFX(float duration) {
-			float elapsed    = 0f;
-			
-			spriteRenderer.sprite = whiteSpawnSprite??spriteRenderer.sprite;
-			
-			while (elapsed < duration) {
-				elapsed            += Time.deltaTime;
-				transform.position += Vector3.up * (leviateStep * Time.deltaTime);
-				float t = elapsed                               / duration;
+		public override void OnFirstGet() {
+			SetDefaultStates(ReleasingState: new LeviateReleasing(this));
+			base.OnFirstGet();
+		}
 
-				Color color = new (GameManager.instance.spawnColor.r,
-								   GameManager.instance.spawnColor.g,
-								   GameManager.instance.spawnColor.b,
-								   Mathf.Lerp(1, 0, t));
-
-				spriteRenderer.color = color;
-
-				yield return null;
+		private sealed class LeviateReleasing : DefaultReleasing {
+			public LeviateReleasing(LeviateEffect Target) : base(Target) { }
+			protected override void OnEffectRoutine(float DeltaTime) {
+				target.transform.position += Vector3.up * (((LeviateEffect)target).leviateStep * DeltaTime);
+				base.OnEffectRoutine(DeltaTime);
 			}
-			
-			spriteRenderer.color = Color.white;
-			UObjectPool.instance.Release(gameObject, -1);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using AncientMemorial.Interactions;
 using UengSystem.ObjectPool;
+using UengSystem.Objects;
 using UengSystem.UAction;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -8,22 +9,19 @@ using Random = UnityEngine.Random;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class BreakCrystal : TaskComponent {
-		private static DelayedAction action = new DelayedAction(5, () => {
-			for (int i = 0; i < 20; i++) {
-				UObjectPool.instance.Get("crystalDebris",
-										 (Vector2)GameManager.instance.Crystal.crystalModel.transform.position +
-										 new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)));
-			}
-
-			GameManager.instance.Crystal.crystalModel.SetActive(false);
-		});
-		
 		public override void Execute(ITaskable self) {
-			Crystal crystal = GameManager.instance.Crystal;
-			crystal.animator.Play("break");
-			crystal.UnInteractable();
-
-			action.ExecuteDA();
+			Crystal Target = GameManager.instance.Crystal;
+			long Life = Target.lifeNumber;
+			Vector2 Position = Target.crystalModel.transform.position;
+			Target.animator.Play("break");
+			Target.UnInteractable();
+			new DelayedAction(5, () => {
+				if (!Target || Target.lifeNumber != Life || !Target.isActive) return;
+				for (int Index = 0; Index < 20; Index++) {
+					UObject.Get("crystalDebris", Position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), PlayEffect: false);
+				}
+				Target.crystalModel.SetActive(false);
+			}, executor: Target).ExecuteDA();
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton {
+namespace AncientMemorial.States.EnemyStates.Skeleton {
 	public class SkeletonAware : SkeletonState {
 
 		public SkeletonAware(float targetDistance, float margin, float offsetMax, float offsetMin, float updateOffsetTerm) {

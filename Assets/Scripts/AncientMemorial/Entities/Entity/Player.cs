@@ -4,6 +4,7 @@ using AncientMemorial.Cameras;
 using AncientMemorial.Interactions;
 using AncientMemorial.Map;
 using AncientMemorial.Objects;
+using AncientMemorial.States.PlayerStates;
 using AncientMemorial.Waves;
 using AncientMemorial.Weapons;
 using UengSystem;
@@ -13,7 +14,6 @@ using UengSystem.Inputs;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.SaveDatas.SettingDatas;
-using UengSystem.States.PlayerStates;
 using UengSystem.UAction;
 using UengSystem.UI;
 using UengSystem.UI.UUIs;
@@ -36,6 +36,8 @@ namespace AncientMemorial.Entities {
 		public Weapon weapon;
 
 		private UUI playerUI;
+		private long PlayerUiLife;
+		private bool WeaponInitialized;
 		
 		private bool _lookingLeft;
 		
@@ -75,17 +77,20 @@ namespace AncientMemorial.Entities {
 		// ANIMATOR //
 		private static readonly int  BACKWARD  = Animator.StringToHash("backward");
 		
+		// HEAL //
+		private StopWatch healTimer = new ();
+
 		// METHOD //
 		
 		private bool CanJump() {
 			if (!isGround) return false;
-			if (state == PlayerState.jump) return false;
+			if (entityState == PlayerState.jump) return false;
 			
 			return true;
 		}
 		
 		private bool CanDash() {
-			if (state == PlayerState.dash) return false;
+			if (entityState == PlayerState.dash) return false;
 			if (PlayerState.dash.stateTimer.CheckIn(Dash.dashTime * 4f)) return false;
 
 			return true;
@@ -93,8 +98,8 @@ namespace AncientMemorial.Entities {
 
 		private bool CanHeal() {
 			if (UPureFloat.GetValue(HEALTH_POTION_COUNT) <= 0) return false;
-			if (healAction.Executing) return false;
-			if (!weapon.isAttacking) return false;
+			if (weapon.isAttacking) return false;
+			if (healTimer.CheckIn(0.5f)) return false;
 			
 			return true;
 		}
@@ -102,7 +107,7 @@ namespace AncientMemorial.Entities {
 		private int  moveSign;
 
 		public void SpawnAfterImage() {
-			SpriteRenderer sr = UObjectPool.instance.Get("AfterImage", transform.position).GetComponent<SpriteRenderer>();
+			SpriteRenderer sr = UObject.Get("AfterImage", transform.position, PlayEffect: false).GetComponent<SpriteRenderer>();
 			sr.flipX  = spriteRenderer.flipX;
 			sr.sprite = spriteRenderer.sprite;
 		}
@@ -121,21 +126,12 @@ namespace AncientMemorial.Entities {
 			weapon.SecondaryAttack();
 		}
 
-		private DelayedAction healAction;
 		private void Heal() {
-			healAction??=new DelayedAction(0.4f, () => {
-				PlaySFX("playerHeal");
-				SendAttackEvent(this, -3, true);
-			}, () => {}, this);
-			
+			healTimer.Tick();
+			SendAttackEvent(this, -3, true);
 			UPureFloat.AddValue(HEALTH_POTION_COUNT, -1);
-			
-			handAnimator.Play(lookingLeft?"healB":"heal", 0, 0);
-			SetArm();
-			
+			UObject.Get("HealEffect", transform.position, PlayEffect: false);
 			PlaySFX("playerBottleOpen");
-			
-			healAction.ExecuteDA();
 		}
 
 		private StopWatch targetInteractSync     = new StopWatch();
@@ -169,9 +165,9 @@ namespace AncientMemorial.Entities {
 		private void GetInput() {
 		    if (!getInput) return;
 		    
-		    if (InputManager.GetInput(ActionType.Jump, PressType.Down | PressType.Hold) && CanJump()) state = PlayerState.jump;
+		    if (InputManager.GetInput(ActionType.Jump, PressType.Down | PressType.Hold) && CanJump()) entityState = PlayerState.jump;
 		    
-		    if (InputManager.GetInput(ActionType.Dash, PressType.Down) && CanDash()) state = PlayerState.dash;
+		    if (InputManager.GetInput(ActionType.Dash, PressType.Down) && CanDash()) entityState = PlayerState.dash;
 		    
 		    if (InputManager.GetInput(ActionType.MouseLClick, PressType.Down | PressType.Hold) && weapon.CanPrimaryAttack()) PrimaryAttack();
 		    
@@ -280,26 +276,20 @@ namespace AncientMemorial.Entities {
 		}
 
 		public override void OnGet() {
+			hand.SetActive(false);
 			if (player) throw new InvalidOperationException("ALREADY PLAYER EXIST WHY U TRYING TO MAKE SAME PEOPLE AGAIN 🥀🥀");
 			player = this;
 			base.OnGet();
 		}
 
 		protected override void OnRelease() {
-			player = null;
+			hand.SetActive(false);
+			entityState = null;
+			if (WeaponInitialized) { WeaponInitialized = false; weapon?.Uninitialize(); }
+			if (playerUI && playerUI.lifeNumber == PlayerUiLife) playerUI.Release();
+			playerUI = null;
 			base.OnRelease();
-		}
-		
-		public override void Get(float     time) {
-			hand.SetActive(false);
-			
-			base.Get(time);
-		}
-
-		public override void Release(float time) {
-			hand.SetActive(false);
-			
-			base.Release(time);
+			if (player == this) player = null;
 		}
 
 		protected override void OnGrounded() {
@@ -313,10 +303,12 @@ namespace AncientMemorial.Entities {
 			int weaponID = Weapon.selectedWeaponID;
 
 			weapon = GameManager.instance.weapons[weaponID];
+			WeaponInitialized = weapon != null;
 			weapon?.Initialize();
 
-			playerUI = UUIPool.instance.Open("PlayerUI", GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
-			state = PlayerState.idle;
+			playerUI = UUI.Get("PlayerUI", GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
+			PlayerUiLife = playerUI.lifeNumber;
+			entityState = PlayerState.idle;
 			
 			base.Initialize();
 		}
@@ -364,7 +356,7 @@ namespace AncientMemorial.Entities {
 			if (dead) return;
 			dead = true;
 			
-			UUIPool.instance.Open("DieUI", GameManager.instance.mainScreenCanvas);
+			UUI.Get("DieUI", GameManager.instance.mainScreenCanvas);
 			WaveManager.instance.currentWave = null;
 			AudioManager.instance.SetBGM("Dead");
 			AudioManager.instance.StopAllSFX();

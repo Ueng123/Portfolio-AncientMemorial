@@ -1,9 +1,8 @@
 ﻿using AncientMemorial.Entities;
 using AncientMemorial.Entities.Enemies;
-using UengSystem.Utility;
-using UnityEngine.PlayerLoop;
+using UengSystem.States;
 
-namespace UengSystem.States.EnemyStates {
+namespace AncientMemorial.States.EnemyStates {
 	public abstract class EnemyState : UState {
 		public Enemy enemy;
 		protected EnemyStateMachine stateMachine;
@@ -27,7 +26,7 @@ namespace UengSystem.States.EnemyStates {
 		public override void OnEnter() { }
 		
 		public override void OnEarlyRoutine() {
-			if (enemy.state != GetState()) enemy.state = GetState();
+			if (enemy.entityState != GetState()) enemy.entityState = GetState();
 		}
 
 		public override void OnRoutine() { }

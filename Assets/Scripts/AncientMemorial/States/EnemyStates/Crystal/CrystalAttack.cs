@@ -1,10 +1,4 @@
-﻿using AncientMemorial.Entities;
-using AncientMemorial.Entities.Enemies;
-using AncientMemorial.Projectiles;
-using UengSystem.ObjectPool;
-using UnityEngine;
-
-namespace UengSystem.States.EnemyStates.Crystal {
+﻿namespace AncientMemorial.States.EnemyStates.Crystal {
 	public abstract class CrystalAttack : CrystalState, IAttackState {
 		public abstract float attackTime  { get; }
 		public          float attackSpeed => crystal.stat.attackSpeed;

@@ -1,9 +1,7 @@
-﻿using UnityEngine;
+﻿using UengSystem.Utility;
+using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
-	using AncientMemorial.Map;
-	using UengSystem.Utility;
-
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalSemiHugeSweep : CrystalPhase3Attack {
 		public override float attackTime => 10;
 
@@ -74,7 +72,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 			}
 
 			if (step == 3 && isProgress(1f)) {
-				crystal.state = GetState();
+				crystal.entityState = GetState();
 			}
 		}
 

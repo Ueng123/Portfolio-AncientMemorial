@@ -3,7 +3,7 @@ using UengSystem.Inputs;
 using UnityEngine;
 using EventType = UengSystem.Events.EventType;
 
-namespace UengSystem.States.PlayerStates {
+namespace AncientMemorial.States.PlayerStates {
 	public class Move : PlayerDefaultState {
 		private static readonly int Moving   = Animator.StringToHash("moving");
 

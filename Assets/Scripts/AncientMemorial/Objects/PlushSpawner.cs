@@ -1,4 +1,5 @@
-﻿using AncientMemorial.Interactions;
+using UengSystem.Objects;
+using AncientMemorial.Interactions;
 using UengSystem.Inputs;
 using UengSystem.ObjectPool;
 using UengSystem.Utility;
@@ -28,7 +29,7 @@ namespace AncientMemorial.Objects {
 			Vector2 pos       = InputManager.mousePosition;
 			pos = new Vector2(Mathf.Clamp(pos.x, -5, 5), Mathf.Clamp(pos.y, 1, 5));
 			
-			UObjectPool.instance.Get(plushName, pos, 3);
+			UObject.Get(plushName, pos, PlayEffect: true);
 		}
 	}
 }

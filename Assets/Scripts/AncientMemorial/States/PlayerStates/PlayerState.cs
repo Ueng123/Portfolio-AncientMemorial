@@ -1,7 +1,8 @@
 ﻿using AncientMemorial.Entities;
 using UengSystem.Inputs;
+using UengSystem.States;
 
-namespace UengSystem.States.PlayerStates {
+namespace AncientMemorial.States.PlayerStates {
 	public abstract class PlayerState : UState {
 		
 		protected Player player => Entity.player;

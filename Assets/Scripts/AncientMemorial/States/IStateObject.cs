@@ -1,5 +1,7 @@
-﻿namespace UengSystem.States {
+﻿using UengSystem.States;
+
+namespace AncientMemorial.States {
 	public interface IStateObject {
-		public UState state { get; set; }
+		public UState entityState { get; set; }
 	}
 }

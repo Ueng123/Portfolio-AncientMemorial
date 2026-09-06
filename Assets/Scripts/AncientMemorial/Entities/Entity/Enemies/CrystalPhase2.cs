@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using AncientMemorial.Objects;
+using AncientMemorial.States.EnemyStates;
 using AncientMemorial.States.EnemyStates.Crystal.Phase2;
 using UengSystem;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.States.EnemyStates;
-using UengSystem.States.EnemyStates.Crystal.Phase1;
 using UengSystem.UI;
 using UengSystem.Utility;
 using UnityEngine;
@@ -29,7 +28,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		public override void InitializeState() {
-			state = new CrystalPhase2Enter().Init(stateMachine);
+			entityState = new CrystalPhase2Enter().Init(stateMachine);
 		}
 		
 		public override void Initialize() {
@@ -42,17 +41,18 @@ namespace AncientMemorial.Entities.Enemies {
 		public override void Attack() {
 			Debug.Log($"ATTACK PHASE = {attackPhase}");
 			
-			state = attackBag[attackPhase];
+			entityState = attackBag[attackPhase];
 			
 			attackPhase++;
-			if (attackPhase >= attackBag.Length) {
+			
+			if (attackPhase>=attackBag.Length) {
 				attackBag.Shuffle();
 				attackPhase %= attackBag.Length;
 			}
 		}
 		
 		protected override void Death() {
-			CrystalBoss crystal = UObjectPool.instance.Get("CrystalPhase3", transform.position).GetComponent<CrystalBoss>();
+			CrystalBoss crystal = UObject.Get("CrystalPhase3", transform.position, PlayEffect: false).GetComponent<CrystalBoss>();
 
 			if (!string.IsNullOrEmpty(ID)) {
 				string id = ID;
@@ -60,10 +60,10 @@ namespace AncientMemorial.Entities.Enemies {
 				crystal.ID = id;
 			}
 			
-			if (TryGetUObject("CrystalBossBar", out UObject bossBar)) {
-				UUIPool.instance.Close(bossBar.gameObject);
-				UUI newBossBar = UUIPool.instance.Open("CrystalP3UI", GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
-				newBossBar.Category = "CrystalBossBar";
+			if (UUI.TryGetUUI("CrystalBossBar", out UUI bossBar)) {
+				bossBar.Release(PlayEffect: true);
+				UUI newBossBar = UUI.Get("CrystalP3UI", GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
+				newBossBar.ID = "CrystalBossBar";
 			}
 			
 			base.Death();

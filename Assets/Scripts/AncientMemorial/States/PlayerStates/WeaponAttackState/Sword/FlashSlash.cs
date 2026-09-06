@@ -1,13 +1,13 @@
-﻿using AncientMemorial.Cameras;
+using UengSystem.Objects;
+using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
 using AncientMemorial.Objects;
 using UengSystem.Inputs;
 using UengSystem.ObjectPool;
-using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
+namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 	public class FlashSlash : PlayerWeaponAttack {
 		private AttackArea skillAttack;
 
@@ -67,7 +67,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 
 			sweepDuration = Mathf.Max(0.8f / player.stat.attackSpeed, 0.05f);
 			
-			skillAttack = Entity.AttackArea(player, player.stat.attackSpeed, sweepDuration, hitboxPos, hitboxSize, hitboxAngle);
+			skillAttack = Entity.AttackArea(player, 3.5f, sweepDuration, hitboxPos, hitboxSize, hitboxAngle);
 		}
 
 		public override void OnRoutine() {
@@ -75,15 +75,13 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 				CameraBrain.instance.ShakeLerp(1.5f, 10);
                 CameraBrain.instance.ZoomLerp(-1f, 15);
                 
-                Entity.AttackAreaNoEffect(player, 3f, 0, hitboxPos, hitboxSize, hitboxAngle);
-                
                 player.PlaySFX("swordSlash3");
-                GameObject obj = UObjectPool.instance.Get("SlashEffect", hitboxPos);
+                GameObject obj = UObject.Get("SlashEffect", hitboxPos, PlayEffect: false);
                 obj.transform.rotation   = Quaternion.Euler(0, 0, hitboxAngle+90f);
                 obj.transform.localScale = new Vector3(2f, 4.5f * flashDistance/2.7f, 1f);
 
 				isCancelled = false;
-				player.state = GetDefaultState();
+				player.entityState = GetDefaultState();
 			}
 		}
 		

@@ -17,8 +17,8 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		private void Boom() {
-			UObjectPool.instance.Get("BigImpact", transform.position);
-			UObjectPool.instance.Release(gameObject);
+			UObject.Get("BigImpact", transform.position, PlayEffect: false);
+			Release(PlayEffect: false);
 		}
 		
 		protected override void EarlyRoutine() {

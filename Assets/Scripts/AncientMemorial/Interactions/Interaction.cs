@@ -31,6 +31,7 @@ namespace AncientMemorial.Interactions {
 		public  DelayedAction         interactAction;
 		private UInteractProgressValue _uInteractProgressValue;
 		private UUI                   interactUI;
+		private long InteractUiLife;
 
 		[Header("Interaction")]
 		[SerializeField]
@@ -81,17 +82,19 @@ namespace AncientMemorial.Interactions {
 
 		protected virtual void Targetted() {
 			if (showInteractUI && !interactUI) {
-				interactUI = UUIPool.instance.Open("InteractUI", canvas).GetComponent<UUI>();
+				interactUI = UUI.Get("InteractUI", canvas, Configure: Ui => {
                 _uInteractProgressValue ??= new UInteractProgressValue { interactObject = new UPureObject { pureValue = this } };
                 	
-                USliderAction sliderAction = interactUI.GetAction<USliderAction>("Bar");
+                USliderAction sliderAction = Ui.GetAction<USliderAction>("Bar");
                 sliderAction.value = _uInteractProgressValue;
                 sliderAction.color.To<UNumberColor>().a = _uInteractProgressValue;
 				
-				UTextAction textAction = interactUI.GetAction<UTextAction>("TextLabel");
+				UTextAction textAction = Ui.GetAction<UTextAction>("TextLabel");
 				interactionText ??= new UPureString { pureValue = interactString };
 				textAction.text =   interactionText;
-				textAction.Initialize(interactUI);
+				}).GetComponent<UUI>();
+				
+				InteractUiLife = interactUI.lifeNumber;
 			}
 			
 			onTarget.Execute(this);
@@ -101,8 +104,8 @@ namespace AncientMemorial.Interactions {
 		protected virtual void OnUnTarget() {  }
 
 		protected virtual void Untargetted() {
-			if (showInteractUI && interactUI) { 
-				UUIPool.instance.Close(interactUI.gameObject);
+			if (interactUI) {
+				if (interactUI.lifeNumber == InteractUiLife) interactUI.Release(PlayEffect: true);
 				interactUI = null;
 			}
 			
@@ -144,17 +147,23 @@ namespace AncientMemorial.Interactions {
 			EventType.Interact_Cancel.AddListener(interactCancel);
 			EventType.Interact_Target.AddListener(interactTarget);
 			EventType.Interact_Untarget.AddListener(interactUntarget);
+			EventsSubscribed = true;
     
 			base.Initialize();
 		}
 
+		private bool EventsSubscribed;
 		protected override void OnRelease() {
 			interactable = false;
+			InteractableInteractions.Remove(this);
     
-			EventType.Interact_Start.RemoveListener(interactStart);
-			EventType.Interact_Cancel.RemoveListener(interactCancel);
-			EventType.Interact_Target.RemoveListener(interactTarget);
-			EventType.Interact_Untarget.RemoveListener(interactUntarget);
+			if (EventsSubscribed) {
+				EventType.Interact_Start.RemoveListener(interactStart);
+				EventType.Interact_Cancel.RemoveListener(interactCancel);
+				EventType.Interact_Target.RemoveListener(interactTarget);
+				EventType.Interact_Untarget.RemoveListener(interactUntarget);
+				EventsSubscribed = false;
+			}
     
 			base.OnRelease();
     
@@ -165,7 +174,7 @@ namespace AncientMemorial.Interactions {
 			base.Uninitialize();
 
 			if (!interactUI) return;
-			Destroy(interactUI.gameObject);
+			if (interactUI.lifeNumber == InteractUiLife) interactUI.Release(PlayEffect: false);
 			interactUI = null;
 		}
 
@@ -183,6 +192,7 @@ namespace AncientMemorial.Interactions {
 		private Action<Event> interactUntarget;
 		
 		private void InteractStartEvent(Event e) {
+			if (!isActive) return;
 			if (e.GetData<ValueData<Interaction>>().value != this) return;
 			
 			InteractStart();
@@ -190,6 +200,7 @@ namespace AncientMemorial.Interactions {
 		}
 
 		private void InteractCancelEvent(Event e) {
+			if (!isActive) return;
 			if (e.GetData<ValueData<Interaction>>().value != this) return;
 			
 			if (!interactAction.Executing) return;
@@ -197,12 +208,14 @@ namespace AncientMemorial.Interactions {
 		}
 
 		private void InteractTargetEvent(Event e) {
+			if (!isActive) return;
 			if (e.GetData<ValueData<Interaction>>().value != this) return;
 			
 			Targetted();
 		}
 
 		private void InteractUntargetEvent(Event e) {
+			if (!isActive) return;
 			if (e.GetData<ValueData<Interaction>>().value != this) return;
 			
 			Untargetted();

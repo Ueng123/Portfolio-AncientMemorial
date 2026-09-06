@@ -106,6 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whenInitialize: 0
+  GettingDuration: 1
+  ReleasingDuration: 1
   whiteSpawnSprite: {fileID: -4346244404228752641, guid: 72bb809dc42d4a044b48e68f668009e4, type: 3}
   colorSpawnSprite: {fileID: -4346244404228752641, guid: 72bb809dc42d4a044b48e68f668009e4, type: 3}
   rigidbody2D: {fileID: 0}
@@ -148,7 +150,7 @@ MonoBehaviour:
     - rid: 5909658922870112986
       type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        releaseTime: 1
+        PlayEffect: 1
         releaseThis: 1
         TargetObject:
           rid: -2

@@ -108,6 +108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Objects.CeilObject
   whenInitialize: 3
+  GettingDuration: 1
+  ReleasingDuration: 1
   whiteSpawnSprite: {fileID: -3535221090349844623, guid: ccd8a23fd2722c842bd2979cc9ffad9d, type: 3}
   colorSpawnSprite: {fileID: -3535221090349844623, guid: ccd8a23fd2722c842bd2979cc9ffad9d, type: 3}
   rigidbody2D: {fileID: 0}

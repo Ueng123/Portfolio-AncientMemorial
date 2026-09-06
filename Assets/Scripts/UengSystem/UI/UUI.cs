@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UengSystem.Objects;
+using UengSystem.Objects.LifeCycle;
+using UengSystem.Utility;
 using UnityEngine;
 
 namespace UengSystem.UI {
@@ -45,13 +47,51 @@ namespace UengSystem.UI {
 
 		public float openTime;
 		public float closeTime;
+		[SerializeField] private string GettingAnimation = "open";
+		public string gettingAnimation => GettingAnimation;
+		public override float gettingDuration => openTime;
+		public override float releasingDuration => closeTime;
+		public override float lifeCycleDeltaTime => Time.unscaledDeltaTime;
 		
 		[Header("UUI")]
 		public UUIActionListItem[] actions;
 		private Dictionary<string, UUIAction> actionDict = new();
+		private readonly List<UUIAction> InitializedActions = new();
+		private bool Opened;
+
+		public override void OnFirstGet() {
+			SetDefaultStates(new UUIGetting(this), new UUIReleasing(this));
+			base.OnFirstGet();
+			rectTransform = GetComponent<RectTransform>();
+			if (animator) animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+			foreach (UUIActionListItem Item in actions) actionDict.Add(Item.key, Item.action);
+		}
+
+		public static GameObject Get(string PrefabKey, UCanvas Canvas, bool PlayEffect = true, Action<UUI> Configure = null) {
+			CheckAcquisitionAllowed();
+			UUI Target = UUIPool.instance.Acquire(PrefabKey, Canvas);
+			Target.BeginLife(PlayEffect, Obj => Configure?.Invoke((UUI)Obj));
+			return Target.gameObject;
+		}
+
+		protected override void PrepareContext() {
+			rectTransform.anchoredPosition = initialPosition;
+			rectTransform.localScale = initialScale;
+			Opened = false;
+			if (animator) {
+				animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+				animator.ResetTrigger(Close);
+			}
+		}
 
 		public virtual void OnOpen()  { }
 		public virtual void OnClose() { }
+
+		public static bool TryGetUUI(string id, out UUI uui) {
+			bool result = TryGetUObject(id, out UObject obj);
+			uui = obj.To<UUI>();
+			return result;
+		}
 
 		public static UUI GetUUI(string id) => GetUObject(id) as UUI;
 
@@ -72,62 +112,29 @@ namespace UengSystem.UI {
 		
 		protected override void Routine() {
 			foreach (UUIAction action in actionDict.Values) {
+				if (!isActive) return;
 				action.Routine(this);
 			}
 		}
 
-		public override void Get(float time) {
-			OnGet();
-			gameObject.SetActive(true);
-			
-			if (time == 0) {
-				Initialize();
-				return;
-			}
-			
-			StartCoroutine(SpawnFX(time));
-		}
-		
 		public override void OnGet() {
 			foreach (UUIActionListItem action in actions) {
+				InitializedActions.Add(action.action);
 				action.action.Initialize(this);
-				actionDict[action.key] = action.action;
+				if (lifeCycle.phase != LifeCyclePhase.Getting) return;
 			}
-			
-			GetTask.Execute(this);
-			
-			rectTransform = GetComponent<RectTransform>();
-			
-			rectTransform.anchoredPosition = initialPosition;
-			rectTransform.localScale       = initialScale;
+			Opened = true;
+			OnOpen();
 		}
 
 		protected override void OnRelease() {
-			foreach (UUIActionListItem action in actions) {
-				action.action.Uninitialize(this);
-			}
-			
-			ReleaseTask.Execute(this);
+			foreach (UUIAction Action in InitializedActions) Action.Uninitialize(this);
+			InitializedActions.Clear();
+			if (Opened) { Opened = false; OnClose(); }
 			
 			UCategory = null;
 			base.OnRelease();
 		}
 
-		protected override void PrepareSpawnFX() { }
-
-		protected override void FinishSpawnFX() { }
-
-		protected override IEnumerator SpawnFX(float duration) {
-			yield return new WaitForSecondsRealtime(duration);
-			Initialize();
-		}
-
-		protected override void PrepareDespawnFX() { }
-
-		protected override IEnumerator DespawnFX(float duration) {
-			if (animator) animator.SetTrigger(Close);
-			yield return new WaitForSeconds(duration);
-			UUIPool.instance.Close(gameObject, true);
-		}
 	}
 }

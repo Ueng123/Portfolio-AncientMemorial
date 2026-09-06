@@ -18,11 +18,9 @@ namespace UengSystem.Objects {
 			script = GetComponent<UObject>();
 			
 			if (!InitialObject) return;
-			script.OnFirstGet();
-			script.OnGet();
-			script.Initialize();
 			if (ID       != "") script.ID       = ID;
 			if (Category != "") script.Category = Category;
+			script.Get(PlayEffect: false);
 		}
 	}
 }

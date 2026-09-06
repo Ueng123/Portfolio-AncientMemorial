@@ -252,6 +252,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: -30}
   initialScale: {x: 0.75, y: 0.75, z: 1}
   openTime: 0.01
+  GettingAnimation: c2Open
   closeTime: 0.1
   actions:
   - key: HealthSlider
@@ -265,6 +266,102 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 350172562700894439
+      type: {class: UFloatToInt, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        floatValue:
+          rid: 350172562700894445
+        saveFloatDigits: 1
+        floatToIntegerMode: 0
+    - rid: 350172562700894442
+      type: {class: UFloatToInt, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        floatValue:
+          rid: 350172562700894448
+        saveFloatDigits: 1
+        floatToIntegerMode: 0
+    - rid: 350172562700894445
+      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetEntity:
+          rid: 350172562700894457
+        type: 2
+    - rid: 350172562700894448
+      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetEntity:
+          rid: 350172562700894451
+        type: 1
+    - rid: 350172562700894451
+      type: {class: UEntityByID, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        ID:
+          rid: 350172562700894454
+    - rid: 350172562700894454
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: Crystal
+    - rid: 350172562700894457
+      type: {class: UEntityByID, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        ID:
+          rid: 350172562700894460
+    - rid: 350172562700894460
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: Crystal
+    - rid: 350172584924151982
+      type: {class: UDiv, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        A:
+          rid: 350172584924151984
+        B:
+          rid: 350172584924151986
+    - rid: 350172584924151984
+      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetEntity:
+          rid: 350172584924151988
+        type: 2
+    - rid: 350172584924151986
+      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetEntity:
+          rid: 350172584924151990
+        type: 1
+    - rid: 350172584924151988
+      type: {class: UEntityByID, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        ID:
+          rid: 350172584924151994
+    - rid: 350172584924151990
+      type: {class: UEntityByID, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        ID:
+          rid: 350172584924151992
+    - rid: 350172584924151992
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: Crystal
+    - rid: 350172584924151994
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: Crystal
     - rid: 5909658922870112922
       type: {class: UString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
@@ -283,49 +380,13 @@ MonoBehaviour:
       data:
         dynamicType: 0
         number:
-          rid: 5909658922870112942
+          rid: 350172562700894439
     - rid: 5909658922870112934
       type: {class: UNumberString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:
         dynamicType: 0
         number:
-          rid: 5909658922870112938
-    - rid: 5909658922870112938
-      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetEntity:
-          rid: 5909658922870112946
-        type: 1
-    - rid: 5909658922870112942
-      type: {class: UEntityStat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetEntity:
-          rid: 5909658922870112954
-        type: 2
-    - rid: 5909658922870112946
-      type: {class: UEntityByID, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        ID:
-          rid: 5909658922870112950
-    - rid: 5909658922870112950
-      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        pureValue: Crystal
-    - rid: 5909658922870112954
-      type: {class: UEntityByID, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        ID:
-          rid: 5909658922870112958
-    - rid: 5909658922870112958
-      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        pureValue: Crystal
+          rid: 350172562700894442
     - rid: 8985605447328989325
       type: {class: USliderAction, ns: UengSystem.UI.USliders, asm: Assembly-CSharp}
       data:
@@ -333,7 +394,7 @@ MonoBehaviour:
         initialValue:
           rid: -2
         value:
-          rid: -2
+          rid: 350172584924151982
         color:
           rid: -2
         condition: 0

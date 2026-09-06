@@ -1,9 +1,9 @@
-﻿using UengSystem.States.EnemyStates;
-using UengSystem.States.PlayerStates.WeaponAttackState.Crossbow;
-using UengSystem.States.PlayerStates.WeaponAttackState.Shield;
-using UengSystem.States.PlayerStates.WeaponAttackState.Sword;
+﻿using AncientMemorial.States.EnemyStates;
+using AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow;
+using AncientMemorial.States.PlayerStates.WeaponAttackState.Shield;
+using AncientMemorial.States.PlayerStates.WeaponAttackState.Sword;
 
-namespace UengSystem.States.PlayerStates.WeaponAttackState {
+namespace AncientMemorial.States.PlayerStates.WeaponAttackState {
 	public abstract class PlayerWeaponAttack : PlayerState, IAttackState {
 
 		public abstract float attackTime       { get; }

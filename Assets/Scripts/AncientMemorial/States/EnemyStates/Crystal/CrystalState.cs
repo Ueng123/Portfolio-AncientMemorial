@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using AncientMemorial.Entities;
 using AncientMemorial.Entities.Enemies;
 using AncientMemorial.Projectiles;
 using UengSystem.ObjectPool;
@@ -7,7 +6,7 @@ using UengSystem.Objects;
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Crystal {
+namespace AncientMemorial.States.EnemyStates.Crystal {
 	public abstract class CrystalState : EnemyState {
 		public CrystalBoss crystal;
 		
@@ -18,7 +17,7 @@ namespace UengSystem.States.EnemyStates.Crystal {
 		}
 		
 		protected void ShootMissile(Vector2 pos, float rot, float speed = 13.5f, float timeBeforeLockOn = 0, float lockOnDuration = 0f) {
-			GameObject missile = UObjectPool.instance.Get("CrystalMissile", pos);
+			GameObject missile = UObject.Get("CrystalMissile", pos, PlayEffect: false);
 			
 			CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
 			crystalMissile.owner              = crystal;
@@ -32,7 +31,7 @@ namespace UengSystem.States.EnemyStates.Crystal {
 		}
 		
 		protected void ShootBigMissile(Vector2 pos, float rot, float speed = 13.5f, float timeBeforeLockOn = 0, float lockOnDuration = 0f) {
-			GameObject missile = UObjectPool.instance.Get("CrystalBigMissile", pos);
+			GameObject missile = UObject.Get("CrystalBigMissile", pos, PlayEffect: false);
 			
 			CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
 			crystalMissile.owner              = crystal;
@@ -49,7 +48,7 @@ namespace UengSystem.States.EnemyStates.Crystal {
 			List<UObject> missiles = UObject.GetUObjects("crystalMissile");
 			for (int i = missiles.Count - 1; i >= 0; i--) {
 				UObject missile = missiles[i];
-				UObjectPool.instance.Release(missile.gameObject);
+				missile.Release(PlayEffect: false);
 			}
 		}
 

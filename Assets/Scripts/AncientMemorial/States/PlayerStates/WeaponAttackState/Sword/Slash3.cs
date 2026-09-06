@@ -1,8 +1,9 @@
-﻿using AncientMemorial.Entities;
+using UengSystem.Objects;
+using AncientMemorial.Entities;
 using UengSystem.ObjectPool;
 using UnityEngine;
 
-namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
+namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 	public class Slash3 : PlayerWeaponAttack {
 		private float oldAnimatorSpeed;
 		
@@ -25,7 +26,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 			
 				Vector2 hitboxSize = new (1f, 0.7f);
 			
-				GameObject obj = UObjectPool.instance.Get("SlashEffect", (Vector2)player.transform.position + new Vector2(0.48f*(player.lookingLeft?-1:1)+Random.Range(-0.1f, 0.1f),Random.Range(-0.1f, 0.1f)));
+				GameObject obj = UObject.Get("SlashEffect", (Vector2)player.transform.position + new Vector2(0.48f*(player.lookingLeft?-1:1)+Random.Range(-0.1f, 0.1f),Random.Range(-0.1f, 0.1f)), PlayEffect: false);
 				obj.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(-5f, 5f));
 				obj.transform.localScale = new Vector3(0.9f, 1.2f);
 			
@@ -38,7 +39,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Sword {
 			}
 			
 			if (step == 1 && isProgress(1)) {
-				player.state = GetDefaultState();
+				player.entityState = GetDefaultState();
 			}
 		}
 		

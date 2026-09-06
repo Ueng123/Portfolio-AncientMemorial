@@ -2,7 +2,7 @@
 using AncientMemorial.Objects;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton.Warrior {
+namespace AncientMemorial.States.EnemyStates.Skeleton.Warrior {
 	public class SkeletonWarriorPierce : SkeletonAttack {
 		public override float attackTime => 1.833f;
 		
@@ -45,7 +45,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Warrior {
 
 			if (step == 1 && isProgress(1)) {
 				_attackArea = null;
-				enemy.state = GetState();
+				enemy.entityState = GetState();
 			}
 		}
 

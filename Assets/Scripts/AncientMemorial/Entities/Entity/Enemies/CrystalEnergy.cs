@@ -3,7 +3,7 @@ using System.Collections;
 using AncientMemorial.Cameras;
 using UengSystem;
 using UengSystem.ObjectPool;
-using UengSystem.States.EnemyStates.Crystal.Phase3;
+using UengSystem.Objects.LifeCycle;
 using UengSystem.UAction;
 using UengSystem.UI;
 using UengSystem.UI.UTexts;
@@ -37,8 +37,8 @@ namespace AncientMemorial.Entities.Enemies {
 			
 			if (stat.HP > 0) {
 				GameManager.SetTimeScale(0, 0.05f);
-				CameraBrain.instance.ShakeLerp(2f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
-				CameraBrain.instance.ZoomLerp(-0.2f);
+				CameraBrain.instance.ShakeLerp(1f, 5);
+				CameraBrain.instance.ZoomLerp(-0.1f);
 			}
 		}
 
@@ -50,8 +50,9 @@ namespace AncientMemorial.Entities.Enemies {
 
 		public override void Attack() { }
 		
-		protected override void PrepareDespawnFX() {
-			ToggleColliders(false);
+		public override void OnFirstGet() {
+			SetDefaultStates(ReleasingState: new AnimationReleasing(this, "dead"));
+			base.OnFirstGet();
 		}
 
 		protected override void Death() {
@@ -62,10 +63,5 @@ namespace AncientMemorial.Entities.Enemies {
 			base.Death();
 		}
 		
-		protected override IEnumerator DespawnFX(float duration) {
-			animator.Play("dead");
-			yield return new WaitForSeconds(duration);
-			UObjectPool.instance.Release(gameObject, -1);
-		}
 	}
 }

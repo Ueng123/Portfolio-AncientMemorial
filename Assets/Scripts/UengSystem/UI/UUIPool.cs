@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UengSystem.Managers;
+using System;
+using UengSystem.Objects;
 using UengSystem.ObjectPool;
 using UengSystem.UDebug;
 using UengSystem.UI.UUIQueues;
@@ -14,8 +16,16 @@ namespace UengSystem.UI {
 		private readonly Dictionary<string, ObjectPool<GameObject>> pools            = new (15);
 		private readonly Dictionary<string, Transform>              roots            = new (15);
 		private readonly Dictionary<string, UUIQueue>               uuiQueue         = new (5);
+		private readonly HashSet<UUI> Owned = new();
+		private bool ShuttingDown;
 		
 		public override void Initialize() {
+			if (pools.Count != 0) throw new InvalidOperationException("UUIPool is already initialized.");
+			var Keys = new HashSet<string>(StringComparer.Ordinal);
+			foreach (GameObject Prefab in prefabList) {
+				if (!Prefab || !Prefab.GetComponent<UUI>() || !Keys.Add(Prefab.name))
+					throw new InvalidOperationException("UI prefab keys must be unique UUI prefab names.");
+			}
 			pools.Clear();
 			roots.Clear();
 			uuiQueue.Clear();
@@ -24,21 +34,24 @@ namespace UengSystem.UI {
 				Transform newRoot  = new GameObject($"{prefab.name} root").transform;
 				roots[prefab.name] = newRoot;
 				newRoot.parent     = transform;
+				newRoot.gameObject.SetActive(false);
 				
 				pools[prefab.name] = new ObjectPool<GameObject>(
 					createFunc: () => {
 						GameObject obj = Instantiate(prefab, newRoot);
 						obj.name = prefab.name;
 							
-						IObjectPoolable script = obj.GetComponent<IObjectPoolable>();
-						script.OnFirstGet();
-						
 						obj.SetActive(false);
+						UUI Target = obj.GetComponent<UUI>();
+						Target.OnFirstGet();
+						string Key = prefab.name;
+						Target.BindPool(Item => ReturnToPool(Key, (UUI)Item));
+						Owned.Add(Target);
 						return obj;
 					},
 					actionOnGet: (obj) => {  },
 					actionOnRelease: (obj) => {  },
-					actionOnDestroy: Destroy,
+					actionOnDestroy: Obj => { Owned.Remove(Obj.GetComponent<UUI>()); Destroy(Obj); },
 					collectionCheck: true,
 					defaultCapacity: 1,
 					maxSize: 100
@@ -46,39 +59,30 @@ namespace UengSystem.UI {
 			}
 		}
 
-		public GameObject Open(string key, UCanvas canvas) {
-			DebugManager.Log("[UUI] UUI OPENNING");
-			
-			GameObject obj = pools[key].Get();
-			UUI UI = obj.GetComponent<UUI>();
-
-			obj.transform.SetParent(canvas.transform);
-			
-			UI.Get(UI.openTime);
-			UI.canvas = canvas;
-			UI.OnOpen();
-			
-			obj.SetActive(true);
-
-			UI.isReleased = false;
-			return obj;
+		internal UUI Acquire(string PrefabKey, UCanvas Canvas) {
+			if (ShuttingDown) throw new InvalidOperationException("UUIPool is shutting down.");
+			if (!Canvas) throw new ArgumentNullException(nameof(Canvas));
+			if (PrefabKey == null || !pools.TryGetValue(PrefabKey, out ObjectPool<GameObject> Pool))
+				throw new KeyNotFoundException("Unregistered UI prefab: " + PrefabKey);
+			UUI Target = Pool.Get().GetComponent<UUI>();
+			Target.transform.SetParent(Canvas.transform, false);
+			Target.canvas = Canvas;
+			return Target;
 		}
 		
-		public void Close(GameObject obj, bool finalRelease = false) {
-			UUI UI = obj.GetComponent<UUI>();
-			if (UI.isReleased) return;
-			
-			UI.Release(finalRelease?-1:UI.closeTime);
+		private void ReturnToPool(string Key, UUI Target) {
+			if (ShuttingDown || Target.lifeCycle.isShuttingDown || Target.lifeCycle.isFaulted) return;
+			Target.gameObject.SetActive(false);
+			Target.transform.SetParent(roots[Key], false);
+			pools[Key].Release(Target.gameObject);
+		}
 
-			if (!finalRelease) return;
-			DebugManager.Log("[UUI] UUI CLOSED");
-			
-			UI.OnClose();
-			obj.SetActive(false);
-			obj.transform.SetParent(roots[obj.name]);
-			
-			UI.isReleased = true;
-			pools[obj.name].Release(obj);
+		public override void Uninitialize() {
+			ShuttingDown = true;
+			foreach (UUI Target in Owned) if (Target) Target.lifeCycle.Shutdown();
+			foreach (UUIQueue Queue in uuiQueue.Values) Queue.Cancel();
+			uuiQueue.Clear();
+			base.Uninitialize();
 		}
 
 		public void AddUUIQueue(string key, UUIQueueItem queueItem) {

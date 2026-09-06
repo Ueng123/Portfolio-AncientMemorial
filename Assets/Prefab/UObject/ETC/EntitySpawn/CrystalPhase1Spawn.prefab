@@ -107,6 +107,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Interactions.Interaction
   whenInitialize: 3
+  GettingDuration: 1
+  ReleasingDuration: 1
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -153,8 +155,7 @@ MonoBehaviour:
         TargetObject: {fileID: 7121936188299108062, guid: 3cb538ce53c14a648ac07b4a46c1f24a, type: 3}
         position:
           rid: 5909658992151888095
-        spawnTime:
-          rid: 5909658992151888142
+        PlayEffect: 1
         ID:
           rid: -2
         Category:

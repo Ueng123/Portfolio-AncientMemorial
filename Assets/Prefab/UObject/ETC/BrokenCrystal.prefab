@@ -108,6 +108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Interactions.Interaction
   whenInitialize: 3
+  GettingDuration: 1
+  ReleasingDuration: 1
   whiteSpawnSprite: {fileID: 6855052853220869254, guid: c7bcf3019fbfe4b43a82cdea950775ce, type: 3}
   colorSpawnSprite: {fileID: 6855052853220869254, guid: c7bcf3019fbfe4b43a82cdea950775ce, type: 3}
   rigidbody2D: {fileID: 0}

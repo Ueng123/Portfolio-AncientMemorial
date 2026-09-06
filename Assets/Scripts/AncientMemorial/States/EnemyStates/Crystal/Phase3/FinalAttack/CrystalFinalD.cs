@@ -1,8 +1,7 @@
-﻿namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
-	using AncientMemorial.Objects;
-	using UengSystem.Utility;
-	using UnityEngine;
+﻿using UengSystem.Utility;
+using UnityEngine;
 
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack {
 	public class CrystalFinalD : CrystalPhase3Attack {
 		private StopWatch barrageMissileTimer  = new StopWatch();
 		private float     barrageMissileTime   = 1f;
@@ -52,7 +51,7 @@
 			BigMissileRoutine();
 
 			if (isProgress(1)) {
-				crystal.state = new CrystalFinalE().Init(stateMachine);
+				crystal.entityState = new CrystalFinalE().Init(stateMachine);
 			}
 		}
 

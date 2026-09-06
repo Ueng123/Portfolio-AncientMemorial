@@ -1,7 +1,7 @@
 ﻿using AncientMemorial.Objects;
 using UengSystem.Utility;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalSemiHugeCross : CrystalPhase3Attack {
 		private const int   MissilesPerWave   = 8;
 		private const int   WaveCount         = 4;
@@ -47,7 +47,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 			if (step < totalMissileCount) return;
 			if (allMissilesFiredTimer.CheckIn(2f)) return;
 			
-			crystal.state = GetState();
+			crystal.entityState = GetState();
 		}
 		
 		private void MainRoutine() {

@@ -2,7 +2,7 @@
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton {
+namespace AncientMemorial.States.EnemyStates.Skeleton {
 	public class SkeletonWander : SkeletonState {
 		
 		public SkeletonWander(float maxOffsetSize, float updatePositionTerm) {

@@ -1,5 +1,4 @@
-﻿using UengSystem.States.EnemyStates;
-using UengSystem.Utility;
+﻿using UengSystem.Utility;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 	public abstract class CrystalPhase2Attack : CrystalPhase2State, IAttackState {

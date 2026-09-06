@@ -494,6 +494,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
   openTime: 1.1
+  GettingAnimation: open
   closeTime: 1.1
   actions:
   - key: SwordButton

@@ -14,12 +14,11 @@ namespace UengSystem.UI {
 			
 			if (!InitialObject) return;
 			
-			script.OnGet();
-			script.Initialize();
-			
 			script.ID        = ID;
 			script.Category  = "UI";
 			script.UCategory = Category;
+			script.canvas = GetComponentInParent<UCanvas>();
+			script.Get(PlayEffect: false);
 		}
 	}
 }

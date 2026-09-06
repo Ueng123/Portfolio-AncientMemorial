@@ -46,8 +46,7 @@ namespace UengSystem {
        private bool initialized = false;
        
        public static void ApplyStaticBufferedLists() {
-          UObject.instances.Apply();
-          Entity.entities.Apply();
+		Entity.entities.Synchronize();
        }
        
        public static void ClearFramePerLists() {
@@ -104,9 +103,7 @@ namespace UengSystem {
                    if (!UUIPool.instance) return false;
                    UUIPool.instance.Initialize();
 
-                   GameObject gameLoadObj = UUIPool.instance.Open("GameLoadingUI", instance.mainScreenCanvas);
-                   UUI        gameLoadUI  = gameLoadObj.GetComponent<UUI>();
-                   gameLoadUI.ID = "loadingUI";
+                   UUI.Get("GameLoadingUI", instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI");
 
                    return true;
                 },
@@ -172,9 +169,7 @@ namespace UengSystem {
                    if (!UUIPool.instance) return false;
                    UUIPool.instance.Initialize();
 
-                   GameObject gameLoadObj = UUIPool.instance.Open("GameLoadingUI", instance.mainScreenCanvas);
-                   UUI        gameLoadUI  = gameLoadObj.GetComponent<UUI>();
-                   gameLoadUI.ID = "loadingUI";
+                   UUI.Get("GameLoadingUI", instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI");
 
                    return true;
                 },
@@ -238,6 +233,7 @@ namespace UengSystem {
        }
        
        private IEnumerator InitializeGame() {
+          UObject.BeginSceneLifeCycles();
           SetTimeScale(1);
           // UPureFloat.SetValue("InitializeLoading", 0);
           
@@ -255,7 +251,7 @@ namespace UengSystem {
           yield return new WaitForSeconds(0.1f);
           
           DebugManager.Log("Initializing Done!");
-          UUIPool.instance.Close(UUI.GetUUI("loadingUI").gameObject);
+          UUI.GetUUI("loadingUI").Release(PlayEffect: true);
           
           initialized = true;
        }
@@ -331,14 +327,15 @@ namespace UengSystem {
           
           try { EventManager.instance.EventRoutine(); }
           catch (Exception e) {
-             DebugManager.LogError("LateUpdate > GameManager.ClearFramePerLists()", e, gameObject);
+             DebugManager.LogError("Update > EventManager.EventRoutine()", e, gameObject);
           }
        }
 
        private void LateUpdate() {
-          if (!initialized) return;
+          if (!initialized) { UObject.LifeCycleRoutine(); return; }
           
           UObject.LateUpdateRoutine();
+          UObject.LifeCycleRoutine();
           
           try { ClearFramePerLists(); }
           catch (Exception e) {
@@ -366,6 +363,7 @@ namespace UengSystem {
        }
        
        public static void OnSceneUnload() {
+          UObject.ShutdownLifeCycles();
           Time.timeScale = 1;
           SetTimeScale(1);
           ResetStaticVariables();

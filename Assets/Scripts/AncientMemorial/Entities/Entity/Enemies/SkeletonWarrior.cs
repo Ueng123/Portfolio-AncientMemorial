@@ -1,6 +1,6 @@
-﻿using UengSystem.States.EnemyStates;
-using UengSystem.States.EnemyStates.Skeleton;
-using UengSystem.States.EnemyStates.Skeleton.Warrior;
+﻿using AncientMemorial.States.EnemyStates;
+using AncientMemorial.States.EnemyStates.Skeleton;
+using AncientMemorial.States.EnemyStates.Skeleton.Warrior;
 
 namespace AncientMemorial.Entities.Enemies {
 	public class SkeletonWarrior : Skeleton {
@@ -21,7 +21,7 @@ namespace AncientMemorial.Entities.Enemies {
 		protected override Entity GetTargetEntity() => player;
 
 		public override void Attack() {
-			state = pierce;
+			entityState = pierce;
 		}
 	}
 }

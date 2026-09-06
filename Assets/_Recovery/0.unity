@@ -4780,8 +4780,7 @@ MonoBehaviour:
         TargetObject: {fileID: 2128586633492397799, guid: befb2af89be8d794b84065c31055cb6d, type: 3}
         position:
           rid: 8722662442491445419
-        spawnTime:
-          rid: -2
+        PlayEffect: 0
         ID:
           rid: -2
         Category:

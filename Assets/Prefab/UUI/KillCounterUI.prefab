@@ -312,6 +312,7 @@ MonoBehaviour:
   initialPosition: {x: 20, y: -20}
   initialScale: {x: 0.5, y: 0.5, z: 1}
   openTime: 1
+  GettingAnimation: open
   closeTime: 1
   actions:
   - key: counter

@@ -9,7 +9,6 @@ using AncientMemorial.Objects;
 using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
-using UengSystem.States;
 using UengSystem.UAction;
 using UengSystem.UDebug;
 using UengSystem.Utility;
@@ -19,11 +18,10 @@ using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;	
 
 namespace UengSystem.Objects {
-	public class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, ITaskable {
+	public partial class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, ITaskable {
 
 		private static readonly Dictionary<string, UObject>       IDTable       = new();
 		private static readonly Dictionary<string, List<UObject>> CategoryTable = new();
-		public static           BufferedList<UObject>             instances     = new();
 
 		public WhenInitialize whenInitialize;
 
@@ -37,13 +35,15 @@ namespace UengSystem.Objects {
 				if (value == null) {
 					if (_ID == null) return;
 
-					IDTable[_ID] = null;
+					if (IDTable.TryGetValue(_ID, out UObject Current) && ReferenceEquals(Current, this)) IDTable.Remove(_ID);
 					_ID          = null;
 
 					return;
 				}
 
 				if (_ID != null) throw new InvalidOperationException("u just tried to set ID twice twin :(");
+				if (IDTable.TryGetValue(value, out UObject Existing) && Existing && !ReferenceEquals(Existing, this))
+					throw new InvalidOperationException("Duplicate runtime UObject ID: " + value);
 
 				IDTable[value] = this;
 				_ID            = value;
@@ -81,7 +81,7 @@ namespace UengSystem.Objects {
 
 		public Sprite whiteSpawnSprite;
 		public Sprite colorSpawnSprite;
-		public bool   isReleased { get; set; }
+		public bool isReleased => lifeCycle.phase == UengSystem.Objects.LifeCycle.LifeCyclePhase.Released;
 
 		public AudioSource PlaySFX(string clipName,    Vector2 position = default, bool  isLocalPosition = true,
 								   float  volume = 1f, float   pitch    = 1f,      float pan = 0f, float spread = 0f,
@@ -97,184 +97,12 @@ namespace UengSystem.Objects {
 												 loop);
 		}
 
-		// Routine System //
-		protected virtual void EarlyRoutine() {
-			executeRoutineMethodCache[GetType()] &= 0b_0001_1110;
-			earlyRoutineObjects.Remove(this);
-		}
-
-		protected virtual void Routine() {
-			executeRoutineMethodCache[GetType()] &= 0b_0001_1101;
-			routineObjects.Remove(this);
-		}
-
-		protected virtual void LateRoutine() {
-			executeRoutineMethodCache[GetType()] &= 0b_0001_0111;
-			lateRoutineObjects.Remove(this);
-		}
-
-		protected virtual void FixedRoutine() {
-			executeRoutineMethodCache[GetType()] &= 0b_0000_1111;
-			fixedRoutineObjects.Remove(this);
-		}
-
-		public static BufferedList<UObject> earlyRoutineObjects = new BufferedList<UObject>(100, 10);
-		public static BufferedList<UObject> routineObjects      = new BufferedList<UObject>(100, 10);
-		public static BufferedList<UObject> eventRoutineObjects = new BufferedList<UObject>(100, 10);
-		public static BufferedList<UObject> lateRoutineObjects  = new BufferedList<UObject>(100, 10);
-		public static BufferedList<UObject> fixedRoutineObjects = new BufferedList<UObject>(100, 10);
-		
-		private readonly Dictionary<Type, byte> executeRoutineMethodCache = new Dictionary<Type, byte>();
-
-		private Queue<Action> processToUpdate;
-		private Queue<Action> processToFixedUpdate;
-
-		public void RegisterRoutineList() {
-			executeRoutineMethodCache.TryAdd(GetType(), 0b_0001_1111);
-			byte executeRoutineMethod = executeRoutineMethodCache[GetType()];
-			
-			if ((executeRoutineMethod &0b_0000_0001)!=0) earlyRoutineObjects.Add(this);
-			if ((executeRoutineMethod &0b_0000_0010)!=0) routineObjects     .Add(this);
-			if ((executeRoutineMethod &0b_0000_0100)!=0) eventRoutineObjects.Add(this);
-			if ((executeRoutineMethod &0b_0000_1000)!=0) lateRoutineObjects .Add(this);
-			if ((executeRoutineMethod &0b_0001_0000)!=0) fixedRoutineObjects.Add(this);
-		}
-		
-		public void UnregisterRoutineList() {
-			byte executeRoutineMethod = executeRoutineMethodCache.GetValueOrDefault(GetType(), (byte)0b_0001_1111);
-			
-			if ((executeRoutineMethod &0b_0000_0001)!=0) earlyRoutineObjects.Remove(this);
-			if ((executeRoutineMethod &0b_0000_0010)!=0) routineObjects     .Remove(this);
-			if ((executeRoutineMethod &0b_0000_0100)!=0) eventRoutineObjects.Remove(this);
-			if ((executeRoutineMethod &0b_0000_1000)!=0) lateRoutineObjects .Remove(this);
-			if ((executeRoutineMethod &0b_0001_0000)!=0) fixedRoutineObjects.Remove(this);
-		}
-		
-		public static void UpdateRoutine() {
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.Processing;
-			for (int i = 0; i < instances.Count; i++) {
-				UObject obj = instances[i];
-				try {
-					obj.ExecuteUpdateProcess();
-				}
-				catch (Exception e) {
-					DebugManager.LogError(
-						$"Update > UObject.UpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).ExecuteUpdateProcess()",
-						e, obj.gameObject);
-				}
-			}
-
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.EarlyRoutine;
-			earlyRoutineObjects.Apply();
-			for (int i = 0; i < earlyRoutineObjects.Count; i++) {
-				UObject obj = earlyRoutineObjects[i];
-				try {
-					obj.EarlyRoutine();
-				}
-				catch (Exception e) {
-					DebugManager.LogError(
-						$"Update > UObject.UpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).EarlyRoutine()",
-						e, obj.gameObject);
-				}
-			}
-
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.Routine;
-			routineObjects.Apply();
-			for (int i = 0; i < routineObjects.Count; i++) {
-				UObject obj = routineObjects[i];
-				try {
-					obj.Routine();
-				}
-				catch (Exception e) {
-					DebugManager.LogError(
-						$"Update > UObject.UpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).Routine()", e,
-						obj.gameObject);
-				}
-			}
-		}
-
-		public static void LateUpdateRoutine() {
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.LateRoutine;
-			lateRoutineObjects.Apply();
-			for (int i = 0; i < lateRoutineObjects.Count; i++) {
-				UObject obj = lateRoutineObjects[i];
-				try {
-					obj.LateRoutine();
-				}
-				catch (Exception e) {
-					DebugManager.LogError(
-						$"LateUpdate > UObject.UpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).LateRoutine()",
-						e, obj.gameObject);
-				}
-			}
-
-			GameManager.instance.currentUpdatePhase = UpdateRoutineType.RoutineEnd;
-		}
-		
-		public static void FixedUpdateRoutine() {
-			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.Processing;
-			for (int i = 0; i < instances.Count; i++) {
-				UObject obj = instances[i];
-				try {
-					obj.ExecuteFixedUpdateProcess();
-				}
-				catch (Exception e) {
-					DebugManager.LogError(
-						$"FixedUpdate > UObject.FixedUpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).ExecuteFixedUpdateProcess()",
-						e, obj.gameObject);
-				}
-			}
-
-			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.FixedRoutine;
-			fixedRoutineObjects.Apply();
-			for (int i = 0; i < fixedRoutineObjects.Count; i++) {
-				UObject obj = fixedRoutineObjects[i];
-				try {
-					obj.FixedRoutine();
-				}
-				catch (Exception e) {
-					DebugManager.LogError(
-						$"FixedUpdate > UObject.FixedUpdateRoutine() > {obj.gameObject.name}({obj.GetType().Name}).FixedRoutine()",
-						e, obj.gameObject);
-				}
-			}
-
-			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.RoutineEnd;
-		}
-		
-		// Process System //
-		protected void AddProcessToUpdate(Action process) {
-			processToUpdate.Enqueue(process);
-		}
-
-		protected void AddProcessToFixedUpdate(Action process) {
-			processToFixedUpdate.Enqueue(process);
-		}
-		
-		private void ExecuteUpdateProcess() {
-			if (processToUpdate.Count == 0) return;
-			
-			foreach (Action process in processToUpdate) {
-				process.Invoke();
-			}
-			
-			processToUpdate.Clear();
-		}
-		
-		private void ExecuteFixedUpdateProcess() {
-			if (processToFixedUpdate.Count == 0) return;
-			
-			foreach (Action process in processToFixedUpdate) {
-				process.Invoke();
-			}
-			
-			processToFixedUpdate.Clear();
-		}
 		
 		// IActionable //
 		private readonly List<UAction.UAction> runningActions = new();
 
 		public void RegisterAction(UAction.UAction action) {
+			if (!canStartOwnedWork) { action.Cancel(); return; }
 			runningActions.Add(action);
 		}
 		
@@ -283,8 +111,9 @@ namespace UengSystem.Objects {
 		}
 
 		public void StopAllUActions() {
-			foreach (UAction.UAction action in runningActions) { action.Cancel(); }
+			UAction.UAction[] Actions = runningActions.ToArray();
 			runningActions.Clear();
+			foreach (UAction.UAction Action in Actions) Action.Cancel();
 		}
 		
 		// Components //
@@ -312,17 +141,6 @@ namespace UengSystem.Objects {
 			return CategoryTable.ContainsKey(category) && CategoryTable[category].Count > 0;
 		}
 
-		public static void ResetUObjects() {
-			instances.ClearImmediately();
-			earlyRoutineObjects?.ClearImmediately(); 
-			routineObjects?.ClearImmediately(); 
-			lateRoutineObjects?.ClearImmediately(); 
-			eventRoutineObjects?.ClearImmediately();
-			fixedRoutineObjects?.ClearImmediately();
-			
-			IDTable.Clear();
-			CategoryTable.Clear();
-		}
 
 		// IEventAgent Method //
 		public void SendEvent(EventType type, EventPriority layer, IEventData data = null) {
@@ -400,88 +218,6 @@ namespace UengSystem.Objects {
 			}
 		}
 		
-		public const int updatePhaseCount      = 6;
-		public const int fixedUpdatePhaseCount = 3;
-
-		// 게임 오브젝트가 오브젝트 풀을 통해 Instantiate 되었을때 실행 //
-		public virtual void OnFirstGet() {
-			// GET COMPONENTS //
-			rigidbody2D    = GetComponent<Rigidbody2D>();
-			spriteRenderer = GetComponent<SpriteRenderer>();
-			animator       = GetComponent<Animator>();
-			
-			// INITIALIZE PROCESS //
-			processToUpdate      = new Queue<Action>(); // sent from FixedUpdate
-			processToFixedUpdate = new Queue<Action>(); // sent from Update
-			
-			// INITIALIZE OBJECT //
-			if (whenInitialize == WhenInitialize.Never) return;
-			RegisterToAllChildren(transform);
-		}
-
-		private DelayedAction spawnFXCache = null;
-		public Task          GetTask;
-		
-		// 게임 오브젝트가 Pool.Get()되었을때 실행 //
-		public virtual void Get(float time) {
-			if (whenInitialize is WhenInitialize.OnGet or WhenInitialize.Both) ApplyToAllChildren();
-			
-			StopAllCoroutines();
-			
-			GetTask.Execute(this, this);
-			OnGet();
-			
-			if (time == 0) {
-				Initialize();
-				ToggleColliders(true);
-				return;
-			}
-			
-			GameObject spawnFX = UObjectPool.instance.Get("SpawnEffect", transform.position);
-			spawnFX.GetComponent<SpawnEffectHelper>().t_s = time;
-			
-			PrepareSpawnFX();
-			Coroutine spawnCoroutine = StartCoroutine(SpawnFX(time));
-			
-			spawnFXCache = new DelayedAction(
-				time,
-				() => {
-					FinishSpawnFX();
-					spawnFXCache = null;
-				},
-				() => {
-					StopCoroutine(spawnCoroutine);
-					FinishSpawnFX();
-					spawnFXCache = null;
-				}, this);
-			
-			spawnFXCache.ExecuteDA();
-		}
-		
-		public Task ReleaseTask;
-		
-		public virtual void Release(float time) {
-			if (isReleased) return;
-			spawnFXCache?.Cancel();
-			
-			ID        = null;
-			Category  = null;
-			
-			switch (time) {
-				case < 0:
-					OnFinalRelease();
-					break;
-				case 0:
-					OnReleaseCall();
-					OnFinalRelease();
-					break;
-				default:
-					OnReleaseCall();
-					PrepareDespawnFX();
-					StartCoroutine(DespawnFX(time));
-					break;
-			}
-		}
 
 		private bool                   isRigidbody2DFrozen = false;
 		private Vector2                linearVelocityBeforeFreeze;
@@ -490,6 +226,7 @@ namespace UengSystem.Objects {
 
 		private   bool  isAnimatorFrozen = false;
 		protected float animatorSpeedBeforeFreeze;
+		private bool AnimatorEnabledBeforeFreeze;
 		
 		public void Freeze() {
 			FreezeRigidbody2D();
@@ -517,6 +254,7 @@ namespace UengSystem.Objects {
 			
 			if (animator) {
 				animatorSpeedBeforeFreeze = animator.speed;
+				AnimatorEnabledBeforeFreeze = animator.enabled;
 				animator.speed            = 0;
 				animator.enabled          = false;
 			}
@@ -544,127 +282,20 @@ namespace UengSystem.Objects {
 			
 			if (animator) {
 				animator.speed   = animatorSpeedBeforeFreeze;
-				animator.enabled = true;
+				animator.enabled = AnimatorEnabledBeforeFreeze;
 			}
 		}
 
 		protected void ToggleColliders(bool targetState) {
 			foreach (Collider2D c in GetComponents<Collider2D>()) {
-				if (c.isTrigger) return;
+				if (c.isTrigger) continue;
 				c.enabled = targetState;
 			}
 		}
 
-		protected Color colorBeforeSpawnFX;
-
-		protected virtual void PrepareSpawnFX() {
-			if (rigidbody2D && rigidbody2D.bodyType!=RigidbodyType2D.Static) rigidbody2D.linearVelocity = Vector2.zero;
-			Freeze();
-			ToggleColliders(false);
-
-			if (spriteRenderer) spriteRenderer.sprite = whiteSpawnSprite ?? spriteRenderer.sprite;
-			if (spriteRenderer) colorBeforeSpawnFX = spriteRenderer.color;
-		}
-
-
-		protected virtual IEnumerator SpawnFX(float duration) {
-			float elapsed = 0f;
-
-
-			while (elapsed < duration) {
-				elapsed += Time.deltaTime;
-
-				float t = elapsed / duration;
-
-				Color color = new(Mathf.Lerp(GameManager.instance.spawnColor.r, 1, t),
-								  Mathf.Lerp(GameManager.instance.spawnColor.g, 1, t),
-								  Mathf.Lerp(GameManager.instance.spawnColor.b, 1, t),
-								  Mathf.Lerp(0,                                 1, t));
-
-
-				if (spriteRenderer) spriteRenderer.color = color;
-
-				yield return null;
-			}
-		}
-
-		protected virtual void FinishSpawnFX() {
-			DebugManager.Log("Finish spawning FX");
-			
-			if (spriteRenderer) spriteRenderer.sprite = colorSpawnSprite ?? spriteRenderer.sprite;
-			if (spriteRenderer) spriteRenderer.color = colorBeforeSpawnFX;
-
-			ToggleColliders(true);
-			Unfreeze();
-			
-			Initialize();
-		}
-		
 		public virtual void OnGet() { }
 		
-		public virtual void Initialize() {
-			instances.Add(this);
-			RegisterRoutineList();
-		} 
-
-		protected Color colorBeforeDespawnFX;
-
-		protected virtual void PrepareDespawnFX() {
-			Freeze();
-			
-			ToggleColliders(false);
-			
-			if (spriteRenderer) colorBeforeDespawnFX = spriteRenderer.color;
-		}
-
-		protected virtual IEnumerator DespawnFX(float duration) {
-			float elapsed = 0f;
-			
-			if (spriteRenderer) spriteRenderer.sprite = whiteSpawnSprite ?? spriteRenderer.sprite;
-			
-			while (elapsed < duration) {
-				elapsed += Time.deltaTime;
-
-				float t = elapsed / duration;
-
-
-				Color color = new(GameManager.instance.spawnColor.r,
-								  GameManager.instance.spawnColor.g,
-								  GameManager.instance.spawnColor.b,
-								  Mathf.Lerp(1, 0, t));
-
-
-				if (spriteRenderer) spriteRenderer.color = color;
-
-
-				yield return null;
-			}
-			
-			Unfreeze();
-			if (spriteRenderer) spriteRenderer.color = colorBeforeDespawnFX;
-			
-			UObjectPool.instance.Release(gameObject, -1);
-		}
-
-		protected void OnReleaseCall() {
-			ReleaseTask.Execute(this, this);
-			
-			instances.Remove(this);
-			UnregisterRoutineList();
-			
-			StopAllCoroutines();
-			StopAllUActions();
-			
-			processToUpdate.Clear();
-			processToFixedUpdate.Clear();
-			
-			OnRelease();
-		}
-
-		protected void OnFinalRelease() {
-			Uninitialize();
-			if (whenInitialize is WhenInitialize.OnRelease or WhenInitialize.Both) ApplyToAllChildren();
-		}
+		public virtual void Initialize() { }
 		
 		protected virtual void OnRelease() { }
 		

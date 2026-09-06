@@ -10,14 +10,25 @@ namespace UengSystem.UI.UUIQueues {
 	public class UUIQueue {
 		public  Queue<UUIQueueItem> queue        = new Queue<UUIQueueItem>();
 		private bool                nextAvailable = true;
+		private Coroutine Running;
+		private CoroutineRunner Runner;
+		private bool Cancelled;
+
+		public void Cancel() {
+			Cancelled = true;
+			queue.Clear();
+			if (Runner && Running != null) Runner.StopCoroutine(Running);
+			Running = null;
+		}
 		
 		public void Next(string key) {
-			if (!nextAvailable) return;
+			if (Cancelled || !nextAvailable || queue.Count == 0) return;
 			nextAvailable = false;
 			
 			UUIQueueItem item = queue.Dequeue();
 			
-			CoroutineRunner.instance.StartCoroutine(Routine(key, item));
+			Runner = CoroutineRunner.instance;
+			Running = Runner.StartCoroutine(Routine(key, item));
 			// new DelayedAction(itemUI.openTime + 0.05f, ()=> {
 			// 	new WaitAction(
 			// 		() => !UObject.UObjectExists(key),
@@ -33,30 +44,28 @@ namespace UengSystem.UI.UUIQueues {
 		}
 
 		public IEnumerator Routine(string key, UUIQueueItem queueItem) {
-			WaitForSeconds marginFront = CacheManager.WaitForSecondsCeiling (queueItem.marginFront);
-			WaitForSeconds marginBack  = CacheManager.WaitForSecondsFlooring(queueItem.marginBack);
+			WaitForSecondsRealtime marginFront = new(queueItem.marginFront);
+			WaitForSecondsRealtime marginBack = new(queueItem.marginBack);
 			
 			yield return marginFront;
 			
-			GameObject itemObject = UUIPool.instance.Open(key, GameManager.instance.mainScreenCanvas);
+			if (Cancelled) yield break;
+			GameObject itemObject = UUI.Get(key, GameManager.instance.mainScreenCanvas, Configure: Ui => {
+				Ui.ID = key;
+				queueItem.data.Initialize(Ui);
+			});
 			UUI        itemUI     = itemObject.GetComponent<UUI>();
-			itemUI.ID = key;
-			
-			queueItem.data.Initialize(itemUI);
-			
-			WaitForSeconds openTime  = CacheManager.WaitForSecondsCeiling (itemUI.openTime);
-			WaitForSeconds closeTime = CacheManager.WaitForSecondsFlooring(itemUI.closeTime);
-			
-			yield return openTime;
+			long Life = itemUI.lifeNumber;
+			while (itemUI && itemUI.lifeNumber == Life && itemUI.lifeCycle.phase == Objects.LifeCycle.LifeCyclePhase.Getting) yield return null;
 
 			float elapsed = 0f;
-			while (!itemUI.isReleased && elapsed < queueItem.duration) {
-				elapsed += Time.deltaTime;
+			while (itemUI && itemUI.lifeNumber == Life && itemUI.isActive && elapsed < queueItem.duration) {
+				elapsed += Time.unscaledDeltaTime;
 				yield return null;
 			}
 			
-			if (!itemUI.isReleased) UUIPool.instance.Close(itemUI.gameObject);
-			yield return closeTime;
+			if (itemUI && itemUI.lifeNumber == Life && !itemUI.isReleased) itemUI.Release();
+			while (itemUI && itemUI.lifeNumber == Life && !itemUI.isReleased) yield return null;
 			yield return marginBack;
 
 			nextAvailable = true;

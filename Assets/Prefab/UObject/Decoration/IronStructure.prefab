@@ -106,6 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Objects.WoodStructure
   whenInitialize: 0
+  GettingDuration: 1
+  ReleasingDuration: 1
   whiteSpawnSprite: {fileID: -3566029695897950803, guid: dcbfa7b8fdd4b45428a9ab039abbfcdf, type: 3}
   colorSpawnSprite: {fileID: -3566029695897950803, guid: dcbfa7b8fdd4b45428a9ab039abbfcdf, type: 3}
   rigidbody2D: {fileID: 0}

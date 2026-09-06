@@ -1,4 +1,5 @@
-﻿using AncientMemorial.Cameras;
+using UengSystem.Objects;
+using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
 using AncientMemorial.Objects;
@@ -7,7 +8,7 @@ using UengSystem.ObjectPool;
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
+namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 	public abstract class CrossbowAttack : PlayerWeaponAttack {
 		protected static readonly int Attacking = Animator.StringToHash("attacking");
 
@@ -20,7 +21,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
 		public override float attackSpeed => player.stat.attackSpeed * (skillTimer.CheckIn(skillDuration) ? skillBonus : 1f);
 		
 		protected GameObject GetArrowDebris(Vector2 position, float angle) {
-			GameObject obj = UObjectPool.instance.Get("ArrowDebris", position);
+			GameObject obj = UObject.Get("ArrowDebris", position, PlayEffect: false);
 			obj.transform.rotation = Quaternion.Euler(0, 0, angle);
 
 			return obj;
@@ -32,7 +33,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Crossbow {
 			Vector2 dir = (endPos - startPos);
 			float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 			
-			GameObject obj = UObjectPool.instance.Get("ArrowTail", pos);
+			GameObject obj = UObject.Get("ArrowTail", pos, PlayEffect: false);
 			obj.transform.localScale = new Vector3(dir.magnitude, 0.05f, 1);
 			
 			obj.transform.rotation = Quaternion.Euler(0, 0, angle);

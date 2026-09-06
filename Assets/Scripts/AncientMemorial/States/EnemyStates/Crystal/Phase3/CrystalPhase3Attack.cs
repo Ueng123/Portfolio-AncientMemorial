@@ -1,4 +1,4 @@
-﻿namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+﻿namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public abstract class CrystalPhase3Attack : CrystalPhase3State{
 		public abstract float attackTime  { get; }
 		public          float attackSpeed => crystal.stat.attackSpeed;

@@ -2,7 +2,7 @@
 using UengSystem.Objects;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton.Tank {
+namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public class TankSkeletonSpawn : SkeletonTankAttack {
 		public override float attackTime => 1.617f;
 
@@ -10,7 +10,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 			string  skeletonName  = Random.Range(0, 2) == 0 ? "SkeletonWarriorSpawn" : "SkeletonArcherSpawn";
 			Vector2 spawnPosition = new (enemy.transform.position.x + Random.Range(-2f, 2f), 0.5f);
 			
-			GameObject spawnObj = UObjectPool.instance.Get(skeletonName, spawnPosition);
+			GameObject spawnObj = UObject.Get(skeletonName, spawnPosition, PlayEffect: false);
 			spawnObj.GetComponent<UObject>().Category = "SkeletonSpawnObject";
 		}
 
@@ -31,8 +31,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 			}
 			
 			if (step==3&&isProgress(1)) {
-				SpawnSkeleton();
-				step++;
+				enemy.entityState = GetState();
 			}
 		}
 	}

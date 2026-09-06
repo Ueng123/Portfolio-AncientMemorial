@@ -26,12 +26,12 @@ namespace UengSystem.VisualScripting.Tasks {
 		public IEnumerator Run(ITaskable self) {
 			int countInt = (int)count.value;
 			for (int i = 0; i < countInt; i++) {
-				if (delayFirst) yield return new WaitForSeconds(delay.value);
+				if (delayFirst) yield return self is UI.UUI ? new WaitForSecondsRealtime(delay.value) : new WaitForSeconds(delay.value);
 
 				if (waitForTask) yield return task.ExecuteEnumerator(self);
 				else task.Execute(self);
 				
-				if (!delayFirst) yield return new WaitForSeconds(delay.value);
+				if (!delayFirst) yield return self is UI.UUI ? new WaitForSecondsRealtime(delay.value) : new WaitForSeconds(delay.value);
 			}
 		}
 	}

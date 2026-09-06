@@ -6,7 +6,6 @@ namespace UengSystem.UI.UUIQueues {
 		public override void Initialize(UUI ui) {
 			ui.GetAction<UTextAction>("TopTitle").text = topTitle;
 			ui.GetAction<UTextAction>("InsideTitle").text = insideTitle;
-			ui.Initialize();
 		}
 	};
 }

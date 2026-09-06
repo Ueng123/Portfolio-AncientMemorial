@@ -1,14 +1,14 @@
-﻿using System;
+using UengSystem.UI;
+using System;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.UI.UUIs;
 using UengSystem.Utility;
 using UengSystem.VisualScripting.UValues.UFloats;
-using UengSystem.VisualScripting.UVariables;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase1 {
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase1 {
 	public class CrystalSpawn : CrystalAttack {
 		private static          int CRYSTAL_ENEMY_DEAD = "CrystalEnemyDead".GetHash();
 		private static readonly int ATTACKING          = "attacking".GetHash();
@@ -56,7 +56,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase1 {
 		public void SpawnCrystalSkeleton() {
 			string  spawnEntityID = Random.Range(0, 2) == 0 ? "SkeletonWarriorC" : "SkeletonArcherC";
 			Vector3 spawnPosOffset = new (Random.Range(2, 6) * (Random.Range(0, 2) == 0 ? 1 : -1), Random.Range(1, 1.5f));
-			GameObject entityObject = UObjectPool.instance.Get(spawnEntityID, crystal.transform.position + spawnPosOffset, 2.5f);
+			GameObject entityObject = UObject.Get(spawnEntityID, crystal.transform.position + spawnPosOffset, PlayEffect: true);
 			entityObject.GetComponent<UObject>().Category = "CrystalEnemy";
 		}
 		

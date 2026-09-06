@@ -1,10 +1,11 @@
-﻿using AncientMemorial.Entities;
+using UengSystem.Objects;
+using AncientMemorial.Entities;
 using AncientMemorial.Objects;
 using AncientMemorial.Projectiles;
 using UengSystem.ObjectPool;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton.Archer {
+namespace AncientMemorial.States.EnemyStates.Skeleton.Archer {
 	public class SkeletonArcherShoot : SkeletonAttack {
 		public override float attackTime => 1.5f;
 		
@@ -53,7 +54,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Archer {
 			
 			enemy.PlaySFX("bowShoot");
 			
-			GameObject arrowObject = UObjectPool.instance.Get("Arrow", enemy.transform.position);
+			GameObject arrowObject = UObject.Get("Arrow", enemy.transform.position, PlayEffect: false);
 			Arrow      arrow       = arrowObject.GetComponent<Arrow>();
 			
 			arrow.rigidbody2D.linearVelocity = GetArrowDir(v, targetPosition);
@@ -85,7 +86,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Archer {
 			}
 			
 			if (step == 1 && isProgress(1)) {
-				enemy.state = GetState();
+				enemy.entityState = GetState();
 			}
 		}
 

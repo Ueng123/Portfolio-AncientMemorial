@@ -63,7 +63,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 			}
 
 			if (isProgress(1)) {
-				crystal.state = GetState();
+				crystal.entityState = GetState();
 			}
 		}
 		

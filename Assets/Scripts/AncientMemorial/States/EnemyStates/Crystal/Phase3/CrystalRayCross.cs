@@ -1,8 +1,7 @@
-﻿using UnityEngine;
+﻿using UengSystem.Utility;
+using UnityEngine;
 
-using UengSystem.Utility;
-
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalRayCross : CrystalPhase3Attack {
 		public override float attackTime => 10f;
 
@@ -61,7 +60,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 			}
 
 			if (step == 1 && isProgress(1)) {
-				crystal.state = GetState();
+				crystal.entityState = GetState();
 			}
 		}
 

@@ -1,12 +1,10 @@
 ﻿using AncientMemorial.Entities.Enemies;
 using AncientMemorial.Map;
-using UengSystem.ObjectPool;
-using UengSystem.Objects;
 using UengSystem.UI.UUIs;
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalSpawnEnergy : CrystalPhase3Attack {
 		public override float attackTime       => 6;
 		private         int   spawnEnergyCount = 2;
@@ -42,15 +40,15 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 				float   spawnPosX = mapSize.x * (step + 1) / (spawnEnergyCount + 1) - mapSize.x / 2;
 				float   spawnPosY = 1.2f                                            + Random.Range(-0.1f, 0.1f);
 				Vector2 spawnPos  = new (spawnPosX, spawnPosY);
-				
-				crystal.To<CrystalPhase3>().SpawnCrystalEnergy(spawnPos);
+
+				crystal.To<CrystalPhase3>().SpawnCrystalEnergy(spawnPos, true);
 
 				step++;
 			}
 
 			if (isProgress(1)) {
 				crystal.To<CrystalPhase3>().StartGimmick(spawnEnergyCount);
-				crystal.state = GetState();
+				crystal.entityState = GetState();
 			}
 		}
 		

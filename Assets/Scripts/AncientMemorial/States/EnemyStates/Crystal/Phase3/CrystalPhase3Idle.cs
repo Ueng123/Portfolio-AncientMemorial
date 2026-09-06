@@ -2,7 +2,7 @@
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalPhase3Idle : CrystalPhase3State {
 		private StopWatch fallingMissileTimer = new StopWatch();
 		private float     fallingMissileTime  = 0.25f;

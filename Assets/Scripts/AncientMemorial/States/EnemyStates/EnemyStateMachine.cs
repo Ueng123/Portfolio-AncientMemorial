@@ -3,7 +3,7 @@ using AncientMemorial.Entities;
 using AncientMemorial.Entities.Enemies;
 using UengSystem.Utility;
 
-namespace UengSystem.States.EnemyStates {
+namespace AncientMemorial.States.EnemyStates {
 	public class EnemyStateMachine {
 		public Enemy       enemy;
 		public Func<Entity> getTarget;

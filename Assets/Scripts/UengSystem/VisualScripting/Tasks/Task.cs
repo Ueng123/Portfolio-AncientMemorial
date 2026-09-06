@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UengSystem.Managers;
 using UengSystem.Objects;
 using UengSystem.UDebug;
@@ -12,40 +13,38 @@ namespace UengSystem.VisualScripting.Tasks {
 		[SerializeField] private bool           useRealTime;
 		[SerializeField] private TaskListItem[] tasks;
 		
-		private UObject coroutineRunner;
-		private Coroutine runningTask;
-		
-		private float elapsed = 0f;
+		private readonly List<TaskExecution> Executions = new();
 		
 		public void Execute(ITaskable self, UObject coroutineRunner = null) {
-			this.coroutineRunner = coroutineRunner??CoroutineRunner.instance;
-			elapsed           = 0f;
-			runningTask          = this.coroutineRunner.StartCoroutine(ExecuteEnumerator(self));
+			Executions.RemoveAll(Execution => !Execution.isRunning);
+			Executions.Add(new TaskExecution(ExecuteEnumerator(self), self as UObject, coroutineRunner).Start());
 		}
 
 		public IEnumerator ExecuteEnumerator(ITaskable self) {
-			foreach (TaskListItem taskItem in tasks) {
-				float wait = taskItem.time - elapsed;
-				elapsed = taskItem.time;
-				if (wait != 0) yield return useRealTime?new WaitForSecondsRealtime(wait):new WaitForSeconds(wait);
-				foreach (TaskComponent task in taskItem.tasks) {
-					try { task?.Execute(self); }
-					catch (Exception _e) {
-						DebugManager.LogError($"Task > {task?.GetType().Name}.Execute({self.GetType().Name})", _e, ((UObject)self).gameObject);
+			float Elapsed = 0;
+			if (tasks == null) yield break;
+			UObject Owner = self as UObject;
+			bool HasOwner = Owner && Owner.lifeCycle.isPrepared;
+			long Life = Owner ? Owner.lifeNumber : 0;
+			bool Releasing = Owner && Owner.lifeCycle.phase == Objects.LifeCycle.LifeCyclePhase.Releasing;
+			foreach (TaskListItem Item in tasks) {
+				float Wait = Item.time - Elapsed;
+				Elapsed = Item.time;
+				if (Wait > 0) yield return useRealTime || self is UI.UUI ? new WaitForSecondsRealtime(Wait) : new WaitForSeconds(Wait);
+				foreach (TaskComponent Component in Item.tasks) {
+					if (HasOwner && (!Owner || Owner.lifeNumber != Life || Owner.isReleased || Owner.lifeCycle.isShuttingDown
+					    || (!Releasing && Owner.lifeCycle.phase == Objects.LifeCycle.LifeCyclePhase.Releasing))) yield break;
+					try { Component?.Execute(self); }
+					catch (Exception Error) {
+						DebugManager.LogError($"Task > {Component?.GetType().Name}.Execute({self.GetType().Name})", Error, Owner ? Owner.gameObject : null);
 					}
 				}
 			}
 		}
 
 		public void CancelTasks() {
-			if (runningTask != null) {
-				foreach (TaskListItem taskItem in tasks) {
-					foreach (TaskComponent task in taskItem.tasks) {
-						task.StopAllCoroutines();
-					}
-				}
-				coroutineRunner.StopCoroutine(runningTask);
-			}
+			foreach (TaskExecution Execution in Executions) Execution.Cancel();
+			Executions.Clear();
 		}
 	}
 }

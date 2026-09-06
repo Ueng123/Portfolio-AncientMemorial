@@ -1,4 +1,5 @@
-﻿using AncientMemorial.Cameras;
+using UengSystem.Objects;
+using AncientMemorial.Cameras;
 using UengSystem;
 using UengSystem.ObjectPool;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		protected override void Death() {
-			UObjectPool.instance.Get("Explode2", transform.position);
+			UObject.Get("Explode2", transform.position, PlayEffect: false);
 			base.Death();
 		}
 

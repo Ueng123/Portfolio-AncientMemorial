@@ -1,6 +1,4 @@
-﻿using AncientMemorial.Entities;
-
-namespace UengSystem.States.EnemyStates.Skeleton {
+﻿namespace AncientMemorial.States.EnemyStates.Skeleton {
 	public abstract class SkeletonAttack : SkeletonState, IAttackState {
 		protected int step;
 

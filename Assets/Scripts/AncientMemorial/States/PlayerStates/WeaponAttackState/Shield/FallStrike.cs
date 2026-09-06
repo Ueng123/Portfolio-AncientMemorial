@@ -1,12 +1,12 @@
-﻿using AncientMemorial.Cameras;
+using UengSystem.Objects;
+using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Map;
 using AncientMemorial.Objects;
 using UengSystem.ObjectPool;
-using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
+namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class FallStrike : PlayerWeaponAttack {
 		private AttackArea attackAction;
 		
@@ -58,7 +58,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 
 				player.transform.position = targetPos;
 				player.PlaySFX("shieldSweep");
-				UObjectPool.instance.Get("Explode3", player.groundChecker.transform.position + Vector3.up * 0.25f);
+				UObject.Get("Explode3", player.groundChecker.transform.position + Vector3.up * 0.25f, PlayEffect: false);
 
 				CameraBrain.instance.ShakeLerp(2f, 10f);
 				CameraBrain.instance.ZoomLerp(-1f);
@@ -68,7 +68,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 
 			if (step == 1 && isProgress(1f)) {
 				isCancelled  = false;
-				player.state = GetDefaultState();
+				player.entityState = GetDefaultState();
 			}
 		}
 

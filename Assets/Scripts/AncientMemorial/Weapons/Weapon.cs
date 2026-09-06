@@ -1,4 +1,5 @@
 ﻿using AncientMemorial.Entities;
+using AncientMemorial.States;
 using UengSystem.States;
 using UengSystem.Utility;
 using UengSystem.VisualScripting.UValues.UFloats;
@@ -31,7 +32,7 @@ namespace AncientMemorial.Weapons {
 		public UState secondaryAttack => GetSecondaryAttackAction(currSecondaryAttackStage);
 		public float  secondaryDelay  => GetSecondaryAttackDelay (currSecondaryAttackStage);
 		
-		public virtual bool isAttacking => player.state == primaryAttack || player.state == secondaryAttack;
+		public virtual bool isAttacking => player.entityState == primaryAttack || player.entityState == secondaryAttack;
 		
 		public virtual bool CanPrimaryAttack()   => primaryAttackWatch  .CheckOut(primaryDelay, true);
 		public virtual bool CanSecondaryAttack() => secondaryAttackWatch.CheckOut(secondaryDelay, true);
@@ -59,7 +60,7 @@ namespace AncientMemorial.Weapons {
 			if (!isFirstAttack&&isTimeOver) OnPrimaryAttackComboEnd(); // 콤보 끊김
 			else currPrimaryAttackStage = (currPrimaryAttackStage + 1) % primaryAttackStageCount;
 			
-			player.state = primaryAttack;
+			player.entityState = primaryAttack;
 			primaryAttackWatch.Tick();
 		}
 
@@ -74,7 +75,7 @@ namespace AncientMemorial.Weapons {
 			if (!isFirstAttack&&isTimeOver) OnSecondaryAttackComboEnd(); // 콤보 끊김
 			else currSecondaryAttackStage = (currSecondaryAttackStage + 1) % secondaryAttackStageCount;
 
-			player.state = GetSecondaryAttackAction(currSecondaryAttackStage);
+			player.entityState = GetSecondaryAttackAction(currSecondaryAttackStage);
 			UPureFloat.SetValue(SKILL_COOLDOWN_TIME, Time.time + GetSecondaryAttackDelay(currSecondaryAttackStage));
 			
 			secondaryAttackWatch.Tick();

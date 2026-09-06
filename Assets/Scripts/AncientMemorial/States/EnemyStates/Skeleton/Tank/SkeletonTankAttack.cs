@@ -1,15 +1,15 @@
-﻿using System;
-using AncientMemorial;
+using UengSystem.Objects;
+using System;
 using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
+using UengSystem;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Utility;
-using UnityEngine;
 using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;
 
-namespace UengSystem.States.EnemyStates.Skeleton.Tank {
+namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public abstract class SkeletonTankAttack : SkeletonAttack {
 		private const float weakDuration = .3f;
 		
@@ -22,7 +22,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 		}
 		
 		protected void Weak() {
-			UObjectPool.instance.Get("groggyEffect", enemy.transform.position);
+			UObject.Get("groggyEffect", enemy.transform.position, PlayEffect: false);
 			weakStopwatch.Tick();
 			
 			GameManager.SetTimeScale(0.34f, 0.9f);

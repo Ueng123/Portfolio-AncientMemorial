@@ -1,10 +1,11 @@
-﻿using UengSystem.Events;
+using UengSystem.Objects;
+using UengSystem.Events;
 using UengSystem.Inputs;
 using UengSystem.ObjectPool;
 using UnityEngine;
 using EventType = UengSystem.Events.EventType;
 
-namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
+namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class ShieldJump : PlayerWeaponAttack {
 		public override float attackTime       => 0.2f;
 		public override float attackAfterTime  => 5f;
@@ -20,7 +21,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 			player.SendEvent(EventType.Entity_Player_Jump, EventPriority.Action);
 			player.PlaySFX("shieldSkill");
 			Vector2 footPosition = player.groundChecker.transform.position;
-			UObjectPool.instance.Get("ShieldSkillEffect", footPosition);
+			UObject.Get("ShieldSkillEffect", footPosition, PlayEffect: false);
 
 			player.rigidbody2D.linearVelocityY = 2 + player.data.jumpPower*player.stat.moveSpeed*(player.data.HP - player.stat.HP)/
 												 (player.data.HP*2.5f);
@@ -28,7 +29,7 @@ namespace UengSystem.States.PlayerStates.WeaponAttackState.Shield {
 
 		public override void OnEarlyRoutine() {
 			if (step == 0 && isProgress(1)) {
-				player.state = GetDefaultState();
+				player.entityState = GetDefaultState();
 			}
 		}
 

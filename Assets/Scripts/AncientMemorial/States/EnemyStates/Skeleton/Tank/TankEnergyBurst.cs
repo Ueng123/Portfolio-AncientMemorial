@@ -1,12 +1,10 @@
-﻿using AncientMemorial.Cameras;
-using AncientMemorial.Entities;
-using AncientMemorial.Objects;
+using UengSystem.Objects;
 using AncientMemorial.Projectiles;
 using UengSystem.Audio;
 using UengSystem.ObjectPool;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton.Tank {
+namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public class TankEnergyBurst : SkeletonTankAttack {
 		private static readonly int attack2ing = Animator.StringToHash("attack2ing");
 		private static readonly int attack2    = Animator.StringToHash("attack2");
@@ -45,11 +43,11 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 		public override void OnRoutine() {
 
 			if (step == 0 && isProgress(preparePercent)) {
-				projectileSpawnObject1 = UObjectPool.instance.Get("EnergyBallSpawn", attackPos1);
+				projectileSpawnObject1 = UObject.Get("EnergyBallSpawn", attackPos1, PlayEffect: false);
 				projectileSpawnObject1.transform.rotation = Quaternion.Euler(0f, 0f, 90 * Random.Range(0, 5));
 				projectileSpawnObject1.GetComponent<Animator>().speed = 1 / GetDelay(shootPercent - preparePercent);
 
-				projectileSpawnObject2 = UObjectPool.instance.Get("EnergyBallSpawn", attackPos2);
+				projectileSpawnObject2 = UObject.Get("EnergyBallSpawn", attackPos2, PlayEffect: false);
 				projectileSpawnObject2.transform.rotation = Quaternion.Euler(0f, 0f, 90 * Random.Range(0, 5));
 				projectileSpawnObject2.GetComponent<Animator>().speed = 1 / GetDelay(shootPercent - preparePercent);
 				
@@ -63,18 +61,18 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 
 			if (step == 2 && isProgress(shootPercent)) {
 				
-				UObjectPool.instance.Release(projectileSpawnObject1);
-				UObjectPool.instance.Release(projectileSpawnObject2);
+				projectileSpawnObject1.GetComponent<UObject>().Release(PlayEffect: false);
+				projectileSpawnObject2.GetComponent<UObject>().Release(PlayEffect: false);
 				projectileSpawnObject1 = null;
 				projectileSpawnObject2 = null;
 				
-				GameObject projectile1     = UObjectPool.instance.Get("EnergyBall", attackPos1);
+				GameObject projectile1     = UObject.Get("EnergyBall", attackPos1, PlayEffect: false);
 				EnergyBall bossProjectile1 = projectile1.GetComponent<EnergyBall>();
 				bossProjectile1.damage               = enemy.stat.attackDamage * 5 / 2;
 				bossProjectile1.spriteRenderer.flipX = false;
 				bossProjectile1.owner                = enemy;
 				
-				GameObject projectile2     = UObjectPool.instance.Get("EnergyBall", attackPos2);
+				GameObject projectile2     = UObject.Get("EnergyBall", attackPos2, PlayEffect: false);
 				EnergyBall bossProjectile2 = projectile2.GetComponent<EnergyBall>();
 				bossProjectile2.damage               = enemy.stat.attackDamage * 5 / 2;
 				bossProjectile2.spriteRenderer.flipX = true;
@@ -84,21 +82,21 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 			}
 
 			if (step == 3 && isProgress(1)) {
-				attackAudio = null;
-				
-				enemy.state = GetState();
+				enemy.entityState = GetState();
 			}
 		}
 
 		public override void OnExit() {
 			base.OnExit();
 			
+			attackAudio = null;
+			
 			if (attackAudio) AudioManager.instance.StopSFX(attackAudio);
-			if (projectileSpawnObject1) UObjectPool.instance.Release(projectileSpawnObject1);
-			if (projectileSpawnObject2) UObjectPool.instance.Release(projectileSpawnObject2);
+			if (projectileSpawnObject1) projectileSpawnObject1.GetComponent<UObject>().Release(PlayEffect: false);
+			if (projectileSpawnObject2) projectileSpawnObject2.GetComponent<UObject>().Release(PlayEffect: false);
 
 			enemy.animator.speed = oldAnimSpeed;
-			enemy.animator.SetBool(attacking, false);
+			enemy.animator.SetBool(attack2ing, false);
 		}
 	}
 }

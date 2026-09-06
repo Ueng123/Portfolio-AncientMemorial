@@ -133,6 +133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Entities.Scarecrow
   whenInitialize: 3
+  GettingDuration: 1
+  ReleasingDuration: 2
   whiteSpawnSprite: {fileID: 6326743807631389508, guid: f7e59e407a2f9d04dbe34fa69e303227, type: 3}
   colorSpawnSprite: {fileID: 7208014375415968472, guid: afe07041daee1e04caa5f2c170a559a9, type: 3}
   rigidbody2D: {fileID: 0}

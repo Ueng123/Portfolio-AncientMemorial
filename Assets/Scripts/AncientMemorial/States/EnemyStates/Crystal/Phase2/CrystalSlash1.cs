@@ -1,4 +1,5 @@
-﻿using System;
+using UengSystem.Objects;
+using System;
 using System.Collections.Generic;
 using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
@@ -83,7 +84,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 			crystal.PlaySFX("crystalSlash");
 			
 			foreach ((Vector2 pos, float rot, float length) in slashData) {
-				GameObject slash = UObjectPool.instance.Get("SlashEffect", pos);
+				GameObject slash = UObject.Get("SlashEffect", pos, PlayEffect: false);
 				slash.transform.rotation   = Quaternion.Euler(0, 0, rot);
 				slash.transform.localScale = new Vector3(1f, length + 0.5f, 1f);
 			}
@@ -178,7 +179,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 			MissileRoutine();
 			
 			if (isProgress(1)) {
-				crystal.state = GetState();
+				crystal.entityState = GetState();
 			}
 		}
 		

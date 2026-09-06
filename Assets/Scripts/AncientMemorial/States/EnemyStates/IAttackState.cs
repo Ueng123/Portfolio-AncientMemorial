@@ -1,6 +1,4 @@
-﻿using AncientMemorial.Entities;
-
-namespace UengSystem.States.EnemyStates {
+﻿namespace AncientMemorial.States.EnemyStates {
 	public interface IAttackState {
 		public float attackTime  { get; }
 		public float attackSpeed { get; }

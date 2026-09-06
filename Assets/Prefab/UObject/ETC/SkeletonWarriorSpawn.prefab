@@ -193,6 +193,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whenInitialize: 0
+  GettingDuration: 1
+  ReleasingDuration: 1
   whiteSpawnSprite: {fileID: 0}
   colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -216,7 +218,7 @@ MonoBehaviour:
     - rid: 5909658922870113064
       type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        releaseTime: 0
+        PlayEffect: 0
         releaseThis: 1
         TargetObject:
           rid: -2
@@ -226,8 +228,7 @@ MonoBehaviour:
         TargetObject: {fileID: 131187581413603052, guid: 7284a2e7c8e68344d8813715f00f9697, type: 3}
         position:
           rid: 5909658922870113069
-        spawnTime:
-          rid: 5909658922870113071
+        PlayEffect: 0
         ID:
           rid: -2
         Category:
@@ -237,11 +238,6 @@ MonoBehaviour:
       data:
         dynamicType: 0
         targetTransform: {fileID: 1345487771857219883}
-    - rid: 5909658922870113071
-      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        pureValue: 0.01
     - rid: 5909658922870113073
       type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
       data:

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UengSystem.ObjectPool;
+using UengSystem.Objects.LifeCycle;
 using UnityEngine;
 
 namespace UengSystem.Objects {
@@ -8,36 +9,20 @@ namespace UengSystem.Objects {
 		public AnimationClip InitializeClip;
 		public AnimationClip ReleaseClip;
 
-		protected override void        PrepareSpawnFX() {
-			FreezeRigidbody2D();
-		}
+		public override float gettingDuration => GetClip ? GetClip.length : 0;
+		public override float releasingDuration => ReleaseClip ? ReleaseClip.length : 0;
 
-		protected override IEnumerator SpawnFX(float duration) {
-			animator.Play(GetClip.name);
-			yield return new WaitForSeconds(GetClip.length);
+		public override void OnFirstGet() {
+			AnimationGetting getting = new (this, GetClip ? GetClip.name : "");
+			AnimationReleasing releasing = new (this, ReleaseClip ? ReleaseClip.name : "");
+
+			SetDefaultStates(getting, releasing);
+			base.OnFirstGet();
 		}
 
 		public override void Initialize() {
-			animator.Play(InitializeClip.name);
+			if (animator && InitializeClip) animator.Play(InitializeClip.name, 0, 0);
 			base.Initialize();
-		}
-
-		protected override void        FinishSpawnFX() { 
-			UnfreezeRigidbody2D();
-			Initialize();
-		}
-
-		protected override void        PrepareDespawnFX() {
-			FreezeRigidbody2D();
-		}
-
-		protected override IEnumerator DespawnFX(float duration) {
-			animator.Play(ReleaseClip.name);
-			yield return new WaitForSeconds(GetClip.length);
-			
-			UnfreezeRigidbody2D();
-			
-			UObjectPool.instance.Release(gameObject, -1);
 		}
 	}
 }

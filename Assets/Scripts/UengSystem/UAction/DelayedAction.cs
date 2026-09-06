@@ -32,6 +32,7 @@ namespace UengSystem.UAction {
 
 		public DelayedAction ExecuteDA(bool delayInRealTime = false) {
 			if (Executing) return this;
+			if (executor is Objects.UObject { canStartOwnedWork: false }) return this;
 			
 			if (delay == 0) {
 				actionToDelay();
@@ -45,6 +46,7 @@ namespace UengSystem.UAction {
 			runningDelayedActionCount += 1;
 			
 			Execute(executor);
+			if (!Executing) return this;
 			this.delayInRealTime = delayInRealTime;
 			process = CoroutineRunner.instance.StartCoroutine(ActionEnumerator());
 			return this;
@@ -55,22 +57,25 @@ namespace UengSystem.UAction {
 		public void DoneDA(bool stopCoroutine = true) {
 			if (!Executing) return;
 			
-			if (stopCoroutine) CoroutineRunner.instance.StopCoroutine(process);
-			actionToDelay.Invoke();
-			
+			if (stopCoroutine && process != null && CoroutineRunner.instance) CoroutineRunner.instance.StopCoroutine(process);
+			process = null;
 			Executing                 =  false;
 			runningActionCount        -= 1;
 			runningDelayedActionCount -= 1;
+			executor?.UnregisterAction(this);
+			actionToDelay.Invoke();
 		}
 		
 		public override void Cancel() {
 			if (!Executing) return;
 
-			CoroutineRunner.instance.StopCoroutine(process);
-			actionOnCancel?.Invoke();
+			if (process != null && CoroutineRunner.instance) CoroutineRunner.instance.StopCoroutine(process);
+			process = null;
 			Executing                 =  false;
 			runningActionCount        -= 1;
 			runningDelayedActionCount -= 1;
+			executor?.UnregisterAction(this);
+			actionOnCancel?.Invoke();
 		}
 
 		// 0~1

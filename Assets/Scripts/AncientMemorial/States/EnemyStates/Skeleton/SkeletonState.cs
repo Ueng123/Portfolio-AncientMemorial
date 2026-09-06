@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using AncientMemorial.Entities;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton {
+namespace AncientMemorial.States.EnemyStates.Skeleton {
 	public abstract class SkeletonState : GroundEnemyState {
 		protected static readonly int attacking = Animator.StringToHash("attacking");
 		protected static readonly int attackF   = Animator.StringToHash("attackFrontEnd");

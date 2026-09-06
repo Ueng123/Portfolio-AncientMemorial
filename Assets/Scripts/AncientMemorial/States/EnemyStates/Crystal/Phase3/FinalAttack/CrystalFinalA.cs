@@ -1,10 +1,8 @@
 ﻿using AncientMemorial.Map;
+using UengSystem.Utility;
+using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
-	using AncientMemorial.Objects;
-	using UengSystem.Utility;
-	using UnityEngine;
-
+namespace AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack {
 	public class CrystalFinalA : CrystalPhase3Attack {
 		
 		public override float attackTime => 10f;
@@ -78,7 +76,7 @@ namespace UengSystem.States.EnemyStates.Crystal.Phase3 {
 			BigMissileRoutine();
 
 			if (isProgress(1)) {
-				crystal.state = new CrystalFinalB().Init(stateMachine);
+				crystal.entityState = new CrystalFinalB().Init(stateMachine);
 			}
 		}
 

@@ -20,6 +20,8 @@ namespace AncientMemorial.Objects {
 		public float duration = 1;
 
 		public Entity attacker;
+		private long AttackerLife;
+		private bool hasActiveAttacker => attacker && attacker.isActive && attacker.lifeNumber == AttackerLife;
 		public float  damageMult;
 		public int    maxTargetNum;
 		public bool   ignoreInvincible;
@@ -27,13 +29,12 @@ namespace AncientMemorial.Objects {
 		public bool invisible;
 		
 		public void Cancel() {
-			UObjectPool.instance.Release(gameObject, invisible?0:0.1f);
+			Release(PlayEffect: !invisible);
 		}
 		
 		public void Damage() {
-			Cancel();
-			
-			if (damageMult == 0) return;
+			if (!isActive || !hasActiveAttacker) { Cancel(); return; }
+			if (damageMult == 0) { Cancel(); return; }
 			
 			Vector2 hitboxPos  = transform.position;
 			Vector2 hitboxSize = targetSize;
@@ -48,13 +49,16 @@ namespace AncientMemorial.Objects {
 
 				attacker.SendAttackMultiplyEvent(entity, damageMult, ignoreInvincible);
 						
-				if (--maxTargetNum == 0) return;
+				if (--maxTargetNum == 0) break;
 			}
+			Cancel(); // Last operation: this may synchronously return the instance to its pool.
 		}
 		
 		protected override void Routine() {
+			if (!hasActiveAttacker) { Cancel(); return; }
 			if (stopWatch?.CheckOut(duration) ?? false) {
 				Damage();
+				return;
 			}
 
 			if (invisible) return;
@@ -67,6 +71,8 @@ namespace AncientMemorial.Objects {
 		
 		public override void Initialize() {
 			base.Initialize();
+			AttackerLife = attacker ? attacker.lifeNumber : 0;
+			if (attacker) attacker.RegisterAttackArea(this);
 			stopWatch = new StopWatch();
 			stopWatch.Tick();
 			
@@ -77,6 +83,11 @@ namespace AncientMemorial.Objects {
 		public void InitializeColor(Color color) {
 			spriteRenderer.color = color;
 			whiteObject.color    = color;
+		}
+
+		protected override void OnRelease() {
+			if (attacker && attacker.lifeNumber == AttackerLife) attacker.UnregisterAttackArea(this);
+			base.OnRelease();
 		}
 	}
 }

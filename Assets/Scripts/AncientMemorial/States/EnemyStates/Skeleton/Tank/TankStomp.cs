@@ -1,11 +1,11 @@
-﻿using AncientMemorial.Cameras;
+using UengSystem.Objects;
+using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using AncientMemorial.Objects;
 using UengSystem.ObjectPool;
-using Unity.AppUI.UI;
 using UnityEngine;
 
-namespace UengSystem.States.EnemyStates.Skeleton.Tank {
+namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public class TankStomp : SkeletonTankAttack {
 		public override float attackTime => 3f;
 
@@ -40,7 +40,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 
 			if (step == 1 && isProgress(attackPercent)) {
 				Vector2 effectPos = (Vector2)enemy.transform.position + new Vector2(0, -0.985f);
-				UObjectPool.instance.Get("Explode3", effectPos);
+				UObject.Get("Explode3", effectPos, PlayEffect: false);
 				
 				enemy.PlaySFX("tankAttack1");
 				
@@ -52,7 +52,7 @@ namespace UengSystem.States.EnemyStates.Skeleton.Tank {
 
 			if (step == 2 && isProgress(1)) {
 				AttackArea = null;
-				enemy.state = GetState();
+				enemy.entityState = GetState();
 			}
 		}
 
