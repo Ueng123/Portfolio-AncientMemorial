@@ -21,6 +21,10 @@ namespace UengSystem.UDebug {
 			Debug.LogWarning($"<color=#fda>[WARN]\n{message}\n\n</color>");
 		}
 		
+		public static void LogException(Exception Error, UnityEngine.Object Context) {
+			Debug.LogException(Error, Context);
+		}
+
 		public static void LogError(string message, Exception _e, GameObject obj) {
 			Debug.LogError($"<color=#fda><size=15><b>{message}</b></size></color>");
 			Debug.LogException(_e, obj);

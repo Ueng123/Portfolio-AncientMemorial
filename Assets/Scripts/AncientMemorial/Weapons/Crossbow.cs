@@ -82,7 +82,7 @@ namespace AncientMemorial.Weapons {
 		}
 
 		public override void Uninitialize() {
-			
+			EventType.Entity_Player_Land.RemoveListener(onPlayerLand);
 		}
 	}
 }

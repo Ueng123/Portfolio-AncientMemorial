@@ -78,27 +78,27 @@ namespace AncientMemorial.Projectiles {
 		
 		private StopWatch stopWatch = new ();
 		protected override void Routine() {
+			if (isHitPending) return;
 			lockOn = stopWatch.CheckOut(LockOnDuration + TimeBeforeLockOn);
 			if (stopWatch.CheckIn(LockOnDuration + TimeBeforeLockOn) && stopWatch.CheckOut(TimeBeforeLockOn)) { LockOn(); }
 			
 			rigidbody2D.linearVelocity = transform.up * GetVelocity();
 		}
 
-		protected override void LateRoutine() { }
+		protected override void LateRoutine() { base.LateRoutine(); }
 		
 		private bool locking;
 		private bool locked;
 		protected override void FixedRoutine() {
+			if (isHitPending) return;
 			if (locking) return;
 			transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rigidbody2D.linearVelocity.y, rigidbody2D.linearVelocity.x)*Mathf.Rad2Deg);
 		}
 
 		protected override void OnCollideEntity(Entity entity) {
-			if (owner) { if (!owner.isAttackTarget(entity)) return; }
+			if (owner && !owner.isAttackTarget(entity)) return;
 			
-			SendAttackEvent(entity, damage);
-			
-			Break();
+			SendCollisionHit(entity, damage, Break);
 		}
 		
 		protected override void OnCollideObject(UObject obj) {

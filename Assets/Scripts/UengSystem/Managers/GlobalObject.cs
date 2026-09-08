@@ -1,8 +1,8 @@
 ﻿using UengSystem.Objects;
 
 namespace UengSystem.Managers {
-	public class CoroutineRunner : UObject {
-		public static CoroutineRunner instance;
+	public class GlobalObject : UObject {
+		public static GlobalObject instance;
 
 		public override void Initialize() {
 			base.Initialize();

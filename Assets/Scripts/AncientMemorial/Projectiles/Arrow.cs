@@ -46,18 +46,14 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected override void FixedRoutine() {
+			if (isHitPending) return;
 			transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rigidbody2D.linearVelocity.y, rigidbody2D.linearVelocity.x)*Mathf.Rad2Deg);
 		}
 
 		protected override void OnCollideEntity(Entity entity) {
-			if (owner) {
-				if (owner.entityType == EntityType.Player && entity.Friendly) return;
-				if (owner.entityType != EntityType.Player && !Enemy.isTargettable(entity.entityType)) return;
-			}
+			if (owner && !owner.isAttackTarget(entity)) return;
 			
-			SendAttackMultiplyEvent(entity, damage);
-			
-			Break(entity.transform, true);
+			SendCollisionHit(entity, damage, () => Break(entity.transform, true));
 		}
 		
 		protected override void OnCollideObject(UObject obj) {

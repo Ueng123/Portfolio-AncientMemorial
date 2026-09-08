@@ -10,6 +10,7 @@ using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.Objects.LifeCycle;
 using System.Linq;
+using UengSystem.Managers;
 using UengSystem.States;
 using UengSystem.UAction;
 using UengSystem.UDebug;
@@ -210,7 +211,7 @@ namespace AncientMemorial.Entities {
 			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
 			
 			if (useProcess) {
-				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData); });
+				GlobalObject.instance.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData); });
 			}
 			else {
 				attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData);
@@ -241,8 +242,8 @@ namespace AncientMemorial.Entities {
 			}
 		}
 		
-		public void SendAttackEvent(Entity target, float damage, bool ignoreInvincible) {
-			SendAttackEvent(this, target, damage, ignoreInvincible);
+		public void SendAttackEvent(Entity target, float damage, bool ignoreInvincible, bool useProcess = true) {
+			SendAttackEvent(this, target, damage, ignoreInvincible, useProcess);
 		}
 		
 		public abstract bool isAttackTarget(Entity entity);
@@ -319,10 +320,6 @@ namespace AncientMemorial.Entities {
 			);
 			
 			OpenEntityUI();
-			
-			
-			DebugManager.Log($"[OnGet] velocity = {rigidbody2D.linearVelocity}");
-			DebugManager.Log($"[OnGet] isGround = {isGround}");
 		}
 
 		protected void CheckDebris() {
@@ -339,13 +336,13 @@ namespace AncientMemorial.Entities {
 				if (Entry.Key && Entry.Key.lifeNumber == Entry.Value) Entry.Key.Release(false);
 			}
 			AttackAreas.Clear();
+			
 			if (HitSubscribed) { EventType.Entity_Hit.RemoveListener(hitEvent); HitSubscribed = false; }
 			
 			if (entityUI && entityUI.lifeNumber == EntityUiLife) entityUI.Release(PlayEffect: true);
 			entityUI = null;
 			
-			for (int i = 0; i < debrisAttached.Count; i++) {
-				AttatchObject debris = debrisAttached[i];
+			foreach (AttatchObject debris in debrisAttached) {
 				debris.transform.SetParent(null);
 				if (debris.isReleased) continue;
 				debris.Release(PlayEffect: false);
@@ -353,6 +350,8 @@ namespace AncientMemorial.Entities {
 
 			debrisAttached.Clear();
 			if (EntityRegistered) { entities.Remove(this); EntityRegistered = false; }
+			
+			Invincible(false);
 			isGround = false;
 			base.OnRelease();
 		}
@@ -417,11 +416,12 @@ namespace AncientMemorial.Entities {
 
 		private Action<Event> hitEvent;
 		private void HitEvent(Event e) {
-			if (!isActive) return;
-			HitData hitData = (HitData)e.data;
+			if (!isActive || !e.isValid || e.data is not HitData { isValid: true } hitData) return;
 			if (hitData.reciever != this) return;
 			if (invincible && !hitData.ignoreInvincible) return;
 					
+			if (this == player) DebugManager.Log("[HIT EVENT] Player Hit!");
+			
 			float realDamage = GetRealDamage(hitData.damage);
 			ChangeHP(-realDamage);
 					
@@ -429,7 +429,8 @@ namespace AncientMemorial.Entities {
 				if (hitData.attackedEntity) { OnHitFromEntity(hitData.attackedEntity,         realDamage, hitData.pushDir); }
 				if (hitData.attackedProjectile) { OnHitFromProjectile(hitData.attackedProjectile, realDamage, hitData.pushDir); }
                         					
-				OnHit(hitData.attackedEntity??hitData.attackedProjectile?.owner, realDamage, hitData.pushDir);
+				OnHit(hitData.attacker, realDamage, hitData.pushDir);
+				hitData.onHit?.Invoke();
 			}
 			else OnHeal(-realDamage);
 		}
@@ -444,7 +445,6 @@ namespace AncientMemorial.Entities {
 				hasDied = true;
 				entityState = null;
 				Death();
-				SendEvent(EventType.Entity_Dead, EventPriority.Death);
 			}
 			
 			entityState?.OnLateRoutine();

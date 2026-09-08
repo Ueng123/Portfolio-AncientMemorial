@@ -52,13 +52,13 @@ namespace UengSystem.UI.UInputFields {
 			if (taskOnTextChanged!=null&&inputField.textChanged) {
 				inputField.textChanged          = false;
 				inputFieldTextVariable.pureValue = inputField.GetLiveText();
-				taskOnTextChanged.Execute(CoroutineRunner.instance);
+				taskOnTextChanged.Execute(GlobalObject.instance);
 			}
 			
 			if (taskOnEndEdit!=null && inputField.endEdit) {
 				inputField.endEdit              = false;
 				inputFieldTextVariable.pureValue = inputField.GetText();
-				taskOnEndEdit.Execute(CoroutineRunner.instance);
+				taskOnEndEdit.Execute(GlobalObject.instance);
 			}
 		}
 	}

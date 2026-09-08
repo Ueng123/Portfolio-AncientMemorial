@@ -27,14 +27,16 @@ namespace UengSystem.Events {
 		}
 
 		public void RemoveListener(EventType type, Action<Event> func) {
-			
-			EventActions[type].Remove(func);
+			if (!EventActions.TryGetValue(type, out SyncList<Action<Event>> actions)) return;
+
+			actions.Remove(func);
 		}
 
 		public void AddEvent(Event e, EventPriority layer) {
 			int layerN = (int)layer;
 			
 			if (e.sender == null) throw new ArgumentException("event must have sender", nameof(e));
+			
 			int currSize = events.Count;
 			if (currSize - 1 < layerN) { for (int i = 0; i < layerN - currSize + 1; i++) events.Add(new List<Event>(10));}
 
@@ -50,10 +52,12 @@ namespace UengSystem.Events {
 		public void EventRoutine() {
 			foreach (List<Event> eventList in events) {
 				foreach (Event e in eventList) {
+					if (!e.isValid) continue;
 					if (!EventActions.TryGetValue(e.type, out SyncList<Action<Event>> actions)) continue;
 					actions.Synchronize();
 					
 					for (int i = 0; i < actions.Count; i++) {
+						if (!e.isValid) break;
 						Action<Event> action = actions[i];
 						try { action.Invoke(e); }
 						catch (Exception exception) {

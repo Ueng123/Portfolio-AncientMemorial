@@ -42,27 +42,30 @@ namespace AncientMemorial.Projectiles {
 
 		protected override void Routine() { }
 
-		protected override void LateRoutine() { }
+		protected override void LateRoutine() { base.LateRoutine(); }
 		
 		protected override void FixedRoutine() {
+			if (isHitPending) return;
 			transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rigidbody2D.linearVelocity.y, rigidbody2D.linearVelocity.x)*Mathf.Rad2Deg + rotateOffset);
 		}
 
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner) {
 				if (!owner.isAttackTarget(entity)) return;
-				SendAttackMultiplyEvent(entity, damage);
 			}
 			else {
 				bool isTargetPlayer = targetPlayer && entity == Entity.player;
 				bool isTargetEntity = targetEnemy  && entity != Entity.player;
 				if (!isTargetPlayer && !isTargetEntity) return;
 				
-				SendAttackEvent(entity, damage);
 			}
 
-			if (breakOnHit && --hitableNum == 0) { Break(); return; }
-			if (hitObject) UObject.Get(hitObject.name, transform.position, PlayEffect: false);
+			// 같은 물리 구간에서 예약된 타격도 관통 잔여 횟수에 포함함.
+			bool CanPierce = !breakOnHit || hitableNum <= 0 || hitableNum > pendingHitCount + 1;
+			SendCollisionHit(entity, damage, () => {
+				if (breakOnHit && --hitableNum == 0) { Break(); return; }
+				if (hitObject) Get(hitObject.name, transform.position, PlayEffect: false);
+			}, CanPierce);
 		}
 		
 		protected override void OnCollideObject(UObject obj) {

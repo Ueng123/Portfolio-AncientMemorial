@@ -13,6 +13,7 @@ namespace AncientMemorial.Projectiles {
 		public  float      boomTime;
 
 		protected override void FixedRoutine() {
+			if (isHitPending) return;
 			rigidbody2D.linearVelocity = Vector2.right*(10*(boomTime-stopWatch.Tock())*(spriteRenderer.flipX?1:-1)/boomTime);
 		}
 
@@ -22,6 +23,7 @@ namespace AncientMemorial.Projectiles {
 		}
 		
 		protected override void EarlyRoutine() {
+			if (isHitPending) return;
 			if (stopWatch.CheckIn(boomTime)) return;
 			Boom();
 		}
@@ -29,6 +31,8 @@ namespace AncientMemorial.Projectiles {
 		protected override void Routine() { }
 
 		protected override void LateRoutine() {
+			base.LateRoutine();
+			if (!isActive) return;
 			CameraBrain.instance.ShakeLerp(2, 0);
 		}
 
@@ -42,8 +46,7 @@ namespace AncientMemorial.Projectiles {
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner && !owner.isAttackTarget(entity)) return;
 
-			SendAttackMultiplyEvent(entity, 1);
-			Boom();
+			SendCollisionHit(entity, damage, Boom);
 		}
 
 		protected override void OnCollideObject(UObject obj) {

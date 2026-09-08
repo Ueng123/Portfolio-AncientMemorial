@@ -46,7 +46,7 @@ namespace UengSystem.UAction {
           
           Execute(executor);
           if (!Executing) return this;
-          process = CoroutineRunner.instance.StartCoroutine(ActionEnumerator());
+          process = GlobalObject.instance.StartCoroutine(ActionEnumerator());
           return this;
        }
 
@@ -58,7 +58,7 @@ namespace UengSystem.UAction {
           runningActionCount     -= 1;
           runningWaitActionCount -= 1;
           
-          if (stopCoroutine && process != null && CoroutineRunner.instance) CoroutineRunner.instance.StopCoroutine(process);
+          if (stopCoroutine && process != null && GlobalObject.instance) GlobalObject.instance.StopCoroutine(process);
           process = null;
           Executing = false;
           executor?.UnregisterAction(this);
@@ -74,7 +74,7 @@ namespace UengSystem.UAction {
           Executing = false;
           executor?.UnregisterAction(this);
           if (process != null) {
-             if (CoroutineRunner.instance) CoroutineRunner.instance.StopCoroutine(process);
+             if (GlobalObject.instance) GlobalObject.instance.StopCoroutine(process);
              process = null;
           }
           actionOnCancel?.Invoke();

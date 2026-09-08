@@ -130,7 +130,7 @@ namespace AncientMemorial.Entities {
 			healTimer.Tick();
 			SendAttackEvent(this, -3, true);
 			UPureFloat.AddValue(HEALTH_POTION_COUNT, -1);
-			UObject.Get("HealEffect", transform.position, PlayEffect: false);
+			Get("HealEffect", transform.position, PlayEffect: false);
 			PlaySFX("playerBottleOpen");
 		}
 
@@ -340,8 +340,9 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected override void EarlyRoutine() {
-			GetInput();
 			lookingLeft = transform.position.x >= InputManager.mousePosition.x;
+			GetInput();
+			
 			base.EarlyRoutine();
 		}
 		
@@ -350,17 +351,9 @@ namespace AncientMemorial.Entities {
 			
 			SetTargetInteract();
 		}
-
-		private bool dead = false;
+		
 		protected override void Death() {
-			if (dead) return;
-			dead = true;
-			
-			UUI.Get("DieUI", GameManager.instance.mainScreenCanvas);
-			WaveManager.instance.currentWave = null;
-			AudioManager.instance.SetBGM("Dead");
-			AudioManager.instance.StopAllSFX();
-			GameManager.SetTimeScale(0);
+			WaveManager.instance.GameOver();
 			
 			base.Death();
 		}

@@ -42,13 +42,25 @@ namespace AncientMemorial.Waves {
 		// 끝남 PlayWave [ NextWave f -> PlayWave [ NextWave f -> CLEAR! ]] -- ok
 		private void PlayWave() {
 			UPureFloat.SetValue(TIME_ELAPSED, 0);
-			currentWave.waveTasks.Execute(CoroutineRunner.instance);
+			currentWave.waveTasks.Execute(GlobalObject.instance);
 		}
 		
 		public void GameEnd() {
 			AudioManager.instance.PlaySFX("clear");
+			currentWave.waveTasks.CancelTasks();
+			currentWave = null;
 			GameManager.SetTimeScale(0);
+			AudioManager.instance.StopAllSFX();
 			UUI.Get("ClearUI", GameManager.instance.mainScreenCanvas);
+		}
+		
+		public void GameOver() {
+			UUI.Get("DieUI", GameManager.instance.mainScreenCanvas);
+			currentWave.waveTasks.CancelTasks();
+			currentWave = null;
+			AudioManager.instance.SetBGM("Dead");
+			AudioManager.instance.StopAllSFX();
+			GameManager.SetTimeScale(0);
 		}
 		
 		public override void ManagerUpdate() {

@@ -20,6 +20,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 
 			CrystalPhase3 phase3 = crystal.To<CrystalPhase3>();
 			phase3.StopGimmick();
+			crystal.To<CrystalPhase3>().StartGimmick(spawnEnergyCount);
 			
 			crystal.stat.moveSpeed = crystal.data.moveSpeed/1.5f;
 			
@@ -47,7 +48,6 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 			}
 
 			if (isProgress(1)) {
-				crystal.To<CrystalPhase3>().StartGimmick(spawnEnergyCount);
 				crystal.entityState = GetState();
 			}
 		}

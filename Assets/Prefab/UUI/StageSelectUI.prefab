@@ -507,18 +507,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UButtons.UButton
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 4888973996754582809}
   button: {fileID: 0}
   clicked: 0
@@ -638,25 +640,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   canvas: {fileID: 0}
   rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
   openTime: 1.1
-  GettingAnimation: open
   closeTime: 1.1
+  GettingAnimation: open
   actions:
   - key: DefaultStage
     action:
@@ -774,6 +778,7 @@ MonoBehaviour:
       data:
         TargetUUI: {fileID: 9008770567718173952, guid: 3690b46a812f67947a6d9bb20731e869, type: 3}
         canvas: {fileID: 0}
+        PlayEffect: 1
         ID:
           rid: -2
         Category:
@@ -781,6 +786,7 @@ MonoBehaviour:
     - rid: 5909658922870112871
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
+        PlayEffect: 1
         closeThis: 1
         TargetUUI:
           rid: -2
@@ -806,6 +812,7 @@ MonoBehaviour:
       data:
         TargetUUI: {fileID: 2014505629007714483, guid: 0b4e6e7e6ebc89f4880c366e64e9bee2, type: 3}
         canvas: {fileID: 0}
+        PlayEffect: 1
         ID:
           rid: -2
         Category:
@@ -813,6 +820,7 @@ MonoBehaviour:
     - rid: 5909658922870112874
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
+        PlayEffect: 1
         closeThis: 1
         TargetUUI:
           rid: -2
@@ -854,6 +862,7 @@ MonoBehaviour:
       data:
         TargetUUI: {fileID: 2014505629007714483, guid: 0b4e6e7e6ebc89f4880c366e64e9bee2, type: 3}
         canvas: {fileID: 0}
+        PlayEffect: 1
         ID:
           rid: -2
         Category:
@@ -861,7 +870,8 @@ MonoBehaviour:
     - rid: 5909658922870112882
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        closeThis: 0
+        PlayEffect: 1
+        closeThis: 1
         TargetUUI:
           rid: -2
     - rid: 5909658922870112883
@@ -869,6 +879,7 @@ MonoBehaviour:
       data:
         TargetUUI: {fileID: 2014505629007714483, guid: 0b4e6e7e6ebc89f4880c366e64e9bee2, type: 3}
         canvas: {fileID: 0}
+        PlayEffect: 1
         ID:
           rid: -2
         Category:
@@ -876,7 +887,8 @@ MonoBehaviour:
     - rid: 5909658922870112884
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
-        closeThis: 0
+        PlayEffect: 1
+        closeThis: 1
         TargetUUI:
           rid: -2
     - rid: 5909658922870112885
@@ -918,6 +930,7 @@ MonoBehaviour:
       data:
         TargetUUI: {fileID: 2014505629007714483, guid: 0b4e6e7e6ebc89f4880c366e64e9bee2, type: 3}
         canvas: {fileID: 0}
+        PlayEffect: 1
         ID:
           rid: -2
         Category:
@@ -925,6 +938,7 @@ MonoBehaviour:
     - rid: 5909658922870112888
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
+        PlayEffect: 1
         closeThis: 1
         TargetUUI:
           rid: -2
@@ -1085,18 +1099,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UButtons.UButton
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 4888973996754582809}
   button: {fileID: 0}
   clicked: 0
@@ -1336,18 +1352,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UButtons.UButton
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 4888973996754582809}
   button: {fileID: 0}
   clicked: 0
@@ -1511,18 +1529,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UButtons.UButton
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 4888973996754582809}
   button: {fileID: 0}
   clicked: 0

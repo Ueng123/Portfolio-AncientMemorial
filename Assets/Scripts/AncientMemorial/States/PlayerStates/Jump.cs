@@ -27,8 +27,8 @@ namespace AncientMemorial.States.PlayerStates {
 			}
 		}
 
-		public override void OnRoutine() {
-			float moveDir = InputManager.GetValue(ActionType.Move);
+		public override void OnFixedRoutine() {
+			float   moveDir = InputManager.GetValue(ActionType.Move);
 			Vector2 moveVec = new (moveDir * player.stat.moveSpeed, player.rigidbody2D.linearVelocity.y);
 			
 			if (moveDir != 0) player.rigidbody2D.AddForce(new Vector2(moveVec.x*50, 0)*Time.deltaTime, ForceMode2D.Force);

@@ -54,6 +54,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 		
 		public override void OnHit(Entity attacker, float damage, Vector2? pushDir = null) {
+			if (attacker != this) return;
 			
 			ShowCrystalPhase3DamageUI(damage);
 
@@ -66,6 +67,8 @@ namespace AncientMemorial.Entities.Enemies {
 				CameraBrain.instance.ZoomLerp(-0.3f);
 			}
 		}
+		
+		
 
 		protected override float GetRealDamage(float rawDamage) {
 			return 1;
@@ -155,6 +158,8 @@ namespace AncientMemorial.Entities.Enemies {
 
 		public override void Initialize() {
 			base.Initialize();
+			Invincible(true);
+			
 			remainingCrystalEnergy = 0;
 			gimmickActive = false;
 			

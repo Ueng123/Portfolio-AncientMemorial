@@ -11,7 +11,7 @@ namespace UengSystem.UI.UUIQueues {
 		public  Queue<UUIQueueItem> queue        = new Queue<UUIQueueItem>();
 		private bool                nextAvailable = true;
 		private Coroutine Running;
-		private CoroutineRunner Runner;
+		private GlobalObject Runner;
 		private bool Cancelled;
 
 		public void Cancel() {
@@ -27,7 +27,7 @@ namespace UengSystem.UI.UUIQueues {
 			
 			UUIQueueItem item = queue.Dequeue();
 			
-			Runner = CoroutineRunner.instance;
+			Runner = GlobalObject.instance;
 			Running = Runner.StartCoroutine(Routine(key, item));
 			// new DelayedAction(itemUI.openTime + 0.05f, ()=> {
 			// 	new WaitAction(

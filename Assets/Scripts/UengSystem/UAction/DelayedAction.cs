@@ -48,7 +48,7 @@ namespace UengSystem.UAction {
 			Execute(executor);
 			if (!Executing) return this;
 			this.delayInRealTime = delayInRealTime;
-			process = CoroutineRunner.instance.StartCoroutine(ActionEnumerator());
+			process = GlobalObject.instance.StartCoroutine(ActionEnumerator());
 			return this;
 		}
 
@@ -57,7 +57,7 @@ namespace UengSystem.UAction {
 		public void DoneDA(bool stopCoroutine = true) {
 			if (!Executing) return;
 			
-			if (stopCoroutine && process != null && CoroutineRunner.instance) CoroutineRunner.instance.StopCoroutine(process);
+			if (stopCoroutine && process != null && GlobalObject.instance) GlobalObject.instance.StopCoroutine(process);
 			process = null;
 			Executing                 =  false;
 			runningActionCount        -= 1;
@@ -69,7 +69,7 @@ namespace UengSystem.UAction {
 		public override void Cancel() {
 			if (!Executing) return;
 
-			if (process != null && CoroutineRunner.instance) CoroutineRunner.instance.StopCoroutine(process);
+			if (process != null && GlobalObject.instance) GlobalObject.instance.StopCoroutine(process);
 			process = null;
 			Executing                 =  false;
 			runningActionCount        -= 1;
