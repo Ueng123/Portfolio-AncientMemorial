@@ -1,11 +1,8 @@
-# UENG PORTFOLIO #1
-A first portfolio that will submit to `청강문화산업대학교`.
+# Ancient Memorial
+---
+## 프로젝트 정보
+<p>개인 / 팀 : 개인</p>
+<p>제작 기간 : 2026. 03 ~ 2026. 09</p>
 
-GENRE : `SOLO-SideView-Roguelike`\
-GAME_NAME : `Ancient_Memorial`
-
-THIS PROJECT STARTED ON `Dec`. `11`th. `2025`\
-COMMENT :
-```
-comment will filled when project fully well-maden.
-```
+---
+<h2><a href="https://same-hydrogen-6bc.notion.site/ANCIENT-MEMORIAL-303a09304bae804d81fadb1f80b07689">NOTION</h2>
