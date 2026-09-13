@@ -4,14 +4,8 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Skeleton {
 	public class SkeletonAttackReady : SkeletonState {
-		public SkeletonAttackReady(float targetDistance, float margin, float offsetMax, float offsetMin, float updateOffsetTerm) {
-			this.targetDistance   = targetDistance;
-			this.margin           = margin;
-			this.offsetMax        = offsetMax;
-			this.offsetMin        = offsetMin;
-			this.updateOffsetTerm = updateOffsetTerm;
-		}
-		
+
+		// 인스턴스 프로퍼티
 		private float targetDistance;
 		private float margin;
 
@@ -21,11 +15,21 @@ namespace AncientMemorial.States.EnemyStates.Skeleton {
 		private float offsetMax;
 		private float offsetMin;
 		private float offset;
+
+		// 인스턴스 메서드
+		public SkeletonAttackReady(float targetDistance, float margin, float offsetMax, float offsetMin, float updateOffsetTerm) {
+			this.targetDistance   = targetDistance;
+			this.margin           = margin;
+			this.offsetMax        = offsetMax;
+			this.offsetMin        = offsetMin;
+			this.updateOffsetTerm = updateOffsetTerm;
+		}
 		
 		private void UpdateOffset() {
 			offset = Random.Range(offsetMin, offsetMax);
 		}
 
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			offsetTimer.Tick();
 			UpdateOffset();

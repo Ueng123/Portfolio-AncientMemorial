@@ -9,8 +9,11 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class AddAnnounceQueue : TaskComponent {
+
+		// 정적 프로퍼티
 		public static Queue<AnnounceQueueData> announceQueue = new ();
 
+		// 인스턴스 프로퍼티
 		[SerializeReference][SubclassSelector]
 		public UValue<string> topT;
 		
@@ -23,7 +26,8 @@ namespace UengSystem.VisualScripting.Tasks {
 		public UValue<float> marginBack;
 		[SerializeReference][SubclassSelector]
 		public UValue<float> duration;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			UUIPool.instance.AddUUIQueue("AnnounceUI", new UUIQueueItem(
 												   marginFront?.value??0,

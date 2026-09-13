@@ -3,6 +3,8 @@ using Random = UnityEngine.Random;
 
 namespace UengSystem.Utility {
 	public static class ShuffleUtil {
+
+		// 정적 메서드
 		public static int[] NewShuffledArray(int n) {
 			int[] array = new int[n];
 			for (int i = 0; i < n; i++) { array[i] = i; }

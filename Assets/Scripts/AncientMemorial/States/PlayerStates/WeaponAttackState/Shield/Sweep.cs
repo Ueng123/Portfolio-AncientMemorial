@@ -1,14 +1,21 @@
-﻿using AncientMemorial.Entities;
+﻿using UengSystem.Utility;
+using AncientMemorial.Entities;
 using UnityEngine;
 
 namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class Sweep : PlayerWeaponAttack {
+
+		// 정적 프로퍼티
+		private static readonly int ShieldSweepClipId = "shieldSweep".GetHash();
+
+		// 인스턴스 프로퍼티
 		private float oldAnimatorSpeed;
 		
 		public override float attackTime       => 0.5f;
 		public override float attackAfterTime  => 0.5f;
 		public override float attackSpeed => player.stat.attackSpeed / 3f;
 
+		// 오버라이드 메서드
 		public override    void OnEnter() {
 			base.OnEnter();
 			
@@ -30,7 +37,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 				float     randomDamage    = Random.Range(-0.1f, 0.1f);
 				const int maxTargetEntity = 1;
 				Entity.AttackAreaNoEffect(player, 1+randomDamage, 0, hitboxPos, hitboxSize, 0, maxTargetEntity);
-				player.PlaySFX("shieldSweep", pitch:1.5f);
+				player.PlaySFX(ShieldSweepClipId, pitch: 1.5f);
 
 				step = 1;
 			}

@@ -6,15 +6,19 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalSpawnEnergy : CrystalPhase3Attack {
+
+		// 인스턴스 프로퍼티
 		public override float attackTime       => 6;
 		private         int   spawnEnergyCount = 2;
 		private         bool  infoMessage      = true;
 
+		// 인스턴스 메서드
 		public CrystalSpawnEnergy Setup(int energyCount) {
 			spawnEnergyCount = energyCount;
 			return this;
 		}
-		
+
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 

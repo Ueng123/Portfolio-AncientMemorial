@@ -3,7 +3,9 @@ using UnityEngine;
 
 namespace UengSystem.VisualScripting.UValues {
 	[Serializable]
-	public abstract class UValue<T> : InspectorItem, IUValue { // ISerializ... : 런타임에서 캐싱이 되면 그게 초기화 안됨.
+	public abstract class UValue<T> : InspectorItem, IUValue {
+
+		// 인스턴스 프로퍼티
 		public IUValue parent;
 
 		protected abstract bool  getIsDynamic { get; }
@@ -18,24 +20,6 @@ namespace UengSystem.VisualScripting.UValues {
 		[Header("UValue Property")]
 		public DynamicType dynamicType;
 		public bool isDynamic => dynamicType == DynamicType.Auto?isDynamicAuto:dynamicType == DynamicType.Dynamic;
-
-		public virtual UValue<T> OnSet() {
-			return this;
-		}
-		
-		// DYNAMIC TYPE
-		// 1. AUTO 이면
-		//  초회 getIsDynamic 호출 및 캐싱
-		//  이후 값 가져올때 캐싱된 값 제공.
-		// 2. AUTO가 아니면
-		//  DynamicType 값에 따라 판별
-		
-		// VALUE
-		// 1. 동적 값일때
-		//  온디맨드 방식을 통한 값의 유효성 보장
-		// 2. 정적 값일때
-		//  초회 getValue 호출 및 캐싱
-		//  이후 값 가져올때 캐싱된 값 제공
 		
 		protected abstract        T    getValue     { get; }
 		private T    valueCache;
@@ -51,6 +35,11 @@ namespace UengSystem.VisualScripting.UValues {
 			}
 		}
 
+		// 인스턴스 메서드
+		public virtual UValue<T> OnSet() {
+			return this;
+		}
+
 		public UValue<T> SetDynamicCache(DynamicType dynamicType) {
 			this.dynamicType = dynamicType;
 			return this;
@@ -61,7 +50,8 @@ namespace UengSystem.VisualScripting.UValues {
 			isDynamicCache = null;
 			parent?.Dirty();
 		}
-		
+
+		// 오버라이드 메서드
 		public override void OnAfterDeserialize() {
 			isValueCached  = false;
 			isDynamicCache = null;

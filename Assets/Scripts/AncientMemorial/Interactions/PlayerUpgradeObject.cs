@@ -13,18 +13,22 @@ using UnityEngine;
 
 namespace AncientMemorial.Interactions {
 	public class PlayerUpgradeObject : Interaction {
+
+		// 정적 프로퍼티
 		private static readonly int UPGRADE_DONE     = "UpgradeDone".GetHash();
 		private static readonly int AD_UPGRADE_COUNT = "ADUpgradeCount".GetHash();
 		private static readonly int AS_UPGRADE_COUNT = "ASUpgradeCount".GetHash();
 		private static readonly int MS_UPGRADE_COUNT = "MSUpgradeCount".GetHash();
 		private static readonly int MH_UPGRADE_COUNT = "MHUpgradeCount".GetHash();
-		
+
+		// 인스턴스 프로퍼티
 		private bool                  selected = false;
 		
 		public string         upgradeSuccessMessage;
 		public float          upgradeAmount;
 		public EntityDataType upgradeStat;
 
+		// 인스턴스 메서드
 		private void Upgrade() {
 			InfoUUI.instance.AddInfoMessage(upgradeSuccessMessage);
 			UPureBool.SetValue(UPGRADE_DONE, true);
@@ -49,7 +53,8 @@ namespace AncientMemorial.Interactions {
 					break;
 			}
 		}
-		
+
+		// 오버라이드 메서드
 		protected override void OnInteract() {
 			Upgrade();
 			
@@ -72,9 +77,16 @@ namespace AncientMemorial.Interactions {
 			base.OnGet();
 		}
 
+		// 중첩 타입
 		private sealed class UpgradeReleasing : Releasing {
+
+			// 인스턴스 프로퍼티
 			private float InitialSpeed;
+
+			// 인스턴스 메서드
 			public UpgradeReleasing(PlayerUpgradeObject Target) : base(Target) { }
+
+			// 오버라이드 메서드
 			protected override void OnStartEffect() {
 				InitialSpeed = target.animator.speed;
 				target.animator.speed = duration > 0 ? 1 / duration : 1;

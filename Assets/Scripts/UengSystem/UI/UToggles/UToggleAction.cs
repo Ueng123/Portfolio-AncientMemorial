@@ -7,6 +7,8 @@ using UnityEngine;
 namespace UengSystem.UI.UToggles {
 	[Serializable]
 	public class UToggleAction : UUIAction {
+
+		// 인스턴스 프로퍼티
 		private UToggle toggle;
 		
 		[SerializeReference] [SubclassSelector]
@@ -14,7 +16,8 @@ namespace UengSystem.UI.UToggles {
 
 		public Task OnToggleTrue;
 		public Task OnToggleFalse;
-		
+
+		// 오버라이드 메서드
 		public override void Initialize(UObject   self) {
 			toggle = GetComponent<UToggle>();
 			toggle.Initialize();
@@ -32,10 +35,10 @@ namespace UengSystem.UI.UToggles {
 			toggle.valueChanged = false;
 			
 			if (toggle.GetValue()) {
-				OnToggleTrue?.Execute(self);
+			OnToggleTrue?.Execute(self);
 			}
 			else {
-				OnToggleFalse?.Execute(self);
+			OnToggleFalse?.Execute(self);
 			}
 		}
 	}

@@ -8,11 +8,24 @@ using UnityEngine;
 
 namespace UengSystem.UI.UUIQueues {
 	public class UUIQueue {
+
+		// 인스턴스 프로퍼티
+		private readonly Dictionary<string, int> PrefabIds = new();
+
 		public  Queue<UUIQueueItem> queue        = new Queue<UUIQueueItem>();
 		private bool                nextAvailable = true;
 		private Coroutine Running;
 		private GlobalObject Runner;
 		private bool Cancelled;
+
+		// 인스턴스 메서드
+		private int GetPrefabId(string Key) {
+			if (!PrefabIds.TryGetValue(Key, out int PrefabId)) {
+				PrefabId = Key.GetHash();
+				PrefabIds.Add(Key, PrefabId);
+			}
+			return PrefabId;
+		}
 
 		public void Cancel() {
 			Cancelled = true;
@@ -50,7 +63,7 @@ namespace UengSystem.UI.UUIQueues {
 			yield return marginFront;
 			
 			if (Cancelled) yield break;
-			GameObject itemObject = UUI.Get(key, GameManager.instance.mainScreenCanvas, Configure: Ui => {
+			GameObject itemObject = UUI.Get(GetPrefabId(key), GameManager.instance.mainScreenCanvas, Configure: Ui => {
 				Ui.ID = key;
 				queueItem.data.Initialize(Ui);
 			});

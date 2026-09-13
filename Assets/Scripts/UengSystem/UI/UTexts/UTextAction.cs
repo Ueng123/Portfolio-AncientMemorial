@@ -8,12 +8,14 @@ using UnityEngine;
 namespace UengSystem.UI.UTexts {
 	[Serializable]
 	public class UTextAction : UUIAction {
+
+		// 인스턴스 프로퍼티
 		private UText textComponent;
 
 		[SerializeReference] [SubclassSelector]
 		public UValue<string> text;
-		
-		
+
+		// 인스턴스 메서드
 		public void SetText(UValue<string> newText, float duration) {
 			UValue<string> oldText = text;
 
@@ -23,6 +25,7 @@ namespace UengSystem.UI.UTexts {
 			act.ExecuteDA();
 		}
 
+		// 오버라이드 메서드
 		public override void Initialize(UObject self) {
 			textComponent = GetComponent<UText>();
 			textComponent.Initialize();

@@ -13,29 +13,20 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UVariables {
 	[Serializable]
 	public abstract class SetUVariable<T> : TaskComponent {
-		
+
+		// 인스턴스 프로퍼티
 		public  string variableName;
 
-		private int? _variableID;
+		private int? VariableId;
 		protected int variableID {
 			get {
-				_variableID ??= variableName.GetHash();
-				return _variableID.Value;
+				VariableId ??= variableName.GetHash();
+				return VariableId.Value;
 			}
 		}
 
 		[SerializeReference] [SubclassSelector]
 		public UValue<T> value;
-		
-		public override void OnBeforeSerialize() {
-			base.OnBeforeSerialize();
-			_variableID = null;
-		}
-
-		public override void OnAfterDeserialize() {
-			base.OnAfterDeserialize();
-			_variableID = null;
-		}
 
 		public override void Execute(ITaskable self) {
 			UVariable<T>.Set(variableID, value.OnSet());

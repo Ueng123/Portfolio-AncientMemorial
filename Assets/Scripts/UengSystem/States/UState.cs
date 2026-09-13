@@ -2,8 +2,11 @@
 
 namespace UengSystem.States {
 	public abstract class UState {
+
+		// 인스턴스 프로퍼티
 		public StopWatch stateTimer = new ();
-		
+
+		// 인스턴스 메서드
 		public void Enter() {
 			stateTimer.Tick();
 			OnEnter();

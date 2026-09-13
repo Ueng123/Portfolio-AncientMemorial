@@ -5,6 +5,8 @@ using UnityEngine.UI;
 namespace UengSystem.UI.USliders {
 	[Serializable]
 	public class USlider : UUIComponent {
+
+		// 인스턴스 프로퍼티
 		[HideInInspector]
 		public Slider slider;
 		protected Image sliderFillImage;
@@ -12,17 +14,7 @@ namespace UengSystem.UI.USliders {
 		private float valueCache;
 		public bool valueChanged = false;
 
-		public override void Initialize() {
-			slider          = GetComponent<Slider>();
-			valueCache      = slider.value;
-			sliderFillImage = slider.fillRect?.GetComponent<Image>();
-			slider.onValueChanged.AddListener(OnValueChanged);
-		}
-		
-		public override void Uninitialize() {
-			slider.onValueChanged.RemoveAllListeners();
-		}
-		
+		// 인스턴스 메서드
 		public virtual void OnValueChanged(float value) {
 			valueCache   = value;
 			valueChanged = true;
@@ -38,5 +30,17 @@ namespace UengSystem.UI.USliders {
 
 		public Color GetColor()            => sliderFillImage.color;
 		public void  SetColor(Color color) => sliderFillImage.color = color;
+
+		// 오버라이드 메서드
+		public override void Initialize() {
+			slider          = GetComponent<Slider>();
+			valueCache      = slider.value;
+			sliderFillImage = slider.fillRect?.GetComponent<Image>();
+			slider.onValueChanged.AddListener(OnValueChanged);
+		}
+		
+		public override void Uninitialize() {
+			slider.onValueChanged.RemoveAllListeners();
+		}
 	}
 }

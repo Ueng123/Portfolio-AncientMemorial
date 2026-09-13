@@ -1,50 +1,76 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UengSystem.Managers;
 using UengSystem.Objects;
+using UengSystem.Objects.LifeCycle;
 using UengSystem.UDebug;
+using UengSystem.Utility;
 using UnityEngine;
 
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class Task {
-
-		[SerializeField] private bool           useRealTime;
+		[SerializeField] private bool useRealTime;
 		[SerializeField] private TaskListItem[] tasks;
-		
-		private readonly List<TaskExecution> Executions = new();
-		
+
+		private UObject coroutineRunner;
+		private Coroutine runningTask;
+		private float elapsed;
+
 		public void Execute(ITaskable self, UObject coroutineRunner = null) {
-			Executions.RemoveAll(Execution => !Execution.isRunning);
-			Executions.Add(new TaskExecution(ExecuteEnumerator(self), self as UObject, coroutineRunner).Start());
+			this.coroutineRunner = coroutineRunner ?? GlobalObject.instance;
+			elapsed = 0f;
+			runningTask = this.coroutineRunner.StartCoroutine(ExecuteEnumerator(self));
 		}
 
 		public IEnumerator ExecuteEnumerator(ITaskable self) {
-			float Elapsed = 0;
 			if (tasks == null) yield break;
-			UObject Owner = self as UObject;
-			bool HasOwner = Owner && Owner.lifeCycle.isPrepared;
-			long Life = Owner ? Owner.lifeNumber : 0;
-			bool Releasing = Owner && Owner.lifeCycle.phase == Objects.LifeCycle.LifeCyclePhase.Releasing;
-			foreach (TaskListItem Item in tasks) {
-				float Wait = Item.time - Elapsed;
-				Elapsed = Item.time;
-				if (Wait > 0) yield return useRealTime || self is UI.UUI ? new WaitForSecondsRealtime(Wait) : new WaitForSeconds(Wait);
-				foreach (TaskComponent Component in Item.tasks) {
-					if (HasOwner && (!Owner || Owner.lifeNumber != Life || Owner.isReleased || Owner.lifeCycle.isShuttingDown
-					    || (!Releasing && Owner.lifeCycle.phase == Objects.LifeCycle.LifeCyclePhase.Releasing))) yield break;
-					try { Component?.Execute(self); }
-					catch (Exception Error) {
-						DebugManager.LogError($"Task > {Component?.GetType().Name}.Execute({self.GetType().Name})", Error, Owner ? Owner.gameObject : null);
+
+			elapsed = 0f;
+			UObject owner = self as UObject;
+			bool hasOwner = owner && owner.lifeCycle.isPrepared;
+			long life = owner ? owner.lifeNumber : 0;
+			bool releasing = owner && owner.lifeCycle.phase == LifeCyclePhase.Releasing;
+
+			foreach (TaskListItem taskItem in tasks) {
+				if (!IsValidOwner(owner, hasOwner, life, releasing)) yield break;
+
+				float wait = taskItem.time - elapsed;
+				elapsed = taskItem.time;
+				if (wait > 0) {
+					bool isRealTime = useRealTime || self is UI.UUI;
+					yield return isRealTime ? new WaitForSecondsRealtime(wait) : CacheManager.WaitForSecondsCeiling(wait);
+				}
+
+				foreach (TaskComponent task in taskItem.tasks) {
+					if (!IsValidOwner(owner, hasOwner, life, releasing)) yield break;
+					try { task?.Execute(self); }
+					catch (Exception error) {
+						DebugManager.LogError($"Task > {task?.GetType().Name}.Execute({self.GetType().Name})", error,
+							owner ? owner.gameObject : null);
 					}
 				}
 			}
 		}
 
+
 		public void CancelTasks() {
-			foreach (TaskExecution Execution in Executions) Execution.Cancel();
-			Executions.Clear();
+			if (runningTask == null) return;
+			foreach (TaskListItem taskItem in tasks) {
+				foreach (TaskComponent task in taskItem.tasks) {
+					task.StopAllCoroutines();
+				}
+			}
+			
+			coroutineRunner?.StopCoroutine(runningTask);
+			runningTask = null;
+		}
+		
+		private static bool IsValidOwner(UObject owner, bool hasOwner, long life, bool releasing) {
+			if (UObject.isStoppingLifeCycles) return false;
+			if (!hasOwner) return true;
+			return owner && owner.lifeNumber == life && !owner.isReleased && !owner.lifeCycle.isShuttingDown
+			       && (releasing || owner.lifeCycle.phase != LifeCyclePhase.Releasing);
 		}
 	}
 }

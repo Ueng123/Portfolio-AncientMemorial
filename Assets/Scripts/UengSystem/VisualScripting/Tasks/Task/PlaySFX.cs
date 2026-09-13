@@ -7,6 +7,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class PlaySFX : TaskComponent {
+
+		// 인스턴스 프로퍼티
 		public AudioClip       clip;
 
 		public bool            playOnThis;
@@ -23,7 +25,8 @@ namespace UengSystem.VisualScripting.Tasks {
 		public UValue<float> spread;
 		[SerializeReference] [SubclassSelector]
 		public UValue<bool>  loop;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			UObject audioPlayObject = playOnThis ? (UObject)self : audioPlayer?.value;
 

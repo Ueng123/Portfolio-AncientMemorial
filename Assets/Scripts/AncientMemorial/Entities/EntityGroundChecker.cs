@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace AncientMemorial.Entities {
 	public class EntityGroundChecker : MonoBehaviour {
+
+		// 인스턴스 프로퍼티
 		public bool isThereStandable {
 			get {
 				FilterStandables();
@@ -12,7 +14,8 @@ namespace AncientMemorial.Entities {
 		}
 
 		private List<CanStandOn> standables = new ();
-       
+
+		// 인스턴스 메서드
 		private void FilterStandables() {
 			int count = standables.Count;
 			if (count == 0) return;

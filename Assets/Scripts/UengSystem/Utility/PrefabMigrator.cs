@@ -5,6 +5,8 @@ namespace UengSystem.Utility {
 
 	public class PrefabMigrator
 	{
+
+		// 정적 메서드
 		[MenuItem("Tools/Force Save All Prefabs")]
 		public static void ForceSaveAllPrefabs()
 		{

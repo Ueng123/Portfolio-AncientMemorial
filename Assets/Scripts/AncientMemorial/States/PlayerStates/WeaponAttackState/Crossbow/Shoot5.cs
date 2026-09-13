@@ -1,8 +1,11 @@
 ﻿namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 	public class Shoot5 : CrossbowAttack {
+
+		// 인스턴스 프로퍼티
 		public override float attackTime      => 1f;
 		public override float attackAfterTime => 2f;
-		
+
+		// 오버라이드 메서드
 		public override void OnRoutine() {
 			if (step == 0 && isProgress(0)) {
 

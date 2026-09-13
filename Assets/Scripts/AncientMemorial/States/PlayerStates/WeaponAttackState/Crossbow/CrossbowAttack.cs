@@ -10,18 +10,26 @@ using UnityEngine;
 
 namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 	public abstract class CrossbowAttack : PlayerWeaponAttack {
-		protected static readonly int Attacking = Animator.StringToHash("attacking");
 
-		private float oldAnimatorSpeed;
+		// 정적 프로퍼티
+		private static readonly int ArrowDebrisPrefabId = "ArrowDebris".GetHash();
+		private static readonly int ArrowTailPrefabId = "ArrowTail".GetHash();
+		private static readonly int CrossbowShootClipId = "crossbowShoot".GetHash();
+
+		protected static readonly int Attacking = Animator.StringToHash("attacking");
 		
 		protected static readonly StopWatch skillTimer = new StopWatch();
 		private const             float     skillBonus = 1.5f;
+
+		// 인스턴스 프로퍼티
+		private float oldAnimatorSpeed;
 		private                   float     skillDuration => 3 * (1f + Mathf.Log10(player.stat.attackSpeed));
 		
 		public override float attackSpeed => player.stat.attackSpeed * (skillTimer.CheckIn(skillDuration) ? skillBonus : 1f);
-		
+
+		// 인스턴스 메서드
 		protected GameObject GetArrowDebris(Vector2 position, float angle) {
-			GameObject obj = UObject.Get("ArrowDebris", position, PlayEffect: false);
+			GameObject obj = UObject.Get(ArrowDebrisPrefabId, position, PlayEffect: false);
 			obj.transform.rotation = Quaternion.Euler(0, 0, angle);
 
 			return obj;
@@ -33,7 +41,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 			Vector2 dir = (endPos - startPos);
 			float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 			
-			GameObject obj = UObject.Get("ArrowTail", pos, PlayEffect: false);
+			GameObject obj = UObject.Get(ArrowTailPrefabId, pos, PlayEffect: false);
 			obj.transform.localScale = new Vector3(dir.magnitude, 0.05f, 1);
 			
 			obj.transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -49,7 +57,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 		}
 
 		protected void HitEffect() {
-			player.PlaySFX("crossbowShoot");
+			player.PlaySFX(CrossbowShootClipId);
 			CameraBrain.instance.ShakeLerp(0.5f, 7.5f);
 			CameraBrain.instance.ZoomLerp(-0.2f);
 		}
@@ -143,6 +151,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 			}
 		}
 
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			oldAnimatorSpeed = player.animator.speed;

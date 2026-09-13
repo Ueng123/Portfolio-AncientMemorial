@@ -4,6 +4,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UValues.UFloats {
 	[Serializable]
 	public class UTrigFunc : UValue<float> {
+
+		// 인스턴스 프로퍼티
 		protected override bool getIsDynamic {
 			get {
 				x.parent = this;

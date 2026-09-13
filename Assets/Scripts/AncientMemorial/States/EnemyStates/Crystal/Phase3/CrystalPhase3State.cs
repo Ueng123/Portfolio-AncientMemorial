@@ -12,26 +12,30 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
     public abstract class CrystalPhase3State : CrystalState {
-        private readonly List<AttackArea> missileAttackAreas = new();
 
-        private const string MissilePoolKey = "CrystalSemiHugeMissile";
-        private const string RayPoolKey     = "CrystalUltRay";
+        // 정적 프로퍼티
+        private static readonly int MissilePoolKey = "CrystalSemiHugeMissile".GetHash();
+        private static readonly int RayPoolKey = "CrystalUltRay".GetHash();
         private const string MapLayerName   = "Map";
         private const float SnapDistance    = 0.01f;
         private const float ResnapDistance  = 0.1f;
-        
-        private CrystalMoveMode moveMode;
-        private StopWatch       moveWatch = new StopWatch().TryTick();
-        private float           t => moveWatch.Tock();
         
         private const float XCurveNorm    = Mathf.PI * Mathf.PI * Mathf.PI * 2 / 3f - Mathf.PI; // 곡선의 적당한 곡률을 위한 숫자 (x성분)
         private const float InvXCurveNorm = 1f / XCurveNorm;
         private const float YCurveNorm    = 1f / (4 * Mathf.PI * Mathf.PI); // 곡선의 적당한 곡률을 위한 숫자 (y성분)
 
+        // 인스턴스 프로퍼티
+        private readonly List<AttackArea> missileAttackAreas = new();
+        
+        private CrystalMoveMode moveMode;
+        private StopWatch       moveWatch = new StopWatch().TryTick();
+        private float           t => moveWatch.Tock();
+
         private bool isSnapped;
 
         private List<CrystalRay> rays = new List<CrystalRay>(20);
-        
+
+        // 인스턴스 메서드
         protected void ShootSemiHugeMissile(Vector2 pos, float rot, float speed = 5f) {
             Vector2      dir       = new (-Mathf.Sin(rot * Mathf.Deg2Rad), Mathf.Cos(rot * Mathf.Deg2Rad));
             RaycastHit2D hit       = Physics2D.Raycast(pos, dir, 100, LayerMask.GetMask(MapLayerName));
@@ -67,13 +71,6 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
             return angle + (isUpZero ? -90 : 0);
         }
         
-        protected override void ClearMissiles() {
-            base.ClearMissiles();
-            foreach (AttackArea attackArea in missileAttackAreas) {
-                attackArea.Cancel();
-            }
-        }
-        
         protected CrystalRay SpawnRay(float radius, float angularVelocity, float offsetDegrees, Vector2? pos = null, bool effect = false) {
             Vector2 mapSize = MapManager.instance.GetMapSize();
             
@@ -102,11 +99,6 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
             
             ray.Release(PlayEffect: true);
         } 
-        
-        public override void OnEnter() {
-            base.OnEnter();
-            SetMoveMode(CrystalMoveMode.LissajousPath);
-        }
 
         protected void SetMoveMode(CrystalMoveMode moveMode) {
             this.moveMode = moveMode;
@@ -212,6 +204,19 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
             
             crystal.transform.rotation     = Quaternion.Euler(0f, 0f, -2 * crystal.rigidbody2D.linearVelocityX);
             crystal.To<CrystalPhase3>().rotatingAnimator.speed = crystal.rigidbody2D.linearVelocity.magnitude;
+        }
+
+        // 오버라이드 메서드
+        protected override void ClearMissiles() {
+            base.ClearMissiles();
+            foreach (AttackArea attackArea in missileAttackAreas) {
+                attackArea.Cancel();
+            }
+        }
+        
+        public override void OnEnter() {
+            base.OnEnter();
+            SetMoveMode(CrystalMoveMode.LissajousPath);
         }
         
         public override void OnFixedRoutine() {

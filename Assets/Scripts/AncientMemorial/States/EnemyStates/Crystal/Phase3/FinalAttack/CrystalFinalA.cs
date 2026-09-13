@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack {
 	public class CrystalFinalA : CrystalPhase3Attack {
-		
+
+		// 인스턴스 프로퍼티
 		public override float attackTime => 10f;
 		
 		private StopWatch barrageMissileTimer  = new StopWatch();
@@ -14,6 +15,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack {
 		private StopWatch bigMissileTimer      = new StopWatch();
 		private float     bigMissileTime       = 1f;
 
+		// 인스턴스 메서드
 		private void UpdateBarrageMissileTime() {
 			barrageMissileTimer.Tick();
 			barrageMissileTime = 1.5f;
@@ -55,6 +57,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack {
 			float   rot = GetAngleToTarget(pos, true);
 			ShootBigMissile(pos, rot);
 		}
+
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			MapManager.instance.SetMapSize(new Vector2(15, 15), 0.025f);
 			SetMoveMode(CrystalMoveMode.CircleOnCenter);

@@ -20,6 +20,15 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities.Enemies {
 	public class CrystalPhase3 : CrystalBoss {
+
+		// 정적 프로퍼티
+		private static readonly int CrystalPhase3DamageUIPrefabId = "CrystalPhase3DamageUI".GetHash();
+		private static readonly int CrystalEnergyPrefabId = "CrystalEnergy".GetHash();
+		private static readonly int SlashEffectPrefabId = "SlashEffect".GetHash();
+		private static readonly int BrokenCrystalPrefabId = "BrokenCrystal".GetHash();
+		private static readonly int CrystalHit2ClipId = "crystalHit2".GetHash();
+
+		// 인스턴스 프로퍼티
 		private int CRYSTAL_ENERGY_DEAD = "crystalEnergyDead".GetHash();
 		
 		public Animator   rotatingAnimator;
@@ -35,6 +44,9 @@ namespace AncientMemorial.Entities.Enemies {
 		private EnemyState         deathAttack;
 		private EnemyState         final;
 
+		private readonly DelayedAction shakeAfterTimescale = new (1.5f, () => { CameraBrain.instance.ShakeLerp(75, 10f); }, () => { });
+
+		// 인스턴스 메서드
 		protected void ShowCrystalPhase3DamageUI(float damage) {
 			if (damage == 0) return;
 			
@@ -44,7 +56,7 @@ namespace AncientMemorial.Entities.Enemies {
 				return;
 			}
 			
-			UUI.Get("CrystalPhase3DamageUI", GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
+			UUI.Get(CrystalPhase3DamageUIPrefabId, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
 			DamageUi.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			UTextAction textAction  = DamageUi.GetAction<UTextAction>("DamageDisplay");
 			UTextAction textSAction = DamageUi.GetAction<UTextAction>("DamageDisplayShadow");
@@ -52,14 +64,54 @@ namespace AncientMemorial.Entities.Enemies {
 			textAction.text = textSAction.text = new UPureString {pureValue = "!!!!!!"};
 			});
 		}
-		
+
+		public void SpawnCrystalEnergy(Vector2 pos, bool PlayEffect) {
+			GameObject crystalEnergyObject = UObject.Get(CrystalEnergyPrefabId, pos, PlayEffect);
+			CrystalEnergy crystalEnergy = crystalEnergyObject.GetComponent<CrystalEnergy>();
+
+			crystalEnergy.Category = "crystalEnergy";
+		}
+
+		public void StartGimmick(int energyCount) {
+			if (gimmickActive) return;
+			UPureFloat.SetValue(CRYSTAL_ENERGY_DEAD, 0);
+			
+			remainingCrystalEnergy = energyCount;
+			gimmickActive = true;
+		}
+
+		public void StopGimmick() {
+			if (!gimmickActive) return;
+			gimmickActive = false;
+
+			foreach (UObject obj in GetUObjects("crystalEnergy")) {
+				CrystalEnergy crystalEnergy = (CrystalEnergy)obj;
+				crystalEnergy.stat.HP = 0;
+			}
+		}
+
+		private void OnGimmickDone() {
+			StopGimmick();
+			attackPhase = 0;
+			
+			Stun(1);
+			SendAttackEvent(this, this, 1, true);
+		}
+
+		private void GimmickRoutine() {
+			if (!gimmickActive) return;
+			if (UPureFloat.GetValue(CRYSTAL_ENERGY_DEAD) < remainingCrystalEnergy) return;
+			OnGimmickDone();
+		}
+
+		// 오버라이드 메서드
 		public override void OnHit(Entity attacker, float damage, Vector2? pushDir = null) {
 			if (attacker != this) return;
 			
 			ShowCrystalPhase3DamageUI(damage);
 
 			if (stat.HP > 0) {
-				PlaySFX("crystalHit2");
+				PlaySFX(CrystalHit2ClipId);
 				
 				if (attacker != player) return;
 				GameManager.SetTimeScale(0.05f, 0.2f);
@@ -117,45 +169,6 @@ namespace AncientMemorial.Entities.Enemies {
 			attackPhase%=8;
 		}
 
-		public void SpawnCrystalEnergy(Vector2 pos, bool PlayEffect) {
-			GameObject crystalEnergyObject = UObject.Get("CrystalEnergy", pos, PlayEffect);
-			CrystalEnergy crystalEnergy = crystalEnergyObject.GetComponent<CrystalEnergy>();
-
-			crystalEnergy.Category = "crystalEnergy";
-		}
-
-		public void StartGimmick(int energyCount) {
-			if (gimmickActive) return;
-			UPureFloat.SetValue(CRYSTAL_ENERGY_DEAD, 0);
-			
-			remainingCrystalEnergy = energyCount;
-			gimmickActive = true;
-		}
-
-		public void StopGimmick() {
-			if (!gimmickActive) return;
-			gimmickActive = false;
-
-			foreach (UObject obj in GetUObjects("crystalEnergy")) {
-				CrystalEnergy crystalEnergy = (CrystalEnergy)obj;
-				crystalEnergy.stat.HP = 0;
-			}
-		}
-
-		private void OnGimmickDone() {
-			StopGimmick();
-			attackPhase = 0;
-			
-			Stun(1);
-			SendAttackEvent(this, this, 1, true);
-		}
-
-		private void GimmickRoutine() {
-			if (!gimmickActive) return;
-			if (UPureFloat.GetValue(CRYSTAL_ENERGY_DEAD) < remainingCrystalEnergy) return;
-			OnGimmickDone();
-		}
-
 		public override void Initialize() {
 			base.Initialize();
 			Invincible(true);
@@ -174,15 +187,13 @@ namespace AncientMemorial.Entities.Enemies {
 			base.Routine();
 			GimmickRoutine();
 		}
-
-		private readonly DelayedAction shakeAfterTimescale = new (1.5f, () => { CameraBrain.instance.ShakeLerp(75, 10f); }, () => { });
 		protected override void Death() {
 			Vector2 mapSize = MapManager.instance.GetMapSize();
 			
-			GameObject eff1 = UObject.Get("SlashEffect", transform.position, PlayEffect: false);
+			GameObject eff1 = UObject.Get(SlashEffectPrefabId, transform.position, PlayEffect: false);
 			eff1.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(40, 50));
 			eff1.transform.localScale = new Vector3(mapSize.x*1.1f, mapSize.y*1.2f, 1f);
-			GameObject eff2 = UObject.Get("SlashEffect", transform.position, PlayEffect: false);
+			GameObject eff2 = UObject.Get(SlashEffectPrefabId, transform.position, PlayEffect: false);
 			eff2.transform.rotation   = Quaternion.Euler(0, 0, -Random.Range(40, 50));
 			eff2.transform.localScale = new Vector3(mapSize.x*1.1f, mapSize.y*1.2f, 1f);
 			
@@ -190,7 +201,7 @@ namespace AncientMemorial.Entities.Enemies {
 			shakeAfterTimescale.ExecuteDA(true);
 			CameraBrain.instance.ZoomLerp(-5f);
 
-			UObject.Get("BrokenCrystal", new Vector2(transform.position.x, 0.75f), PlayEffect: false);
+			UObject.Get(BrokenCrystalPrefabId, new Vector2(transform.position.x, 0.75f), PlayEffect: false);
 			
 			base.Death();
 		}

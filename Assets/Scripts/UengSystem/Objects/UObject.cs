@@ -20,12 +20,14 @@ using EventType = UengSystem.Events.EventType;
 namespace UengSystem.Objects {
 	public partial class UObject : MonoBehaviour, IObjectPoolable, IActionable, IEventAgent, ITaskable {
 
+		// 정적 프로퍼티
 		private static readonly Dictionary<string, UObject>       IDTable       = new();
 		private static readonly Dictionary<string, List<UObject>> CategoryTable = new();
 
+		// 인스턴스 프로퍼티
 		public WhenInitialize whenInitialize;
 
-		// Instance Variables //
+		
 		[Header("Identify")] private string _ID;
 		private                      string _Category;
 
@@ -50,8 +52,6 @@ namespace UengSystem.Objects {
 				OnIdChanged(value);
 			}
 		}
-		
-		protected virtual void OnIdChanged(string id) { }
 
 		public string Category {
 			get => _Category;
@@ -77,50 +77,32 @@ namespace UengSystem.Objects {
 			}
 		}
 
-		protected virtual void OnCategoryChanged(string category) { }
-
 		public Sprite whiteSpawnSprite;
 		public Sprite colorSpawnSprite;
 		public bool isReleased => lifeCycle.phase == UengSystem.Objects.LifeCycle.LifeCyclePhase.Released;
 
-		public AudioSource PlaySFX(string clipName,    Vector2 position = default, bool  isLocalPosition = true,
-								   float  volume = 1f, float   pitch    = 1f,      float pan = 0f, float spread = 0f,
-								   bool   loop   = false) {
-			return AudioManager.instance.PlaySFX(clipName, transform, position, isLocalPosition, volume, pitch, pan,
-												 spread, loop);
-		}
-
-		public AudioSource PlaySFX(AudioClip clip,        Vector2 position = default, bool  isLocalPosition = true,
-								   float     volume = 1f, float   pitch    = 1f,      float pan = 0f, float spread = 0f,
-								   bool      loop   = false) {
-			return AudioManager.instance.PlaySFX(clip, transform, position, isLocalPosition, volume, pitch, pan, spread,
-												 loop);
-		}
-
 		
-		// IActionable //
+		
 		private readonly List<UAction.UAction> runningActions = new();
-
-		public void RegisterAction(UAction.UAction action) {
-			if (!canStartOwnedWork) { action.Cancel(); return; }
-			runningActions.Add(action);
-		}
 		
-		public void UnregisterAction(UAction.UAction action) {
-			runningActions.Remove(action);
-		}
-
-		public void StopAllUActions() {
-			UAction.UAction[] Actions = runningActions.ToArray();
-			runningActions.Clear();
-			foreach (UAction.UAction Action in Actions) Action.Cancel();
-		}
 		
-		// Components //
 		[HideInInspector] public Rigidbody2D    rigidbody2D;
 		[HideInInspector] public SpriteRenderer spriteRenderer;
 		[HideInInspector] public Animator       animator;
+		
+		private Dictionary<GameObject, ObjectInitializeData> objectInitializeData = new();
+		
 
+		private bool                   isRigidbody2DFrozen = false;
+		private Vector2                linearVelocityBeforeFreeze;
+		private float                  angularVelocityBeforeFreeze;
+		private RigidbodyConstraints2D constraintsBeforeFreeze;
+
+		private   bool  isAnimatorFrozen = false;
+		protected float animatorSpeedBeforeFreeze;
+		private bool AnimatorEnabledBeforeFreeze;
+
+		// 정적 메서드
 		public static bool TryGetUObject(string id, out UObject obj) {
 			return IDTable.TryGetValue(id, out obj);
 		}
@@ -141,13 +123,45 @@ namespace UengSystem.Objects {
 			return CategoryTable.ContainsKey(category) && CategoryTable[category].Count > 0;
 		}
 
+		// 인스턴스 메서드
+		protected virtual void OnIdChanged(string id) { }
 
-		// IEventAgent Method //
+		protected virtual void OnCategoryChanged(string category) { }
+
+		public AudioSource PlaySFX(int   ClipId,    Vector2 position = default, bool  isLocalPosition = true,
+								   float volume = 1f, float   pitch    = 1f,      float pan = 0f, float spread = 0f,
+								   bool  loop   = false) {
+			return AudioManager.instance.PlaySFX(ClipId, transform, position, isLocalPosition, volume, pitch, pan,
+												 spread, loop);
+		}
+
+		public AudioSource PlaySFX(AudioClip clip,        Vector2 position = default, bool  isLocalPosition = true,
+								   float     volume = 1f, float   pitch    = 1f,      float pan = 0f, float spread = 0f,
+								   bool      loop   = false) {
+			return AudioManager.instance.PlaySFX(clip, transform, position, isLocalPosition, volume, pitch, pan, spread,
+												 loop);
+		}
+
+		public void RegisterAction(UAction.UAction action) {
+			if (!canStartOwnedWork) { action.Cancel(); return; }
+			runningActions.Add(action);
+		}
+		
+		public void UnregisterAction(UAction.UAction action) {
+			runningActions.Remove(action);
+		}
+
+		public void StopAllUActions() {
+			UAction.UAction[] Actions = runningActions.ToArray();
+			runningActions.Clear();
+			foreach (UAction.UAction Action in Actions) Action.Cancel();
+		}
+
+
+		
 		public void SendEvent(EventType type, EventPriority layer, IEventData data = null) {
 			EventManager.instance.AddEvent(new Event(type, this, data), layer);
 		}
-		
-		private Dictionary<GameObject, ObjectInitializeData> objectInitializeData = new();
 
 		public bool isRegistered(GameObject obj) {
 			return objectInitializeData.ContainsKey(obj);
@@ -217,16 +231,6 @@ namespace UengSystem.Objects {
 				ApplyObjectInitializeData(obj);
 			}
 		}
-		
-
-		private bool                   isRigidbody2DFrozen = false;
-		private Vector2                linearVelocityBeforeFreeze;
-		private float                  angularVelocityBeforeFreeze;
-		private RigidbodyConstraints2D constraintsBeforeFreeze;
-
-		private   bool  isAnimatorFrozen = false;
-		protected float animatorSpeedBeforeFreeze;
-		private bool AnimatorEnabledBeforeFreeze;
 		
 		public void Freeze() {
 			FreezeRigidbody2D();

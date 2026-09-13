@@ -9,6 +9,7 @@ using UnityEngine;
 namespace AncientMemorial.Entities.Enemies {
 	public abstract class Enemy : Entity {
 
+		// 인스턴스 프로퍼티
 		private readonly int ENEMY_DEAD = "EnemyDead".GetHash();
 		private          int ENEMYTYPE_DEAD;
 		private          int CATEGORY_DEAD;
@@ -17,6 +18,10 @@ namespace AncientMemorial.Entities.Enemies {
 
 		protected EnemyStateMachine stateMachine;
 
+		// 정적 메서드
+		public static bool isTargettable(EntityType entity) => entity == EntityType.Player;
+
+		// 인스턴스 메서드
 		protected abstract Entity GetTargetEntity();
 		public abstract void  Attack();
 		
@@ -25,18 +30,21 @@ namespace AncientMemorial.Entities.Enemies {
 			entityState = stunState.Setup(duration);
 		}
 
-		public static bool isTargettable(EntityType entity) => entity == EntityType.Player;
-		
+		protected void InitializeStateMachine(EnemyState wanderState, EnemyState awareState, EnemyState attackReadyState, EnemyStun stunState = null) {
+			stateMachine = new EnemyStateMachine(this, GetTargetEntity, wanderState, awareState, attackReadyState, stunState??new EnemyStun());
+		}
+
+		public virtual void InitializeState() {
+			entityState = stateMachine?.wanderState;
+		}
+
+		// 오버라이드 메서드
 		public override bool isAttackTarget(Entity entity) {
 			return entity != this && entity == player;
 		} 
 
 		protected override void OnHeal(float amount) {
 			ShowDamageUI(amount);
-		}
-
-		protected void InitializeStateMachine(EnemyState wanderState, EnemyState awareState, EnemyState attackReadyState, EnemyStun stunState = null) {
-			stateMachine = new EnemyStateMachine(this, GetTargetEntity, wanderState, awareState, attackReadyState, stunState??new EnemyStun());
 		}
 		
 		protected override void Death() {
@@ -52,10 +60,6 @@ namespace AncientMemorial.Entities.Enemies {
 		public override void OnFirstGet() {
 			base.OnFirstGet();
 			ENEMYTYPE_DEAD = $"{GetType().Name}Dead".GetHash();
-		}
-
-		public virtual void InitializeState() {
-			entityState = stateMachine?.wanderState;
 		}
 		
 		public override void Initialize() {

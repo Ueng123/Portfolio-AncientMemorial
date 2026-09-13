@@ -9,9 +9,12 @@ using UnityEngine.Pool;
 namespace UengSystem.Audio {
 	public class AudioManager : Manager<AudioManager> {
 
-		public  List<AudioClip>              audioClips;
+		// 정적 프로퍼티
 		public static int                           maxClips = 32;
-		private Dictionary<string, AudioClip> audioClipsDictionary = new Dictionary<string, AudioClip>();
+
+		// 인스턴스 프로퍼티
+		public  List<AudioClip>              audioClips;
+		private Dictionary<int, AudioClip> audioClipsDictionary = new Dictionary<int, AudioClip>();
 
 		private float volume;
 		
@@ -21,12 +24,13 @@ namespace UengSystem.Audio {
 		
 		private ObjectPool<AudioSource> SFXPool;
 		
-		public AudioClip GetClip(string clipName) {
-			return audioClipsDictionary[clipName];
-		}
+		private Coroutine ChangeCoroutine;
+
+		// 인스턴스 메서드
 		
-		public void SetBGM(string clipName) {
-			AudioClip clip = GetClip(clipName);
+		
+		public void SetBGM(int ClipId) {
+			AudioClip clip = GetClip(ClipId);
 			SetBGM(clip);
 		}
 		
@@ -36,9 +40,8 @@ namespace UengSystem.Audio {
 			SourceBGM.Play();
 		}
 
-		private Coroutine ChangeCoroutine;
-		public void SetBGM(string clipName, float duration) {
-			AudioClip clip = GetClip(clipName);
+		public void SetBGM(int ClipId, float duration) {
+			AudioClip clip = GetClip(ClipId);
 			SetBGM(clip, duration);
 		}
 		
@@ -81,9 +84,12 @@ namespace UengSystem.Audio {
 			ChangeCoroutine = null;
 		}
 
-		// SIMPLE - 2D SOUND //
-		public void PlaySFX(string clipName) {
-			AudioClip clip = GetClip(clipName);
+		public AudioClip GetClip(int ClipId) {
+			return audioClipsDictionary[ClipId];
+		}
+		
+		public void PlaySFX(int ClipId) {
+			AudioClip clip = GetClip(ClipId);
 			PlaySFX(clip);
 		}
 		
@@ -91,9 +97,10 @@ namespace UengSystem.Audio {
 			SourceSFX.PlayOneShot(clip);
 		}
 
-		// MODIFIED OR STOPPABLE - 2D SOUND //
-		public AudioSource PlaySFX(string clipName, float volume = 0.5f, float pitch = 1f, float pan = 0f, bool   loop = false) {
-			AudioClip clip = GetClip(clipName);
+		
+		public AudioSource PlaySFX(int  ClipId, float volume = 0.5f, float pitch = 1f, float pan = 0f,
+								   bool loop = false) {
+			AudioClip clip = GetClip(ClipId);
 			return PlaySFX(clip, volume, pitch, pan, loop);
 		}
 
@@ -104,9 +111,10 @@ namespace UengSystem.Audio {
 			return source;
 		}
 
-		// WORLD FIXED - 3D SOUND //
-		public AudioSource PlaySFX(string clipName, Vector2 position, float volume = 0.5f, float pitch = 1f, float  pan = 0f,  float   spread = 0f, bool  loop   = false) {
-			AudioClip clip = GetClip(clipName);
+		
+		public AudioSource PlaySFX(int   ClipId, Vector2 position,    float volume = 0.5f, float pitch = 1f,
+								   float pan = 0f, float   spread = 0f, bool  loop   = false) {
+			AudioClip clip = GetClip(ClipId);
 			return PlaySFX(clip, position, volume, pitch, pan, spread, loop);
 		}
 
@@ -117,9 +125,11 @@ namespace UengSystem.Audio {
 			return source;
 		}
 
-		// OBJECT FIXED - 3D SOUND //
-		public AudioSource PlaySFX(string clipName,   Transform parent,     Vector2 position, bool  isLocalPosition, float  volume = 0.5f, float     pitch = 1f, float   pan = 0f, float spread = 0f, bool   loop   = false) {
-			AudioClip clip = GetClip(clipName);
+		
+		public AudioSource PlaySFX(int   ClipId,      Transform parent,     Vector2 position, bool  isLocalPosition,
+								   float volume = 0.5f, float     pitch = 1f, float   pan = 0f, float spread = 0f,
+								   bool  loop   = false) {
+			AudioClip clip = GetClip(ClipId);
 			return PlaySFX(clip, parent, position, isLocalPosition, volume, pitch, pan, spread, loop);
 		}
 
@@ -141,7 +151,7 @@ namespace UengSystem.Audio {
 			bool isEmpty = playingSFX.Count == 0;
 			
 			if (isLoop || isEmpty) {
-				playingSFX.Add((source, releaseTime));
+				playingSFX.Add((source, releaseTime)); // 리스트가 비었거나 반복 재생할 오디오 소스인 경우
 				return;
 			}
 
@@ -157,7 +167,7 @@ namespace UengSystem.Audio {
 				index++;
 			}
 			
-			if (index == playingSFX.Count) playingSFX.Add((source, releaseTime)); // 리스트가 비었거나 마지막까지 조건에 부합하는 자리가 없는 경우
+			if (index == playingSFX.Count) playingSFX.Add((source, releaseTime)); // 마지막까지 조건에 부합하는 자리가 없는 경우
 			else playingSFX.Insert(index, (source, releaseTime)); // 리스트에서 자리를 찾음
 		}
 
@@ -184,29 +194,29 @@ namespace UengSystem.Audio {
 			return source;
 		}
 
-		public void StopSFX(AudioSource source) { // 찾아주기
+		public void StopSFX(AudioSource source) {
 			int sourceIndex;
 			for (sourceIndex = 0; sourceIndex < playingSFX.Count; sourceIndex++) {
 				if (playingSFX[sourceIndex].source == source) break;
 			}
 
-			if (sourceIndex == playingSFX.Count) return; // 리스트 내에 없음.
+			if (sourceIndex == playingSFX.Count) return;
 			
 			StopSFX(sourceIndex);
 		}
 		
-		private void StopSFX(int sourceIndex) { // 사운드 소스 뒤처리
-			(AudioSource source, float? releaseTime) SFX    = playingSFX[sourceIndex];
-			AudioSource                              source = SFX.source;
-			
+		private void StopSFX(int sourceIndex) {
+			StopSFXWithoutModifyList(sourceIndex);
 			playingSFX.RemoveAt(sourceIndex);
+		}
+		
+		private void StopSFXWithoutModifyList(int sourceIndex) {
+			AudioSource source = playingSFX[sourceIndex].source;
 
 			if (!source) return;
 			if (!source.enabled) return;
 			if (source.isPlaying) source.Stop();
 			
-			
-			source.panStereo    = 0f;
 			source.spread       = 0f;
 			source.spatialBlend = 0f;
 			source.transform.SetParent(transform, true);
@@ -215,32 +225,20 @@ namespace UengSystem.Audio {
 			SFXPool.Release(source);
 		}
 		
-		private void StopSFXWithoutModifyList(int sourceIndex) { // 사운드 소스 뒤처리
-			(AudioSource source, float? releaseTime) SFX    = playingSFX[sourceIndex];
-			AudioSource                              source = SFX.source;
-			
-			if (!source.enabled) return;
-			if (source.isPlaying) source.Stop();
-			
-			source.panStereo    = 0f;
-			source.spread       = 0f;
-			source.spatialBlend = 0f;
-			source.transform.SetParent(transform, true);
-			
-			source.enabled = false;
-			SFXPool.Release(source);
-		}
-
 		public void StopAllSFX() {
+			SourceSFX.Stop();
+			
 			if (playingSFX.Count == 0) return;
 			for (int i = playingSFX.Count - 1; i >= 0; i--) {
 				StopSFX(i);
 			}
 		}
 		
+
+		// 오버라이드 메서드
 		public override void Initialize() {
 			foreach (AudioClip clip in audioClips) {
-				audioClipsDictionary.Add(clip.name, clip);
+				audioClipsDictionary.Add(clip.name.GetHash(), clip);
 			}
 			
 			volume = SourceBGM.volume;

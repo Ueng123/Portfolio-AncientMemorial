@@ -27,6 +27,19 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
 	public class Player : Entity {
+
+		// 정적 프로퍼티
+		private static readonly int AfterImagePrefabId = "AfterImage".GetHash();
+		private static readonly int PlayerUIPrefabId = "PlayerUI".GetHash();
+		private static readonly int HealEffectPrefabId = "HealEffect".GetHash();
+		private static readonly int PlayerBottleOpenClipId = "playerBottleOpen".GetHash();
+		private static readonly int PlayerLandClipId = "playerLand".GetHash();
+		private static readonly int PlayerHitClipId = "playerHit".GetHash();
+		
+		
+		private static readonly int  BACKWARD  = Animator.StringToHash("backward");
+
+		// 인스턴스 프로퍼티
 		private int HEALTH_POTION_COUNT = "HealthPotionCount".GetHash();
 		
 		[Header("Hand")]
@@ -50,7 +63,7 @@ namespace AncientMemorial.Entities {
 			}
 		}
 
-		// STATE CASH //
+		
 
 		private Vector2 arrowAimDir;
 
@@ -74,14 +87,19 @@ namespace AncientMemorial.Entities {
 			}
 		}
 		
-		// ANIMATOR //
-		private static readonly int  BACKWARD  = Animator.StringToHash("backward");
 		
-		// HEAL //
 		private StopWatch healTimer = new ();
-
-		// METHOD //
 		
+		private int  moveSign;
+
+		private StopWatch targetInteractSync     = new StopWatch();
+		private float     targetInteractSyncTime = 0.1f;
+		
+		public bool getInput = true; 
+
+		private float radH;
+
+		// 인스턴스 메서드
 		private bool CanJump() {
 			if (!isGround) return false;
 			if (entityState == PlayerState.jump) return false;
@@ -103,11 +121,9 @@ namespace AncientMemorial.Entities {
 			
 			return true;
 		}
-		
-		private int  moveSign;
 
 		public void SpawnAfterImage() {
-			SpriteRenderer sr = UObject.Get("AfterImage", transform.position, PlayEffect: false).GetComponent<SpriteRenderer>();
+			SpriteRenderer sr = UObject.Get(AfterImagePrefabId, transform.position, PlayEffect: false).GetComponent<SpriteRenderer>();
 			sr.flipX  = spriteRenderer.flipX;
 			sr.sprite = spriteRenderer.sprite;
 		}
@@ -130,12 +146,9 @@ namespace AncientMemorial.Entities {
 			healTimer.Tick();
 			SendAttackEvent(this, -3, true);
 			UPureFloat.AddValue(HEALTH_POTION_COUNT, -1);
-			Get("HealEffect", transform.position, PlayEffect: false);
-			PlaySFX("playerBottleOpen");
+			Get(HealEffectPrefabId, transform.position, PlayEffect: false);
+			PlaySFX(PlayerBottleOpenClipId);
 		}
-
-		private StopWatch targetInteractSync     = new StopWatch();
-		private float     targetInteractSyncTime = 0.1f;
 		private void SetTargetInteract() {
 			if (targetInteractSync.CheckIn(targetInteractSyncTime)) return;
 			targetInteractSync.Tick();
@@ -160,90 +173,82 @@ namespace AncientMemorial.Entities {
 
 			targetInteraction = minInteraction;
 		}
-		
-		public bool getInput = true; 
 		private void GetInput() {
 		    if (!getInput) return;
 		    
-		    if (InputManager.GetInput(ActionType.Jump, PressType.Down | PressType.Hold) && CanJump()) entityState = PlayerState.jump;
+		    if (InputManager.GetInput(ActionType.Jump, InputState.Down | InputState.Hold) && CanJump()) entityState = PlayerState.jump;
 		    
-		    if (InputManager.GetInput(ActionType.Dash, PressType.Down) && CanDash()) entityState = PlayerState.dash;
+		    if (InputManager.GetInput(ActionType.Dash, InputState.Down) && CanDash()) entityState = PlayerState.dash;
 		    
-		    if (InputManager.GetInput(ActionType.MouseLClick, PressType.Down | PressType.Hold) && weapon.CanPrimaryAttack()) PrimaryAttack();
+		    if (InputManager.GetInput(ActionType.MouseLClick, InputState.Down | InputState.Hold) && weapon.CanPrimaryAttack()) PrimaryAttack();
 		    
-		    if (InputManager.GetInput(ActionType.MouseRClick, PressType.Down) && weapon.CanSecondaryAttack()) SecondaryAttack();
+		    if (InputManager.GetInput(ActionType.MouseRClick, InputState.Down) && weapon.CanSecondaryAttack()) SecondaryAttack();
 		    
-		    if (InputManager.GetInput(ActionType.Interact, PressType.Down))
+		    if (InputManager.GetInput(ActionType.Interact, InputState.Down))
 		       SendEvent(EventType.Interact_Start, EventPriority.Start, new ValueData<Interaction>(targetInteraction));
 		    
-		    if (InputManager.GetInput(ActionType.Interact, PressType.Up))
+		    if (InputManager.GetInput(ActionType.Interact, InputState.Up))
 		       SendEvent(EventType.Interact_Cancel, EventPriority.Cancel, new ValueData<Interaction>(targetInteraction));
 
-		    if (InputManager.GetInput(ActionType.Heal, PressType.Down) && CanHeal()) Heal();
+		    if (InputManager.GetInput(ActionType.Heal, InputState.Down) && CanHeal()) Heal();
 
 		    if (!DebugManager.instance.debugMode) return;
 		    
-		    if (InputManager.GetInput(ActionType.Debug_DamageUp, PressType.Up)) { 
+		    if (InputManager.GetInput(ActionType.Debug_DamageUp, InputState.Up)) { 
 		       stat.attackDamage += 1;
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackDamage is now {stat.attackDamage}]");
 		    }
-		    if (InputManager.GetInput(ActionType.Debug_DamageDown, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_DamageDown, InputState.Up)) {
 		       stat.attackDamage -= 1;
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackDamage is now {stat.attackDamage}]");
 		    }
 
-		    if (InputManager.GetInput(ActionType.Debug_HealthUp, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_HealthUp, InputState.Up)) {
 		       SendAttackEvent(this, -5, true);
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {stat.HP}]");
 		    }
-		    if (InputManager.GetInput(ActionType.Debug_HealthDown, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_HealthDown, InputState.Up)) {
 		       SendAttackEvent(this, 5, true);
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : hp is now {stat.HP}]");
 		    }
 		    
-		    if (InputManager.GetInput(ActionType.Debug_MaxHealthUp, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_MaxHealthUp, InputState.Up)) {
 		       data.HP += 5;
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {data.HP}]");
 		    }
-		    if (InputManager.GetInput(ActionType.Debug_MaxHealthDown, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_MaxHealthDown, InputState.Up)) {
 		       data.HP -= 5;
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : max hp is now {data.HP}]");
 		    }
 		    
-		    if (InputManager.GetInput(ActionType.Debug_MoveSpeedUp, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_MoveSpeedUp, InputState.Up)) {
 		       stat.moveSpeed += 0.5f;
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : moveSpeed is now {stat.moveSpeed}]");
 		    }
-		    if (InputManager.GetInput(ActionType.Debug_MoveSpeedDown, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_MoveSpeedDown, InputState.Up)) {
 		       stat.moveSpeed -= 0.5f;
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : moveSpeed is now {stat.moveSpeed}]");
 		    }
 		    
-		    if (InputManager.GetInput(ActionType.Debug_AttackSpeedUp, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_AttackSpeedUp, InputState.Up)) {
 		       stat.attackSpeed += 0.5f;
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackSpeed is now {stat.attackSpeed}]");
 		    }
-		    if (InputManager.GetInput(ActionType.Debug_AttackSpeedDown, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_AttackSpeedDown, InputState.Up)) {
 		       stat.attackSpeed -= 0.5f;
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : attackSpeed is now {stat.attackSpeed}]");
 		    }
 		    
-		    if (InputManager.GetInput(ActionType.Debug_Damage, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_Damage, InputState.Up)) {
 		       AttackArea(1, 0, InputManager.mousePosition, Vector2.one, ignoreInvincible:true);
 		       InfoUUI.instance.AddInfoMessage("[DEBUG : AttackArea(IgnoreInvincible) spawned]");
 		    }
 		    
-		    if (InputManager.GetInput(ActionType.Debug_AddHealPotion, PressType.Up)) {
+		    if (InputManager.GetInput(ActionType.Debug_AddHealPotion, InputState.Up)) {
 				UPureFloat.AddValue(HEALTH_POTION_COUNT, 1);
 		       InfoUUI.instance.AddInfoMessage($"[DEBUG : now you have {UPureFloat.GetValue(HEALTH_POTION_COUNT)} potions");
 		    }
 		}
-
-		// EVENT BEHAVIOUR //
-		
-		protected override void OpenEntityUI() { }
-
-		private float radH;
 		public void SetArm() {
 			Vector2 mousePos = InputManager.mousePosition;
 			Vector2 dM       = mousePos - (Vector2)transform.position;
@@ -256,8 +261,11 @@ namespace AncientMemorial.Entities {
 			hand.transform.localPosition = handPos;
 			hand.transform.localRotation = Quaternion.Euler(0, 0, degH + Mathf.Sign(dM.x));
 		}
+
+		// 오버라이드 메서드
+		protected override void OpenEntityUI() { }
 		
-		// OVERRIDING //
+		
 
 		protected override AttackArea AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool  awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
 			AttackArea attackArea = base.AttackArea(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum,
@@ -294,7 +302,7 @@ namespace AncientMemorial.Entities {
 
 		protected override void OnGrounded() {
 			player.SendEvent(EventType.Entity_Player_Land, EventPriority.Stop);
-			PlaySFX("playerLand");
+			PlaySFX(PlayerLandClipId);
 		}
 
 		public override void Initialize() {
@@ -306,7 +314,7 @@ namespace AncientMemorial.Entities {
 			WeaponInitialized = weapon != null;
 			weapon?.Initialize();
 
-			playerUI = UUI.Get("PlayerUI", GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
+			playerUI = UUI.Get(PlayerUIPrefabId, GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
 			PlayerUiLife = playerUI.lifeNumber;
 			entityState = PlayerState.idle;
 			
@@ -317,7 +325,7 @@ namespace AncientMemorial.Entities {
 			Invincible(0.2f);
 			ShowDamageUI(damage);
 			
-			PlaySFX("playerHit");
+			PlaySFX(PlayerHitClipId);
 
 			bool isHurt = damage > data.HP * 0.3f;
 			playerUI.animator.Play(isHurt?"hitHard":"hit", 0, 0);

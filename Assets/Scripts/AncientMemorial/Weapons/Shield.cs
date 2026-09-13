@@ -18,6 +18,14 @@ using Random = UnityEngine.Random;
 namespace AncientMemorial.Weapons {
 	[CreateAssetMenu(fileName = "Shield", menuName = "Weapons/Shield")]
 	public class Shield : Weapon {
+
+		// 인스턴스 프로퍼티
+		private readonly PlayerWeaponAttack[] primaryAttacks = {
+			PlayerWeaponAttack.sweep, 
+			PlayerWeaponAttack.strike, 
+		};
+
+		// 오버라이드 메서드
 		public override void PrimaryAttack() {
 			base.PrimaryAttack();
 			if (!player.isGround) currPrimaryAttackStage--;
@@ -32,11 +40,6 @@ namespace AncientMemorial.Weapons {
 			if (player.entityState == PlayerState.dash) return false;
 			return base.CanSecondaryAttack();
 		}
-		
-		private readonly PlayerWeaponAttack[] primaryAttacks = {
-			PlayerWeaponAttack.sweep, 
-			PlayerWeaponAttack.strike, 
-		};
 		
 		protected override UState GetPrimaryAttackAction(int attackStage) {
 			if (attackStage == -1) return null;

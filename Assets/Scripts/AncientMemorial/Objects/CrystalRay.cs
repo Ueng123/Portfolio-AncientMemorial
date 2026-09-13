@@ -13,7 +13,20 @@ using UnityEngine;
 
 namespace AncientMemorial.Objects {
 	public class CrystalRay : UObject {
+
+		// 정적 프로퍼티
+		private static readonly int UltRaySpawnClipId = "ultRaySpawn".GetHash();
+		private static readonly int UltRayAmbientClipId = "ultRayAmbient".GetHash();
+
 		private static readonly int            End = Animator.StringToHash("end");
+		private const    float                     damageThreshold  = 0.1f;
+		private const float pi = 3.14159265358979323846f;
+
+		private const float rayShootAnimLength = 4.5f;
+		private const float rayShootKeyframe   = 197f/270f;
+		public const float rayShootTime = rayShootAnimLength * rayShootKeyframe;
+
+		// 인스턴스 프로퍼티
 		private                 bool           rayShooting;
 		public                  Entity         owner;
 		public                  Transform      rayTransform;
@@ -26,7 +39,6 @@ namespace AncientMemorial.Objects {
 		private readonly List<RaycastHit2D>        results          = new();
 		
 		private readonly Dictionary<Entity, float> hitCooldownTable = new();
-		private const    float                     damageThreshold  = 0.1f;
 		
 		private ContactFilter2D contactFilter;
 		
@@ -34,8 +46,10 @@ namespace AncientMemorial.Objects {
 		public        float angularVelocity;
 		public        float angleOffset;
 		private       float theta;
-		private const float pi = 3.14159265358979323846f;
 		
+		public override float releasingDuration => 2;
+
+		// 오버라이드 메서드
 		protected override void FixedRoutine() {
 			theta                      = Mathf.Repeat(theta + angularVelocity * (rayShooting?1:0.1f) * Time.fixedDeltaTime, 2*pi);
 			float thetaUse             = theta + angleOffset;
@@ -84,10 +98,6 @@ namespace AncientMemorial.Objects {
 				}
 			}
 		}
-
-		private const float rayShootAnimLength = 4.5f;
-		private const float rayShootKeyframe   = 197f/270f;
-		public const float rayShootTime = rayShootAnimLength * rayShootKeyframe;
 		public override void Initialize() {
 			base.Initialize();
 			rayShooting = false;
@@ -99,15 +109,13 @@ namespace AncientMemorial.Objects {
 			
 			blackBG.SetActive(showEffect);
 
-			if (showEffect) PlaySFX("ultRaySpawn", volume:1f);
+			if (showEffect) PlaySFX(UltRaySpawnClipId, volume: 1f);
 			new DelayedAction(rayShootTime, () => {
 				rayShooting = true;
 
-				if (showEffect) ambientSource = PlaySFX("ultRayAmbient", volume:1f, loop:true);
+				if (showEffect) ambientSource = PlaySFX(UltRayAmbientClipId, volume: 1f, loop: true);
 			}, () => { }, this).ExecuteDA();
 		}
-		
-		public override float releasingDuration => 2;
 
 		public override void OnFirstGet() {
 			SetDefaultStates(ReleasingState: new RayReleasing(this));
@@ -123,9 +131,16 @@ namespace AncientMemorial.Objects {
 			base.OnRelease();
 		}
 
+		// 중첩 타입
 		private sealed class RayReleasing : Releasing {
+
+			// 인스턴스 프로퍼티
 			private CrystalRay ray => (CrystalRay)target;
+
+			// 인스턴스 메서드
 			public RayReleasing(CrystalRay Target) : base(Target) { }
+
+			// 오버라이드 메서드
 			protected override void OnStartEffect() {
 				if (ray.showEffect && CameraBrain.instance) CameraBrain.instance.ZoomLerp(0.15f, 1);
 				ray.rayAnimator.SetTrigger(End);

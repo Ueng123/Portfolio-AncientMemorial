@@ -13,9 +13,12 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities.Enemies {
 	public class CrystalEnergy : Enemy {
+
+		// 인스턴스 프로퍼티
 		public Animator rotatingAnimator;
 		private float lastHitDamage;
 
+		// 오버라이드 메서드
 		protected override void OnGrounded() { }
 
 		public override void Initialize() {

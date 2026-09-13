@@ -4,9 +4,12 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates {
 	public abstract class GroundEnemyState : EnemyState {
+
+		// 정적 프로퍼티
 		private static readonly int moving   = Animator.StringToHash("moving");
 		private static readonly int backward = Animator.StringToHash("backward");
-		
+
+		// 인스턴스 프로퍼티
 		private bool _isMoving = false;
 		private bool _movingBackward = false;
 		
@@ -30,6 +33,7 @@ namespace AncientMemorial.States.EnemyStates {
 			}
 		}
 
+		// 인스턴스 메서드
 		protected void Move(float targetPositionX, float mapMargin, float moveMargin) {
 			Entity target = stateMachine.getTarget.Invoke();
 			targetPositionX = Mathf.Clamp(targetPositionX, MapManager.leftWall + mapMargin, MapManager.rightWall - mapMargin);
@@ -74,6 +78,7 @@ namespace AncientMemorial.States.EnemyStates {
 			}
 		}
 
+		// 오버라이드 메서드
 		public override void OnFixedRoutine() {
 			isMoving = enemy.rigidbody2D.linearVelocityX >= 0.01f;
 			if (!isMoving) return;

@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace AncientMemorial.Objects {
 	public class SpawnEffectHelper : UObject {
+
+		// 인스턴스 프로퍼티
 		[SerializeField] private LineRenderer SubLineA;
 		[SerializeField] private LineRenderer SubLineB;
 		[SerializeField] private Transform    SpawnEffect;
@@ -13,7 +15,8 @@ namespace AncientMemorial.Objects {
 		private float t;
 		public  float t_s;
 		public  float t_n;
-		
+
+		// 인스턴스 메서드
 		private (float f, float b) GetValue(float x) {
 			float x_o = transform.position.x;
 			float y_o = transform.position.y;
@@ -35,7 +38,8 @@ namespace AncientMemorial.Objects {
 
 			return (valF, valB);
 		}
-		
+
+		// 오버라이드 메서드
 		protected override void Routine() {
 			
 			t   += Time.deltaTime;

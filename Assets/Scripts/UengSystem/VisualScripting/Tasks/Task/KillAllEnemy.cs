@@ -7,6 +7,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class KillAllEntity : TaskComponent {
+
+		// 인스턴스 프로퍼티
 		public bool exceptPlayer;
 		public bool exceptFriendly;
 
@@ -15,7 +17,8 @@ namespace UengSystem.VisualScripting.Tasks {
 		public UValue<string> targetCategory;
 		[SerializeReference] [SubclassSelector]
 		public UValue<Entity> targetEntity;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			for (int i = 0; i < Entity.entities.Count; i++) {
 				Entity e = Entity.entities[i];

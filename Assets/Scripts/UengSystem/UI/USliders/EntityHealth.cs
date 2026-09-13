@@ -3,9 +3,12 @@ using UnityEngine.UI;
 
 namespace UengSystem.UI.USliders {
 	public class EntityHealth : USlider {
+
+		// 인스턴스 프로퍼티
 		public Slider subSlider;
 		public Image  background;
-		
+
+		// 오버라이드 메서드
 		public override void   Initialize() {
 			base.Initialize();
 

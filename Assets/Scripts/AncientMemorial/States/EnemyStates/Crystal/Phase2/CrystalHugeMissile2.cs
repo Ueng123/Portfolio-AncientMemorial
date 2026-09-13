@@ -4,11 +4,17 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 	public class CrystalHugeMissile2 : CrystalPhase2Attack {
+
+		// 인스턴스 프로퍼티
 		public override float attackTime => 20f;
 
 		private int spawnCount;
 		private int randomizer;
+		
+		private StopWatch missileTimer     = new StopWatch();
+		private float     missileSpawnTime = 0;
 
+		// 인스턴스 메서드
 		public void ShootHugeMissileLeft() {
 			Vector2 mapSize = MapManager.instance.GetMapSize();
 
@@ -26,9 +32,6 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 			
 			ShootHugeMissile(hitboxPos, hitboxSize);
 		}
-		
-		private StopWatch missileTimer     = new StopWatch();
-		private float     missileSpawnTime = 0;
 		
 		public void UpdateMissileSpawnTime() {
 			missileSpawnTime = Random.Range(0.5f, 1.5f);
@@ -66,7 +69,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 				crystal.entityState = GetState();
 			}
 		}
-		
+
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			spawnCount = Random.Range(9, 12); 

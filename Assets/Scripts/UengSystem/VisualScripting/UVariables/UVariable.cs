@@ -3,7 +3,11 @@ using UengSystem.VisualScripting.UValues;
 
 namespace UengSystem.VisualScripting.UVariables {
 	public abstract class UVariable<T> : IUValueVariable {
+
+		// 정적 프로퍼티
 		private static Dictionary<int, UValue<T>> vars;
+
+		// 정적 메서드
 		private static void Initialize() {
 			if (vars != null) return;
 			vars = new Dictionary<int, UValue<T>>();

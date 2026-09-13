@@ -2,11 +2,13 @@
 
 namespace UengSystem.UDebug {
 	public class GizmoCircleDrawer : GizmoDrawer {
-		
+
+		// 인스턴스 프로퍼티
 		[Header("Circle Settings")]
 		public float   radius   = 2.0f;
 		public int     segments = 32;
 
+		// 인스턴스 메서드
 		private void OnDrawGizmos() {
 			Gizmos.color = color;
 

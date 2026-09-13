@@ -5,12 +5,20 @@ using UengSystem.Utility;
 
 namespace AncientMemorial.States.EnemyStates {
 	public class EnemyStateMachine {
+
+		// 인스턴스 프로퍼티
 		public Enemy       enemy;
 		public Func<Entity> getTarget;
 		
 		private   StopWatch attackWatch = new StopWatch();
 		protected float     attackDelay => enemy.data.attackCooldown;
+		
+		public EnemyState wanderState;
+		public EnemyState awareState;
+		public EnemyState attackReadyState;
+		public EnemyStun  stunState;
 
+		// 인스턴스 메서드
 		public bool CanAttack() {
 			return attackWatch.CheckOut(attackDelay);
 		}
@@ -22,11 +30,6 @@ namespace AncientMemorial.States.EnemyStates {
 		public void Attack() {
 			enemy.Attack();
 		}
-		
-		public EnemyState wanderState;
-		public EnemyState awareState;
-		public EnemyState attackReadyState;
-		public EnemyStun  stunState;
 		
 		public EnemyStateMachine(Enemy enemy, Func<Entity> getTarget, EnemyState wanderState, EnemyState awareState, EnemyState attackReadyState, EnemyStun stunState) {
 			this.enemy     = enemy;

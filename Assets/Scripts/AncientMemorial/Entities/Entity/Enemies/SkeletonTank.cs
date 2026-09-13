@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UengSystem.Utility;
+using System;
 using AncientMemorial.Cameras;
 using AncientMemorial.States.EnemyStates;
 using AncientMemorial.States.EnemyStates.Skeleton;
@@ -9,13 +10,21 @@ using UnityEngine;
 namespace AncientMemorial.Entities.Enemies {
 	public class SkeletonTank : Skeleton {
 
+		// 정적 프로퍼티
+		private static readonly int TankDeathClipId = "tankDeath".GetHash();
+		private static readonly int TankCriticalClipId = "tankCritical".GetHash();
+		private static readonly int TankHitClipId = "tankHit".GetHash();
+		private static readonly int TankFootStepClipId = "tankFootStep".GetHash();
+
+		// 인스턴스 프로퍼티
 		private int        attackPhase = 0;
 		private EnemyState stomp;
 		private EnemyState energyBurst;
 		private EnemyState skeletonSpawn;
 
-		protected override string footstepSoundName => "tankFootStep";
+		protected override int footstepClipId => TankFootStepClipId;
 
+		// 오버라이드 메서드
 		public override void OnFirstGet() {
 			base.OnFirstGet();
 			
@@ -61,7 +70,7 @@ namespace AncientMemorial.Entities.Enemies {
 			else ShowDamageUI(damage);
 			
 			if (stat.HP > 0) {
-				PlaySFX(groggy?"tankCritical":"tankHit");
+				PlaySFX(groggy ? TankCriticalClipId : TankHitClipId);
 				
 				if (attacker != player) return;
 				GameManager.SetTimeScale(0f, 0.05f);
@@ -71,7 +80,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		protected override void Death() {
-			PlaySFX("tankDeath");
+			PlaySFX(TankDeathClipId);
 
 			GameManager.SetTimeScale(0.25f, 1f);
 			CameraBrain.instance.ShakeLerp(5f, 10);

@@ -18,6 +18,18 @@ using Random = UnityEngine.Random;
 namespace AncientMemorial.Weapons {
 	[CreateAssetMenu(fileName = "Sword", menuName = "Weapons/Sword")]
 	public class Sword : Weapon {
+
+		// 정적 프로퍼티
+		private const float skillEndCooldown = 25f;
+
+		// 인스턴스 프로퍼티
+		private readonly PlayerWeaponAttack[] primaryAttacks = {
+			PlayerWeaponAttack.slash1, 
+			PlayerWeaponAttack.slash2, 
+			PlayerWeaponAttack.slash3,
+		};
+
+		// 오버라이드 메서드
 		public override bool CanPrimaryAttack() {
 			if (player.entityState == PlayerState.dash) return false;
 			return base.CanPrimaryAttack();
@@ -27,14 +39,6 @@ namespace AncientMemorial.Weapons {
 			if (player.entityState == PlayerState.dash) return false;
 			return base.CanSecondaryAttack();
 		}
-		
-		private const float skillEndCooldown = 25f;
-		
-		private readonly PlayerWeaponAttack[] primaryAttacks = {
-			PlayerWeaponAttack.slash1, 
-			PlayerWeaponAttack.slash2, 
-			PlayerWeaponAttack.slash3,
-		};
 		
 		protected override UState GetPrimaryAttackAction(int attackStage) {
 			if (attackStage == -1) return null;

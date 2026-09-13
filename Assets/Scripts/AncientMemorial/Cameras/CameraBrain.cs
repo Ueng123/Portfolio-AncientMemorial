@@ -5,9 +5,11 @@ using UnityEngine;
 
 namespace AncientMemorial.Cameras {
     public class CameraBrain : UObject {
-       
+
+       // 정적 프로퍼티
        public static CameraBrain                        instance;
-       
+
+       // 인스턴스 프로퍼티
        public        CinemachineCamera                  currCamera;
        private       CinemachineBasicMultiChannelPerlin noiseComponent;
        public        CinemachineBrain                   cameraBrain;
@@ -23,16 +25,8 @@ namespace AncientMemorial.Cameras {
        private float shakeGain;
        private float shakeSpeed;
        private bool  isShaking;
-       
-       public override void Initialize() {
-          instance = this;
-          noiseComponent = currCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
-          
-          zoomOffset   = 0f;
-          
-          base.Initialize();
-       }
 
+       // 인스턴스 메서드
        public void ChangeCameraTransform(Transform t) {
           mainCamera.mainCameraTransform = t;
        }
@@ -50,10 +44,6 @@ namespace AncientMemorial.Cameras {
           zoomSpeed    = speed;
           isZooming    = true;
        }
-
-       protected override void EarlyRoutine() { }
-
-       protected override void Routine() { }
 
        private float EvaluateShakeGain() {
           if (!isShaking) return 0;
@@ -93,6 +83,20 @@ namespace AncientMemorial.Cameras {
           lens.OrthographicSize = mainCamera.BaseLensSize + currZoomOffset;
           currCamera.Lens       = lens;
        }
+
+       // 오버라이드 메서드
+       public override void Initialize() {
+          instance = this;
+          noiseComponent = currCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
+          
+          zoomOffset   = 0f;
+          
+          base.Initialize();
+       }
+
+       protected override void EarlyRoutine() { }
+
+       protected override void Routine() { }
        
        protected override void LateRoutine() {
           if (!currCamera || !mainCamera) return;

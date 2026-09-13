@@ -3,6 +3,8 @@ using UengSystem.Utility;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalSemiHugeCross : CrystalPhase3Attack {
+
+		// 정적 프로퍼티
 		private const int   MissilesPerWave   = 8;
 		private const int   WaveCount         = 4;
 		private const int   totalMissileCount = MissilesPerWave * WaveCount;
@@ -10,6 +12,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 		private const float MissileInterval   = 0.1f;
 		private const float WaveInterval      = 2f;
 
+		// 인스턴스 프로퍼티
 		private CrystalRay ray;
 		
 		private float waveAngleOffset;
@@ -17,15 +20,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 		private readonly StopWatch allMissilesFiredTimer = new();
 
 		public override float attackTime => 11f;
-		
-		public override void OnEnter() {
-			base.OnEnter();
-			
-			SetMoveMode(CrystalMoveMode.CircleOnCenter);
-			waveAngleOffset = UnityEngine.Random.Range(0f, 360f);
-			elapsed = 0f;
-		}
 
+		// 인스턴스 메서드
 		private float GetMissileDelay() {
 			int previousMissileIndex = (step - 1) % MissilesPerWave;
 			
@@ -69,6 +65,15 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 			if (step == totalMissileCount) {
 				allMissilesFiredTimer.Tick();
 			}
+		}
+
+		// 오버라이드 메서드
+		public override void OnEnter() {
+			base.OnEnter();
+			
+			SetMoveMode(CrystalMoveMode.CircleOnCenter);
+			waveAngleOffset = UnityEngine.Random.Range(0f, 360f);
+			elapsed = 0f;
 		}
 		
 		public override void OnRoutine() {

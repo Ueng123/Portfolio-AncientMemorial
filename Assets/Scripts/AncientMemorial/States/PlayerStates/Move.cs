@@ -1,25 +1,30 @@
-﻿using UengSystem.Events;
+﻿using UengSystem.Utility;
+using UengSystem.Events;
 using UengSystem.Inputs;
 using UnityEngine;
 using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.States.PlayerStates {
 	public class Move : PlayerDefaultState {
-		private static readonly int Moving   = Animator.StringToHash("moving");
 
+		// 정적 프로퍼티
+		private static readonly int Moving   = Animator.StringToHash("moving");
+		private static readonly int[] FootstepClipIds = { "footstep1".GetHash(), "footstep2".GetHash(), "footstep3".GetHash() };
+
+		// 인스턴스 프로퍼티
 		private float  moveDir;
 		
 		private bool _FootstepSound = false;
-		private static string[] footstepNames = { "footstep1", "footstep2", "footstep3" };
 		private bool FootstepSound {
 			get => _FootstepSound;
 			set {
 				if (_FootstepSound == value) return;
-				if (value) player.PlaySFX(footstepNames[Random.Range(0, footstepNames.Length)]);
+				if (value) player.PlaySFX(FootstepClipIds[Random.Range(0, FootstepClipIds.Length)]);
 				_FootstepSound = value;
 			}
 		}
-		
+
+		// 오버라이드 메서드
 		public override    void OnEnter() {
 			player.SendEvent(EventType.Entity_Player_MoveStart, EventPriority.Start);
 			

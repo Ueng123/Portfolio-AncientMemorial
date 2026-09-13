@@ -8,11 +8,13 @@ namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class ChangeSettingString : TaskComponent {
 
+		// 인스턴스 프로퍼티
 		public SettingType   settingType;
 		
 		[SerializeReference] [SubclassSelector]
 		public UValue<string> text;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			Setting.SetValue(settingType, text.value);
 		}

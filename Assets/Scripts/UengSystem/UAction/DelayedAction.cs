@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections;
 using UengSystem.Managers;
+using UengSystem.Utility;
 using UnityEngine;
 
 namespace UengSystem.UAction {
 	public class DelayedAction : UAction {
+
+		// 정적 프로퍼티
 		public static int runningDelayedActionCount = 0;
-		
+
+		// 인스턴스 프로퍼티
 		private float  startTime;
 		public  float  delay;
 		private Action actionToDelay;
@@ -19,14 +23,16 @@ namespace UengSystem.UAction {
 
 		private WaitForSeconds waitForSeconds;
 		private WaitForSecondsRealtime waitForSecondsRealtime;
-		
+
+		// 인스턴스 메서드
 		public DelayedAction(float delay, Action actionToDelay, Action actionOnCancel = null, IActionable executor = null) {
 			this.executor       = executor;
 			this.delay          = delay;
 			this.actionToDelay  = actionToDelay;
 			this.actionOnCancel = actionOnCancel;
 			
-			waitForSeconds  = new WaitForSeconds(delay);
+			// 예약된 지연 시간보다 일찍 실행되지 않도록 올림 캐시 사용
+			waitForSeconds  = CacheManager.WaitForSecondsCeiling(delay);
 			waitForSecondsRealtime = new WaitForSecondsRealtime(delay);
 		}
 
@@ -52,8 +58,6 @@ namespace UengSystem.UAction {
 			return this;
 		}
 
-		public override void Done() { DoneDA(); }
-
 		public void DoneDA(bool stopCoroutine = true) {
 			if (!Executing) return;
 			
@@ -65,6 +69,15 @@ namespace UengSystem.UAction {
 			executor?.UnregisterAction(this);
 			actionToDelay.Invoke();
 		}
+
+		// 0~1
+		public float GetProgress() {
+			if (!Executing) return 0;
+			return (Time.time - startTime) / delay;
+		}
+
+		// 오버라이드 메서드
+		public override void Done() { DoneDA(); }
 		
 		public override void Cancel() {
 			if (!Executing) return;
@@ -76,12 +89,6 @@ namespace UengSystem.UAction {
 			runningDelayedActionCount -= 1;
 			executor?.UnregisterAction(this);
 			actionOnCancel?.Invoke();
-		}
-
-		// 0~1
-		public float GetProgress() {
-			if (!Executing) return 0;
-			return (Time.time - startTime) / delay;
 		}
 		
 		protected override IEnumerator ActionEnumerator() {

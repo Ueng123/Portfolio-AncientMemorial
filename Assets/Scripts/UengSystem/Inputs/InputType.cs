@@ -1,7 +1,7 @@
 ﻿namespace UengSystem.Inputs {
 	public enum InputType {
-		Button,
-		Axis1D,
-		Axis2D,
+		Button, // bool
+		Axis1D, // float
+		Axis2D, // Vector2
 	}
 }

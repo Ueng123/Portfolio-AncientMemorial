@@ -5,6 +5,7 @@ namespace AncientMemorial.Map {
 	[Serializable]
 	public class MapObjects {
 
+		// 인스턴스 프로퍼티
 		public SpriteRenderer[] leftWallSR;
 		public SpriteRenderer[] rightWallSR;
 		public SpriteRenderer[] floorSR;
@@ -25,6 +26,7 @@ namespace AncientMemorial.Map {
 		public BoxCollider2D colliderU;
 		public BoxCollider2D colliderD;
 
+		// 인스턴스 메서드
 		public void Move(Vector2 MapSize) {
 			
 			colliderL.size = new Vector2(0.5f, MapSize.y+1);

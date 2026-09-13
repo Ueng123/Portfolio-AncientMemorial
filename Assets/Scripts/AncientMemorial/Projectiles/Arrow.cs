@@ -11,19 +11,19 @@ using UnityEngine;
 namespace AncientMemorial.Projectiles {
 	public class Arrow : Projectile {
 
-		private TrailRenderer trailRenderer;
-		
-		public override void OnGet() {
-			base.OnGet();
-			rigidbody2D.centerOfMass = new Vector2(0.3f, 0);
-			trailRenderer = GetComponent<TrailRenderer>();
-		}
+		// 정적 프로퍼티
+		private static readonly int ArrowDebrisPrefabId = "ArrowDebris".GetHash();
+		private static readonly int ArrowHitEffectPrefabId = "ArrowHitEffect".GetHash();
 
+		// 인스턴스 프로퍼티
+		private TrailRenderer trailRenderer;
+
+		// 인스턴스 메서드
 		private void Break(Transform parent = null, bool isEntity = false) {
-			GameObject obj = UObject.Get("ArrowDebris", transform.position, PlayEffect: false);
+			GameObject obj = UObject.Get(ArrowDebrisPrefabId, transform.position, PlayEffect: false);
 			
 			if (isEntity) {
-				GameObject eff = UObject.Get("ArrowHitEffect", transform.position, PlayEffect: false);
+				GameObject eff = UObject.Get(ArrowHitEffectPrefabId, transform.position, PlayEffect: false);
 				eff.transform.rotation = transform.rotation;
 			}
 			
@@ -37,6 +37,13 @@ namespace AncientMemorial.Projectiles {
 			
 			obj.transform.rotation = transform.rotation;
 			Release(PlayEffect: false);
+		}
+
+		// 오버라이드 메서드
+		public override void OnGet() {
+			base.OnGet();
+			rigidbody2D.centerOfMass = new Vector2(0.3f, 0);
+			trailRenderer = GetComponent<TrailRenderer>();
 		}
 
 		public override void Initialize() {

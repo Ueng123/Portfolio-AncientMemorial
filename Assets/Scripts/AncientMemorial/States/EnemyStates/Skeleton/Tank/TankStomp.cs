@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
@@ -7,6 +8,12 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public class TankStomp : SkeletonTankAttack {
+
+		// 정적 프로퍼티
+		private static readonly int Explode3PrefabId = "Explode3".GetHash();
+		private static readonly int TankAttack1ClipId = "tankAttack1".GetHash();
+
+		// 인스턴스 프로퍼티
 		public override float attackTime => 3f;
 
 		public float weakTime;
@@ -16,6 +23,7 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 		
 		public AttackArea AttackArea;
 
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			
@@ -40,9 +48,9 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 
 			if (step == 1 && isProgress(attackPercent)) {
 				Vector2 effectPos = (Vector2)enemy.transform.position + new Vector2(0, -0.985f);
-				UObject.Get("Explode3", effectPos, PlayEffect: false);
+				UObject.Get(Explode3PrefabId, effectPos, PlayEffect: false);
 				
-				enemy.PlaySFX("tankAttack1");
+				enemy.PlaySFX(TankAttack1ClipId);
 				
 				CameraBrain.instance.ShakeLerp(5f, 10);
 				CameraBrain.instance.ZoomLerp(-0.25f);

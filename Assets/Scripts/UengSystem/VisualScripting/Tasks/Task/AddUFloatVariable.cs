@@ -5,6 +5,8 @@ using UengSystem.VisualScripting.UVariables;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class AddUFloatVariable : SetUVariable<float> {
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			UVariable<float>.Set(variableID, value);
 		}

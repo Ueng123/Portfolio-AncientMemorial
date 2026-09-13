@@ -7,10 +7,17 @@ using UnityEngine;
 
 namespace UengSystem.UI.UUIs {
 	public class InfoUUI : UUI {
+
+		// 정적 프로퍼티
 		public static   InfoUUI                                  instance;
+
+		// 인스턴스 프로퍼티
 		public          float                                    infoDuration = 5f;
 		public readonly List<(string text, StopWatch stopWatch)> infoData     = new List<(string text, StopWatch stopWatch)>();
+		
+		private readonly StopWatch n = new StopWatch();
 
+		// 인스턴스 메서드
 		private void ApplyInfoText() {
 			for (int i = 0; i < actions.Length; i++) {
 				(string text, StopWatch stopWatch) info  = (i+1) > infoData.Count?("", n):infoData[^(i+1)];
@@ -39,9 +46,8 @@ namespace UengSystem.UI.UUIs {
 			
 			animator.Play("addInfo", 0, 0);
 		}
-		
-		private readonly StopWatch n = new StopWatch();
 
+		// 오버라이드 메서드
 		protected override void LateRoutine() { ApplyInfoText(); }
 
 		public override void OnOpen() {

@@ -7,6 +7,7 @@ namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class ConfigureTransform : TaskComponent {
 
+		// 인스턴스 프로퍼티
 		public bool thisObject;
 		[SerializeReference] [SubclassSelector]
 		public UValue<UObject> obj;
@@ -20,7 +21,8 @@ namespace UengSystem.VisualScripting.Tasks {
 		
 		[SerializeReference] [SubclassSelector]
 		public UValue<Vector2> size;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			UObject uObject = thisObject ? (UObject)self : obj.value;
 			

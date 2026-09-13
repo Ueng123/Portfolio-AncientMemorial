@@ -5,6 +5,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UValues.UStrings {
 	[Serializable]
 	public class UTimerString : UValue<string> {
+
+		// 인스턴스 프로퍼티
 		protected override bool   getIsDynamic => true;
 
 		[SerializeReference][SubclassSelector]
@@ -22,6 +24,10 @@ namespace UengSystem.VisualScripting.UValues.UStrings {
 
 		private float? currT = null;
 		private string cache = "";
+		
+		protected override string getValue => GetString();
+
+		// 인스턴스 메서드
 		private string GetString() {
 			float dt = targetTime.value - Time.time;
 			if (dt <= 0) return textOnDone.value;
@@ -37,7 +43,5 @@ namespace UengSystem.VisualScripting.UValues.UStrings {
 			
 			return cache;
 		}
-		
-		protected override string getValue => GetString();
 	}
 }

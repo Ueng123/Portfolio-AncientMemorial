@@ -5,6 +5,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UValues.UStrings {
 	[Serializable]
 	public class UString : UValue<string> {
+
+		// 인스턴스 프로퍼티
 		protected override bool getIsDynamic {
 			get {
 				bool result = false;

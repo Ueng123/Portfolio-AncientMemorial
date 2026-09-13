@@ -10,9 +10,15 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 	public class CrystalPhase2State : CrystalState {
+
+		// 정적 프로퍼티
+		private static readonly int CrystalHugeMissilePrefabId = "CrystalHugeMissile".GetHash();
 		private static readonly int               ATTACKING          = "attacking".GetHash();
+
+		// 인스턴스 프로퍼티
 		private                 List<AttackArea> MissileAttackAreas = new List<AttackArea>();
-		
+
+		// 인스턴스 메서드
 		// -1 : <- | 0 : v | 1 : ->
 		protected void ShootHugeMissile(float where) {
 			Vector2 mapSize = MapManager.instance.GetTargetMapSize(); 
@@ -26,7 +32,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 		protected void ShootHugeMissile(Vector2 hitboxPos, Vector2 hitboxSize) {
 			Vector2 mapSize = MapManager.instance.GetTargetMapSize();
 			
-			GameObject      obj = UObject.Get("CrystalHugeMissile", new Vector2(hitboxPos.x, mapSize.y-2), PlayEffect: false);
+			GameObject      obj = UObject.Get(CrystalHugeMissilePrefabId, new Vector2(hitboxPos.x, mapSize.y-2), PlayEffect: false);
 			BasicProjectile hugeMissile = obj.GetComponent<BasicProjectile>();
 			hugeMissile.Category = "crystalMissile";
 			
@@ -35,6 +41,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 			MissileAttackAreas.Add(Entity.AttackArea(crystal, Random.Range(90, 100), timeToFall, hitboxPos, hitboxSize));
 		}
 
+		// 오버라이드 메서드
 		protected override void ClearMissiles() {
 			base.ClearMissiles();
 			foreach (AttackArea awareObject in MissileAttackAreas) {

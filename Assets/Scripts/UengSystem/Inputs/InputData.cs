@@ -2,8 +2,9 @@
 
 namespace UengSystem.Inputs {
 	public class InputData {
-		public PressType pressType;
-		public InputType      inputType;
+
+		// 인스턴스 프로퍼티
+		public InputState inputState;
 
 		public bool    valueB;
 		public float   valueF;

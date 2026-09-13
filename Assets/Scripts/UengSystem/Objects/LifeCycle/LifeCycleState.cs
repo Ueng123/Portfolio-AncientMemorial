@@ -3,6 +3,8 @@ using UengSystem.States;
 
 namespace UengSystem.Objects.LifeCycle {
 	public abstract class LifeCycleState : UState {
+
+		// 인스턴스 프로퍼티
 		public UObject target { get; }
 		public float elapsed { get; private set; }
 		public long executionNumber { get; private set; }
@@ -15,11 +17,12 @@ namespace UengSystem.Objects.LifeCycle {
 		private long CallbackExecution;
 		private bool HasExited;
 
+		// 인스턴스 메서드
 		protected LifeCycleState(UObject Target) {
 			target = Target ?? throw new ArgumentNullException(nameof(Target));
 		}
 
-		internal void PrepareExecution(LifeCycleStateMachine Machine, long Execution, bool PlayEffect) {
+		public void PrepareExecution(LifeCycleStateMachine Machine, long Execution, bool PlayEffect) {
 			this.Machine = Machine;
 			executionNumber = Execution;
 			playEffect = PlayEffect;
@@ -31,13 +34,7 @@ namespace UengSystem.Objects.LifeCycle {
 			HasExited = false;
 		}
 
-		public sealed override void OnEnter() {
-			if (!playEffect) return;
-			hasStartedEffect = true;
-			InvokeEffect(OnStartEffect);
-		}
-
-		internal void Tick(float DeltaTime) {
+		public void Tick(float DeltaTime) {
 			if (isComplete || !Machine.IsCurrent(this, executionNumber)) return;
 			elapsed += DeltaTime;
 			InvokeEffect(() => {
@@ -71,13 +68,25 @@ namespace UengSystem.Objects.LifeCycle {
 			return () => CurrentMachine.RequestComplete(this, Execution);
 		}
 
-		internal void MarkComplete() => isComplete = true;
+		public void MarkComplete() => isComplete = true;
 
-		internal void ClearEffectOnce() {
+		public void ClearEffectOnce() {
 			if (isEffectCleared) return;
 			// Mark before invoking user code, including throwing/reentrant cleanup.
 			isEffectCleared = true;
 			ClearEffect();
+		}
+
+		protected virtual void OnStartEffect() { }
+		protected virtual void OnEffectRoutine(float DeltaTime) { }
+		protected virtual void ClearEffect() { }
+		protected virtual void OnStateExit() { }
+
+		// 오버라이드 메서드
+		public sealed override void OnEnter() {
+			if (!playEffect) return;
+			hasStartedEffect = true;
+			InvokeEffect(OnStartEffect);
 		}
 
 		public sealed override void OnExit() {
@@ -86,11 +95,6 @@ namespace UengSystem.Objects.LifeCycle {
 			ClearEffectOnce();
 			OnStateExit();
 		}
-
-		protected virtual void OnStartEffect() { }
-		protected virtual void OnEffectRoutine(float DeltaTime) { }
-		protected virtual void ClearEffect() { }
-		protected virtual void OnStateExit() { }
 		public sealed override void OnEarlyRoutine() { }
 		public sealed override void OnRoutine() { }
 		public sealed override void OnLateRoutine() { }
@@ -98,12 +102,20 @@ namespace UengSystem.Objects.LifeCycle {
 	}
 
 	public abstract class Getting : LifeCycleState {
-		protected Getting(UObject Target) : base(Target) { }
+
+		// 인스턴스 프로퍼티
 		protected override float duration => target.gettingDuration;
+
+		// 인스턴스 메서드
+		protected Getting(UObject Target) : base(Target) { }
 	}
 
 	public abstract class Releasing : LifeCycleState {
-		protected Releasing(UObject Target) : base(Target) { }
+
+		// 인스턴스 프로퍼티
 		protected override float duration => target.releasingDuration;
+
+		// 인스턴스 메서드
+		protected Releasing(UObject Target) : base(Target) { }
 	}
 }

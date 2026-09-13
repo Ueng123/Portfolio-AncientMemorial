@@ -13,6 +13,12 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 	public class CrystalSlash2 : CrystalPhase2Attack {
+
+		// 정적 프로퍼티
+		private static readonly int SlashEffectPrefabId = "SlashEffect".GetHash();
+		private static readonly int CrystalSlashClipId = "crystalSlash".GetHash();
+
+		// 인스턴스 프로퍼티
 		public override float attackTime => 20f;
 
 		private int slashCount = 7;
@@ -29,7 +35,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 		
 		private StopWatch missileTimer     = new StopWatch();
 		private float     missileSpawnTime = 0;
-		
+
+		// 인스턴스 메서드
 		public void GetTwoRandomNumbers(int min, int max, out int first, out int second) {
 			int   count         = max - min;
 			
@@ -81,10 +88,10 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 		}
 		
 		private void SlashEffect() {
-			crystal.PlaySFX("crystalSlash");
+			crystal.PlaySFX(CrystalSlashClipId);
 			
 			foreach ((Vector2 pos, float rot, float length) in slashData) {
-				GameObject slash = UObject.Get("SlashEffect", pos, PlayEffect: false);
+				GameObject slash = UObject.Get(SlashEffectPrefabId, pos, PlayEffect: false);
 				slash.transform.rotation   = Quaternion.Euler(0, 0, rot);
 				slash.transform.localScale = new Vector3(1f, length + 0.5f, 1f);
 			}
@@ -172,7 +179,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 			missileTimer.Tick();
 			UpdateMissileSpawnTime();
 		}
-		
+
+		// 오버라이드 메서드
 		public override void OnRoutine() {
 			MainRoutine();
 			SlashSpawnRoutine();

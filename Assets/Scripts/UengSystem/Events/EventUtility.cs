@@ -3,6 +3,8 @@ using UengSystem.Utility;
 
 namespace UengSystem.Events {
 	public static class EventUtility {
+
+		// 정적 메서드
 		public static void AddListener(this EventType type, Action<Event> func) {
 			EventManager.instance?.AddListener(type, func);
 		}

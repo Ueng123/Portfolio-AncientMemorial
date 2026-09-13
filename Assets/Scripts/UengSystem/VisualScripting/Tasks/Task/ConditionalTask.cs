@@ -5,6 +5,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class ConditionalTask : TaskComponent {
+
+		// 인스턴스 프로퍼티
 		[SerializeReference] [SubclassSelector]
 		public UValue<bool> boolean;
 		public Task taskOnTrue;
@@ -12,7 +14,8 @@ namespace UengSystem.VisualScripting.Tasks {
 
 		public bool? boolValueCache;
 		public ConditionalTaskType type;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			boolValueCache ??= boolean.value;
 			bool result = boolean.value;

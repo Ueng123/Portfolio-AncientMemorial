@@ -7,33 +7,27 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UVariables {
 	[Serializable]
 	public abstract class UValueFromVariable<T> : UValue<T> {
+
+		// 인스턴스 프로퍼티
 		protected override bool getIsDynamic => true;
 
 		public  string variableName;
 
-		private int? _variableID;
+		private int? VariableId;
 		private int variableID {
 			get {
-				_variableID ??= variableName.GetHash();
-				return _variableID.Value;
+				VariableId ??= variableName.GetHash();
+				return VariableId.Value;
 			}
 		}
 
-		public override void Dirty() {
-			 base.Dirty();
-			 _variableID = null;
-		}
-
-		public override void OnBeforeSerialize() {
-			base.OnBeforeSerialize();
-			_variableID = null;
-		}
-
-		public override void OnAfterDeserialize() {
-			base.OnAfterDeserialize();
-			_variableID = null;
-		}
-
 		protected override T getValue => UVariable<T>.GetValue(variableID);
+
+		// 오버라이드 메서드
+		public override void Dirty() {
+			base.Dirty();
+			VariableId = null;
+		}
+
 	}
 }

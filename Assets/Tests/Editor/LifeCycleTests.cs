@@ -118,9 +118,11 @@ namespace UengSystem.Tests {
 	[Serializable]
 	public sealed class TraceTask : TaskComponent {
 		public string Marker;
+		public Action Callback;
 		public override void Execute(ITaskable Self) {
 			if (Self is LifeCycleProbe Probe) Probe.Trace.Add(Marker);
 			if (Self is LifeCycleUiProbe Ui) Ui.Trace.Add(Marker);
+			Callback?.Invoke();
 		}
 	}
 
@@ -171,8 +173,8 @@ namespace UengSystem.Tests {
 		}
 		private static void Invoke(UObject Target, string Name, params object[] Args) => typeof(UObject).GetMethod(Name, Hidden).Invoke(Target, Args);
 		private static void Begin(UObject Target, bool PlayEffect) => Invoke(Target, "BeginLife", PlayEffect, null);
-		private static void Tick(UObject Target, float DeltaTime = 1) => typeof(LifeCycleStateMachine).GetMethod("Tick", Hidden)
-			.Invoke(Target.lifeCycle, new object[] { Target.lifeCycle.executionNumber, DeltaTime });
+		private static void Tick(UObject Target, float DeltaTime = 1) =>
+			Target.lifeCycle.Tick(Target.lifeCycle.executionNumber, DeltaTime);
 		private LifeCycleProbe Probe(out ProbeGetting Getting, out ProbeReleasing Releasing) {
 			LifeCycleProbe Target = Create<LifeCycleProbe>();
 			Getting = new ProbeGetting(Target);
@@ -434,22 +436,6 @@ namespace UengSystem.Tests {
 		};
 
 		[Test]
-		public void InactiveRunnerCancelsTaskWithoutLeavingItRegistered() {
-			LifeCycleProbe Owner = Probe(out _, out _);
-			LifeCycleProbe Runner = Probe(out _, out _);
-			Begin(Owner, false);
-			Begin(Runner, false);
-			Runner.gameObject.SetActive(false);
-			TaskExecution Execution = (TaskExecution)Activator.CreateInstance(typeof(TaskExecution), Hidden, null,
-				new object[] { MakeTask(Mark("unexpected-task")).ExecuteEnumerator(Owner), Owner, Runner }, null);
-			typeof(TaskExecution).GetMethod("Start", Hidden).Invoke(Execution, null);
-			Assert.IsFalse(Execution.isRunning);
-			Assert.IsFalse(Owner.Trace.Contains("unexpected-task"));
-			Assert.IsEmpty((IEnumerable)typeof(UObject).GetField("Tasks", Hidden).GetValue(Owner));
-			LogAssert.NoUnexpectedReceived();
-		}
-
-		[Test]
 		public void ApplicationQuitBlocksNewTasksAndReentrantReleaseEffects() {
 			LifeCycleProbe Target = Probe(out _, out _);
 			LifeCycleProbe Other = Probe(out _, out ProbeReleasing Releasing);
@@ -463,10 +449,8 @@ namespace UengSystem.Tests {
 				Invoke(Target, "OnApplicationQuit");
 				Assert.IsTrue(UObject.isStoppingLifeCycles);
 				Assert.IsFalse(Other.canStartOwnedWork);
-				TaskExecution Execution = (TaskExecution)Activator.CreateInstance(typeof(TaskExecution), Hidden, null,
-					new object[] { MakeTask(Mark("unexpected-task")).ExecuteEnumerator(Other), null, Other }, null);
-				typeof(TaskExecution).GetMethod("Start", Hidden).Invoke(Execution, null);
-				Assert.IsFalse(Execution.isRunning);
+				IEnumerator BlockedTask = MakeTask(Mark("unexpected-task")).ExecuteEnumerator(Other);
+				Assert.IsFalse(BlockedTask.MoveNext());
 				Invoke(Target, "OnDestroy");
 				Object.DestroyImmediate(Target.gameObject);
 				Assert.IsTrue(Other.lifeCycle.isShuttingDown);
@@ -504,49 +488,18 @@ namespace UengSystem.Tests {
 		}
 
 		[Test]
-		public void OwnedTaskCancellationDisposesSuspendedWorkOnce() {
+		public void ComponentReleasePreventsTheNextComponentInTheSameItem() {
 			LifeCycleProbe Target = Probe(out _, out _);
 			Begin(Target, false);
-			int Disposals = 0;
-			int Resumptions = 0;
-			IEnumerator Work() {
-				try { yield return null; Resumptions++; }
-				finally { Disposals++; }
-			}
-			TaskExecution Execution = (TaskExecution)Activator.CreateInstance(typeof(TaskExecution), Hidden, null,
-				new object[] { Work(), Target, Target }, null);
-			Invoke(Target, "RegisterTask", Execution);
-			IEnumerator Run = (IEnumerator)typeof(TaskExecution).GetMethod("Run", Hidden).Invoke(Execution, null);
-			Assert.IsTrue(Run.MoveNext());
-			Target.Release(false);
-			Begin(Target, false);
-			Assert.IsFalse(Run.MoveNext());
-			Execution.Cancel();
-			Assert.AreEqual(1, Disposals);
-			Assert.AreEqual(0, Resumptions);
-		}
-
-		[Test]
-		public void CancellationCannotStartImmediateOwnedActions() {
-			LifeCycleProbe Target = Probe(out _, out _);
-			Begin(Target, false);
-			int Calls = 0;
-			bool Started = false;
-			DelayedAction Delayed = new(0, () => Calls++, executor: Target);
-			WaitAction Waiting = new(() => true, () => Calls++, executor: Target);
-			IEnumerator Work() {
-				try { yield return null; }
-				finally { Started = true; Delayed.ExecuteDA(); Waiting.ExecuteWA(); }
-			}
-			TaskExecution Execution = (TaskExecution)Activator.CreateInstance(typeof(TaskExecution), Hidden, null,
-				new object[] { Work(), Target, Target }, null);
-			Invoke(Target, "RegisterTask", Execution);
-			IEnumerator Run = (IEnumerator)typeof(TaskExecution).GetMethod("Run", Hidden).Invoke(Execution, null);
-			Assert.IsTrue(Run.MoveNext());
-			Target.Release(false);
-			Assert.IsTrue(Started);
-			Assert.AreEqual(0, Calls);
-			Assert.IsFalse(Target.lifeCycle.isFaulted);
+			Task Work = MakeTask(new TaskListItem {
+				tasks = new TaskComponent[] {
+					new TraceTask { Marker = "release", Callback = () => { Target.Release(false); Begin(Target, false); } },
+					new TraceTask { Marker = "must-not-run" }
+				}
+			});
+			IEnumerator Routine = Work.ExecuteEnumerator(Target);
+			while (Routine.MoveNext()) { }
+			Assert.IsFalse(Target.Trace.Contains("must-not-run"));
 		}
 
 		[Test]

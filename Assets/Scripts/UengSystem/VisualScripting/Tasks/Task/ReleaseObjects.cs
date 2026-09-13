@@ -9,10 +9,13 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class ReleaseObjects : TaskComponent {
+
+		// 인스턴스 프로퍼티
 		public bool PlayEffect = true;
 		
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			
 			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");

@@ -11,25 +11,27 @@ using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public abstract class SkeletonTankAttack : SkeletonAttack {
+
+		// 정적 프로퍼티
+		private static readonly int GroggyEffectPrefabId = "groggyEffect".GetHash();
+		private static readonly int TankGroggyClipId = "tankGroggy".GetHash();
+
 		private const float weakDuration = .3f;
-		
+
+		// 인스턴스 프로퍼티
 		protected StopWatch weakStopwatch = new StopWatch();
 		protected bool weak => weakStopwatch.CheckIn(weakDuration);
-		
-		protected override EnemyState GetState() {
-			stateMachine.AttackWatchTick();
-			return base.GetState();
-		}
-		
+
+		protected readonly Action<Event> tryGroggy;
+
+		// 인스턴스 메서드
 		protected void Weak() {
-			UObject.Get("groggyEffect", enemy.transform.position, PlayEffect: false);
+			UObject.Get(GroggyEffectPrefabId, enemy.transform.position, PlayEffect: false);
 			weakStopwatch.Tick();
 			
 			GameManager.SetTimeScale(0.34f, 0.9f);
 			CameraBrain.instance.ZoomLerp(-0.5f);
 		}
-
-		protected readonly Action<Event> tryGroggy;
 		protected void TryGroggy(Event e) {
 			if (e.GetData<HitData>().reciever != enemy) return;
 			if (!weak) return;
@@ -38,7 +40,7 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 		}
 		
 		protected void Groggy() {
-			enemy.PlaySFX("tankGroggy");
+			enemy.PlaySFX(TankGroggyClipId);
 			
 			// Process를 통해 다음 프레임 시작시 이벤트를 추가하므로 for문중 배열 변경 문제 없음.
 			Entity.SendAttackEvent(enemy, enemy, enemy.data.HP/15, true);
@@ -52,6 +54,12 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 
 		protected SkeletonTankAttack() {
 			tryGroggy = TryGroggy;
+		}
+
+		// 오버라이드 메서드
+		protected override EnemyState GetState() {
+			stateMachine.AttackWatchTick();
+			return base.GetState();
 		}
 
 		public override void OnEnter() {

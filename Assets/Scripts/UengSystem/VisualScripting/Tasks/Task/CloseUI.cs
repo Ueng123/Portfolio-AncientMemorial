@@ -7,11 +7,14 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class CloseUI : TaskComponent {
+
+		// 인스턴스 프로퍼티
 		public bool PlayEffect = true;
 
 		public                                        bool        closeThis;
 		[SerializeReference][SubclassSelector] public UValue<UUI> TargetUUI;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			UUI target = closeThis? (UUI)self : TargetUUI.value;
 			if (!target) {

@@ -7,6 +7,7 @@ using UnityEngine;
 namespace AncientMemorial.Cameras {
     public class MainCamera : UObject {
 
+       // 인스턴스 프로퍼티
        [Header("Camera Settings")]
        public CinemachineCamera cam;
        
@@ -17,13 +18,14 @@ namespace AncientMemorial.Cameras {
        
        public Transform       mainCameraTransform;
 
+       public float BaseLensSize { get; private set; }
+
+       // 오버라이드 메서드
        public override void Initialize() {
           base.Initialize();
           
           mainCameraTransform = GameObject.FindGameObjectWithTag("MainCameraHelper").transform;
        }
-
-       public float BaseLensSize { get; private set; }
 
        protected override void EarlyRoutine() { }
 

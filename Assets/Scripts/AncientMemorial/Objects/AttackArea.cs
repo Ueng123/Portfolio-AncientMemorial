@@ -8,6 +8,8 @@ using UnityEngine.Serialization;
 
 namespace AncientMemorial.Objects {
 	public class AttackArea : UObject {
+
+		// 인스턴스 프로퍼티
 		public SpriteRenderer whiteObject;
 		public Vector2    targetSize;
 		
@@ -27,7 +29,8 @@ namespace AncientMemorial.Objects {
 		public bool   ignoreInvincible;
 
 		public bool invisible;
-		
+
+		// 인스턴스 메서드
 		public void Cancel() {
 			Release(PlayEffect: !invisible);
 		}
@@ -53,7 +56,13 @@ namespace AncientMemorial.Objects {
 			}
 			Cancel(); // Last operation: this may synchronously return the instance to its pool.
 		}
-		
+
+		public void InitializeColor(Color color) {
+			spriteRenderer.color = color;
+			whiteObject.color    = color;
+		}
+
+		// 오버라이드 메서드
 		protected override void Routine() {
 			if (!hasActiveAttacker) { Cancel(); return; }
 			if (stopWatch?.CheckOut(duration) ?? false) {
@@ -75,14 +84,14 @@ namespace AncientMemorial.Objects {
 			if (attacker) attacker.RegisterAttackArea(this);
 			stopWatch = new StopWatch();
 			stopWatch.Tick();
+
+			if (invisible) {
+				spriteRenderer.color = new Color(0, 0, 0, 0);
+				whiteObject.color    = new Color(0, 0, 0, 0);
+			}
 			
 			whiteObject.size     = Vector2.zero;
 			spriteRenderer.size  = targetSize;
-		}
-
-		public void InitializeColor(Color color) {
-			spriteRenderer.color = color;
-			whiteObject.color    = color;
 		}
 
 		protected override void OnRelease() {

@@ -25,9 +25,12 @@ using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.Interactions {
 	public class Interaction : UObject {
-		
+
+		// 정적 프로퍼티
+		private static readonly int InteractUIPrefabId = "InteractUI".GetHash();
 		public static List<Interaction> InteractableInteractions = new ();
-		
+
+		// 인스턴스 프로퍼티
 		public  DelayedAction         interactAction;
 		private UInteractProgressValue _uInteractProgressValue;
 		private UUI                   interactUI;
@@ -50,10 +53,20 @@ namespace AncientMemorial.Interactions {
 		public Task onTarget;
 		public Task onUnTarget;
 		
-		// Static Methods //
 		
-		// Instance Methods //
 
+		private bool prefabInteractable;
+
+		private bool EventsSubscribed;
+
+		
+
+		private Action<Event> interactStart;
+		private Action<Event> interactCancel;
+		private Action<Event> interactTarget;
+		private Action<Event> interactUntarget;
+
+		// 인스턴스 메서드
 		public virtual void Interactable()   => interactable = true;
 		public virtual void UnInteractable() => interactable = false;
 
@@ -82,7 +95,7 @@ namespace AncientMemorial.Interactions {
 
 		protected virtual void Targetted() {
 			if (showInteractUI && !interactUI) {
-				interactUI = UUI.Get("InteractUI", canvas, Configure: Ui => {
+				interactUI = UUI.Get(InteractUIPrefabId, canvas, Configure: Ui => {
                 _uInteractProgressValue ??= new UInteractProgressValue { interactObject = new UPureObject { pureValue = this } };
                 	
                 USliderAction sliderAction = Ui.GetAction<USliderAction>("Bar");
@@ -126,71 +139,6 @@ namespace AncientMemorial.Interactions {
 
 		public float GetProgress() => interactAction.GetProgress();
 		
-		// ETC. Override //
-
-		private bool prefabInteractable;
-		public override void OnFirstGet() {
-			interactAction = new DelayedAction(timeToInteract, () => { Interact(); SendEvent(UengSystem.Events.EventType.Interact_Stop, EventPriority.Stop); }, Cancel, this);
-			prefabInteractable = interactable;
-			base.OnFirstGet();
-		}
-
-		public override void Initialize() {
-			interactable = prefabInteractable;
-
-			interactStart    ??= InteractStartEvent;
-			interactCancel   ??= InteractCancelEvent;
-			interactTarget   ??= InteractTargetEvent;
-			interactUntarget ??= InteractUntargetEvent;
-			
-			EventType.Interact_Start.AddListener(interactStart);
-			EventType.Interact_Cancel.AddListener(interactCancel);
-			EventType.Interact_Target.AddListener(interactTarget);
-			EventType.Interact_Untarget.AddListener(interactUntarget);
-			EventsSubscribed = true;
-    
-			base.Initialize();
-		}
-
-		private bool EventsSubscribed;
-		protected override void OnRelease() {
-			interactable = false;
-			InteractableInteractions.Remove(this);
-    
-			if (EventsSubscribed) {
-				EventType.Interact_Start.RemoveListener(interactStart);
-				EventType.Interact_Cancel.RemoveListener(interactCancel);
-				EventType.Interact_Target.RemoveListener(interactTarget);
-				EventType.Interact_Untarget.RemoveListener(interactUntarget);
-				EventsSubscribed = false;
-			}
-    
-			base.OnRelease();
-    
-			if (interactUI) Untargetted();
-		}
-		
-		public override void Uninitialize() {
-			base.Uninitialize();
-
-			if (!interactUI) return;
-			if (interactUI.lifeNumber == InteractUiLife) interactUI.Release(PlayEffect: false);
-			interactUI = null;
-		}
-
-		// UPDATE ROUTINE //
-
-		protected override void EarlyRoutine() {
-			if (CheckInteractable()) InteractableInteractions.Add(this);
-		}
-
-		// EVENT METHODS //
-
-		private Action<Event> interactStart;
-		private Action<Event> interactCancel;
-		private Action<Event> interactTarget;
-		private Action<Event> interactUntarget;
-		
 		private void InteractStartEvent(Event e) {
 			if (!isActive) return;
 			if (e.GetData<ValueData<Interaction>>().value != this) return;
@@ -220,6 +168,60 @@ namespace AncientMemorial.Interactions {
 			
 			Untargetted();
 			interactAction.Cancel();
+		}
+
+		// 오버라이드 메서드
+		public override void OnFirstGet() {
+			interactAction = new DelayedAction(timeToInteract, () => { Interact(); SendEvent(UengSystem.Events.EventType.Interact_Stop, EventPriority.Stop); }, Cancel, this);
+			prefabInteractable = interactable;
+			base.OnFirstGet();
+		}
+
+		public override void Initialize() {
+			interactable = prefabInteractable;
+
+			interactStart    ??= InteractStartEvent;
+			interactCancel   ??= InteractCancelEvent;
+			interactTarget   ??= InteractTargetEvent;
+			interactUntarget ??= InteractUntargetEvent;
+			
+			EventType.Interact_Start.AddListener(interactStart);
+			EventType.Interact_Cancel.AddListener(interactCancel);
+			EventType.Interact_Target.AddListener(interactTarget);
+			EventType.Interact_Untarget.AddListener(interactUntarget);
+			EventsSubscribed = true;
+    
+			base.Initialize();
+		}
+		protected override void OnRelease() {
+			interactable = false;
+			InteractableInteractions.Remove(this);
+    
+			if (EventsSubscribed) {
+				EventType.Interact_Start.RemoveListener(interactStart);
+				EventType.Interact_Cancel.RemoveListener(interactCancel);
+				EventType.Interact_Target.RemoveListener(interactTarget);
+				EventType.Interact_Untarget.RemoveListener(interactUntarget);
+				EventsSubscribed = false;
+			}
+    
+			base.OnRelease();
+    
+			if (interactUI) Untargetted();
+		}
+		
+		public override void Uninitialize() {
+			base.Uninitialize();
+
+			if (!interactUI) return;
+			if (interactUI.lifeNumber == InteractUiLife) interactUI.Release(PlayEffect: false);
+			interactUI = null;
+		}
+
+		
+
+		protected override void EarlyRoutine() {
+			if (CheckInteractable()) InteractableInteractions.Add(this);
 		}
 	}
 }

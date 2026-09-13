@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
@@ -9,6 +10,13 @@ using UnityEngine;
 
 namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 	public class FlashSlash : PlayerWeaponAttack {
+
+		// 정적 프로퍼티
+		private static readonly int SlashEffectPrefabId = "SlashEffect".GetHash();
+		private static readonly int SwordSkillClipId = "swordSkill".GetHash();
+		private static readonly int SwordSlash3ClipId = "swordSlash3".GetHash();
+
+		// 인스턴스 프로퍼티
 		private AttackArea skillAttack;
 
 		public override float attackTime       => 0f;
@@ -23,7 +31,8 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 		private float flashDistance;
 
 		private bool isCancelled;
-		
+
+		// 오버라이드 메서드
 		public override    void OnEnter() {
 			base.OnEnter();
 
@@ -32,7 +41,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 			player.rigidbody2D.linearVelocity = Vector2.zero;
 			
 			player.Freeze();
-			player.PlaySFX("swordSkill");
+			player.PlaySFX(SwordSkillClipId);
 			
 			Vector2 playerPos     = player.transform.position;
 			Vector2 mousePos      = InputManager.mousePosition;
@@ -75,8 +84,8 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 				CameraBrain.instance.ShakeLerp(1.5f, 10);
                 CameraBrain.instance.ZoomLerp(-1f, 15);
                 
-                player.PlaySFX("swordSlash3");
-                GameObject obj = UObject.Get("SlashEffect", hitboxPos, PlayEffect: false);
+                player.PlaySFX(SwordSlash3ClipId);
+                GameObject obj = UObject.Get(SlashEffectPrefabId, hitboxPos, PlayEffect: false);
                 obj.transform.rotation   = Quaternion.Euler(0, 0, hitboxAngle+90f);
                 obj.transform.localScale = new Vector3(2f, 4.5f * flashDistance/2.7f, 1f);
 

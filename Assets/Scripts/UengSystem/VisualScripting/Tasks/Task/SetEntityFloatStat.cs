@@ -6,6 +6,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class SetEntityFloatStat : TaskComponent {
+
+		// 인스턴스 프로퍼티
 		[SerializeReference] [SubclassSelector]
 		public UValue<Entity> targetEntity;
 		
@@ -13,7 +15,8 @@ namespace UengSystem.VisualScripting.Tasks {
 		public UValue<float> targetValue;
 		
 		public EntityDataType entityDataType;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			switch (entityDataType) {
 				case EntityDataType.MAXHP:

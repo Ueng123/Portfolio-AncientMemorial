@@ -5,6 +5,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UValues.UObjects {
 	[Serializable]
 	public class UObjectByID : UValue<UObject> {
+
+		// 인스턴스 프로퍼티
 		protected override bool getIsDynamic {
 			get {
 				ID.parent = this;

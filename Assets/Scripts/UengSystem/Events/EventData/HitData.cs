@@ -6,6 +6,8 @@ using UnityEngine;
 namespace UengSystem.Events {
 	[Serializable]
 	public struct HitData : ILifetimeEventData {
+
+		// 인스턴스 프로퍼티
 		public Entity     attackedEntity;
 		public Projectile attackedProjectile;
 		public Entity     reciever;
@@ -26,7 +28,8 @@ namespace UengSystem.Events {
 		public bool isValid => reciever && ReceiverLifetime.Matches(reciever)
 			&& EntityLifetime.Matches(attackedEntity) && ProjectileLifetime.Matches(attackedProjectile)
 			&& AttackerLifetime.Matches(attacker);
-		
+
+		// 인스턴스 메서드
 		public HitData(Entity attackedEntity, Projectile attackedProjectile, Entity reciever, float damage, Vector2? pushDir = null, bool ignoreInvincible = false) {
 			this.attackedEntity     = attackedEntity;
 			this.attackedProjectile = attackedProjectile;

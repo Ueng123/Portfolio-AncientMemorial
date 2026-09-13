@@ -8,12 +8,13 @@ using UnityEngine;
 
 namespace UengSystem.UI {
 	public class UUI : UObject {
-		
+
+		// 정적 프로퍼티
 		private static readonly Dictionary<string, List<UUI>> UCategoryTable = new ();
 		private static readonly int                           Close          = Animator.StringToHash("Close");
 		private static readonly int                           Open           = Animator.StringToHash("Open");
-		
-		// Instance Variables //
+
+		// 인스턴스 프로퍼티
 		[Header("Identify")] 
 		public  UCanvas canvas;
 
@@ -59,33 +60,18 @@ namespace UengSystem.UI {
 		private readonly List<UUIAction> InitializedActions = new();
 		private bool Opened;
 
-		public override void OnFirstGet() {
-			SetDefaultStates(new UUIGetting(this), new UUIReleasing(this));
-			base.OnFirstGet();
-			rectTransform = GetComponent<RectTransform>();
-			if (animator) animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-			foreach (UUIActionListItem Item in actions) actionDict.Add(Item.key, Item.action);
+		// 정적 메서드
+		public static GameObject Get(string PrefabKey, UCanvas Canvas, bool PlayEffect = true, Action<UUI> Configure = null) {
+			if (PrefabKey == null) throw new ArgumentNullException(nameof(PrefabKey));
+			return Get(PrefabKey.GetHash(), Canvas, PlayEffect, Configure);
 		}
 
-		public static GameObject Get(string PrefabKey, UCanvas Canvas, bool PlayEffect = true, Action<UUI> Configure = null) {
+		public static GameObject Get(int PrefabId, UCanvas Canvas, bool PlayEffect = true, Action<UUI> Configure = null) {
 			CheckAcquisitionAllowed();
-			UUI Target = UUIPool.instance.Acquire(PrefabKey, Canvas);
+			UUI Target = UUIPool.instance.Acquire(PrefabId, Canvas);
 			Target.BeginLife(PlayEffect, Obj => Configure?.Invoke((UUI)Obj));
 			return Target.gameObject;
 		}
-
-		protected override void PrepareContext() {
-			rectTransform.anchoredPosition = initialPosition;
-			rectTransform.localScale = initialScale;
-			Opened = false;
-			if (animator) {
-				animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-				animator.ResetTrigger(Close);
-			}
-		}
-
-		public virtual void OnOpen()  { }
-		public virtual void OnClose() { }
 
 		public static bool TryGetUUI(string id, out UUI uui) {
 			bool result = TryGetUObject(id, out UObject obj);
@@ -97,6 +83,14 @@ namespace UengSystem.UI {
 
 		public static List<UUI> GetUUIs(string category) => UCategoryTable[category];
 
+		public static void ResetUUI() {
+			UCategoryTable.Clear();
+		}
+
+		// 인스턴스 메서드
+		public virtual void OnOpen()  { }
+		public virtual void OnClose() { }
+
 		public T GetAction<T>(string key) where T : UUIAction {
 			if (actionDict.TryGetValue(key, out UUIAction action)) return (T)action;
 			throw new KeyNotFoundException(key);
@@ -106,8 +100,23 @@ namespace UengSystem.UI {
 			return (T)actions[index].action;
 		}
 
-		public static void ResetUUI() {
-			UCategoryTable.Clear();
+		// 오버라이드 메서드
+		public override void OnFirstGet() {
+			SetDefaultStates(new UUIGetting(this), new UUIReleasing(this));
+			base.OnFirstGet();
+			rectTransform = GetComponent<RectTransform>();
+			if (animator) animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+			foreach (UUIActionListItem Item in actions) actionDict.Add(Item.key, Item.action);
+		}
+
+		protected override void PrepareContext() {
+			rectTransform.anchoredPosition = initialPosition;
+			rectTransform.localScale = initialScale;
+			Opened = false;
+			if (animator) {
+				animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+				animator.ResetTrigger(Close);
+			}
 		}
 		
 		protected override void Routine() {

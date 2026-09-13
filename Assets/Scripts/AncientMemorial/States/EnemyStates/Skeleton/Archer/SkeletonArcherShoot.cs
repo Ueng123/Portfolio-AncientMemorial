@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using AncientMemorial.Entities;
 using AncientMemorial.Objects;
@@ -7,6 +8,14 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Skeleton.Archer {
 	public class SkeletonArcherShoot : SkeletonAttack {
+
+		// 정적 프로퍼티
+		private static readonly int ArrowPrefabId = "Arrow".GetHash();
+		private static readonly int BowShootClipId = "bowShoot".GetHash();
+
+		private const float attackProgress = 6f / 11f;
+
+		// 인스턴스 프로퍼티
 		public override float attackTime => 1.5f;
 		
 		private bool    isFlipped;
@@ -16,10 +25,9 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Archer {
 
 		private int attackAnimation;
 
-		private const float attackProgress = 6f / 11f;
-
 		private AttackArea _attackArea;
 
+		// 인스턴스 메서드
 		private float D(float v, Vector2 targetPosition) {
 			float g  = Mathf.Abs(Physics2D.gravity.y);
 			float x1 = targetPosition.x;
@@ -52,16 +60,17 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Archer {
 		private void ShootArrow(float v, Vector2 targetPosition) {
 			if (!ArrowShootable(v, targetPosition)) return;
 			
-			enemy.PlaySFX("bowShoot");
+			enemy.PlaySFX(BowShootClipId);
 			
-			GameObject arrowObject = UObject.Get("Arrow", enemy.transform.position, PlayEffect: false);
+			GameObject arrowObject = UObject.Get(ArrowPrefabId, enemy.transform.position, PlayEffect: false);
 			Arrow      arrow       = arrowObject.GetComponent<Arrow>();
 			
 			arrow.rigidbody2D.linearVelocity = GetArrowDir(v, targetPosition);
 			arrow.damage                     = enemy.data.attackDamage;
 			arrow.owner                      = enemy;
 		}
-		
+
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			Entity target = stateMachine.getTarget.Invoke();

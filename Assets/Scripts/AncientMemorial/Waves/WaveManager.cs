@@ -11,19 +11,22 @@ using UnityEngine;
 
 namespace AncientMemorial.Waves {
 	public class WaveManager : Manager<WaveManager> {
+
+		// 정적 프로퍼티
+		private static readonly int ClearUIPrefabId = "ClearUI".GetHash();
+		private static readonly int DieUIPrefabId = "DieUI".GetHash();
+		private static readonly int ClearClipId = "clear".GetHash();
+		private static readonly int DeadClipId = "Dead".GetHash();
+
+		// 인스턴스 프로퍼티
 		private int TIME_ELAPSED = "timeElapsed".GetHash();
 		
 		public  List<Wave>  waves     = new List<Wave>();
 		private Queue<Wave> waveQueue = new Queue<Wave>();
 		public  Wave        currentWave;
 		private bool        isWavePlaying;
-		
-		public override void Initialize() {
-			waveQueue = new Queue<Wave>(waves);
-			
-			PlayWave();
-		}
 
+		// 인스턴스 메서드
 		public void NextWave() {
 			currentWave?.waveTasks.CancelTasks();
 			if (GameManager.instance.Crystal) GameManager.instance.Crystal.UnInteractable();
@@ -36,31 +39,35 @@ namespace AncientMemorial.Waves {
 			currentWave = waveQueue.Dequeue();
 				PlayWave();
 		}
-
-		// 0에 NextWave있음
-		// 결국 안끝나고 웨이브 지속 PlayWave [ NextWave f -> PlayWave [ ... ] t ] t -- ok
-		// 끝남 PlayWave [ NextWave f -> PlayWave [ NextWave f -> CLEAR! ]] -- ok
+		
 		private void PlayWave() {
 			UPureFloat.SetValue(TIME_ELAPSED, 0);
 			currentWave.waveTasks.Execute(GlobalObject.instance);
 		}
 		
 		public void GameEnd() {
-			AudioManager.instance.PlaySFX("clear");
+			AudioManager.instance.PlaySFX(ClearClipId);
 			currentWave.waveTasks.CancelTasks();
 			currentWave = null;
 			GameManager.SetTimeScale(0);
 			AudioManager.instance.StopAllSFX();
-			UUI.Get("ClearUI", GameManager.instance.mainScreenCanvas);
+			UUI.Get(ClearUIPrefabId, GameManager.instance.mainScreenCanvas);
 		}
 		
 		public void GameOver() {
-			UUI.Get("DieUI", GameManager.instance.mainScreenCanvas);
+			UUI.Get(DieUIPrefabId, GameManager.instance.mainScreenCanvas);
 			currentWave.waveTasks.CancelTasks();
 			currentWave = null;
-			AudioManager.instance.SetBGM("Dead");
+			AudioManager.instance.SetBGM(DeadClipId);
 			AudioManager.instance.StopAllSFX();
 			GameManager.SetTimeScale(0);
+		}
+
+		// 오버라이드 메서드
+		public override void Initialize() {
+			waveQueue = new Queue<Wave>(waves);
+			
+			PlayWave();
 		}
 		
 		public override void ManagerUpdate() {

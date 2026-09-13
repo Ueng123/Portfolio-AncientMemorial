@@ -9,6 +9,11 @@ using EventType = UengSystem.Events.EventType;
 namespace AncientMemorial.Projectiles {
 	public class BasicProjectile : Projectile {
 
+		// 인스턴스 프로퍼티
+		private int BreakPrefabId;
+
+		private int HitPrefabId;
+
 		public float rotateOffset;
 		
 		public bool targetPlayer;
@@ -21,19 +26,23 @@ namespace AncientMemorial.Projectiles {
 		public int  hitableNum;
 		
 		private TrailRenderer trailRenderer;
-		
+
+		// 인스턴스 메서드
+		private void Break() {
+			if (breakObject) UObject.Get(BreakPrefabId, transform.position, PlayEffect: false);
+			Release(PlayEffect: false);
+		}
+
+		// 오버라이드 메서드
 		public override void OnGet() {
 			base.OnGet();
 			trailRenderer = GetComponent<TrailRenderer>();
 		}
 
-		private void Break() {
-			if (breakObject) UObject.Get(breakObject.name, transform.position, PlayEffect: false);
-			Release(PlayEffect: false);
-		}
-
 		public override void Initialize() {
 			base.Initialize();
+			BreakPrefabId = breakObject ? breakObject.name.GetHash() : 0;
+			HitPrefabId = hitObject ? hitObject.name.GetHash() : 0;
 			trailRenderer = GetComponent<TrailRenderer>();
 			trailRenderer.Clear();
 		}
@@ -64,7 +73,7 @@ namespace AncientMemorial.Projectiles {
 			bool CanPierce = !breakOnHit || hitableNum <= 0 || hitableNum > pendingHitCount + 1;
 			SendCollisionHit(entity, damage, () => {
 				if (breakOnHit && --hitableNum == 0) { Break(); return; }
-				if (hitObject) Get(hitObject.name, transform.position, PlayEffect: false);
+				if (hitObject) Get(HitPrefabId, transform.position, PlayEffect: false);
 			}, CanPierce);
 		}
 		

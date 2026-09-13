@@ -8,16 +8,17 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Crystal {
 	public abstract class CrystalState : EnemyState {
+
+		// 정적 프로퍼티
+		private static readonly int CrystalMissilePrefabId = "CrystalMissile".GetHash();
+		private static readonly int CrystalBigMissilePrefabId = "CrystalBigMissile".GetHash();
+
+		// 인스턴스 프로퍼티
 		public CrystalBoss crystal;
-		
-		public override EnemyState Init(EnemyStateMachine stateMachine) {
-			base.Init(stateMachine);
-			crystal = enemy.To<CrystalBoss>();
-			return this;
-		}
-		
+
+		// 인스턴스 메서드
 		protected void ShootMissile(Vector2 pos, float rot, float speed = 13.5f, float timeBeforeLockOn = 0, float lockOnDuration = 0f) {
-			GameObject missile = UObject.Get("CrystalMissile", pos, PlayEffect: false);
+			GameObject missile = UObject.Get(CrystalMissilePrefabId, pos, PlayEffect: false);
 			
 			CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
 			crystalMissile.owner              = crystal;
@@ -31,7 +32,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal {
 		}
 		
 		protected void ShootBigMissile(Vector2 pos, float rot, float speed = 13.5f, float timeBeforeLockOn = 0, float lockOnDuration = 0f) {
-			GameObject missile = UObject.Get("CrystalBigMissile", pos, PlayEffect: false);
+			GameObject missile = UObject.Get(CrystalBigMissilePrefabId, pos, PlayEffect: false);
 			
 			CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
 			crystalMissile.owner              = crystal;
@@ -50,6 +51,13 @@ namespace AncientMemorial.States.EnemyStates.Crystal {
 				UObject missile = missiles[i];
 				missile.Release(PlayEffect: false);
 			}
+		}
+
+		// 오버라이드 메서드
+		public override EnemyState Init(EnemyStateMachine stateMachine) {
+			base.Init(stateMachine);
+			crystal = enemy.To<CrystalBoss>();
+			return this;
 		}
 
 		public override void OnExit() {

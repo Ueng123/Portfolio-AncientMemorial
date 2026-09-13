@@ -4,8 +4,11 @@ using AncientMemorial.States.EnemyStates.Skeleton.Warrior;
 
 namespace AncientMemorial.Entities.Enemies {
 	public class SkeletonWarrior : Skeleton {
+
+		// 인스턴스 프로퍼티
 		private EnemyState pierce;
-		
+
+		// 오버라이드 메서드
 		public override void OnFirstGet() {
 			base.OnFirstGet();
 			

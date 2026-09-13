@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UengSystem.Utility;
+using System;
 using UengSystem.UDebug;
 using UengSystem.UI;
 using UengSystem.VisualScripting.UValues;
@@ -7,13 +8,28 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class OpenUI : TaskComponent {
+
+		// 인스턴스 프로퍼티
+		private int? TargetPrefabId;
+		private GameObject CachedTargetPrefab;
+		private int targetPrefabId {
+			get {
+				if (CachedTargetPrefab != TargetUUI) {
+					CachedTargetPrefab = TargetUUI;
+					TargetPrefabId = null;
+				}
+				TargetPrefabId ??= TargetUUI.name.GetHash();
+				return TargetPrefabId.Value;
+			}
+		}
+
 		public GameObject TargetUUI;
 		public UCanvas canvas;
 		public bool PlayEffect = true;
 		
 		[SerializeReference][SubclassSelector] public UValue<string> ID;
 		[SerializeReference][SubclassSelector] public UValue<string> Category;
-		
+
 		public override void Execute(ITaskable self) {
 			if (!canvas || canvas == default) canvas = GameManager.instance.mainScreenCanvas;
 			
@@ -25,7 +41,7 @@ namespace UengSystem.VisualScripting.Tasks {
 							 $" > canvas = {canvas.name}\n"          +
 							 $"");
 			
-			UUI.Get(TargetUUI.name, canvas, PlayEffect, Ui => {
+			UUI.Get(targetPrefabId, canvas, PlayEffect, Ui => {
 				if (!string.IsNullOrWhiteSpace(ID?.value)) Ui.ID = ID.value;
 				if (!string.IsNullOrWhiteSpace(Category?.value)) Ui.Category = Category.value;
 			});

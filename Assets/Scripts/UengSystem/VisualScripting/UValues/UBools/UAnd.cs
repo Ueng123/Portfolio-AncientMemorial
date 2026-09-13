@@ -4,6 +4,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UValues.UBools {
 	[Serializable]
 	public class UAnd : UValue<bool> {
+
+		// 인스턴스 프로퍼티
 		protected override bool getIsDynamic { 
 			get {
 				A.parent = this;

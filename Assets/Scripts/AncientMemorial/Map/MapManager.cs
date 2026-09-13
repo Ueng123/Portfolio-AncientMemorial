@@ -4,12 +4,14 @@ using UengSystem.Managers;
 
 namespace AncientMemorial.Map {
 	public class MapManager : Manager<MapManager> {
-		
-		[SerializeField] private Vector2 TargetMapSize;
-		private                  Vector2 CurrMapSize;
 
+		// 정적 프로퍼티
 		public static float rightWall => instance.CurrMapSize.x / 2;
 		public static float leftWall => -instance.CurrMapSize.x / 2;
+
+		// 인스턴스 프로퍼티
+		[SerializeField] private Vector2 TargetMapSize;
+		private                  Vector2 CurrMapSize;
 		
 		[Header("Camera Values")]
 		[SerializeField ] private Vector2 CamSizeMargin;
@@ -25,6 +27,7 @@ namespace AncientMemorial.Map {
 		public MapObjects mapObjects;
 		public Transform         MapCenterTransform;
 
+		// 인스턴스 메서드
 		public void SetMapSize(Vector2 size, float? speed = null, bool instant = false) {
 			TargetMapSize = size;
 			TargetCamLens = new Vector2(
@@ -44,6 +47,7 @@ namespace AncientMemorial.Map {
 		public Vector2 GetMapSize()        => CurrMapSize;
 		public Vector2 GetTargetMapSize() => TargetMapSize;
 
+		// 오버라이드 메서드
 		public override void Initialize() {
 			TargetCamLens = new Vector2(
 				(3  *(TargetMapSize.x + CamSizeMargin.x) + 1) /11,

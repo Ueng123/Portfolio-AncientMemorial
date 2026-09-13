@@ -5,6 +5,8 @@ using UnityEngine;
 namespace UengSystem.UI.UInputFields {
 	[Serializable]
 	public class UInputField : UUIComponent {
+
+		// 인스턴스 프로퍼티
 		[HideInInspector]
 		public TMP_InputField inputField;
 		private string     text = "";
@@ -14,6 +16,7 @@ namespace UengSystem.UI.UInputFields {
 		[HideInInspector]
 		public bool endEdit     = false;
 
+		// 인스턴스 메서드
 		public virtual void OnTextChanged(string changed) {
 			textChanged = true;
 		}
@@ -30,7 +33,8 @@ namespace UengSystem.UI.UInputFields {
 			inputField.text = textToChange;
 			text            = textToChange;
 		}
-		
+
+		// 오버라이드 메서드
 		public override void Initialize() {
 			inputField = GetComponent<TMP_InputField>();
 			inputField.onValueChanged.AddListener(OnTextChanged);

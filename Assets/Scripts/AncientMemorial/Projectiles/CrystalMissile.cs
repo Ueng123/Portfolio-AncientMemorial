@@ -9,6 +9,10 @@ using EventType = UengSystem.Events.EventType;
 namespace AncientMemorial.Projectiles {
 	public class CrystalMissile : Projectile {
 
+		// 정적 프로퍼티
+		private static readonly int LockOnEffectPrefabId = "LockOnEffect".GetHash();
+
+		// 인스턴스 프로퍼티
 		public float TimeBeforeLockOn;
 		public float LockOnDuration;
 		public float initialSpeed;
@@ -20,7 +24,7 @@ namespace AncientMemorial.Projectiles {
 				if (value == _lockOn) return;
 
 				if (value) {
-					GameObject eff = UObject.Get("LockOnEffect", transform.position, PlayEffect: false);
+					GameObject eff = UObject.Get(LockOnEffectPrefabId, transform.position, PlayEffect: false);
 					eff.transform.rotation = transform.rotation;
 				}
 
@@ -29,22 +33,19 @@ namespace AncientMemorial.Projectiles {
 		}
 		
 		private TrailRenderer trailRenderer;
-		public override void OnGet() {
-			base.OnGet();
-			rigidbody2D.centerOfMass = new Vector2(0.3f, 0);
-			trailRenderer = GetComponent<TrailRenderer>();
-			stopWatch.Tick();
-
-			locking = true;
-			offset  = Random.Range(-5f, 5f);
-		}
-
-		private void Break() {
-			Release(PlayEffect: false);
-		}
 
 		public float offset;
 		private Vector2 targetPosition;
+		
+		private StopWatch stopWatch = new ();
+		
+		private bool locking;
+		private bool locked;
+
+		// 인스턴스 메서드
+		private void Break() {
+			Release(PlayEffect: false);
+		}
 		private void LockOn() {
 			if (!Entity.player) return;
 			
@@ -61,6 +62,24 @@ namespace AncientMemorial.Projectiles {
 			transform.rotation = Quaternion.Euler(0f, 0f, Mathf.LerpAngle(currAngle, targetAngle + offset, Time.deltaTime*5/LockOnDuration));
 		}
 
+		private float GetVelocity() {
+			if (lockOn) return initialSpeed / 2;
+			float a = initialSpeed + 1f;
+			float b = stopWatch.Tock() - (LockOnDuration / 2 + TimeBeforeLockOn);
+			return a - initialSpeed / (b * b * 0.1f + 1);
+		}
+
+		// 오버라이드 메서드
+		public override void OnGet() {
+			base.OnGet();
+			rigidbody2D.centerOfMass = new Vector2(0.3f, 0);
+			trailRenderer = GetComponent<TrailRenderer>();
+			stopWatch.Tick();
+
+			locking = true;
+			offset  = Random.Range(-5f, 5f);
+		}
+
 		public override void Initialize() {
 			base.Initialize();
 			trailRenderer = GetComponent<TrailRenderer>();
@@ -68,15 +87,6 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected override void EarlyRoutine() { }
-
-		private float GetVelocity() {
-			if (lockOn) return initialSpeed / 2;
-			float a = initialSpeed + 1f;
-			float b = stopWatch.Tock() - (LockOnDuration / 2 + TimeBeforeLockOn);
-			return a - initialSpeed / (b * b * 0.1f + 1);
-		}
-		
-		private StopWatch stopWatch = new ();
 		protected override void Routine() {
 			if (isHitPending) return;
 			lockOn = stopWatch.CheckOut(LockOnDuration + TimeBeforeLockOn);
@@ -86,9 +96,6 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected override void LateRoutine() { base.LateRoutine(); }
-		
-		private bool locking;
-		private bool locked;
 		protected override void FixedRoutine() {
 			if (isHitPending) return;
 			if (locking) return;

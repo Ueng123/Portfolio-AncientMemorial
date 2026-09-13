@@ -1,12 +1,16 @@
 using System.Collections;
+using UengSystem.Utility;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneBridge : MonoBehaviour {
+
+	// 인스턴스 프로퍼티
 	public string sceneToLoad;
 	public Slider loadingSlider;
-	
+
+	// 인스턴스 메서드
 	public void Start() {
 		StartCoroutine(LoadAsyncRoutine(sceneToLoad));
 	}
@@ -23,7 +27,7 @@ public class SceneBridge : MonoBehaviour {
 			
 			if (asyncOperation.progress >= 0.9f) {
 				loadingSlider.value = 1;
-				yield return new WaitForSeconds(0.25f);
+				yield return CacheManager.WaitForSeconds(0.25f);
 				asyncOperation.allowSceneActivation = true;
 			}
 

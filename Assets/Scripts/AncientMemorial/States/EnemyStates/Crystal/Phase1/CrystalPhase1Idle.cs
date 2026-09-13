@@ -4,14 +4,17 @@ using Random = UnityEngine.Random;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase1 {
 	public class CrystalPhase1Idle : CrystalState {
-		
+
+		// 인스턴스 프로퍼티
 		private StopWatch missileTimer     = new StopWatch();
 		private float     missileSpawnTime = 0;
 
+		// 인스턴스 메서드
 		public void UpdateMissileSpawnTime() {
 			missileSpawnTime = Random.Range(0.5f, 1.5f);
 		}
 
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			

@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 namespace UengSystem.VisualScripting.UValues.UVector2s {
 	[Serializable]
 	public class RandomPosition : UValue<Vector2> {
+
+		// 인스턴스 프로퍼티
 		protected override bool    getIsDynamic => true;
 
 		[SerializeReference] [SubclassSelector]

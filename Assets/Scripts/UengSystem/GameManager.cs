@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UengSystem.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AncientMemorial.Cameras;
@@ -26,69 +27,13 @@ using UnityEngine.UI;
 
 namespace UengSystem {
     public class GameManager : Manager<GameManager> {
-       
-       public Crystal    Crystal;
-       public UCanvas    mainScreenCanvas;
-       public UCanvas    mainWorldCanvas;
-       public MainCamera mainCamera;
-       public GameObject sceneHider;
 
-       public Weapon[] weapons;
-       
-       public AudioMixer audioMixer;
-       
-       public Color spawnColor;
-       
-       public UpdateRoutineType      currentUpdatePhase;
-       public FixedUpdateRoutineType currentFixedUpdatePhase;
-
-       public  int  initializeID;
-       private bool initialized = false;
-       
-       public static void ApplyStaticBufferedLists() {
-		Entity.entities.Synchronize();
-       }
-       
-       public static void ClearFramePerLists() {
-          EventManager.instance.RemoveAllEvents();
-          Interaction.InteractableInteractions.Clear();
-       }
-
+       // 정적 프로퍼티
+       private static readonly int GameLoadingUIPrefabId = "GameLoadingUI".GetHash();
        private static float timeScale = 1f;
        
        // startTime:unscaledTime
        private static List<(float timeScale, float startTime, float duration)> timeScaleChangeChain = new();
-       
-       public static float GetTimeScale() {
-          if (!Setting.GetBool(SettingType.SlowFX)) return timeScale;
-          if (timeScale == 0) return 0;
-          return timeScaleChangeChain.Count==0?timeScale:timeScaleChangeChain[0].timeScale;
-       }
-       
-       public static void SetTimeScale(float timeScale) {
-          GameManager.timeScale = timeScale;
-       }
-       
-       private DelayedAction timeRestoreAction;
-       public static void SetTimeScale(float timeScale, float duration) {
-          float                 startTime = Time.unscaledTime;
-          (float, float, float) thisItem  = (timeScale, startTime, duration);
-          
-          if (timeScaleChangeChain.Count == 0) {
-             timeScaleChangeChain.Add(thisItem);
-             return;
-          }
-
-          for (int i = 0; i < timeScaleChangeChain.Count; i++) {
-             (float timeScale, float startTime, float duration) item = timeScaleChangeChain[i];
-
-             if (!(duration < item.duration)) continue;
-             timeScaleChangeChain.Insert(i, thisItem);
-             return;
-          }
-          
-          timeScaleChangeChain.Add(thisItem);
-       }
        
        private static readonly Func<bool>[][] initializeFunctions = new[] { 
           new Func<bool>[] { 
@@ -103,7 +48,7 @@ namespace UengSystem {
                    if (!UUIPool.instance) return false;
                    UUIPool.instance.Initialize();
 
-                   UUI.Get("GameLoadingUI", instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI");
+                   UUI.Get(GameLoadingUIPrefabId, instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI", PlayEffect:false);
 
                    return true;
                 },
@@ -169,7 +114,7 @@ namespace UengSystem {
                    if (!UUIPool.instance) return false;
                    UUIPool.instance.Initialize();
 
-                   UUI.Get("GameLoadingUI", instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI");
+                   UUI.Get(GameLoadingUIPrefabId, instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI", PlayEffect:false);
 
                    return true;
                 },
@@ -211,49 +156,73 @@ namespace UengSystem {
              }
        };
 
+       // 인스턴스 프로퍼티
+       public Crystal    Crystal;
+       public UCanvas    mainScreenCanvas;
+       public UCanvas    mainWorldCanvas;
+       public MainCamera mainCamera;
+       public GameObject sceneHider;
+
+       public Weapon[] weapons;
+       
+       public AudioMixer audioMixer;
+       
+       public Color spawnColor;
+       
+       public UpdateRoutineType      currentUpdatePhase;
+       public FixedUpdateRoutineType currentFixedUpdatePhase;
+
+       public  int  initializeID;
+       private bool initialized = false;
+       
+       private DelayedAction timeRestoreAction;
+
+       private Slider loadingSlider = null;
+
+       // 정적 메서드
+       public static void SyncronizeLists() { 
+          Entity.entities.Synchronize();
+       }
+       
+       public static void ClearFramePerLists() {
+          EventManager.instance.RemoveAllEvents();
+          Interaction.InteractableInteractions.Clear();
+       }
+       
+       public static float GetTimeScale() {
+          if (!Setting.GetBool(SettingType.SlowFX)) return timeScale;
+          if (timeScale == 0) return 0;
+          return timeScaleChangeChain.Count==0?timeScale:timeScaleChangeChain[0].timeScale;
+       }
+       
+       public static void SetTimeScale(float timeScale) {
+          GameManager.timeScale = timeScale;
+       }
+       
+       public static void SetTimeScale(float timeScale, float duration) {
+          float                 startTime = Time.unscaledTime;
+          (float, float, float) thisItem  = (timeScale, startTime, duration);
+          
+          if (timeScaleChangeChain.Count == 0) {
+             timeScaleChangeChain.Add(thisItem);
+             return;
+          }
+
+          for (int i = 0; i < timeScaleChangeChain.Count; i++) {
+             (float timeScale, float startTime, float duration) item = timeScaleChangeChain[i];
+
+             if (!(duration < item.duration)) continue;
+             timeScaleChangeChain.Insert(i, thisItem);
+             return;
+          }
+          
+          timeScaleChangeChain.Add(thisItem);
+       }
+
        public static float valueToDB(float value) {
           if (Mathf.Approximately(value, 0f)) return -80f;
           value = Mathf.Clamp(value, 0.0001f, 1f);
           return Mathf.Log10(value) * 20f;
-       }
-
-       private Slider loadingSlider = null;
-       private bool GetLoadingSlider() {
-          if (!loadingSlider && UUI.GetUUI("loadingUI")) {
-             Destroy(sceneHider);
-             loadingSlider = UUI.GetUUI("loadingUI").GetAction<USliderAction>("Loading").GetComponent<USlider>().slider;
-          }
-
-          return loadingSlider;
-       }
-
-       private void OnInitializeStepComplete(float stepCompleted, float stepCount) {
-          if (!GetLoadingSlider()) return;
-          loadingSlider.value = 1f*(stepCompleted/stepCount);
-       }
-       
-       private IEnumerator InitializeGame() {
-          UObject.BeginSceneLifeCycles();
-          SetTimeScale(1);
-          // UPureFloat.SetValue("InitializeLoading", 0);
-          
-          int   iCount    = initializeFunctions[initializeID].Length;
-          float iComplete = 0;
-          foreach (Func<bool> initializeFunction in initializeFunctions[initializeID]) {
-             yield return new WaitForSeconds(0.01f);
-             yield return new WaitUntil(initializeFunction);
-             
-             OnInitializeStepComplete(++iComplete, iCount);
-             
-             DebugManager.Log($"Initialize Completed {100f*(iComplete/iCount)}%");
-          }
-          
-          yield return new WaitForSeconds(0.1f);
-          
-          DebugManager.Log("Initializing Done!");
-          UUI.GetUUI("loadingUI").Release(PlayEffect: true);
-          
-          initialized = true;
        }
 
        public static void ResetStaticVariables() {
@@ -285,6 +254,50 @@ namespace UengSystem {
           // UUI
           UUI.ResetUUI();
        }
+       
+       public static void OnSceneUnload() {
+          UObject.ShutdownLifeCycles();
+          Time.timeScale = 1;
+          SetTimeScale(1);
+          ResetStaticVariables();
+       }
+
+       // 인스턴스 메서드
+       private bool GetLoadingSlider() {
+          if (!loadingSlider && UUI.GetUUI("loadingUI")) {
+             Destroy(sceneHider);
+             loadingSlider = UUI.GetUUI("loadingUI").GetAction<USliderAction>("Loading").GetComponent<USlider>().slider;
+          }
+
+          return loadingSlider;
+       }
+
+       private void OnInitializeStepComplete(float stepCompleted, float stepCount) {
+          if (!GetLoadingSlider()) return;
+          loadingSlider.value = 1f*(stepCompleted/stepCount);
+       }
+       
+       private IEnumerator InitializeGame() {
+          UObject.BeginSceneLifeCycles();
+          
+          int   iCount    = initializeFunctions[initializeID].Length;
+          float iComplete = 0;
+          foreach (Func<bool> initializeFunction in initializeFunctions[initializeID]) {
+             yield return CacheManager.WaitForSeconds(0.01f);
+             yield return new WaitUntil(initializeFunction);
+             
+             OnInitializeStepComplete(++iComplete, iCount);
+             
+             DebugManager.Log($"Initialize Completed {100f*(iComplete/iCount)}%");
+          }
+          
+          yield return CacheManager.WaitForSeconds(0.1f);
+          
+          DebugManager.Log("Initializing Done!");
+          UUI.GetUUI("loadingUI").Release(PlayEffect: false);
+          
+          initialized = true;
+       }
 
        private void UpdateTimeScaleChain() {
           for (int i = timeScaleChangeChain.Count - 1; i >= 0; i--) {
@@ -293,19 +306,12 @@ namespace UengSystem {
           }
        }
        
-       public override void ManagerUpdate() {
-          UpdateTimeScaleChain();
-          
-          // 적용
-          Time.timeScale = GetTimeScale();
-       }
-       
        private void Update() {
           if (!initialized) return;
 
-          try { ApplyStaticBufferedLists(); }
+          try { SyncronizeLists(); }
           catch (Exception e) {
-             DebugManager.LogError("Update > GameManager.ApplyStaticBufferedLists()", e, gameObject);
+             DebugManager.LogError("Update > GameManager.SyncronizeLists()", e, gameObject);
           }
 
           try { InputManager.instance.UpdateInputs(); }  
@@ -332,7 +338,7 @@ namespace UengSystem {
        }
 
        private void LateUpdate() {
-          if (!initialized) { UObject.LifeCycleRoutine(); return; }
+          if (!initialized) return;
           
           UObject.LateUpdateRoutine();
           UObject.LifeCycleRoutine();
@@ -350,8 +356,7 @@ namespace UengSystem {
                 manager.ManagerFixedUpdate();
              }
              catch (Exception e) {
-                DebugManager.LogError($"FixedUpdate > {manager.GetType().Name}.ManagerFixedUpdate()", e,
-                                      ((MonoBehaviour)manager).gameObject);
+                DebugManager.LogError($"FixedUpdate > {manager.GetType().Name}.ManagerFixedUpdate()", e, ((MonoBehaviour)manager).gameObject);
              }
           }
 
@@ -361,12 +366,13 @@ namespace UengSystem {
        private void OnEnable() {
           StartCoroutine(InitializeGame());
        }
-       
-       public static void OnSceneUnload() {
-          UObject.ShutdownLifeCycles();
-          Time.timeScale = 1;
-          SetTimeScale(1);
-          ResetStaticVariables();
+
+       // 오버라이드 메서드
+       public override void ManagerUpdate() {
+          UpdateTimeScaleChain();
+          
+          // 적용
+          Time.timeScale = GetTimeScale();
        }
     }
 }

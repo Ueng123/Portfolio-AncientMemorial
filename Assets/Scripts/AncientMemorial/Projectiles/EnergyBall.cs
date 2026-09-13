@@ -9,17 +9,24 @@ using UnityEngine;
 
 namespace AncientMemorial.Projectiles {
 	public class EnergyBall : Projectile {
+
+		// 정적 프로퍼티
+		private static readonly int BigImpactPrefabId = "BigImpact".GetHash();
+
+		// 인스턴스 프로퍼티
 		private StopWatch  stopWatch;
 		public  float      boomTime;
 
+		// 인스턴스 메서드
+		private void Boom() {
+			UObject.Get(BigImpactPrefabId, transform.position, PlayEffect: false);
+			Release(PlayEffect: false);
+		}
+
+		// 오버라이드 메서드
 		protected override void FixedRoutine() {
 			if (isHitPending) return;
 			rigidbody2D.linearVelocity = Vector2.right*(10*(boomTime-stopWatch.Tock())*(spriteRenderer.flipX?1:-1)/boomTime);
-		}
-
-		private void Boom() {
-			UObject.Get("BigImpact", transform.position, PlayEffect: false);
-			Release(PlayEffect: false);
 		}
 		
 		protected override void EarlyRoutine() {

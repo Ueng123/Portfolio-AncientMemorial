@@ -3,6 +3,8 @@
 namespace UengSystem.VisualScripting.UValues.UFloats {
 	[Serializable]
 	public class UPureFloat : UPureValue<float, UPureFloat> {
+
+		// 정적 메서드
 		// protected override bool getIsDynamic => false;
 		//
 		// public override void OnAfterDeserialize() {

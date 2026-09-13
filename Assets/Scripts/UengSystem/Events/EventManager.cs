@@ -7,19 +7,15 @@ using UengSystem.Utility;
 
 namespace UengSystem.Events {
 	public class EventManager : Manager<EventManager> {
-		
+
+		// 인스턴스 프로퍼티
 		[Header("EventManager")]	
 		public readonly List<List<Event>> events = new (6);
-		public List<Event> GetEvents(int layer) => events[layer];
 
 		private Dictionary<EventType, SyncList<Action<Event>>> EventActions = new ();
 
-		public override void Initialize() {
-			base.Initialize();
-			for (int i = 0; i < 6; i++) {
-				events.Add(new List<Event>());
-			}
-		}
+		// 인스턴스 메서드
+		public List<Event> GetEvents(int layer) => events[layer];
 
 		public void AddListener(EventType type, Action<Event> func) {
 			EventActions.TryAdd(type, new SyncList<Action<Event>>(20));
@@ -65,6 +61,14 @@ namespace UengSystem.Events {
 						}
 					}
 				}
+			}
+		}
+
+		// 오버라이드 메서드
+		public override void Initialize() {
+			base.Initialize();
+			for (int i = 0; i < 6; i++) {
+				events.Add(new List<Event>());
 			}
 		}
 	}

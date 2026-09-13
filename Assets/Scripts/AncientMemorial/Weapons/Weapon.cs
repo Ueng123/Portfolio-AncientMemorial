@@ -8,12 +8,15 @@ using UnityEngine;
 
 namespace AncientMemorial.Weapons {
 	public abstract class Weapon : ScriptableObject {
+
+		// 정적 프로퍼티
+		public static int selectedWeaponID = 0;
+
+		// 인스턴스 프로퍼티
 		public RuntimeAnimatorController PlayerAnimatorController;
 		public Sprite             WeaponSprite;
 
 		private readonly int SKILL_COOLDOWN_TIME = "SkillCooldownTime".GetHash();
-		
-		public static int selectedWeaponID = 0;
 		
 		protected int currPrimaryAttackStage;
 		protected int primaryAttackStageCount;
@@ -33,7 +36,8 @@ namespace AncientMemorial.Weapons {
 		public float  secondaryDelay  => GetSecondaryAttackDelay (currSecondaryAttackStage);
 		
 		public virtual bool isAttacking => player.entityState == primaryAttack || player.entityState == secondaryAttack;
-		
+
+		// 인스턴스 메서드
 		public virtual bool CanPrimaryAttack()   => primaryAttackWatch  .CheckOut(primaryDelay, true);
 		public virtual bool CanSecondaryAttack() => secondaryAttackWatch.CheckOut(secondaryDelay, true);
 		

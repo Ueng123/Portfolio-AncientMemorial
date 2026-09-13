@@ -461,25 +461,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   canvas: {fileID: 0}
   rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
   openTime: 1
-  GettingAnimation: open
   closeTime: 1
+  GettingAnimation: open
   actions:
   - key: MasterSlider
     action:
@@ -645,6 +647,7 @@ MonoBehaviour:
     - rid: 5909658922870112833
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
+        PlayEffect: 1
         closeThis: 1
         TargetUUI:
           rid: -2
@@ -653,6 +656,7 @@ MonoBehaviour:
       data:
         TargetUUI: {fileID: 776431297840088385, guid: defa62083355c194fb8addb8a987ac2f, type: 3}
         canvas: {fileID: 0}
+        PlayEffect: 1
         ID:
           rid: -2
         Category:
@@ -660,6 +664,7 @@ MonoBehaviour:
     - rid: 5909658922870112835
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
+        PlayEffect: 1
         closeThis: 1
         TargetUUI:
           rid: -2
@@ -668,6 +673,7 @@ MonoBehaviour:
       data:
         TargetUUI: {fileID: 776431297840088385, guid: defa62083355c194fb8addb8a987ac2f, type: 3}
         canvas: {fileID: 0}
+        PlayEffect: 1
         ID:
           rid: -2
         Category:
@@ -932,8 +938,8 @@ MonoBehaviour:
             tasks:
             - rid: 5909658922870112839
             - rid: 5909658922870112838
-            - rid: 5909658922870112835
             - rid: 5909658922870112836
+            - rid: 5909658922870112835
     - rid: 8985605570991752204
       type: {class: UButtonAction, ns: UengSystem.UI.UButtons, asm: Assembly-CSharp}
       data:
@@ -947,8 +953,8 @@ MonoBehaviour:
             tasks:
             - rid: 5909658922870112840
             - rid: 5909658922870112837
-            - rid: 5909658922870112833
             - rid: 5909658922870112834
+            - rid: 5909658922870112833
 --- !u!1 &1105251211859212091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,18 +1360,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   button: {fileID: 6855445542204106448}
   clicked: 0
@@ -1507,18 +1515,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 3094555492419509823}
   valueChanged: 0
@@ -1703,18 +1713,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 5032251816970889573}
   valueChanged: 0
@@ -2190,18 +2202,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 2754060398431066406}
   valueChanged: 0
@@ -3262,18 +3276,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 204646946781606586}
   valueChanged: 0
@@ -3380,18 +3396,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 5513400489631693035}
   valueChanged: 0
@@ -3497,18 +3515,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 6972919623650733675}
   valueChanged: 0
@@ -3823,18 +3843,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   button: {fileID: 8343575308739342519}
   clicked: 0

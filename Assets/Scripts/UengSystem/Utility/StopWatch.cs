@@ -2,12 +2,15 @@
 
 namespace UengSystem.Utility {
 	public class StopWatch {
+
+		// 인스턴스 프로퍼티
 		private float tickTime;
 		private bool  ticked;
 		
 		private float stopTime;
 		private bool  paused;
 
+		// 인스턴스 메서드
 		public StopWatch Tick() {
 			ticked = true;
 			tickTime = Time.time;

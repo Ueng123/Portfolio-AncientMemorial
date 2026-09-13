@@ -5,8 +5,11 @@ using UnityEngine;
 
 namespace UengSystem.UAction {
     public class WaitAction : UAction {
+
+       // 정적 프로퍼티
        public static int runningWaitActionCount = 0;
-       
+
+       // 인스턴스 프로퍼티
        public readonly  Func<bool> checkCondition;
        private readonly Action     actionToDelay;
        private readonly Action     actionOnCancel;
@@ -18,7 +21,8 @@ namespace UengSystem.UAction {
        private IActionable executor;
        
        private WaitUntil waitUntil;
-       
+
+       // 인스턴스 메서드
        public WaitAction (Func<bool> checkCondition, Action actionToDelay, Action actionOnCancel = null, float timeOut = 0, IActionable executor = null) {
           this.executor = executor;
           this.checkCondition = checkCondition;
@@ -50,8 +54,6 @@ namespace UengSystem.UAction {
           return this;
        }
 
-       public override void Done() { DoneWA(); }
-
        public void DoneWA(bool stopCoroutine = true) {
           if (!Executing) return;
           
@@ -64,6 +66,9 @@ namespace UengSystem.UAction {
           executor?.UnregisterAction(this);
           actionToDelay.Invoke();
        }
+
+       // 오버라이드 메서드
+       public override void Done() { DoneWA(); }
        
        public override void Cancel() {
           if (!Executing) return;

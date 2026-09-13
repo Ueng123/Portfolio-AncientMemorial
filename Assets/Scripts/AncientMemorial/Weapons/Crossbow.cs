@@ -21,12 +21,24 @@ namespace AncientMemorial.Weapons {
 	[CreateAssetMenu(fileName = "Crossbow", menuName = "Weapons/Crossbow")]
 	public class Crossbow : Weapon {
 
+		// 인스턴스 프로퍼티
 		private bool          canFallAttack = false;
 		private Action<Event> onPlayerLand;
+
+		private readonly PlayerWeaponAttack[] primaryAttacks = {
+			PlayerWeaponAttack.shoot1, 
+			PlayerWeaponAttack.shoot2, 
+			PlayerWeaponAttack.shoot3, 
+			PlayerWeaponAttack.shoot3,
+			PlayerWeaponAttack.shoot5,
+		};
+
+		// 인스턴스 메서드
 		private void OnPlayerLand(Event e) {
 			canFallAttack = true;
 		}
 
+		// 오버라이드 메서드
 		public override bool CanPrimaryAttack() {
 			if (!player.isGround && !canFallAttack) return false;
 			return base.CanPrimaryAttack();
@@ -39,14 +51,6 @@ namespace AncientMemorial.Weapons {
 				currPrimaryAttackStage--;
 			}
 		}
-
-		private readonly PlayerWeaponAttack[] primaryAttacks = {
-			PlayerWeaponAttack.shoot1, 
-			PlayerWeaponAttack.shoot2, 
-			PlayerWeaponAttack.shoot3, 
-			PlayerWeaponAttack.shoot3,
-			PlayerWeaponAttack.shoot5,
-		};
 		
 		protected override UState GetPrimaryAttackAction(int attackStage) {
 			if (attackStage == -1) return null;

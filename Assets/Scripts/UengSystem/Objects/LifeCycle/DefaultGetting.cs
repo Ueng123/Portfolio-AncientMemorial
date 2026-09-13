@@ -1,16 +1,24 @@
+using UengSystem.Utility;
 using AncientMemorial.Objects;
 using UengSystem.ObjectPool;
 using UnityEngine;
 
 namespace UengSystem.Objects.LifeCycle {
 	public class DefaultGetting : Getting {
+
+		// 정적 프로퍼티
+		private static readonly int SpawnEffectPrefabId = "SpawnEffect".GetHash();
+
+		// 인스턴스 프로퍼티
 		private Color InitialColor;
 		private Sprite InitialSprite;
 		private UObject SpawnEffect;
 		private long SpawnLife;
 
+		// 인스턴스 메서드
 		public DefaultGetting(UObject Target) : base(Target) { }
 
+		// 오버라이드 메서드
 		protected override void OnStartEffect() {
 			SpawnEffect = null;
 			if (target.spriteRenderer) {
@@ -20,7 +28,7 @@ namespace UengSystem.Objects.LifeCycle {
 			}
 			target.FreezeAnimator();
 			if (UObjectPool.instance && UObjectPool.instance.Contains("SpawnEffect") && GameManager.instance && GameManager.instance.Crystal) {
-				SpawnEffect = UObject.Get("SpawnEffect", target.transform.position, false,
+				SpawnEffect = UObject.Get(SpawnEffectPrefabId, target.transform.position, false,
 					Effect => Effect.GetComponent<SpawnEffectHelper>().t_s = duration).GetComponent<UObject>();
 				SpawnLife = SpawnEffect.lifeNumber;
 			}

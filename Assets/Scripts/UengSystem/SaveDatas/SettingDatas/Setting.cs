@@ -2,8 +2,11 @@
 
 namespace UengSystem.SaveDatas.SettingDatas {
 	public class Setting : SaveData<Setting, SettingData, SettingType> {
+
+		// 정적 프로퍼티
 		public static bool Loaded = false;
 
+		// 정적 메서드
 		public static void Load() {
 			Loaded = true;
 			LoadFromFile();

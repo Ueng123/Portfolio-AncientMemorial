@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
@@ -8,6 +9,13 @@ using UnityEngine;
 
 namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class FallStrike : PlayerWeaponAttack {
+
+		// 정적 프로퍼티
+		private static readonly int Explode3PrefabId = "Explode3".GetHash();
+		private static readonly int ShieldFallAttackClipId = "shieldFallAttack".GetHash();
+		private static readonly int ShieldSweepClipId = "shieldSweep".GetHash();
+
+		// 인스턴스 프로퍼티
 		private AttackArea attackAction;
 		
 		private Vector2 downDir = Vector2.down;
@@ -21,6 +29,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 		public override float attackAfterTime  => 0;
 		public override float attackSpeed => 1;
 
+		// 오버라이드 메서드
 		public override    void OnEnter() {
 			base.OnEnter();
 
@@ -29,7 +38,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 			player.rigidbody2D.linearVelocity = Vector2.zero;
 			
 			player.FreezeRigidbody2D();
-			player.PlaySFX("shieldFallAttack");
+			player.PlaySFX(ShieldFallAttackClipId);
 			player.animator.Play((player.lookingLeft?"SFallAttackB":"SFallAttack"), 0);
 			
 			RaycastHit2D hit       = Physics2D.Raycast(player.transform.position, downDir, MapManager.instance.GetMapSize().y, LayerMask.GetMask("Map"));
@@ -57,8 +66,8 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 				}
 
 				player.transform.position = targetPos;
-				player.PlaySFX("shieldSweep");
-				UObject.Get("Explode3", player.groundChecker.transform.position + Vector3.up * 0.25f, PlayEffect: false);
+				player.PlaySFX(ShieldSweepClipId);
+				UObject.Get(Explode3PrefabId, player.groundChecker.transform.position + Vector3.up * 0.25f, PlayEffect: false);
 
 				CameraBrain.instance.ShakeLerp(2f, 10f);
 				CameraBrain.instance.ZoomLerp(-1f);

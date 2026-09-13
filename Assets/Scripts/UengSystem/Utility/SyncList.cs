@@ -3,10 +3,18 @@ using System.Linq;
 
 namespace UengSystem.Utility {
 	public class SyncList<T> {
-		
+
+		// 인스턴스 프로퍼티
 		private List<T> mainList;
 		private List<T> actualList;
+
+		public T this[int index] => mainList[index];
 		
+		public int Count => mainList.Count;
+
+		public int PotentialCount => actualList.Count;
+
+		// 인스턴스 메서드
 		public SyncList(List<T> mainList) {
 			this.mainList = mainList;
 			actualList    = new List<T>(mainList);
@@ -26,8 +34,6 @@ namespace UengSystem.Utility {
 			mainList   = new List<T>(20);
 			actualList = new List<T>(20);
 		}
-
-		public T this[int index] => mainList[index];
 
 		public List<T> GetList() => mainList;
 		
@@ -56,9 +62,5 @@ namespace UengSystem.Utility {
 		public bool Contains(T item) {
 			return actualList.Contains(item);
 		}
-		
-		public int Count => mainList.Count;
-
-		public int PotentialCount => actualList.Count;
 	}
 }

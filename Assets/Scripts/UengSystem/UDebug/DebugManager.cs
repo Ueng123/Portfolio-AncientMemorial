@@ -6,18 +6,21 @@ using Debug = UnityEngine.Debug;
 
 namespace UengSystem.UDebug {
 	public class DebugManager : Manager<DebugManager> {
+
+		// 인스턴스 프로퍼티
 		public bool debugMode = true;
 		public bool Logging   = true;
 
+		// 정적 메서드
 		[Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
 		public static void Log(string message) {
-			if (!instance.Logging) return;
+			if (instance && instance.Logging) return;
 			Debug.Log($"<color=#eef>[LOG]\n{message}\n\n</color>");
 		}
 		
 		[Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
 		public static void LogWarning(string message) {
-			if (!instance.Logging) return;
+			if (instance && instance.Logging) return;
 			Debug.LogWarning($"<color=#fda>[WARN]\n{message}\n\n</color>");
 		}
 		

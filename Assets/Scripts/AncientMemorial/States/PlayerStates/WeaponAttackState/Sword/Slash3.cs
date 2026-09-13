@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using AncientMemorial.Entities;
 using UengSystem.ObjectPool;
@@ -5,12 +6,19 @@ using UnityEngine;
 
 namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 	public class Slash3 : PlayerWeaponAttack {
+
+		// 정적 프로퍼티
+		private static readonly int SlashEffectPrefabId = "SlashEffect".GetHash();
+		private static readonly int SwordSlash3ClipId = "swordSlash3".GetHash();
+
+		// 인스턴스 프로퍼티
 		private float oldAnimatorSpeed;
 		
 		public override float attackTime       => 0.3f;
 		public override float attackAfterTime  => 0.4f;
 		public override float attackSpeed => player.stat.attackSpeed / 2f;
 
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			player.animator.Play("Dattack1"+(player.lookingLeft?"B":""), 0, 0);
@@ -26,14 +34,14 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 			
 				Vector2 hitboxSize = new (1f, 0.7f);
 			
-				GameObject obj = UObject.Get("SlashEffect", (Vector2)player.transform.position + new Vector2(0.48f*(player.lookingLeft?-1:1)+Random.Range(-0.1f, 0.1f),Random.Range(-0.1f, 0.1f)), PlayEffect: false);
+				GameObject obj = UObject.Get(SlashEffectPrefabId, (Vector2)player.transform.position + new Vector2(0.48f*(player.lookingLeft?-1:1)+Random.Range(-0.1f, 0.1f),Random.Range(-0.1f, 0.1f)), PlayEffect: false);
 				obj.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(-5f, 5f));
 				obj.transform.localScale = new Vector3(0.9f, 1.2f);
 			
 				float     randomDamage    = Random.Range(-0.3f, 0.3f);
 				const int maxTargetEntity = 3;
 				Entity.AttackAreaNoEffect(player, 3f+randomDamage, 0, hitboxPos, hitboxSize, 0, maxTargetEntity);
-				player.PlaySFX("swordSlash3");
+				player.PlaySFX(SwordSlash3ClipId);
 
 				step = 1;
 			}

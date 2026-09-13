@@ -1,16 +1,22 @@
-﻿using UengSystem.Events;
+﻿using UengSystem.Utility;
+using UengSystem.Events;
 using UengSystem.Inputs;
 using UnityEngine;
 using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.States.PlayerStates {
 	public class Jump : PlayerState {
+
+		// 정적 프로퍼티
+		private static readonly int PlayerJumpClipId = "playerJump".GetHash();
+
 		private const float   jumpLengthMin = 0.1f;
 		private const float   jumpLengthMax = 0.75f;
-		
+
+		// 오버라이드 메서드
 		public override    void OnEnter() {
 			player.SendEvent(EventType.Entity_Player_Jump, EventPriority.Action);
-			player.PlaySFX("playerJump");
+			player.PlaySFX(PlayerJumpClipId);
 
 			player.rigidbody2D.linearVelocityY = player.stat.jumpPower;
 		}
@@ -18,7 +24,7 @@ namespace AncientMemorial.States.PlayerStates {
 		public override void OnEarlyRoutine() {
 			bool isTimeLess =  stateTimer.CheckIn(jumpLengthMin);
 			bool isTimeOver = stateTimer.CheckOut(jumpLengthMax);
-			bool keyInput   = InputManager.GetInput(ActionType.Jump, PressType.Up|PressType.None);
+			bool keyInput   = InputManager.GetInput(ActionType.Jump, InputState.Up|InputState.None);
 				
 			bool jumpLoopEnd = isTimeOver || keyInput || player.isGround;
 

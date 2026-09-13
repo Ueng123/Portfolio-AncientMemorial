@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using UengSystem.Objects;
-using UengSystem.VisualScripting.Tasks;
+﻿using UengSystem.VisualScripting.Tasks;
 using UnityEngine;
 
 namespace UengSystem.Managers {
 	public abstract class Manager<T> : MonoBehaviour, IManager, ITaskable where T : Manager<T> {
+
+		// 정적 프로퍼티
 		public static  T    instance;
-		
+
+		// 인스턴스 메서드
 		public virtual void Awake() {
 			instance = (T)this;
 			
@@ -22,7 +23,6 @@ namespace UengSystem.Managers {
 		public virtual void Uninitialize() { }
 
 		public virtual void ManagerUpdate() { }
-
 		public virtual void ManagerFixedUpdate() { }
 	}
 }

@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using AncientMemorial.Cameras;
 using UengSystem;
@@ -6,6 +7,12 @@ using UnityEngine;
 
 namespace AncientMemorial.Entities.Enemies {
 	public class Scarecrow : Enemy {
+
+		// 정적 프로퍼티
+		private static readonly int Explode2PrefabId = "Explode2".GetHash();
+		private static readonly int ScarecrowHitClipId = "scarecrowHit".GetHash();
+
+		// 오버라이드 메서드
 		protected override Entity GetTargetEntity() => player;
 		
 		public override void Attack() { }
@@ -19,7 +26,7 @@ namespace AncientMemorial.Entities.Enemies {
 		public override    void  OnHit(Entity    attacker,   float    damage, Vector2? pushDir = null) {
 			ShowDamageUI(damage);
 			
-			PlaySFX("scarecrowHit");
+			PlaySFX(ScarecrowHitClipId);
 			animator.Play("Hit");
 			
 			if (attacker != player) return;
@@ -29,7 +36,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		protected override void Death() {
-			UObject.Get("Explode2", transform.position, PlayEffect: false);
+			UObject.Get(Explode2PrefabId, transform.position, PlayEffect: false);
 			base.Death();
 		}
 

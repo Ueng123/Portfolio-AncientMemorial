@@ -7,27 +7,27 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public abstract class TaskComponent : InspectorItem {
-		private readonly List<TaskExecution> Executions = new();
+		private readonly List<Coroutine> runningCoroutines = new();
+
 		public Coroutine StartCoroutine(IEnumerator enumerator) {
-			Executions.RemoveAll(Execution => !Execution.isRunning);
-			TaskExecution Execution = TaskExecution.Current?.StartChild(enumerator)
-			                          ?? new TaskExecution(enumerator, null).Start();
-			Executions.Add(Execution);
-			return Execution.coroutine;
+			Coroutine coroutine = GlobalObject.instance.StartCoroutine(enumerator);
+			runningCoroutines.Add(coroutine);
+			return coroutine;
 		}
 
 		public void StopCoroutine(Coroutine coroutine) {
 			if (coroutine == null) return;
-			foreach (TaskExecution Execution in Executions.ToArray()) {
-				if (Execution.coroutine == coroutine) Execution.Cancel();
-			}
+			GlobalObject.instance.StopCoroutine(coroutine);
+			runningCoroutines.Remove(coroutine);
 		}
 
 		public void StopAllCoroutines() {
-			foreach (TaskExecution Execution in Executions) Execution.Cancel();
-			Executions.Clear();
+			foreach (Coroutine coroutine in runningCoroutines) {
+				if (coroutine != null) GlobalObject.instance.StopCoroutine(coroutine);
+			}
+			runningCoroutines.Clear();
 		}
-		
+
 		public abstract void Execute(ITaskable self);
 	}
 }

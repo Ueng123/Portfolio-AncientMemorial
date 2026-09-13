@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalSemiHugeSweep : CrystalPhase3Attack {
+
+		// 인스턴스 프로퍼티
 		public override float attackTime => 10;
 
 		private StopWatch missileTimer = new StopWatch();
@@ -13,6 +15,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 
 		private float oldSpeed;
 
+		// 인스턴스 메서드
 		private void UpdateMissileSpawnTime() {
 			missileTimer.Tick();
 			missileSpawnTime = 0.25f;
@@ -40,7 +43,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 		private CrystalMoveMode GetMoveMode() {
 			return crystal.transform.position.x > 0 ? CrystalMoveMode.CurveFromLToR : CrystalMoveMode.CurveFromRToL;
 		}
-		
+
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			oldSpeed = crystal.stat.moveSpeed;

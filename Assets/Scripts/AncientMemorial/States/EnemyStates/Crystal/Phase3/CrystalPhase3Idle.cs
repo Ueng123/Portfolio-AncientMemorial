@@ -4,12 +4,15 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalPhase3Idle : CrystalPhase3State {
+
+		// 인스턴스 프로퍼티
 		private StopWatch fallingMissileTimer = new StopWatch();
 		private float     fallingMissileTime  = 0.25f;
 		
 		private StopWatch semiHugeMissileTimer = new StopWatch();
 		private float     semiHugeMissileTime  = 3f;
 
+		// 인스턴스 메서드
 		private void UpdateFallingMissileTime() {
 			fallingMissileTimer.Tick();
 			fallingMissileTime = Random.Range(0.1f, 0.3f);
@@ -18,14 +21,6 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 		private void UpdateSemiHugeMissileTime() {
 			semiHugeMissileTimer.Tick();
 			semiHugeMissileTime = Random.Range(2.8f, 3.2f);
-		}
-
-		public override void OnEnter() {
-			base.OnEnter();
-			SetMoveMode(CrystalMoveMode.LissajousPath);
-			
-			fallingMissileTimer.Tick();
-			semiHugeMissileTimer.Tick();
 		}
 		
 		private void FallingMissileRoutine() {
@@ -51,6 +46,15 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 
 			ShootSemiHugeMissile(pos, rot, speed);
 			ShootBarrageMissile(pos, Random.Range(7, 10));
+		}
+
+		// 오버라이드 메서드
+		public override void OnEnter() {
+			base.OnEnter();
+			SetMoveMode(CrystalMoveMode.LissajousPath);
+			
+			fallingMissileTimer.Tick();
+			semiHugeMissileTimer.Tick();
 		}
 		
 		public override void OnRoutine() {

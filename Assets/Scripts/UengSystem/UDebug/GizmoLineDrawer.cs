@@ -2,11 +2,13 @@
 
 namespace UengSystem.UDebug {
 	public class GizmoLineDrawer : GizmoDrawer {
-		
+
+		// 인스턴스 프로퍼티
 		[Header("Line Settings")]
 		public Vector2 startPos;
 		public Vector2 endPos;
-		
+
+		// 인스턴스 메서드
 		private void DrawLine(Vector2 start, Vector2 end, Color color)
 		{
 			Color oldColor = Gizmos.color;

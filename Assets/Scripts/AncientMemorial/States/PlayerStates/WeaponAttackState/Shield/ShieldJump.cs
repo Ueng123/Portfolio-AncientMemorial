@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using UengSystem.Events;
 using UengSystem.Inputs;
@@ -7,10 +8,17 @@ using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class ShieldJump : PlayerWeaponAttack {
+
+		// 정적 프로퍼티
+		private static readonly int ShieldSkillEffectPrefabId = "ShieldSkillEffect".GetHash();
+		private static readonly int ShieldSkillClipId = "shieldSkill".GetHash();
+
+		// 인스턴스 프로퍼티
 		public override float attackTime       => 0.2f;
 		public override float attackAfterTime  => 5f;
 		public override float attackSpeed => player.stat.attackSpeed / 3f;
 
+		// 오버라이드 메서드
 		public override    void OnEnter() {
 			base.OnEnter();
 			
@@ -19,9 +27,9 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 			}
 			
 			player.SendEvent(EventType.Entity_Player_Jump, EventPriority.Action);
-			player.PlaySFX("shieldSkill");
+			player.PlaySFX(ShieldSkillClipId);
 			Vector2 footPosition = player.groundChecker.transform.position;
-			UObject.Get("ShieldSkillEffect", footPosition, PlayEffect: false);
+			UObject.Get(ShieldSkillEffectPrefabId, footPosition, PlayEffect: false);
 
 			player.rigidbody2D.linearVelocityY = 2 + player.data.jumpPower*player.stat.moveSpeed*(player.data.HP - player.stat.HP)/
 												 (player.data.HP*2.5f);

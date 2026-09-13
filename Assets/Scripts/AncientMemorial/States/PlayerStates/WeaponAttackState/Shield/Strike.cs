@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using AncientMemorial.Entities;
 using UengSystem.ObjectPool;
@@ -6,12 +7,18 @@ using UnityEngine;
 namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class Strike : PlayerWeaponAttack {
 
+		// 정적 프로퍼티
+		private static readonly int Explode4PrefabId = "Explode4".GetHash();
+		private static readonly int ShieldSweepClipId = "shieldSweep".GetHash();
+
+		// 인스턴스 프로퍼티
 		public float oldAnimatorSpeed;
 		
 		public override float attackTime       => 0.5f;
 		public override float attackAfterTime  => 0.75f;
 		public override float attackSpeed => player.stat.attackSpeed / 3f;
 
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			
@@ -30,13 +37,13 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 				
 				Vector2 hitboxSize = new (1.75f, 0.4f);
 				
-				UObject.Get("Explode4", (Vector2)player.transform.position + new Vector2(0.35f*(player.lookingLeft?-1:1)+Random.Range(-0.05f, 0.05f),-0.4f+Random.Range(-0.05f, 0.05f)), PlayEffect: false);
+				UObject.Get(Explode4PrefabId, (Vector2)player.transform.position + new Vector2(0.35f*(player.lookingLeft?-1:1)+Random.Range(-0.05f, 0.05f),-0.4f+Random.Range(-0.05f, 0.05f)), PlayEffect: false);
 			
 				// damage
 				float     damage          = Mathf.Pow(player.data.HP / 10f, 1.5f) / player.stat.attackDamage;
 				const int maxTargetEntity = 2;
 				Entity.AttackAreaNoEffect(player, damage, 0, hitboxPos, hitboxSize, 0, maxTargetEntity);
-				player.PlaySFX("shieldSweep");
+				player.PlaySFX(ShieldSweepClipId);
 
 				step = 1;
 			}

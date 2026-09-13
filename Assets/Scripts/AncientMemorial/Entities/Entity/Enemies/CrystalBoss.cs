@@ -1,3 +1,4 @@
+using UengSystem.Utility;
 using UengSystem.Objects;
 using AncientMemorial.Cameras;
 using AncientMemorial.Projectiles;
@@ -10,13 +11,22 @@ using UnityEngine;
 
 namespace AncientMemorial.Entities.Enemies {
 	public abstract class CrystalBoss : Enemy {
-		public GameObject[] hideOnDeath;
-		
-		protected override void        OnGrounded() { }
 
+		// 정적 프로퍼티
+		private static readonly int CrystalDebrisPrefabId = "crystalDebris".GetHash();
+		private static readonly int CrystalHit1ClipId = "crystalHit1".GetHash();
+		private static readonly int CrystalHit2ClipId = "crystalHit2".GetHash();
+
+		// 인스턴스 프로퍼티
+		public GameObject[] hideOnDeath;
+
+		// 인스턴스 메서드
 		protected void InitializeCrystalStateMachine(CrystalState idleState) {
 			InitializeStateMachine(idleState, idleState, new EmptyAttackReady());
 		}
+
+		// 오버라이드 메서드
+		protected override void        OnGrounded() { }
 		
 		public override void OnHit(Entity        attacker, float damage, Vector2? pushDir = null) {
 			bool groggy = (entityState == stateMachine.stunState);
@@ -25,7 +35,7 @@ namespace AncientMemorial.Entities.Enemies {
 			else { ShowDamageUI(damage); }
 			
 			if (stat.HP > 0) {
-				PlaySFX("crystalHit1");
+				PlaySFX(CrystalHit1ClipId);
 				
 				if (attacker != player) return;
 				GameManager.SetTimeScale(0, 0.05f);
@@ -52,14 +62,14 @@ namespace AncientMemorial.Entities.Enemies {
 			CameraBrain.instance.ShakeLerp(5, 1);
 			CameraBrain.instance.ZoomLerp(-1f, 7.5f);
 
-			PlaySFX("crystalHit2");
+			PlaySFX(CrystalHit2ClipId);
 			
 			foreach (GameObject obj in hideOnDeath) {
 				obj.SetActive(false);
 			}
 			
 			for (int i = 0; i < 10; i++) {
-				UObject.Get("crystalDebris", (Vector2)transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), PlayEffect: false);
+				UObject.Get(CrystalDebrisPrefabId, (Vector2)transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), PlayEffect: false);
 			}
 			
 			base.Death();

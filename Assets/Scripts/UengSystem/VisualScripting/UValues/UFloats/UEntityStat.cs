@@ -6,6 +6,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UValues.UFloats {
 	[Serializable]
 	public class UEntityStat : UValue<float> {
+
+		// 인스턴스 프로퍼티
 		protected override bool  getIsDynamic => true;
 
 		[SerializeReference] [SubclassSelector]

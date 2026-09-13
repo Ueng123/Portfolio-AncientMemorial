@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 	public class CrystalRayCross : CrystalPhase3Attack {
+
+		// 인스턴스 프로퍼티
 		public override float attackTime => 10f;
 
 		private StopWatch bigMissileTimer     = new StopWatch();
@@ -10,6 +12,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 		private StopWatch barrageMissileTimer = new StopWatch();
 		private float     barrageMissileTime  = 1f;
 
+		// 인스턴스 메서드
 		private void UpdateBigMissileTime() {
 			bigMissileTimer.Tick();
 			bigMissileTime = 1;
@@ -37,6 +40,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
 			ShootBarrageMissile(crystal.transform.position, 10);
 		}
 
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			SetMoveMode(CrystalMoveMode.CircleOnCenter);

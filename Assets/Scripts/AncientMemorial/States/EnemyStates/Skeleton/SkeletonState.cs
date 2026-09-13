@@ -2,6 +2,8 @@
 
 namespace AncientMemorial.States.EnemyStates.Skeleton {
 	public abstract class SkeletonState : GroundEnemyState {
+
+		// 정적 프로퍼티
 		protected static readonly int attacking = Animator.StringToHash("attacking");
 		protected static readonly int attackF   = Animator.StringToHash("attackFrontEnd");
 		protected static readonly int attackB   = Animator.StringToHash("attackBackEnd");

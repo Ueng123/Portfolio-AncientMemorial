@@ -1,9 +1,17 @@
-﻿using AncientMemorial.Entities;
+﻿using UengSystem.Utility;
+using AncientMemorial.Entities;
 using AncientMemorial.Objects;
 using UnityEngine;
 
 namespace AncientMemorial.States.EnemyStates.Skeleton.Warrior {
 	public class SkeletonWarriorPierce : SkeletonAttack {
+
+		// 정적 프로퍼티
+		private static readonly int SwordSlash2ClipId = "swordSlash2".GetHash();
+
+		private const float attackProgress = 6f / 11f;
+
+		// 인스턴스 프로퍼티
 		public override float attackTime => 1.833f;
 		
 		private bool isFlipped;
@@ -13,10 +21,9 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Warrior {
 
 		private int attackAnimation;
 
-		private const float attackProgress = 6f / 11f;
-
 		private AttackArea _attackArea;
-		
+
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
 			Entity target = stateMachine.getTarget.Invoke();
@@ -39,7 +46,7 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Warrior {
 			enemy.rigidbody2D.linearVelocityX = 0;
 			
 			if (step == 0 && isProgress(attackProgress)) {
-				enemy.PlaySFX("swordSlash2");
+				enemy.PlaySFX(SwordSlash2ClipId);
 				step = 1;
 			}
 

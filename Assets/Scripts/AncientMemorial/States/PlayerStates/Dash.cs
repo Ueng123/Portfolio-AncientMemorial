@@ -6,22 +6,28 @@ using EventType = UengSystem.Events.EventType;
 
 namespace AncientMemorial.States.PlayerStates {
 	public class Dash : PlayerState {
+
+		// 정적 프로퍼티
+		private static readonly int PlayerDashClipId = "playerDash".GetHash();
+
 		
 		private static readonly int Moving   = Animator.StringToHash("moving");
 		
 		public const float dashTime = 0.2f;
-
-		private StopWatch effectTime = new ();
 		private const float dashEffectCount = 10f;
 		private const float dashEffectTime = dashTime / dashEffectCount;
+
+		// 인스턴스 프로퍼티
+		private StopWatch effectTime = new ();
 
 		private float oldGravityScale;
 		
 		private int dashSign;
-		
+
+		// 오버라이드 메서드
 		public override void OnEnter() {
 			player.SendEvent(EventType.Entity_Player_Dash, EventPriority.Action);
-			player.PlaySFX("playerDash");
+			player.PlaySFX(PlayerDashClipId);
 			player.Invincible(dashTime+0.3f);
 			
 			player.animator.SetBool(Moving, true);

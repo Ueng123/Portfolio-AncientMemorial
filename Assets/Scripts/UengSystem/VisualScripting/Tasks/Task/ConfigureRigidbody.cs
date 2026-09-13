@@ -7,6 +7,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class ConfigureRigidbody : TaskComponent {
+
+		// 인스턴스 프로퍼티
 		public bool throwErrorIfNoRigidbody;
 
 		public bool thisObject;
@@ -21,7 +23,8 @@ namespace UengSystem.VisualScripting.Tasks {
 		
 		[SerializeReference] [SubclassSelector]
 		public UValue<float> torque;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			UObject uObject = thisObject ? (UObject)self : obj.value;
 			

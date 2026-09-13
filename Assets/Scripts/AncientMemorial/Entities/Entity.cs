@@ -33,10 +33,16 @@ using Random = UnityEngine.Random;
 namespace AncientMemorial.Entities {
 	public abstract class Entity : UObject, IStateObject {
 
+		// 정적 프로퍼티
+		private static readonly int EntityUIPrefabId = "EntityUI".GetHash();
+		private static readonly int AttackAwarePrefabId = "AttackAware".GetHash();
+		private static readonly int HealUIPrefabId = "HealUI".GetHash();
+		private static readonly int DamageUIPrefabId = "DamageUI".GetHash();
 		public static           Player               player;
 		public static           SyncList<Entity> entities = new SyncList<Entity>();
 		protected static readonly int                Falling  = Animator.StringToHash("falling");
 
+		// 인스턴스 프로퍼티
 		public EntityType entityType;
 		public EntityData data;
 		public EntityStat stat;
@@ -73,7 +79,39 @@ namespace AncientMemorial.Entities {
 		
 		public List<AttatchObject> debrisAttached = new List<AttatchObject>();
 		
-		// Static Methods //
+		
+
+		private bool HitSubscribed;
+		private bool EntityRegistered;
+		public override float releasingDuration => 2;
+		
+		private readonly StopWatch debrisCheckTimer = new StopWatch();
+
+		private   bool forceInvincible;
+		protected bool invincible => invincibleTimer.CheckIn(invincibleTime) || forceInvincible;
+
+		private readonly StopWatch invincibleTimer = new StopWatch();
+		private          float     invincibleTime;
+
+		private Action<Event> hitEvent;
+		
+		private bool hasDied;
+
+		private UState _entityState;
+		public UState entityState {
+			get => _entityState;
+			set {
+				if (_entityState == value) return;
+				
+				DebugManager.Log($"[State Changed] {name} : {_entityState?.GetType()} -> {value?.GetType()}");
+				
+				_entityState?.Exit();
+				_entityState = value;
+				value?.Enter();
+			}
+		}
+
+		// 정적 메서드
 		public static AttackArea AttackArea(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
 			return attacker.AttackArea(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum, awareLerpX, awareLerpY, ignoreInvincible);
 		}
@@ -81,16 +119,55 @@ namespace AncientMemorial.Entities {
 		public static AttackArea AttackAreaNoEffect(Entity attacker, float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
 			return attacker.AttackAreaNoEffect(damageMult, delay, hitboxPos, hitboxSize, angle, maxTargetNum, ignoreInvincible);
 		}
+
+		public static void SendAttackMultiplyEvent(Entity attacker, Entity target, float damageMult, bool ignoreInvincible, bool useProcess = true) {
+			HitData hitData = new (
+				attacker,
+				null,
+				target,
+				attacker.stat.attackDamage * damageMult,
+				new Vector2(target.transform.position.x - attacker.transform.position.x, 0).normalized,
+				ignoreInvincible
+			);
+					
+			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
+			
+			if (useProcess) {
+				GlobalObject.instance.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData); });
+			}
+			else {
+				attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData);
+			}
+		}
 		
-		// Instance Methods //
-		
+		public static void SendAttackEvent(Entity attacker, Entity target, float damage, bool ignoreInvincible, bool useProcess = true) {
+			HitData hitData = new (
+				attacker,
+				null,
+				target,
+				damage,
+				new Vector2(target.transform.position.x - attacker.transform.position.x, 0).normalized,
+				ignoreInvincible
+			);
+					
+			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
+			
+			if (useProcess) {
+				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData); });
+			}
+			else {
+				attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData);
+			}
+		}
+
+		// 인스턴스 메서드
 		public void Attatch(AttatchObject target) {
 			debrisAttached.Add(target.GetComponent<AttatchObject>());
 			target.transform.SetParent(transform);
 		}
 		
 		protected virtual void OpenEntityUI() {
-			entityUI = UUI.Get("EntityUI", entityUICanvas, Configure: Ui => {
+			entityUI = UUI.Get(EntityUIPrefabId, entityUICanvas, Configure: Ui => {
 			Ui.rectTransform.anchoredPosition = new Vector3(0, entityUIHeight, 0);
 			
 			UTextAction   entityTextAction = Ui.GetAction<UTextAction>("EntityName");
@@ -124,7 +201,7 @@ namespace AncientMemorial.Entities {
 
 			float UIScale = 1 + Mathf.Log(damage, 100);
 			
-			UUI.Get(isHeal?"HealUI":"DamageUI", GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
+			UUI.Get(isHeal ? HealUIPrefabId : DamageUIPrefabId, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
 			DamageUi.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			DamageUi.rectTransform.localScale = Vector3.one*UIScale;
 			UTextAction textAction  = DamageUi.GetAction<UTextAction>("DamageDisplay");
@@ -144,7 +221,7 @@ namespace AncientMemorial.Entities {
 			
 			float UIScale = (1 + Mathf.Log(damage, 100))*1.2f;
 			
-			UUI.Get(isHeal?"HealUI":"DamageUI", GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
+			UUI.Get(isHeal ? HealUIPrefabId : DamageUIPrefabId, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
 			DamageUi.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			DamageUi.rectTransform.localScale = Vector3.one*UIScale;
 			UTextAction textAction  = DamageUi.GetAction<UTextAction>("DamageDisplay");
@@ -157,7 +234,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected virtual AttackArea AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
-			GameObject awareObject = UObject.Get("AttackAware", hitboxPos, PlayEffect: false, Configure: Obj => {
+			GameObject awareObject = UObject.Get(AttackAwarePrefabId, hitboxPos, PlayEffect: false, Configure: Obj => {
 			AttackArea attackArea = (AttackArea)Obj;
 			attackArea.InitializeColor(new Color(0.509434f, 0.1850303f, 0.1850303f, 0));
 			
@@ -179,7 +256,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected AttackArea AttackAreaNoEffect(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
-			GameObject awareObject = UObject.Get("AttackAware", hitboxPos, PlayEffect: false, Configure: Obj => {
+			GameObject awareObject = UObject.Get(AttackAwarePrefabId, hitboxPos, PlayEffect: false, Configure: Obj => {
 			AttackArea attackArea = (AttackArea)Obj;
 			attackArea.targetSize          = new Vector2(hitboxSize.x, hitboxSize.y);
 			attackArea.transform.rotation  = Quaternion.Euler(0, 0, angle);
@@ -195,51 +272,11 @@ namespace AncientMemorial.Entities {
 			return awareObject.GetComponent<AttackArea>();
 		}
 
-		internal void RegisterAttackArea(AttackArea Area) => AttackAreas[Area] = Area.lifeNumber;
-		internal void UnregisterAttackArea(AttackArea Area) => AttackAreas.Remove(Area);
-
-		public static void SendAttackMultiplyEvent(Entity attacker, Entity target, float damageMult, bool ignoreInvincible, bool useProcess = true) {
-			HitData hitData = new (
-				attacker,
-				null,
-				target,
-				attacker.stat.attackDamage * damageMult,
-				new Vector2(target.transform.position.x - attacker.transform.position.x, 0).normalized,
-				ignoreInvincible
-			);
-					
-			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
-			
-			if (useProcess) {
-				GlobalObject.instance.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData); });
-			}
-			else {
-				attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData);
-			}
-		}
+		public void RegisterAttackArea(AttackArea Area) => AttackAreas[Area] = Area.lifeNumber;
+		public void UnregisterAttackArea(AttackArea Area) => AttackAreas.Remove(Area);
 		
 		public void SendAttackMultiplyEvent(Entity target, float damageMult, bool ignoreInvincible) {
 			SendAttackMultiplyEvent(this, target, damageMult, ignoreInvincible);
-		}
-		
-		public static void SendAttackEvent(Entity attacker, Entity target, float damage, bool ignoreInvincible, bool useProcess = true) {
-			HitData hitData = new (
-				attacker,
-				null,
-				target,
-				damage,
-				new Vector2(target.transform.position.x - attacker.transform.position.x, 0).normalized,
-				ignoreInvincible
-			);
-					
-			DebugManager.Log($"[HIT EVENT] SendingEvent : {target}");
-			
-			if (useProcess) {
-				attacker.AddProcessToUpdate(()=> { attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData); });
-			}
-			else {
-				attacker.SendEvent(EventType.Entity_Hit, EventPriority.Hit, hitData);
-			}
 		}
 		
 		public void SendAttackEvent(Entity target, float damage, bool ignoreInvincible, bool useProcess = true) {
@@ -255,13 +292,58 @@ namespace AncientMemorial.Entities {
 		}
 
 		protected abstract void OnGrounded();
-		
-		// ETC. Override //
 
-		private bool HitSubscribed;
-		private bool EntityRegistered;
-		public override float releasingDuration => 2;
+		protected virtual EntityData GetData() {
+			return new EntityData(entityType);
+		}
 
+		protected void CheckDebris() {
+			for (int i = debrisAttached.Count - 1; i >= 0; i--) {
+				AttatchObject debris = debrisAttached[i];
+				if (!debris.isReleased) continue;
+				debrisAttached.RemoveAt(i);
+			}
+		}
+		public void Invincible(float time) {
+			float timeLeft = invincible ? invincibleTime - invincibleTimer.TryTock(0) : 0;
+			if (timeLeft > time) return;
+			
+			invincibleTimer.Tick();
+			invincibleTime = time;
+		}
+		public void Invincible(bool target) {
+			forceInvincible = target;
+		}
+
+		public virtual void ChangeHP(float amount) {
+			stat.HP = Mathf.Clamp(stat.HP + amount, 0, data.HP);
+		}
+		public abstract void OnHit(Entity attacker, float damage, Vector2? pushDir = null);
+		protected virtual void OnHitFromEntity(Entity     attacker,   float    damage, Vector2? pushDir) { }
+		protected virtual void OnHitFromProjectile(Projectile projectile, float    damage, Vector2? pushDir) { }
+		protected abstract void OnHeal(float amount);
+		protected abstract float GetRealDamage(float rawDamage);
+		private void HitEvent(Event e) {
+			if (!isActive || !e.isValid || e.data is not HitData { isValid: true } hitData) return;
+			if (hitData.reciever != this) return;
+			if (invincible && !hitData.ignoreInvincible) return;
+					
+			if (this == player) DebugManager.Log("[HIT EVENT] Player Hit!");
+			
+			float realDamage = GetRealDamage(hitData.damage);
+			ChangeHP(-realDamage);
+					
+			if (realDamage >= 0) {
+				if (hitData.attackedEntity) { OnHitFromEntity(hitData.attackedEntity,         realDamage, hitData.pushDir); }
+				if (hitData.attackedProjectile) { OnHitFromProjectile(hitData.attackedProjectile, realDamage, hitData.pushDir); }
+                        					
+				OnHit(hitData.attacker, realDamage, hitData.pushDir);
+				hitData.onHit?.Invoke();
+			}
+			else OnHeal(-realDamage);
+		}
+
+		// 오버라이드 메서드
 		public override void OnFirstGet() {
 			SetDefaultStates(ReleasingState: new EntityReleasing(this));
 			base.OnFirstGet();
@@ -293,10 +375,6 @@ namespace AncientMemorial.Entities {
 			
 			base.Uninitialize();
 		}
-
-		protected virtual EntityData GetData() {
-			return new EntityData(entityType);
-		}
 		
 		public override void OnGet() {
 			data = GetData();
@@ -320,14 +398,6 @@ namespace AncientMemorial.Entities {
 			);
 			
 			OpenEntityUI();
-		}
-
-		protected void CheckDebris() {
-			for (int i = debrisAttached.Count - 1; i >= 0; i--) {
-				AttatchObject debris = debrisAttached[i];
-				if (!debris.isReleased) continue;
-				debrisAttached.RemoveAt(i);
-			}
 		}
 		
 		protected override void OnRelease() {
@@ -355,27 +425,6 @@ namespace AncientMemorial.Entities {
 			isGround = false;
 			base.OnRelease();
 		}
-		
-		private sealed class EntityReleasing : Releasing {
-			private Color InitialColor;
-			public EntityReleasing(Entity Target) : base(Target) { }
-			protected override void OnStartEffect() {
-				if (target.spriteRenderer) {
-					InitialColor = target.spriteRenderer.color;
-					Color Color = InitialColor;
-					Color.a = 0;
-					target.spriteRenderer.color = Color;
-				}
-				target.FreezeAnimator();
-			}
-			protected override void ClearEffect() {
-				if (!hasStartedEffect) return;
-				if (target.spriteRenderer) target.spriteRenderer.color = InitialColor;
-				target.UnfreezeAnimator();
-			}
-		}
-		
-		private readonly StopWatch debrisCheckTimer = new StopWatch();
 		protected override void EarlyRoutine() {
 			entityState?.OnEarlyRoutine();
 			
@@ -388,54 +437,6 @@ namespace AncientMemorial.Entities {
 		protected override void Routine() {
 			entityState?.OnRoutine();
 		}
-
-		private   bool forceInvincible;
-		protected bool invincible => invincibleTimer.CheckIn(invincibleTime) || forceInvincible;
-
-		private readonly StopWatch invincibleTimer = new StopWatch();
-		private          float     invincibleTime;
-		public void Invincible(float time) {
-			float timeLeft = invincible ? invincibleTime - invincibleTimer.TryTock(0) : 0;
-			if (timeLeft > time) return;
-			
-			invincibleTimer.Tick();
-			invincibleTime = time;
-		}
-		public void Invincible(bool target) {
-			forceInvincible = target;
-		}
-
-		public virtual void ChangeHP(float amount) {
-			stat.HP = Mathf.Clamp(stat.HP + amount, 0, data.HP);
-		}
-		public abstract void OnHit(Entity attacker, float damage, Vector2? pushDir = null);
-		protected virtual void OnHitFromEntity(Entity     attacker,   float    damage, Vector2? pushDir) { }
-		protected virtual void OnHitFromProjectile(Projectile projectile, float    damage, Vector2? pushDir) { }
-		protected abstract void OnHeal(float amount);
-		protected abstract float GetRealDamage(float rawDamage);
-
-		private Action<Event> hitEvent;
-		private void HitEvent(Event e) {
-			if (!isActive || !e.isValid || e.data is not HitData { isValid: true } hitData) return;
-			if (hitData.reciever != this) return;
-			if (invincible && !hitData.ignoreInvincible) return;
-					
-			if (this == player) DebugManager.Log("[HIT EVENT] Player Hit!");
-			
-			float realDamage = GetRealDamage(hitData.damage);
-			ChangeHP(-realDamage);
-					
-			if (realDamage >= 0) {
-				if (hitData.attackedEntity) { OnHitFromEntity(hitData.attackedEntity,         realDamage, hitData.pushDir); }
-				if (hitData.attackedProjectile) { OnHitFromProjectile(hitData.attackedProjectile, realDamage, hitData.pushDir); }
-                        					
-				OnHit(hitData.attacker, realDamage, hitData.pushDir);
-				hitData.onHit?.Invoke();
-			}
-			else OnHeal(-realDamage);
-		}
-		
-		private bool hasDied;
 		
 		protected override void LateRoutine() {
 			spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, (invincible)?0.5f:1f);
@@ -450,7 +451,7 @@ namespace AncientMemorial.Entities {
 			entityState?.OnLateRoutine();
 		}
 		
-		// FIXED UPDATE ROUTINE //
+		
 		
 		protected override void FixedRoutine() {
 			if (groundBoxSize != Vector2.zero) isGround = groundChecker.isThereStandable;
@@ -458,17 +459,29 @@ namespace AncientMemorial.Entities {
 			entityState?.OnFixedRoutine();
 		}
 
-		private UState _entityState;
-		public UState entityState {
-			get => _entityState;
-			set {
-				if (_entityState == value) return;
-				
-				DebugManager.Log($"[State Changed] {name} : {_entityState?.GetType()} -> {value?.GetType()}");
-				
-				_entityState?.Exit();
-				_entityState = value;
-				value?.Enter();
+		// 중첩 타입
+		private sealed class EntityReleasing : Releasing {
+
+			// 인스턴스 프로퍼티
+			private Color InitialColor;
+
+			// 인스턴스 메서드
+			public EntityReleasing(Entity Target) : base(Target) { }
+
+			// 오버라이드 메서드
+			protected override void OnStartEffect() {
+				if (target.spriteRenderer) {
+					InitialColor = target.spriteRenderer.color;
+					Color Color = InitialColor;
+					Color.a = 0;
+					target.spriteRenderer.color = Color;
+				}
+				target.FreezeAnimator();
+			}
+			protected override void ClearEffect() {
+				if (!hasStartedEffect) return;
+				if (target.spriteRenderer) target.spriteRenderer.color = InitialColor;
+				target.UnfreezeAnimator();
 			}
 		}
 	}

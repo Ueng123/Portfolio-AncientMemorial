@@ -9,6 +9,11 @@ using UnityEngine.Serialization;
 namespace AncientMemorial.Entities {
 	[Serializable]
 	public struct EntityData {
+
+		// 정적 프로퍼티
+		private static Dictionary<EntityType, EntityData> entityDataCache;
+
+		// 인스턴스 프로퍼티
 		public string name;
 		public float  HP;
 		public float  moveSpeed;
@@ -22,8 +27,7 @@ namespace AncientMemorial.Entities {
 		public float  groundBoxSizeX;
 		public float  groundBoxSizeY;
 
-		private static Dictionary<EntityType, EntityData> entityDataCache;
-
+		// 정적 메서드
 		public static bool GetInitialized() {
 			return entityDataCache != null;
 		}
@@ -34,7 +38,8 @@ namespace AncientMemorial.Entities {
 				entityDataCache[entityType] = UJSON<EntityData>.LoadData($"EntityData/{entityType}.json");
 			}
 		}
-		
+
+		// 인스턴스 메서드
 		public EntityData(EntityType type) {
 			if (entityDataCache==null) throw new NullReferenceException("u need to do InitializeEntityDataCache()");
 			if (!entityDataCache.TryGetValue(type, out EntityData data)) throw new KeyNotFoundException("WTF?");

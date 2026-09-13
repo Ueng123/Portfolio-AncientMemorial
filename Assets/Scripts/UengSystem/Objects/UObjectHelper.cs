@@ -2,6 +2,8 @@
 
 namespace UengSystem.Objects {
 	public class UObjectHelper : MonoBehaviour {
+
+		// 인스턴스 프로퍼티
 		private UObject script;
 		
 		[Header("InitialObject")]
@@ -10,7 +12,8 @@ namespace UengSystem.Objects {
 		public string Category;
 		
 		private bool initialized = false;
-		
+
+		// 인스턴스 메서드
 		public void Update() {
 			if (initialized) return;
 			initialized = true;

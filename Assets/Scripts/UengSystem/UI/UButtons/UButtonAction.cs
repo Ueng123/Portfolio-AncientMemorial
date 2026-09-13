@@ -8,17 +8,35 @@ using UnityEngine.UI;
 namespace UengSystem.UI.UButtons {
 	[Serializable]
 	public class UButtonAction : UUIAction {
+
+		// 정적 프로퍼티
 		public static Dictionary<ActionType, List<int>> actionPriority = new ();
 		public static int                                    currentBID     = 0;
+
+		// 인스턴스 프로퍼티
 		private int                                    BID;
 		
 		public ActionType actionType;
-		public PressType  pressType;
+		public InputState  inputState;
 		public Task            taskOnClicked;
 
 		private UButton button;
 		private Button  buttonObject;
 
+		// 인스턴스 메서드
+		public bool checkKeyPressed() {
+			if (!actionPriority[actionType].Contains(BID)) return false;
+			
+			bool input           = InputManager.GetInput(actionType, inputState);
+			bool isMainInput     = actionPriority[actionType][^1]               == BID;
+			bool buttonClickable = !component || (buttonObject.enabled && buttonObject.interactable);
+			bool result          = input && buttonClickable && isMainInput;
+			
+			if (result) button?.OnButtonClicked();
+ 			return result;
+		}
+
+		// 오버라이드 메서드
 		public override void Initialize(UObject self) {
 			BID = currentBID++;
 			List<int> BIDList;
@@ -40,25 +58,13 @@ namespace UengSystem.UI.UButtons {
 			if (!component) return;
 			component.Uninitialize();
 		}
-
-		public bool checkKeyPressed() {
-			if (!actionPriority[actionType].Contains(BID)) return false;
-			
-			bool input           = InputManager.GetInput(actionType, pressType);
-			bool isMainInput     = actionPriority[actionType][^1]               == BID;
-			bool buttonClickable = !component || (buttonObject.enabled && buttonObject.interactable);
-			bool result          = input && buttonClickable && isMainInput;
-			
-			if (result) button?.OnButtonClicked();
- 			return result;
-		}
 		
 		public override void Routine(UObject self) {
 			bool needAction = checkKeyPressed() || (button&&button.clicked);
 			
 			if (needAction) {
                 if (button) button.clicked = false;
-                taskOnClicked.Execute(self);
+			taskOnClicked.Execute(self);
 			}
 		}
 	}

@@ -13,6 +13,11 @@ using UnityEngine;
 namespace UengSystem.UI.UInputFields {
 	[Serializable]
 	public class UInputFieldAction : UUIAction {
+
+		// 정적 프로퍼티
+		public static UPureString inputFieldTextVariable;
+
+		// 인스턴스 프로퍼티
 		private int INPUT_FIELD_VALUE = "InputFieldValue".GetHash();
 		
 		public Task taskOnTextChanged;
@@ -22,8 +27,8 @@ namespace UengSystem.UI.UInputFields {
 		public UValue<string> initialText;
 
 		private       UInputField inputField;
-		public static UPureString inputFieldTextVariable;
-		
+
+		// 오버라이드 메서드
 		public override void Initialize(UObject self) {
 			inputField = (UInputField)component;
 			inputField.Initialize();
@@ -52,13 +57,13 @@ namespace UengSystem.UI.UInputFields {
 			if (taskOnTextChanged!=null&&inputField.textChanged) {
 				inputField.textChanged          = false;
 				inputFieldTextVariable.pureValue = inputField.GetLiveText();
-				taskOnTextChanged.Execute(GlobalObject.instance);
+			taskOnTextChanged.Execute(GlobalObject.instance);
 			}
 			
 			if (taskOnEndEdit!=null && inputField.endEdit) {
 				inputField.endEdit              = false;
 				inputFieldTextVariable.pureValue = inputField.GetText();
-				taskOnEndEdit.Execute(GlobalObject.instance);
+			taskOnEndEdit.Execute(GlobalObject.instance);
 			}
 		}
 	}

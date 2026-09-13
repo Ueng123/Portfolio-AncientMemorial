@@ -4,6 +4,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UValues.UColors {
 	[Serializable]
 	public class UNumberColor : UValue<Color> {
+
+		// 인스턴스 프로퍼티
 		protected override bool getIsDynamic { 
 			get {
 				r.parent = this;

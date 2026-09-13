@@ -8,12 +8,15 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class ReleaseObject : TaskComponent {
+
+		// 인스턴스 프로퍼티
 		public bool PlayEffect = true;
 
 		public bool releaseThis;
 		
 		[SerializeReference][SubclassSelector] public UValue<UObject> TargetObject;
-		
+
+		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			UObject target = releaseThis?(UObject)self:TargetObject.value;
 			DebugManager.Log($"[TaskLog : {GetType()} - {Time.time}s - execute : {self}]");

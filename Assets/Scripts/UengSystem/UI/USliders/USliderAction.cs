@@ -12,6 +12,11 @@ using UnityEngine;
 namespace UengSystem.UI.USliders {
 	[Serializable]
 	public class USliderAction : UUIAction {
+
+		// 정적 프로퍼티
+		public static UPureFloat sliderValueVariable;
+
+		// 인스턴스 프로퍼티
 		private int SLIDER_VALUE = "SliderValue".GetHash();
 		
 		[SerializeReference] [SubclassSelector]
@@ -27,8 +32,8 @@ namespace UengSystem.UI.USliders {
 		public Task                taskOnValueChanged;
 
 		private USlider     slider;
-		public static UPureFloat sliderValueVariable;
-		
+
+		// 오버라이드 메서드
 		public override void Initialize(UObject self) {
 			slider = GetComponent<USlider>();
 			slider.Initialize();
@@ -69,11 +74,11 @@ namespace UengSystem.UI.USliders {
 				case USliderTaskCondition.OnValueChanged:
 					if (slider.valueChanged) {
 						slider.valueChanged = false;
-						taskOnValueChanged.Execute(self);
+			taskOnValueChanged.Execute(self);
 					}
 					break;
 				case USliderTaskCondition.Always:
-					taskOnValueChanged.Execute(self);
+			taskOnValueChanged.Execute(self);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

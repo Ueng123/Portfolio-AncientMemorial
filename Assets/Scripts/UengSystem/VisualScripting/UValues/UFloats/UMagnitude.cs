@@ -4,6 +4,8 @@ using UnityEngine;
 namespace UengSystem.VisualScripting.UValues.UFloats {
 	[Serializable]
 	public class UMagnitude : UValue<float> {
+
+		// 인스턴스 프로퍼티
 		protected override bool getIsDynamic {
 			get {
 				vector.parent = this;

@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace AncientMemorial.States.PlayerStates {
 	public class Fall : PlayerDefaultState {
+
+		// 오버라이드 메서드
 		public override void OnEnter() { }
 
 		public override void OnRoutine() {

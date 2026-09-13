@@ -1,12 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UengSystem.UDebug;
 using UnityEngine;
 
 namespace UengSystem.Utility {
 	public static class CacheManager {
+
+		// 정적 프로퍼티
 		private static Dictionary<int, WaitForSeconds> waitForSecondsCache = new ();
-		
+
+		// 정적 메서드
 		public static WaitForSeconds WaitForSeconds(float duration) {
 			int secondT = Mathf.RoundToInt(duration * 1000);
 			return GetObject(secondT);
