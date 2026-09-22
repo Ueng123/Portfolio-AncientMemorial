@@ -1,29 +1,37 @@
-﻿using AncientMemorial.Entities;
+using AncientMemorial.Entities;
 using AncientMemorial.Map;
 using UengSystem.Objects;
 using Unity.Cinemachine;
 using UnityEngine;
 
 namespace AncientMemorial.Cameras {
-    public class MainCamera : UObject {
+    public class UCamera : UObject {
 
        // 인스턴스 프로퍼티
        [Header("Camera Settings")]
        public CinemachineCamera cam;
-       
+
+       public CameraManager cameraManager;
+       public MapManager     mapManager;
+       public CinemachineBasicMultiChannelPerlin noiseComponent;
+
        public CameraAlignType  AlignTypeX;
        public CameraAlignType  AlignTypeY;
        public CameraSizingType SizingType;
        public float lensOffset;
-       
-       public Transform       mainCameraTransform;
 
-       public float BaseLensSize { get; private set; }
+       public Transform mainCameraTransform;
+
+       public float baseLensSize { get; private set; }
+
+       public void ChangeCameraTransform(Transform TargetTransform) {
+          mainCameraTransform = TargetTransform;
+       }
 
        // 오버라이드 메서드
        public override void Initialize() {
           base.Initialize();
-          
+
           mainCameraTransform = GameObject.FindGameObjectWithTag("MainCameraHelper").transform;
        }
 
@@ -32,8 +40,10 @@ namespace AncientMemorial.Cameras {
        protected override void Routine() { }
 
        protected override void LateRoutine() {
-          Vector2 mapCenterPos = MapManager.instance.MapCenterTransform.position;
-          Vector2 playerPos    = Entity.player ? Entity.player.transform.position + Vector3.up*0.75f : mapCenterPos;
+          if (!cameraManager || !mapManager || !cam || !mainCameraTransform) return;
+
+          Vector2 mapCenterPos = mapManager.MapCenterTransform.position;
+          Vector2 playerPos    = Entity.player ? Entity.player.transform.position + Vector3.up * 0.75f : mapCenterPos;
 
           float xPos = AlignTypeX switch {
              CameraAlignType.Center => mapCenterPos.x,
@@ -49,16 +59,20 @@ namespace AncientMemorial.Cameras {
              _                      => 0
           };
 
-          // 맵과 해상도에 맞춰 계산된 순정 렌즈값 캐싱
-          BaseLensSize = (SizingType switch {
-             CameraSizingType.matchX => MapManager.instance.CurrCamLens.x,
-             CameraSizingType.matchY => MapManager.instance.CurrCamLens.y,
-             CameraSizingType.maxXY  => Mathf.Max(MapManager.instance.CurrCamLens.x, MapManager.instance.CurrCamLens.y),
-             CameraSizingType.minXY  => Mathf.Min(MapManager.instance.CurrCamLens.x, MapManager.instance.CurrCamLens.y),
+          baseLensSize = (SizingType switch {
+             CameraSizingType.matchX => mapManager.CurrCamLens.x,
+             CameraSizingType.matchY => mapManager.CurrCamLens.y,
+             CameraSizingType.maxXY  => Mathf.Max(mapManager.CurrCamLens.x, mapManager.CurrCamLens.y),
+             CameraSizingType.minXY  => Mathf.Min(mapManager.CurrCamLens.x, mapManager.CurrCamLens.y),
              _                       => 4f
           }) + lensOffset;
-          
-          // 위치만 타겟팅 갱신 완.
+
+          LensSettings lens = cam.Lens;
+          lens.OrthographicSize = baseLensSize + cameraManager.currentZoomOffset;
+          cam.Lens = lens;
+
+          if (noiseComponent) noiseComponent.AmplitudeGain = cameraManager.currentShakeGain;
+
           mainCameraTransform.position = new Vector3(xPos, yPos, mainCameraTransform.position.z);
        }
 

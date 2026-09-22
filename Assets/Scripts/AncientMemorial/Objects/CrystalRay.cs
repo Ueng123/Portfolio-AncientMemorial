@@ -7,7 +7,7 @@ using UengSystem.Audio;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.Objects.LifeCycle;
-using UengSystem.UAction;
+using UengSystem.UActions;
 using UengSystem.Utility;
 using UnityEngine;
 
@@ -15,8 +15,8 @@ namespace AncientMemorial.Objects {
 	public class CrystalRay : UObject {
 
 		// 정적 프로퍼티
-		private static readonly int UltRaySpawnClipId = "ultRaySpawn".GetHash();
-		private static readonly int UltRayAmbientClipId = "ultRayAmbient".GetHash();
+		private static readonly int ULT_RAY_SPAWN = "ultRaySpawn".GetHash();
+		private static readonly int ULT_RAY_AMBIENT = "ultRayAmbient".GetHash();
 
 		private static readonly int            End = Animator.StringToHash("end");
 		private const    float                     damageThreshold  = 0.1f;
@@ -47,7 +47,7 @@ namespace AncientMemorial.Objects {
 		public        float angleOffset;
 		private       float theta;
 		
-		public override float releasingDuration => 2;
+		public override float usingReleasingDuration => 2;
 
 		// 오버라이드 메서드
 		protected override void FixedRoutine() {
@@ -59,8 +59,8 @@ namespace AncientMemorial.Objects {
 			if (!rayShooting) return;
 
 			if (showEffect) {
-				CameraBrain.instance.ShakeLerp(5, 1);
-				CameraBrain.instance.ZoomLerp(0.15f);
+				CameraManager.instance.ShakeLerp(5, 1);
+				CameraManager.instance.ZoomLerp(0.15f);
 			}
 			
 			float dist = MapManager.instance.GetMapSize().magnitude + 1f; // 1f는 그래도 혹시모를 이유로 안전상 붙힘
@@ -109,11 +109,11 @@ namespace AncientMemorial.Objects {
 			
 			blackBG.SetActive(showEffect);
 
-			if (showEffect) PlaySFX(UltRaySpawnClipId, volume: 1f);
+			if (showEffect) PlaySFX(ULT_RAY_SPAWN, volume: 1f);
 			new DelayedAction(rayShootTime, () => {
 				rayShooting = true;
 
-				if (showEffect) ambientSource = PlaySFX(UltRayAmbientClipId, volume: 1f, loop: true);
+				if (showEffect) ambientSource = PlaySFX(ULT_RAY_AMBIENT, volume: 1f, loop: true);
 			}, () => { }, this).ExecuteDA();
 		}
 
@@ -142,7 +142,7 @@ namespace AncientMemorial.Objects {
 
 			// 오버라이드 메서드
 			protected override void OnStartEffect() {
-				if (ray.showEffect && CameraBrain.instance) CameraBrain.instance.ZoomLerp(0.15f, 1);
+				if (ray.showEffect && CameraManager.instance) CameraManager.instance.ZoomLerp(0.15f, 1);
 				ray.rayAnimator.SetTrigger(End);
 			}
 			protected override void OnEffectRoutine(float DeltaTime) {

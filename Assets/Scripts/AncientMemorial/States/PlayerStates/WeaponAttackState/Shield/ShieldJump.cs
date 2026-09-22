@@ -10,8 +10,8 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class ShieldJump : PlayerWeaponAttack {
 
 		// 정적 프로퍼티
-		private static readonly int ShieldSkillEffectPrefabId = "ShieldSkillEffect".GetHash();
-		private static readonly int ShieldSkillClipId = "shieldSkill".GetHash();
+		private static readonly int SHIELD_SKILL_EFFECT = "ShieldSkillEffect".GetHash();
+		private static readonly int SHIELD_SKILL = "shieldSkill".GetHash();
 
 		// 인스턴스 프로퍼티
 		public override float attackTime       => 0.2f;
@@ -27,9 +27,9 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 			}
 			
 			player.SendEvent(EventType.Entity_Player_Jump, EventPriority.Action);
-			player.PlaySFX(ShieldSkillClipId);
+			player.PlaySFX(SHIELD_SKILL);
 			Vector2 footPosition = player.groundChecker.transform.position;
-			UObject.Get(ShieldSkillEffectPrefabId, footPosition, PlayEffect: false);
+			UObject.Get(SHIELD_SKILL_EFFECT, footPosition, PlayEffect: false);
 
 			player.rigidbody2D.linearVelocityY = 2 + player.data.jumpPower*player.stat.moveSpeed*(player.data.HP - player.stat.HP)/
 												 (player.data.HP*2.5f);

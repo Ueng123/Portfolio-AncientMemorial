@@ -259,7 +259,7 @@ namespace UengSystem.Audio {
 			base.Initialize();
 		}
 
-		public override void ManagerUpdate() {
+		public override void ManagerRoutine() {
 			if (playingSFX.Count == 0) return;
 			
 			if (!playingSFX[0].releaseTime.HasValue) return;

@@ -18,8 +18,8 @@ namespace UengSystem.Objects {
 		private static readonly HashSet<UObject>                  PreparedObjects      = new();
 		
 		private static readonly Dictionary<UObject, RoutineEntry> ActiveObjects        = new();
-		private static readonly SyncList<RoutineEntry>            RoutineObjects       = new(100);
 		
+		private static readonly SyncList<RoutineEntry>            RoutineObjects       = new(100);
 		private static readonly SyncList<RoutineEntry>            LifeCycleObjects     = new(100);
 		
 		public static           IReadOnlyCollection<UObject>      instances => ActiveObjects.Keys;
@@ -29,13 +29,15 @@ namespace UengSystem.Objects {
 		public LifeCycleStateMachine lifeCycle => LifeCycle ??= new LifeCycleStateMachine(this);
 		
 		public bool isActive => lifeCycle.phase == LifeCyclePhase.Active;
+		public bool isReleased => lifeCycle.phase == LifeCyclePhase.Released;
+		public bool isNotWorking => isReleased || lifeCycle.isShuttingDown;
 		
 		public long lifeNumber => lifeCycle.lifeNumber;
 		
 		public float GettingDuration = 1;
 		public float ReleasingDuration = 1;
-		public virtual float gettingDuration => GettingDuration;
-		public virtual float releasingDuration => ReleasingDuration;
+		public virtual float usingGettingDuration => GettingDuration;
+		public virtual float usingReleasingDuration => ReleasingDuration;
 		
 		public virtual float lifeCycleDeltaTime => Time.deltaTime;
 		
@@ -50,36 +52,34 @@ namespace UengSystem.Objects {
 		private bool FirstGetCompleted;
 		
 		private bool StoppingRunningTask;
-
-		
 		
 		public bool canStartOwnedWork =>
 			!isStoppingLifeCycles && !StoppingRunningTask && !lifeCycle.isShuttingDown && (!lifeCycle.isPrepared || !isReleased);
+
+		public bool Matches(long LifeNumber) => this && lifeNumber == LifeNumber;
 		
-		private readonly        Queue<Action>                     ProcessToUpdate      = new();
-		private readonly        Queue<Action>                     ProcessToFixedUpdate = new();
+		private readonly Queue<Action> ProcessToUpdate      = new();
+		private readonly Queue<Action> ProcessToFixedUpdate = new();
 		
-		private                 RoutineEntry                      ActiveEntry;
-		private                 RoutineEntry                      LifeEntry;
+		private RoutineEntry ActiveEntry;
+		private RoutineEntry LifeEntry;
 
 		// 정적 메서드
 		public static GameObject Get(string PrefabKey, Vector2 Position, bool PlayEffect = true, Action<UObject> Configure = null) {
-			CheckAcquisitionAllowed();
+			CheckAcquireAllowed();
 			UObject Target = UObjectPool.instance.Acquire(PrefabKey, Position);
 			Target.BeginLife(PlayEffect, Configure);
 			return Target.gameObject;
 		}
-
 		
 		public static GameObject Get(int PrefabId, Vector2 Position, bool PlayEffect = true, Action<UObject> Configure = null) {
-			CheckAcquisitionAllowed();
+			CheckAcquireAllowed();
 			UObject Target = UObjectPool.instance.Acquire(PrefabId, Position);
 			Target.BeginLife(PlayEffect, Configure);
 			return Target.gameObject;
 		}
 
-		internal static void CheckAcquisitionAllowed() {
-			
+		internal static void CheckAcquireAllowed() {
 			if (isStoppingLifeCycles) throw new InvalidOperationException("Cannot acquire objects during scene shutdown.");
 		}
 
@@ -90,7 +90,6 @@ namespace UengSystem.Objects {
 		}
 
 		public static void ResetUObjects() {
-			
 			ShutdownLifeCycles();
 			PreparedObjects.Clear();
 			ActiveObjects.Clear();
@@ -100,28 +99,30 @@ namespace UengSystem.Objects {
 			IDTable.Clear();
 			CategoryTable.Clear();
 		}
-
 		
-		internal static void BeginSceneLifeCycles() => isStoppingLifeCycles = false;
+		public static void BeginSceneLifeCycles() => isStoppingLifeCycles = false;
 
 		private static void RunActive(Action<UObject> Callback) {
-			
 			if (isStoppingLifeCycles) return;
 			RoutineObjects.Synchronize();
-			int Count = RoutineObjects.Count;
+			int InitialCount = RoutineObjects.Count;
 			
-			for (int Index = 0; Index < Count && Index < RoutineObjects.Count && !isStoppingLifeCycles; Index++) {
+			for (int Index = 0; Index < InitialCount; Index++) {
+				if (isStoppingLifeCycles) break;
+				if (RoutineObjects.Count == 0) break; // 리스트 강제 초기화 방어
+
 				RoutineEntry Entry = RoutineObjects[Index];
 				
 				if (!Entry.isActive) continue;
-				
-				try { Callback(Entry.Target); }
-				catch (Exception Error) { DebugManager.LogException(Error, Entry.Target); }
+
+				try { Callback.Invoke(Entry.Target); }
+				catch (Exception Error) {
+					DebugManager.LogException(Error, Entry.Target);
+				}
 			}
 		}
 
 		public static void UpdateRoutine() {
-			
 			GameManager.instance.currentUpdatePhase = UpdateRoutineType.Processing;
 			RunActive(Target => Target.ExecuteProcesses(Target.ProcessToUpdate));
 			GameManager.instance.currentUpdatePhase = UpdateRoutineType.EarlyRoutine;
@@ -131,29 +132,30 @@ namespace UengSystem.Objects {
 		}
 
 		public static void LateUpdateRoutine() {
-			
 			GameManager.instance.currentUpdatePhase = UpdateRoutineType.LateRoutine;
 			RunActive(Target => Target.LateRoutine());
 		}
 
 		public static void LifeCycleRoutine() {
-			
 			if (isStoppingLifeCycles) return;
 			if (GameManager.instance) GameManager.instance.currentUpdatePhase = UpdateRoutineType.LifeCycleRoutine;
 			
 			LifeCycleObjects.Synchronize();
-			int Count = LifeCycleObjects.Count;
-			for (int Index = 0; Index < Count && Index < LifeCycleObjects.Count && !isStoppingLifeCycles; Index++) {
+			int InitialCount = LifeCycleObjects.Count;
+			for (int Index = 0; Index < InitialCount; Index++) {
+				if (isStoppingLifeCycles) break;
+				if (LifeCycleObjects.Count == 0) break; // 리스트 강제 초기화 방어
+
 				RoutineEntry Entry = LifeCycleObjects[Index];
 				
-				
-				if (Entry.isLifeCycle) Entry.Target.lifeCycle.Tick(Entry.Execution, Entry.Target.lifeCycleDeltaTime);
+				if (!Entry.isLifeCycle) continue; 
+				Entry.Target.lifeCycle.Tick(Entry.Execution, Entry.Target.lifeCycleDeltaTime);
 			}
+			
 			if (GameManager.instance) GameManager.instance.currentUpdatePhase = UpdateRoutineType.RoutineEnd;
 		}
 
 		public static void FixedUpdateRoutine() {
-			
 			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.Processing;
 			RunActive(Target => Target.ExecuteProcesses(Target.ProcessToFixedUpdate));
 			GameManager.instance.currentFixedUpdatePhase = FixedUpdateRoutineType.FixedRoutine;
@@ -169,7 +171,6 @@ namespace UengSystem.Objects {
 		protected void SetDefaultStates(Getting GettingState = null, Releasing ReleasingState = null) => lifeCycle.SetDefaultStates(GettingState, ReleasingState);
 
 		public virtual void OnFirstGet() {
-			
 			if (FirstGetCompleted) throw new InvalidOperationException("OnFirstGet must run only once per instance.");
 			
 			rigidbody2D = GetComponent<Rigidbody2D>();
@@ -186,20 +187,17 @@ namespace UengSystem.Objects {
 			PreparedObjects.Add(this);
 		}
 
-		internal void BindPool(Action<UObject> Return) {
-			
+		public void SetPoolReturnMethod(Action<UObject> Return) {
 			if (PoolReturn != null || !isReleased) throw new InvalidOperationException("Pool ownership is immutable.");
-			PoolReturn = Return ?? throw new ArgumentNullException(nameof(Return));
+			PoolReturn = Return;
 		}
 
-		internal void BeginLife(bool PlayEffect, Action<UObject> Configure = null) {
-			
-			CheckAcquisitionAllowed();
+		protected void BeginLife(bool PlayEffect, Action<UObject> Configure = null) {
+			CheckAcquireAllowed();
 			if (!FirstGetCompleted || !isReleased || lifeCycle.isFaulted || lifeCycle.isShuttingDown)
-				throw new InvalidOperationException("Object is not available for acquisition.");
+				throw new InvalidOperationException("Object is not available.");
+			
 			try {
-				
-				
 				if (whenInitialize is WhenInitialize.OnGet or WhenInitialize.Both) ApplyToAllChildren();
 				PrepareContext();
 				Configure?.Invoke(this);
@@ -207,7 +205,6 @@ namespace UengSystem.Objects {
 				lifeCycle.Get(PlayEffect);
 			}
 			catch {
-				
 				lifeCycle.Shutdown();
 				throw;
 			}
@@ -217,17 +214,14 @@ namespace UengSystem.Objects {
 		protected virtual void PrepareContext() { }
 
 		public void Get(bool PlayEffect = true) {
-			
 			if (PoolReturn != null) throw new InvalidOperationException("Acquire pooled objects through static Get.");
 			if (!FirstGetCompleted) OnFirstGet();
 			BeginLife(PlayEffect);
 		}
-
 		
 		public void Release(bool PlayEffect = true) => lifeCycle.Release(PlayEffect);
 
-		internal void PrepareGetting() {
-			
+		public void PrepareGetting() {
 			long Life = lifeNumber;
 			
 			SetLifeColliders(false);
@@ -242,8 +236,7 @@ namespace UengSystem.Objects {
 			GetTask?.Execute(this, this);
 		}
 
-		internal void ActivateLife() {
-			
+		public void ActivateLife() {
 			UnfreezeRigidbody2D();
 			SetLifeColliders(true);
 			ActiveEntry = new RoutineEntry(this);
@@ -251,30 +244,28 @@ namespace UengSystem.Objects {
 			RoutineObjects.Add(ActiveEntry);
 		}
 
-		internal void DeactivateLife() {
-			
+		public void DeactivateLife() {
 			if (ActiveEntry == null) return;
 			RoutineObjects.Remove(ActiveEntry);
 			ActiveObjects.Remove(this);
 			ActiveEntry = null;
 		}
 
-		internal void RegisterLifeCycle(long Execution) {
+		public void RegisterLifeCycle(long Execution) {
 			
 			if (LifeEntry != null) throw new InvalidOperationException("Duplicate life cycle registration.");
 			LifeEntry = new RoutineEntry(this, Execution);
 			LifeCycleObjects.Add(LifeEntry);
 		}
 
-		internal void UnregisterLifeCycle(long Execution) {
+		public void UnregisterLifeCycle(long Execution) {
 			
 			if (LifeEntry == null || LifeEntry.Execution != Execution) return;
 			LifeCycleObjects.Remove(LifeEntry);
 			LifeEntry = null;
 		}
 
-		internal void PrepareReleasing() {
-			
+		public void PrepareReleasing() {
 			DeactivateLife();
 			SetLifeColliders(false);
 			FreezeRigidbody2D();
@@ -292,8 +283,7 @@ namespace UengSystem.Objects {
 			Category = null;
 		}
 
-		internal void FinishReleasing() {
-			
+		public void FinishReleasing() {
 			StopRunningTask();
 			Uninitialize();
 			if (lifeCycle.isShuttingDown) return;
@@ -302,8 +292,7 @@ namespace UengSystem.Objects {
 			if (whenInitialize is WhenInitialize.OnRelease or WhenInitialize.Both) ApplyToAllChildren();
 		}
 
-		internal void ReturnToPool() {
-			
+		public void ReturnToPool() {
 			if (isStoppingLifeCycles || lifeCycle.isShuttingDown) { QuarantineLife(); return; }
 			
 			if (PoolReturn != null) { PoolReturn.Invoke(this); return; }
@@ -311,7 +300,7 @@ namespace UengSystem.Objects {
 			gameObject.SetActive(false);
 		}
 
-		internal void StopLife(bool ReleaseStarted) {
+		public void StopLife(bool ReleaseStarted) {
 			
 			try { StopRunningTask(); }
 			finally {
@@ -322,30 +311,22 @@ namespace UengSystem.Objects {
 			}
 		}
 
-		internal void QuarantineLife() {
-			
+		public void QuarantineLife() {
 			if (this && gameObject) gameObject.SetActive(false);
 		}
 
 		private void StopRunningTask() {
-			
-			
 			StoppingRunningTask = true;
-			try {
-				
-				StopAllCoroutines();
-				StopAllUActions();
-			}
-			finally {
-				
-				ProcessToUpdate.Clear();
-				ProcessToFixedUpdate.Clear();
-				StoppingRunningTask = false;
-			}
+			
+			StopAllCoroutines();
+			StopAllUActions();
+			
+			ProcessToUpdate.Clear();
+			ProcessToFixedUpdate.Clear();
+			StoppingRunningTask = false;
 		}
 
 		private void SetLifeColliders(bool Enabled) {
-			
 			for (int Index = 0; Index < LifeColliders.Length; Index++) {
 				if (LifeColliders[Index]) LifeColliders[Index].enabled = Enabled && ColliderEnabled[Index];
 			}
@@ -374,30 +355,7 @@ namespace UengSystem.Objects {
 			long Life = lifeNumber;
 			int Count = Processes.Count;
 			
-			while (Count-- > 0 && isActive && lifeNumber == Life && Processes.Count > 0) Processes.Dequeue().Invoke();
-		}
-
-		// 중첩 타입
-		private sealed class RoutineEntry {
-
-			// 인스턴스 프로퍼티
-			public readonly UObject Target;
-			public readonly long    Life;
-			public readonly long    Execution;
-			public readonly int     Frame;
-			
-			public bool isActive => Target && Target.isActive && Target.lifeNumber == Life && Time.frameCount > Frame;
-			
-			public bool isLifeCycle => Target && Target.lifeNumber == Life
-											  && Target.lifeCycle.IsCurrent(Target.lifeCycle.currentState, Execution);
-
-			// 인스턴스 메서드
-			public RoutineEntry(UObject Target, long Execution = 0) {
-				this.Target    = Target;
-				Life           = Target.lifeNumber;
-				this.Execution = Execution;
-				Frame          = Time.frameCount;
-			}
+			while (Count-- > 0 && isActive && Matches(Life) && Processes.Count > 0) Processes.Dequeue().Invoke();
 		}
 	}
 }

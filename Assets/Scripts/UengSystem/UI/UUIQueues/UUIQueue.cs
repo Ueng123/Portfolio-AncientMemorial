@@ -69,16 +69,16 @@ namespace UengSystem.UI.UUIQueues {
 			});
 			UUI        itemUI     = itemObject.GetComponent<UUI>();
 			long Life = itemUI.lifeNumber;
-			while (itemUI && itemUI.lifeNumber == Life && itemUI.lifeCycle.phase == Objects.LifeCycle.LifeCyclePhase.Getting) yield return null;
+			while (itemUI && itemUI.Matches(Life) && itemUI.lifeCycle.phase == Objects.LifeCycle.LifeCyclePhase.Getting) yield return null;
 
 			float elapsed = 0f;
-			while (itemUI && itemUI.lifeNumber == Life && itemUI.isActive && elapsed < queueItem.duration) {
+			while (itemUI && itemUI.Matches(Life) && itemUI.isActive && elapsed < queueItem.duration) {
 				elapsed += Time.unscaledDeltaTime;
 				yield return null;
 			}
 			
-			if (itemUI && itemUI.lifeNumber == Life && !itemUI.isReleased) itemUI.Release();
-			while (itemUI && itemUI.lifeNumber == Life && !itemUI.isReleased) yield return null;
+			if (itemUI && itemUI.Matches(Life) && !itemUI.isReleased) itemUI.Release();
+			while (itemUI && itemUI.Matches(Life) && !itemUI.isReleased) yield return null;
 			yield return marginBack;
 
 			nextAvailable = true;

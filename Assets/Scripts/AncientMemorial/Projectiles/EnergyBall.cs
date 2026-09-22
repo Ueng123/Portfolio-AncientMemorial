@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using AncientMemorial.Cameras;
 using AncientMemorial.Entities;
 using UengSystem.Events;
@@ -11,7 +11,7 @@ namespace AncientMemorial.Projectiles {
 	public class EnergyBall : Projectile {
 
 		// 정적 프로퍼티
-		private static readonly int BigImpactPrefabId = "BigImpact".GetHash();
+		private static readonly int BIG_IMPACT = "BigImpact".GetHash();
 
 		// 인스턴스 프로퍼티
 		private StopWatch  stopWatch;
@@ -19,7 +19,7 @@ namespace AncientMemorial.Projectiles {
 
 		// 인스턴스 메서드
 		private void Boom() {
-			UObject.Get(BigImpactPrefabId, transform.position, PlayEffect: false);
+			UObject.Get(BIG_IMPACT, transform.position, PlayEffect: false);
 			Release(PlayEffect: false);
 		}
 
@@ -40,7 +40,7 @@ namespace AncientMemorial.Projectiles {
 		protected override void LateRoutine() {
 			base.LateRoutine();
 			if (!isActive) return;
-			CameraBrain.instance.ShakeLerp(2, 0);
+			CameraManager.instance.ShakeLerp(2, 0);
 		}
 
 		public override void Initialize() {

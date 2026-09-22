@@ -32,11 +32,11 @@ namespace UengSystem.VisualScripting.Tasks {
 				MapManager.instance.CamLensOffset = TargetCamLensOffset;
 			}
 			if (changeCameraAlign) {
-				GameManager.instance.mainCamera.AlignTypeX = TargetAlignTypeX;
-				GameManager.instance.mainCamera.AlignTypeY = TargetAlignTypeY;
+				GameManager.instance.uCamera.AlignTypeX = TargetAlignTypeX;
+				GameManager.instance.uCamera.AlignTypeY = TargetAlignTypeY;
 			}
 			if (changeCameraSizing) {
-				GameManager.instance.mainCamera.SizingType = SizingType;
+				GameManager.instance.uCamera.SizingType = SizingType;
 			}
 		}
 	}

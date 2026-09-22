@@ -470,8 +470,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -930,7 +928,7 @@ MonoBehaviour:
       data:
         component: {fileID: 7475100594887984490}
         actionType: 2001
-        pressType: 1
+        inputState: 1
         taskOnClicked:
           useRealTime: 0
           tasks:
@@ -945,7 +943,7 @@ MonoBehaviour:
       data:
         component: {fileID: 756965298986846859}
         actionType: 0
-        pressType: 0
+        inputState: 0
         taskOnClicked:
           useRealTime: 1
           tasks:
@@ -1369,8 +1367,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1524,8 +1520,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -1722,8 +1716,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -2211,8 +2203,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -3285,8 +3275,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -3405,8 +3393,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -3524,8 +3510,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
@@ -3852,8 +3836,6 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}

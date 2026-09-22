@@ -6,16 +6,15 @@ using AncientMemorial.States.EnemyStates;
 using AncientMemorial.States.EnemyStates.Crystal;
 using UengSystem;
 using UengSystem.ObjectPool;
-using UengSystem.UAction;
 using UnityEngine;
 
 namespace AncientMemorial.Entities.Enemies {
 	public abstract class CrystalBoss : Enemy {
 
 		// 정적 프로퍼티
-		private static readonly int CrystalDebrisPrefabId = "crystalDebris".GetHash();
-		private static readonly int CrystalHit1ClipId = "crystalHit1".GetHash();
-		private static readonly int CrystalHit2ClipId = "crystalHit2".GetHash();
+		private static readonly int CRYSTAL_DEBRIS = "crystalDebris".GetHash();
+		private static readonly int CRYSTAL_HIT_1 = "crystalHit1".GetHash();
+		private static readonly int CRYSTAL_HIT_2 = "crystalHit2".GetHash();
 
 		// 인스턴스 프로퍼티
 		public GameObject[] hideOnDeath;
@@ -35,12 +34,12 @@ namespace AncientMemorial.Entities.Enemies {
 			else { ShowDamageUI(damage); }
 			
 			if (stat.HP > 0) {
-				PlaySFX(CrystalHit1ClipId);
+				PlaySFX(CRYSTAL_HIT_1);
 				
 				if (attacker != player) return;
 				GameManager.SetTimeScale(0, 0.05f);
-				CameraBrain.instance.ShakeLerp(1, 10);
-				CameraBrain.instance.ZoomLerp(-0.1f, 20f);
+				CameraManager.instance.ShakeLerp(1, 10);
+				CameraManager.instance.ZoomLerp(-0.1f, 20f);
 			}
 		}
 		
@@ -59,17 +58,17 @@ namespace AncientMemorial.Entities.Enemies {
 
 		protected override void Death() {
 			GameManager.SetTimeScale(0.5f, 0.25f);
-			CameraBrain.instance.ShakeLerp(5, 1);
-			CameraBrain.instance.ZoomLerp(-1f, 7.5f);
+			CameraManager.instance.ShakeLerp(5, 1);
+			CameraManager.instance.ZoomLerp(-1f, 7.5f);
 
-			PlaySFX(CrystalHit2ClipId);
+			PlaySFX(CRYSTAL_HIT_2);
 			
 			foreach (GameObject obj in hideOnDeath) {
 				obj.SetActive(false);
 			}
 			
 			for (int i = 0; i < 10; i++) {
-				UObject.Get(CrystalDebrisPrefabId, (Vector2)transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), PlayEffect: false);
+				UObject.Get(CRYSTAL_DEBRIS, (Vector2)transform.position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), PlayEffect: false);
 			}
 			
 			base.Death();

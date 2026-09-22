@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AncientMemorial.Cameras;
 using AncientMemorial.Map;
 using AncientMemorial.States.EnemyStates;
@@ -7,7 +7,7 @@ using AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack;
 using UengSystem;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.UAction;
+using UengSystem.UActions;
 using UengSystem.UI;
 using UengSystem.UI.UTexts;
 using UengSystem.UI.UUIs;
@@ -22,11 +22,11 @@ namespace AncientMemorial.Entities.Enemies {
 	public class CrystalPhase3 : CrystalBoss {
 
 		// 정적 프로퍼티
-		private static readonly int CrystalPhase3DamageUIPrefabId = "CrystalPhase3DamageUI".GetHash();
-		private static readonly int CrystalEnergyPrefabId = "CrystalEnergy".GetHash();
-		private static readonly int SlashEffectPrefabId = "SlashEffect".GetHash();
-		private static readonly int BrokenCrystalPrefabId = "BrokenCrystal".GetHash();
-		private static readonly int CrystalHit2ClipId = "crystalHit2".GetHash();
+		private static readonly int CRYSTAL_PHASE_3_DAMAGE_UI = "CrystalPhase3DamageUI".GetHash();
+		private static readonly int CRYSTAL_ENERGY = "CrystalEnergy".GetHash();
+		private static readonly int SLASH_EFFECT = "SlashEffect".GetHash();
+		private static readonly int BROKEN_CRYSTAL = "BrokenCrystal".GetHash();
+		private static readonly int CRYSTAL_HIT_2 = "crystalHit2".GetHash();
 
 		// 인스턴스 프로퍼티
 		private int CRYSTAL_ENERGY_DEAD = "crystalEnergyDead".GetHash();
@@ -44,7 +44,7 @@ namespace AncientMemorial.Entities.Enemies {
 		private EnemyState         deathAttack;
 		private EnemyState         final;
 
-		private readonly DelayedAction shakeAfterTimescale = new (1.5f, () => { CameraBrain.instance.ShakeLerp(75, 10f); }, () => { });
+		private readonly DelayedAction shakeAfterTimescale = new (1.5f, () => { CameraManager.instance.ShakeLerp(75, 10f); }, () => { });
 
 		// 인스턴스 메서드
 		protected void ShowCrystalPhase3DamageUI(float damage) {
@@ -56,7 +56,7 @@ namespace AncientMemorial.Entities.Enemies {
 				return;
 			}
 			
-			UUI.Get(CrystalPhase3DamageUIPrefabId, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
+			UUI.Get(CRYSTAL_PHASE_3_DAMAGE_UI, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
 			DamageUi.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			UTextAction textAction  = DamageUi.GetAction<UTextAction>("DamageDisplay");
 			UTextAction textSAction = DamageUi.GetAction<UTextAction>("DamageDisplayShadow");
@@ -66,7 +66,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		public void SpawnCrystalEnergy(Vector2 pos, bool PlayEffect) {
-			GameObject crystalEnergyObject = UObject.Get(CrystalEnergyPrefabId, pos, PlayEffect);
+			GameObject crystalEnergyObject = UObject.Get(CRYSTAL_ENERGY, pos, PlayEffect);
 			CrystalEnergy crystalEnergy = crystalEnergyObject.GetComponent<CrystalEnergy>();
 
 			crystalEnergy.Category = "crystalEnergy";
@@ -111,12 +111,12 @@ namespace AncientMemorial.Entities.Enemies {
 			ShowCrystalPhase3DamageUI(damage);
 
 			if (stat.HP > 0) {
-				PlaySFX(CrystalHit2ClipId);
+				PlaySFX(CRYSTAL_HIT_2);
 				
 				if (attacker != player) return;
 				GameManager.SetTimeScale(0.05f, 0.2f);
-				CameraBrain.instance.ShakeLerp(2.5f, 10);
-				CameraBrain.instance.ZoomLerp(-0.3f);
+				CameraManager.instance.ShakeLerp(2.5f, 10);
+				CameraManager.instance.ZoomLerp(-0.3f);
 			}
 		}
 		
@@ -190,18 +190,18 @@ namespace AncientMemorial.Entities.Enemies {
 		protected override void Death() {
 			Vector2 mapSize = MapManager.instance.GetMapSize();
 			
-			GameObject eff1 = UObject.Get(SlashEffectPrefabId, transform.position, PlayEffect: false);
+			GameObject eff1 = UObject.Get(SLASH_EFFECT, transform.position, PlayEffect: false);
 			eff1.transform.rotation   = Quaternion.Euler(0, 0, Random.Range(40, 50));
 			eff1.transform.localScale = new Vector3(mapSize.x*1.1f, mapSize.y*1.2f, 1f);
-			GameObject eff2 = UObject.Get(SlashEffectPrefabId, transform.position, PlayEffect: false);
+			GameObject eff2 = UObject.Get(SLASH_EFFECT, transform.position, PlayEffect: false);
 			eff2.transform.rotation   = Quaternion.Euler(0, 0, -Random.Range(40, 50));
 			eff2.transform.localScale = new Vector3(mapSize.x*1.1f, mapSize.y*1.2f, 1f);
 			
 			GameManager.SetTimeScale(0.1f, 1.5f);
 			shakeAfterTimescale.ExecuteDA(true);
-			CameraBrain.instance.ZoomLerp(-5f);
+			CameraManager.instance.ZoomLerp(-5f);
 
-			UObject.Get(BrokenCrystalPrefabId, new Vector2(transform.position.x, 0.75f), PlayEffect: false);
+			UObject.Get(BROKEN_CRYSTAL, new Vector2(transform.position.x, 0.75f), PlayEffect: false);
 			
 			base.Death();
 		}

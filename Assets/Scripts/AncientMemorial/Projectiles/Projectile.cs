@@ -74,7 +74,7 @@ namespace AncientMemorial.Projectiles {
 		protected void SendCollisionHit(Entity Target, float Damage, Action OnHit, bool CanPierce = false) {
 			if (!isActive || StopAfterHit) return;
 			foreach (PendingHit Pending in PendingHits) {
-				if (Pending.Target == Target && Pending.TargetLife == Target.lifeNumber) return;
+				if (Pending.Target == Target && Target.Matches(Pending.TargetLife)) return;
 			}
 
 			long Life = lifeNumber;
@@ -88,10 +88,10 @@ namespace AncientMemorial.Projectiles {
 			HitData Data = new(null, this, Target, Damage,
 				new Vector2(Target.transform.position.x - transform.position.x, 0).normalized) {
 				onHit = () => {
-					if (!this || !isActive || lifeNumber != Life) return;
+					if (!Matches(Life) || !isActive) return;
 					// 성공 콜백은 실행할 연출을 선택함. 다른 이벤트 리스너까지 읽은 후 반환함.
 					Hit.Effect = () => {
-						if (Target && Target.isActive && Target.lifeNumber == Hit.TargetLife) OnHit();
+						if (Target && Target.isActive && Target.Matches(Hit.TargetLife)) OnHit();
 						else Release(PlayEffect: false);
 					};
 				}
@@ -104,7 +104,7 @@ namespace AncientMemorial.Projectiles {
 			PendingHits.Enqueue(Hit);
 			StopAfterHit = !CanPierce;
 			AddProcessToUpdate(() => {
-				if (!this || !isActive || lifeNumber != Life) return;
+				if (!Matches(Life) || !isActive) return;
 				Hit.Dispatched = true;
 				if (Sender) Sender.SendEvent(EventType.Entity_Hit, EventPriority.Hit, Data);
 			});
@@ -131,7 +131,7 @@ namespace AncientMemorial.Projectiles {
 				// 관통 타격과 같은 물리 구간에서 벽에 닿아도 예약된 피해부터 처리함.
 				long ObjectLife = obj.lifeNumber;
 				PendingObjectCollision = () => {
-					if (obj && obj.lifeNumber == ObjectLife && !obj.isReleased) OnCollideObject(obj);
+					if (obj && obj.Matches(ObjectLife) && !obj.isReleased) OnCollideObject(obj);
 				};
 				StopAfterHit = true;
 				return;
@@ -166,20 +166,20 @@ namespace AncientMemorial.Projectiles {
 			base.LateRoutine();
 			long Life = lifeNumber;
 			try {
-				while (isActive && lifeNumber == Life && isHitPending && PendingHits.Peek().Dispatched) {
+				while (isActive && Matches(Life) && isHitPending && PendingHits.Peek().Dispatched) {
 					PendingHits.Dequeue().Effect.Invoke();
 				}
-				if (!isActive || lifeNumber != Life || isHitPending) return;
+				if (!isActive || !Matches(Life) || isHitPending) return;
 				Action ObjectCollision = PendingObjectCollision;
 				PendingObjectCollision = null;
 				ObjectCollision?.Invoke();
 			}
 			catch {
-				if (isActive && lifeNumber == Life) Release(PlayEffect: false);
+				if (isActive && Matches(Life)) Release(PlayEffect: false);
 				throw;
 			}
 			finally {
-				if (isActive && lifeNumber == Life && !isHitPending) {
+				if (isActive && Matches(Life) && !isHitPending) {
 					StopAfterHit = false;
 					if (ResumePhysics) UnfreezeRigidbody2D();
 					ResumePhysics = false;

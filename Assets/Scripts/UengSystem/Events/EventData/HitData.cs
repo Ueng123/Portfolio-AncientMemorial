@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UengSystem.Events {
 	[Serializable]
-	public struct HitData : ILifetimeEventData {
+	public struct HitData : IEventData {
 
 		// 인스턴스 프로퍼티
 		public Entity     attackedEntity;
@@ -16,18 +16,23 @@ namespace UengSystem.Events {
 		public bool       ignoreInvincible;
 		// 대상이 피해 처리와 OnHit을 마친 뒤 호출함. 무적/무효 타격에는 호출하지 않음.
 		public Action onHit { get; set; }
+		
 		private readonly EventObjectLifetime EntityLifetime;
 		private readonly EventObjectLifetime ProjectileLifetime;
 		private readonly EventObjectLifetime ReceiverLifetime;
 		private readonly EventObjectLifetime AttackerLifetime;
+		
 		public Entity attacker { get; }
+		
 		public long attackedEntityLifeNumber => EntityLifetime.lifeNumber;
 		public long attackedProjectileLifeNumber => ProjectileLifetime.lifeNumber;
 		public long recieverLifeNumber => ReceiverLifetime.lifeNumber;
 		public long attackerLifeNumber => AttackerLifetime.lifeNumber;
-		public bool isValid => reciever && ReceiverLifetime.Matches(reciever)
-			&& EntityLifetime.Matches(attackedEntity) && ProjectileLifetime.Matches(attackedProjectile)
-			&& AttackerLifetime.Matches(attacker);
+		public bool isValid => reciever 
+							   && ReceiverLifetime.Matches(reciever) 
+							   && EntityLifetime.Matches(attackedEntity)
+							   && ProjectileLifetime.Matches(attackedProjectile) 
+							   && AttackerLifetime.Matches(attacker);
 
 		// 인스턴스 메서드
 		public HitData(Entity attackedEntity, Projectile attackedProjectile, Entity reciever, float damage, Vector2? pushDir = null, bool ignoreInvincible = false) {

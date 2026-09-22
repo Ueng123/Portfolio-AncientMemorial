@@ -13,8 +13,8 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public abstract class SkeletonTankAttack : SkeletonAttack {
 
 		// 정적 프로퍼티
-		private static readonly int GroggyEffectPrefabId = "groggyEffect".GetHash();
-		private static readonly int TankGroggyClipId = "tankGroggy".GetHash();
+		private static readonly int GROGGY_EFFECT = "groggyEffect".GetHash();
+		private static readonly int TANK_GROGGY = "tankGroggy".GetHash();
 
 		private const float weakDuration = .3f;
 
@@ -26,11 +26,11 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 
 		// 인스턴스 메서드
 		protected void Weak() {
-			UObject.Get(GroggyEffectPrefabId, enemy.transform.position, PlayEffect: false);
+			UObject.Get(GROGGY_EFFECT, enemy.transform.position, PlayEffect: false);
 			weakStopwatch.Tick();
 			
 			GameManager.SetTimeScale(0.34f, 0.9f);
-			CameraBrain.instance.ZoomLerp(-0.5f);
+			CameraManager.instance.ZoomLerp(-0.5f);
 		}
 		protected void TryGroggy(Event e) {
 			if (e.GetData<HitData>().reciever != enemy) return;
@@ -40,14 +40,14 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 		}
 		
 		protected void Groggy() {
-			enemy.PlaySFX(TankGroggyClipId);
+			enemy.PlaySFX(TANK_GROGGY);
 			
 			// Process를 통해 다음 프레임 시작시 이벤트를 추가하므로 for문중 배열 변경 문제 없음.
 			Entity.SendAttackEvent(enemy, enemy, enemy.data.HP/15, true);
 			
 			GameManager.SetTimeScale(0.05f, 0.75f);
-			CameraBrain.instance.ShakeLerp(5f, 3);
-			CameraBrain.instance.ZoomLerp(-1.25f);
+			CameraManager.instance.ShakeLerp(5f, 3);
+			CameraManager.instance.ZoomLerp(-1.25f);
 			
 			enemy.Stun(5);
 		}

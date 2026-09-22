@@ -7,15 +7,15 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public class TankSkeletonSpawn : SkeletonTankAttack {
 
 		// 정적 프로퍼티
-		private static readonly int SkeletonWarriorSpawnPrefabId = "SkeletonWarriorSpawn".GetHash();
-		private static readonly int SkeletonArcherSpawnPrefabId = "SkeletonArcherSpawn".GetHash();
+		private static readonly int SKELETON_WARRIOR_SPAWN = "SkeletonWarriorSpawn".GetHash();
+		private static readonly int SKELETON_ARCHER_SPAWN = "SkeletonArcherSpawn".GetHash();
 
 		// 인스턴스 프로퍼티
 		public override float attackTime => 1.617f;
 
 		// 인스턴스 메서드
 		private void SpawnSkeleton() {
-			int skeletonName = Random.Range(0, 2) == 0 ? SkeletonWarriorSpawnPrefabId : SkeletonArcherSpawnPrefabId;
+			int skeletonName = Random.Range(0, 2) == 0 ? SKELETON_WARRIOR_SPAWN : SKELETON_ARCHER_SPAWN;
 			Vector2 spawnPosition = new (enemy.transform.position.x + Random.Range(-2f, 2f), 0.5f);
 			
 			GameObject spawnObj = UObject.Get(skeletonName, spawnPosition, PlayEffect: false);

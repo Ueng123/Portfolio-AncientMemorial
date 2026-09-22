@@ -15,11 +15,12 @@ using UengSystem.Managers;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.SaveDatas.SettingDatas;
-using UengSystem.UAction;
+using UengSystem.UActions;
 using UengSystem.UDebug;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
 using UengSystem.VisualScripting.Tasks;
+using UengSystem.VisualScripting.UValues;
 using UengSystem.VisualScripting.UVariables;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -28,8 +29,10 @@ using UnityEngine.UI;
 namespace UengSystem {
     public class GameManager : Manager<GameManager> {
 
+       public static Dictionary<string, UValue<float>> UValueFloatVariables = new();
+       
        // 정적 프로퍼티
-       private static readonly int GameLoadingUIPrefabId = "GameLoadingUI".GetHash();
+       private static readonly int GAME_LOADING_UI = "GameLoadingUI".GetHash();
        private static float timeScale = 1f;
        
        // startTime:unscaledTime
@@ -48,7 +51,7 @@ namespace UengSystem {
                    if (!UUIPool.instance) return false;
                    UUIPool.instance.Initialize();
 
-                   UUI.Get(GameLoadingUIPrefabId, instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI", PlayEffect:false);
+                   UUI.Get(GAME_LOADING_UI, instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI", PlayEffect:false);
 
                    return true;
                 },
@@ -59,15 +62,22 @@ namespace UengSystem {
                    InputManager.instance.Initialize();
                    return true;
                 },
-                () => {
-                   DebugManager.Log("Looking For MapManager...");
+                 () => {
+                    DebugManager.Log("Looking For MapManager...");
 
-                   if (!MapManager.instance) return false;
-                   MapManager.instance.Initialize();
-                   return true;
-                },
-                () => {
-                   DebugManager.Log("Looking For AudioManager...");
+                    if (!MapManager.instance) return false;
+                    MapManager.instance.Initialize();
+                    return true;
+                 },
+                 () => {
+                    DebugManager.Log("Looking For CameraManager...");
+
+                    if (!CameraManager.instance || !instance.uCamera) return false;
+                    CameraManager.instance.Initialize(instance.uCamera);
+                    return true;
+                 },
+                 () => {
+                    DebugManager.Log("Looking For AudioManager...");
 
                    if (!AudioManager.instance) return false;
                    AudioManager.instance.Initialize();
@@ -114,7 +124,7 @@ namespace UengSystem {
                    if (!UUIPool.instance) return false;
                    UUIPool.instance.Initialize();
 
-                   UUI.Get(GameLoadingUIPrefabId, instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI", PlayEffect:false);
+                   UUI.Get(GAME_LOADING_UI, instance.mainScreenCanvas, Configure: Ui => Ui.ID = "loadingUI", PlayEffect:false);
 
                    return true;
                 },
@@ -160,7 +170,7 @@ namespace UengSystem {
        public Crystal    Crystal;
        public UCanvas    mainScreenCanvas;
        public UCanvas    mainWorldCanvas;
-       public MainCamera mainCamera;
+       public UCamera    uCamera;
        public GameObject sceneHider;
 
        public Weapon[] weapons;
@@ -226,8 +236,8 @@ namespace UengSystem {
        }
 
        public static void ResetStaticVariables() {
-          // CameraBrain
-          CameraBrain.instance = null;
+          // CameraManager
+          CameraManager.instance = null;
           
           // GameManager
           IUValueVariable.Clear();
@@ -321,10 +331,10 @@ namespace UengSystem {
 
           foreach (IManager manager in IManager.instances) {
              try {
-                manager.ManagerUpdate();
+                manager.ManagerRoutine();
              }
              catch (Exception e) {
-                DebugManager.LogError($"Update > {manager.GetType().Name}.ManagerUpdate()", e,
+                DebugManager.LogError($"Update > {manager.GetType().Name}.ManagerRoutine()", e,
                                       ((MonoBehaviour)manager).gameObject);
              }
           }
@@ -368,7 +378,7 @@ namespace UengSystem {
        }
 
        // 오버라이드 메서드
-       public override void ManagerUpdate() {
+       public override void ManagerRoutine() {
           UpdateTimeScaleChain();
           
           // 적용

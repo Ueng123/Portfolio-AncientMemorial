@@ -15,8 +15,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 	public class CrystalSlash1 : CrystalPhase2Attack {
 
 		// 정적 프로퍼티
-		private static readonly int SlashEffectPrefabId = "SlashEffect".GetHash();
-		private static readonly int CrystalSlashClipId = "crystalSlash".GetHash();
+		private static readonly int SLASH_EFFECT = "SlashEffect".GetHash();
+		private static readonly int CRYSTAL_SLASH = "crystalSlash".GetHash();
 
 		// 인스턴스 프로퍼티
 		public override float attackTime => 20f;
@@ -88,17 +88,17 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 		}
 		
 		private void SlashEffect() {
-			crystal.PlaySFX(CrystalSlashClipId);
+			crystal.PlaySFX(CRYSTAL_SLASH);
 			
 			foreach ((Vector2 pos, float rot, float length) in slashData) {
-				GameObject slash = UObject.Get(SlashEffectPrefabId, pos, PlayEffect: false);
+				GameObject slash = UObject.Get(SLASH_EFFECT, pos, PlayEffect: false);
 				slash.transform.rotation   = Quaternion.Euler(0, 0, rot);
 				slash.transform.localScale = new Vector3(1f, length + 0.5f, 1f);
 			}
 			
 			GameManager.SetTimeScale(0, 0.1f);
-			CameraBrain.instance.ShakeLerp(5, 3);
-			CameraBrain.instance.ZoomLerp(-1f);
+			CameraManager.instance.ShakeLerp(5, 3);
+			CameraManager.instance.ZoomLerp(-1f);
 			
 			slashAttacks.Clear();
 		}

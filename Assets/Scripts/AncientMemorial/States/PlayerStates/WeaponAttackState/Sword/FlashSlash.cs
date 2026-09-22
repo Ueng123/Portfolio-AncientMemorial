@@ -12,9 +12,9 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 	public class FlashSlash : PlayerWeaponAttack {
 
 		// 정적 프로퍼티
-		private static readonly int SlashEffectPrefabId = "SlashEffect".GetHash();
-		private static readonly int SwordSkillClipId = "swordSkill".GetHash();
-		private static readonly int SwordSlash3ClipId = "swordSlash3".GetHash();
+		private static readonly int SLASH_EFFECT = "SlashEffect".GetHash();
+		private static readonly int SWORD_SKILL = "swordSkill".GetHash();
+		private static readonly int SWORD_SLASH_3 = "swordSlash3".GetHash();
 
 		// 인스턴스 프로퍼티
 		private AttackArea skillAttack;
@@ -41,7 +41,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 			player.rigidbody2D.linearVelocity = Vector2.zero;
 			
 			player.Freeze();
-			player.PlaySFX(SwordSkillClipId);
+			player.PlaySFX(SWORD_SKILL);
 			
 			Vector2 playerPos     = player.transform.position;
 			Vector2 mousePos      = InputManager.mousePosition;
@@ -81,11 +81,11 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 
 		public override void OnRoutine() {
 			if (step == 0 && stateTimer.CheckOut(sweepDuration)) {
-				CameraBrain.instance.ShakeLerp(1.5f, 10);
-                CameraBrain.instance.ZoomLerp(-1f, 15);
+				CameraManager.instance.ShakeLerp(1.5f, 10);
+                CameraManager.instance.ZoomLerp(-1f, 15);
                 
-                player.PlaySFX(SwordSlash3ClipId);
-                GameObject obj = UObject.Get(SlashEffectPrefabId, hitboxPos, PlayEffect: false);
+                player.PlaySFX(SWORD_SLASH_3);
+                GameObject obj = UObject.Get(SLASH_EFFECT, hitboxPos, PlayEffect: false);
                 obj.transform.rotation   = Quaternion.Euler(0, 0, hitboxAngle+90f);
                 obj.transform.localScale = new Vector3(2f, 4.5f * flashDistance/2.7f, 1f);
 

@@ -10,15 +10,15 @@ namespace AncientMemorial.States.EnemyStates.Crystal {
 	public abstract class CrystalState : EnemyState {
 
 		// 정적 프로퍼티
-		private static readonly int CrystalMissilePrefabId = "CrystalMissile".GetHash();
-		private static readonly int CrystalBigMissilePrefabId = "CrystalBigMissile".GetHash();
+		private static readonly int CRYSTAL_MISSILE = "CrystalMissile".GetHash();
+		private static readonly int CRYSTAL_BIG_MISSILE = "CrystalBigMissile".GetHash();
 
 		// 인스턴스 프로퍼티
 		public CrystalBoss crystal;
 
 		// 인스턴스 메서드
 		protected void ShootMissile(Vector2 pos, float rot, float speed = 13.5f, float timeBeforeLockOn = 0, float lockOnDuration = 0f) {
-			GameObject missile = UObject.Get(CrystalMissilePrefabId, pos, PlayEffect: false);
+			GameObject missile = UObject.Get(CRYSTAL_MISSILE, pos, PlayEffect: false);
 			
 			CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
 			crystalMissile.owner              = crystal;
@@ -32,7 +32,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal {
 		}
 		
 		protected void ShootBigMissile(Vector2 pos, float rot, float speed = 13.5f, float timeBeforeLockOn = 0, float lockOnDuration = 0f) {
-			GameObject missile = UObject.Get(CrystalBigMissilePrefabId, pos, PlayEffect: false);
+			GameObject missile = UObject.Get(CRYSTAL_BIG_MISSILE, pos, PlayEffect: false);
 			
 			CrystalMissile crystalMissile = missile.GetComponent<CrystalMissile>();
 			crystalMissile.owner              = crystal;

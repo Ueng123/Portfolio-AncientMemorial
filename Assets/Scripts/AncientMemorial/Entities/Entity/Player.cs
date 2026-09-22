@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using AncientMemorial.Cameras;
 using AncientMemorial.Interactions;
@@ -14,7 +14,6 @@ using UengSystem.Inputs;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.SaveDatas.SettingDatas;
-using UengSystem.UAction;
 using UengSystem.UI;
 using UengSystem.UI.UUIs;
 using UengSystem.Utility;
@@ -29,12 +28,12 @@ namespace AncientMemorial.Entities {
 	public class Player : Entity {
 
 		// 정적 프로퍼티
-		private static readonly int AfterImagePrefabId = "AfterImage".GetHash();
-		private static readonly int PlayerUIPrefabId = "PlayerUI".GetHash();
-		private static readonly int HealEffectPrefabId = "HealEffect".GetHash();
-		private static readonly int PlayerBottleOpenClipId = "playerBottleOpen".GetHash();
-		private static readonly int PlayerLandClipId = "playerLand".GetHash();
-		private static readonly int PlayerHitClipId = "playerHit".GetHash();
+		private static readonly int AFTER_IMAGE = "AfterImage".GetHash();
+		private static readonly int PLAYER_UI = "PlayerUI".GetHash();
+		private static readonly int HEAL_EFFECT = "HealEffect".GetHash();
+		private static readonly int PLAYER_BOTTLE_OPEN = "playerBottleOpen".GetHash();
+		private static readonly int PLAYER_LAND = "playerLand".GetHash();
+		private static readonly int PLAYER_HIT = "playerHit".GetHash();
 		
 		
 		private static readonly int  BACKWARD  = Animator.StringToHash("backward");
@@ -123,7 +122,7 @@ namespace AncientMemorial.Entities {
 		}
 
 		public void SpawnAfterImage() {
-			SpriteRenderer sr = UObject.Get(AfterImagePrefabId, transform.position, PlayEffect: false).GetComponent<SpriteRenderer>();
+			SpriteRenderer sr = UObject.Get(AFTER_IMAGE, transform.position, PlayEffect: false).GetComponent<SpriteRenderer>();
 			sr.flipX  = spriteRenderer.flipX;
 			sr.sprite = spriteRenderer.sprite;
 		}
@@ -146,8 +145,8 @@ namespace AncientMemorial.Entities {
 			healTimer.Tick();
 			SendAttackEvent(this, -3, true);
 			UPureFloat.AddValue(HEALTH_POTION_COUNT, -1);
-			Get(HealEffectPrefabId, transform.position, PlayEffect: false);
-			PlaySFX(PlayerBottleOpenClipId);
+			Get(HEAL_EFFECT, transform.position, PlayEffect: false);
+			PlaySFX(PLAYER_BOTTLE_OPEN);
 		}
 		private void SetTargetInteract() {
 			if (targetInteractSync.CheckIn(targetInteractSyncTime)) return;
@@ -294,7 +293,7 @@ namespace AncientMemorial.Entities {
 			hand.SetActive(false);
 			entityState = null;
 			if (WeaponInitialized) { WeaponInitialized = false; weapon?.Uninitialize(); }
-			if (playerUI && playerUI.lifeNumber == PlayerUiLife) playerUI.Release();
+			if (playerUI && playerUI.Matches(PlayerUiLife)) playerUI.Release();
 			playerUI = null;
 			base.OnRelease();
 			if (player == this) player = null;
@@ -302,7 +301,7 @@ namespace AncientMemorial.Entities {
 
 		protected override void OnGrounded() {
 			player.SendEvent(EventType.Entity_Player_Land, EventPriority.Stop);
-			PlaySFX(PlayerLandClipId);
+			PlaySFX(PLAYER_LAND);
 		}
 
 		public override void Initialize() {
@@ -314,7 +313,7 @@ namespace AncientMemorial.Entities {
 			WeaponInitialized = weapon != null;
 			weapon?.Initialize();
 
-			playerUI = UUI.Get(PlayerUIPrefabId, GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
+			playerUI = UUI.Get(PLAYER_UI, GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
 			PlayerUiLife = playerUI.lifeNumber;
 			entityState = PlayerState.idle;
 			
@@ -325,14 +324,14 @@ namespace AncientMemorial.Entities {
 			Invincible(0.2f);
 			ShowDamageUI(damage);
 			
-			PlaySFX(PlayerHitClipId);
+			PlaySFX(PLAYER_HIT);
 
 			bool isHurt = damage > data.HP * 0.3f;
 			playerUI.animator.Play(isHurt?"hitHard":"hit", 0, 0);
 			
 			GameManager.SetTimeScale(0.05f, 0.3f);
-			CameraBrain.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
-			CameraBrain.instance.ZoomLerp(-0.3f);
+			CameraManager.instance.ShakeLerp(3f*Mathf.Max(Mathf.Log(damage+3),0.5f), 5);
+			CameraManager.instance.ZoomLerp(-0.3f);
 		}
 
 		protected override void OnHeal(float amount) {

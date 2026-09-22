@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using AncientMemorial.Cameras;
 using UengSystem;
 using UengSystem.ObjectPool;
 using UengSystem.Objects.LifeCycle;
-using UengSystem.UAction;
 using UengSystem.UI;
 using UengSystem.UI.UTexts;
 using UengSystem.VisualScripting.UValues.UStrings;
@@ -40,8 +39,8 @@ namespace AncientMemorial.Entities.Enemies {
 			
 			if (stat.HP > 0) {
 				GameManager.SetTimeScale(0, 0.05f);
-				CameraBrain.instance.ShakeLerp(1f, 5);
-				CameraBrain.instance.ZoomLerp(-0.1f);
+				CameraManager.instance.ShakeLerp(1f, 5);
+				CameraManager.instance.ZoomLerp(-0.1f);
 			}
 		}
 
@@ -60,8 +59,8 @@ namespace AncientMemorial.Entities.Enemies {
 
 		protected override void Death() {
 			GameManager.SetTimeScale(0, 0.15f);
-			CameraBrain.instance.ShakeLerp(3f * Mathf.Max(Mathf.Log(lastHitDamage + 3), 0.5f), 3);
-			CameraBrain.instance.ZoomLerp(-2f);
+			CameraManager.instance.ShakeLerp(3f * Mathf.Max(Mathf.Log(lastHitDamage + 3), 0.5f), 3);
+			CameraManager.instance.ZoomLerp(-2f);
 			
 			base.Death();
 		}

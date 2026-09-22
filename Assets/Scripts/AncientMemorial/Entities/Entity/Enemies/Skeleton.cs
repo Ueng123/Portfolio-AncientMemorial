@@ -11,10 +11,10 @@ namespace AncientMemorial.Entities.Enemies {
 	public abstract class Skeleton : Enemy {
 
 		// 정적 프로퍼티
-		private static readonly int DoogaegolPrefabId = "doogaegol".GetHash();
-		private static readonly int SkeletonExcitedClipId = "skeletonExcited".GetHash();
-		private static readonly int SkeletonDeathClipId = "skeletonDeath".GetHash();
-		private static readonly int SkeletonLandClipId = "skeletonLand".GetHash();
+		private static readonly int DOOGAEGOL = "doogaegol".GetHash();
+		private static readonly int SKELETON_EXCITED = "skeletonExcited".GetHash();
+		private static readonly int SKELETON_DEATH = "skeletonDeath".GetHash();
+		private static readonly int SKELETON_LAND = "skeletonLand".GetHash();
 
 		protected static readonly int Landing   = Animator.StringToHash("landing");
 
@@ -49,12 +49,12 @@ namespace AncientMemorial.Entities.Enemies {
 			AddProcessToFixedUpdate(() => { rigidbody2D.AddForce(pushDirection * velocity, ForceMode2D.Impulse); });
 			
 			if (stat.HP > 0) {
-				PlaySFX(SkeletonExcitedClipId);
+				PlaySFX(SKELETON_EXCITED);
 				
 				if (attacker != player) return;
 				GameManager.SetTimeScale(0f, 0.05f);
-				CameraBrain.instance.ShakeLerp(1f, 10f);
-				CameraBrain.instance.ZoomLerp(-0.1f);
+				CameraManager.instance.ShakeLerp(1f, 10f);
+				CameraManager.instance.ZoomLerp(-0.1f);
 			}
 		}
 		
@@ -67,13 +67,13 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		protected override void Death() {
-			PlaySFX(SkeletonDeathClipId);
+			PlaySFX(SKELETON_DEATH);
 
 			GameManager.SetTimeScale(0f, 0.05f);
-			CameraBrain.instance.ShakeLerp(2f, 10);
-			CameraBrain.instance.ZoomLerp(-0.2f);
+			CameraManager.instance.ShakeLerp(2f, 10);
+			CameraManager.instance.ZoomLerp(-0.2f);
 
-			GameObject doogaegol = UObject.Get(DoogaegolPrefabId, (Vector2)transform.position +  new Vector2(-0.03125f, 0.21875f), PlayEffect: false);
+			GameObject doogaegol = UObject.Get(DOOGAEGOL, (Vector2)transform.position +  new Vector2(-0.03125f, 0.21875f), PlayEffect: false);
 			Rigidbody2D doogaegolRB = doogaegol.GetComponent<Rigidbody2D>();
 			
 			doogaegolRB.AddForce(new Vector2(Random.Range(-2f, 2f), Random.Range(4f, 6f)), ForceMode2D.Impulse);
@@ -83,7 +83,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 
 		protected override void OnGrounded() {
-			PlaySFX(SkeletonLandClipId);
+			PlaySFX(SKELETON_LAND);
 			
 			Stun(0.5f);
 		}

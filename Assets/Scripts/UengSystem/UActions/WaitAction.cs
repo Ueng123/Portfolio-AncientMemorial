@@ -3,7 +3,7 @@ using System.Collections;
 using UengSystem.Managers;
 using UnityEngine;
 
-namespace UengSystem.UAction {
+namespace UengSystem.UActions {
     public class WaitAction : UAction {
 
        // 정적 프로퍼티

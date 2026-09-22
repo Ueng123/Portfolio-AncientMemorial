@@ -33,16 +33,15 @@ namespace UengSystem.Objects.LifeCycle {
 
 		// 인스턴스 메서드
 		public LifeCycleStateMachine(UObject Target) {
-			
 			target = Target ?? throw new ArgumentNullException(nameof(Target));
 		}
 
 		private void CheckConfiguration(LifeCycleState State) {
-			if (isPrepared) throw new InvalidOperationException("Life cycle states can only be configured before OnFirstGet completes.");
+			// OnFirstGet 전에 실행하도록 강제함
+			if (isPrepared) throw new InvalidOperationException("Life cycle states can only be configured before OnFirstGet completed.");
 			if (State == null || !ReferenceEquals(State.target, target))
-				throw new ArgumentException("Each life cycle state must belong to this UObject.", nameof(State));
+				throw new ArgumentException("State have wrong target", nameof(State));
 		}
-
 		
 		public void SetGettingState(Getting State) { CheckConfiguration(State); GettingState = State; }
 		public void SetReleasingState(Releasing State) { CheckConfiguration(State); ReleasingState = State; }
@@ -50,24 +49,23 @@ namespace UengSystem.Objects.LifeCycle {
 			SetGettingState(GettingState);
 			SetReleasingState(ReleasingState);
 		}
+		
 		public void SetDefaultStates(Getting GettingState = null, Releasing ReleasingState = null) {
-			
+			// OnFirstGet 전에 실행하도록 강제함
 			if (isPrepared) throw new InvalidOperationException("Life cycle is already prepared.");
 			if (GettingState != null) { CheckConfiguration(GettingState); this.GettingState ??= GettingState; }
 			if (ReleasingState != null) { CheckConfiguration(ReleasingState); this.ReleasingState ??= ReleasingState; }
 		}
 
 		public void Prepare() {
-			
 			if (isPrepared) return;
 			SetDefaultStates(new DefaultGetting(target), new DefaultReleasing(target));
 			isPrepared = true;
 		}
 
 		public void Get(bool PlayEffect) {
-			
 			if (!isPrepared || isFaulted || isShuttingDown || phase != LifeCyclePhase.Released || Completing)
-				throw new InvalidOperationException("Only a prepared, released UObject can begin a new life.");
+				throw new InvalidOperationException("Only prepared, released UObject can begin new life.");
 			
 			lifeNumber++;
 			ReleaseStarted = false;
@@ -105,7 +103,6 @@ namespace UengSystem.Objects.LifeCycle {
 			
 			if (!target.gameObject.activeInHierarchy) { Shutdown(); return; }
 			if (phase == LifeCyclePhase.Releasing) {
-				
 				if (PlayEffect) return;
 				
 				if (Starting) { InstantReleaseRequested = true; return; }
@@ -139,23 +136,20 @@ namespace UengSystem.Objects.LifeCycle {
 			}
 			catch (Exception Error) { Starting = false; Fail(Error, Life); }
 		}
+		
+		public void MarkReleaseStarted() => ReleaseStarted = true;
 
 		private void PrepareState(LifeCycleState State, bool PlayEffect) {
-			
 			currentState = State;
 			executionNumber++;
 			State.PrepareExecution(this, executionNumber, PlayEffect);
 		}
 
-		
-		public void MarkReleaseStarted() => ReleaseStarted = true;
-
 		private void StartState(bool PlayEffect) {
-			
 			LifeCycleState State = currentState;
 			long Execution = executionNumber;
+			
 			if (!PlayEffect) {
-				
 				RequestComplete(State, Execution);
 				return;
 			}
@@ -170,8 +164,8 @@ namespace UengSystem.Objects.LifeCycle {
 			PendingCompletion = false;
 			PendingRelease = false;
 			PendingReleaseEffect = true;
+			
 			try {
-				
 				State.Enter();
 				
 				CompleteRequested = PendingCompletion;
@@ -179,13 +173,11 @@ namespace UengSystem.Objects.LifeCycle {
 				ReleaseEffect = PendingReleaseEffect;
 			}
 			finally {
-				
 				Entering = false;
 				PendingCompletion = false;
 				PendingRelease = false;
 				PendingReleaseEffect = false;
 			}
-
 			
 			if (!IsCurrent(State, Execution)) return;
 			
@@ -194,14 +186,15 @@ namespace UengSystem.Objects.LifeCycle {
 		}
 
 		public bool IsCurrent(LifeCycleState State, long Execution) {
+			bool exit             = isFaulted || isShuttingDown;
+			bool isRightState     = ReferenceEquals(currentState, State);
+			bool isRightExecution = Execution == executionNumber;
+			bool isRightPhase     = phase is LifeCyclePhase.Getting or LifeCyclePhase.Releasing;
 			
-			
-			return !isFaulted && !isShuttingDown && ReferenceEquals(currentState, State)
-			       && Execution == executionNumber && (phase == LifeCyclePhase.Getting || phase == LifeCyclePhase.Releasing);
+			return !exit && isRightState && isRightExecution && isRightPhase;
 		}
 
 		public void Tick(long Execution, float DeltaTime) {
-			
 			if (Completing || Starting || Entering || !IsCurrent(currentState, Execution)) return;
 			long Life = lifeNumber;
 			
@@ -210,7 +203,6 @@ namespace UengSystem.Objects.LifeCycle {
 		}
 
 		public void RequestComplete(LifeCycleState State, long Execution) {
-			
 			if (State == null || Completing || !IsCurrent(State, Execution)) return;
 			
 			if (Entering) { PendingCompletion = true; return; }
@@ -219,8 +211,8 @@ namespace UengSystem.Objects.LifeCycle {
 			
 			bool WasGetting = phase == LifeCyclePhase.Getting;
 			Completing = true;
+			
 			try {
-				
 				State.MarkComplete();
 				
 				State.ClearEffectOnce();
@@ -231,31 +223,29 @@ namespace UengSystem.Objects.LifeCycle {
 				
 				currentState = null;
 				target.UnregisterLifeCycle(Execution);
+				
 				if (WasGetting) {
-					
 					phase = LifeCyclePhase.Active;
 					target.ActivateLife();
 					Completing = false;
-					
-					
+
 					target.Initialize();
-					return;
 				}
-				
-				
-				target.FinishReleasing();
-				if (isShuttingDown) return;
-				phase = LifeCyclePhase.Released;
-				Completing = false;
-				
-				target.ReturnToPool();
+				else {
+					target.FinishReleasing();
+					if (isShuttingDown) return;
+					phase      = LifeCyclePhase.Released;
+					Completing = false;
+
+					target.ReturnToPool();
+				}
 			}
-			catch (Exception Error) { Fail(Error, Life); }
+			catch (Exception Error) {
+				Fail(Error, Life);
+			}
 		}
 
 		private void Fail(Exception Error, long Life) {
-			
-			
 			if (lifeNumber == Life) {
 				isFaulted = true;
 				Shutdown();
@@ -265,16 +255,12 @@ namespace UengSystem.Objects.LifeCycle {
 		}
 
 		public void Shutdown() {
-			
-			
 			if (isShuttingDown) return;
 			isShuttingDown = true;
 			
 			Completing = true;
 			
-			
 			if (phase != LifeCyclePhase.Released) phase = LifeCyclePhase.Releasing;
-			
 			
 			LifeCycleState State = currentState;
 			currentState = null;

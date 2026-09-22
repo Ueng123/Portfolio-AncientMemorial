@@ -10,8 +10,8 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Archer {
 	public class SkeletonArcherShoot : SkeletonAttack {
 
 		// 정적 프로퍼티
-		private static readonly int ArrowPrefabId = "Arrow".GetHash();
-		private static readonly int BowShootClipId = "bowShoot".GetHash();
+		private static readonly int ARROW = "Arrow".GetHash();
+		private static readonly int BOW_SHOOT = "bowShoot".GetHash();
 
 		private const float attackProgress = 6f / 11f;
 
@@ -60,9 +60,9 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Archer {
 		private void ShootArrow(float v, Vector2 targetPosition) {
 			if (!ArrowShootable(v, targetPosition)) return;
 			
-			enemy.PlaySFX(BowShootClipId);
+			enemy.PlaySFX(BOW_SHOOT);
 			
-			GameObject arrowObject = UObject.Get(ArrowPrefabId, enemy.transform.position, PlayEffect: false);
+			GameObject arrowObject = UObject.Get(ARROW, enemy.transform.position, PlayEffect: false);
 			Arrow      arrow       = arrowObject.GetComponent<Arrow>();
 			
 			arrow.rigidbody2D.linearVelocity = GetArrowDir(v, targetPosition);

@@ -14,8 +14,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
     public abstract class CrystalPhase3State : CrystalState {
 
         // 정적 프로퍼티
-        private static readonly int MissilePoolKey = "CrystalSemiHugeMissile".GetHash();
-        private static readonly int RayPoolKey = "CrystalUltRay".GetHash();
+        private static readonly int CRYSTAL_SEMI_HUGE_MISSILE = "CrystalSemiHugeMissile".GetHash();
+        private static readonly int CRYSTAL_ULT_RAY = "CrystalUltRay".GetHash();
         private const string MapLayerName   = "Map";
         private const float SnapDistance    = 0.01f;
         private const float ResnapDistance  = 0.1f;
@@ -42,7 +42,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
             float        dist      = Vector2.Distance(pos, hit.point) - 0.5f;
             float        timeToHit = dist / speed;
 			
-            GameObject obj = UObject.Get(MissilePoolKey, pos, PlayEffect: false);
+            GameObject obj = UObject.Get(CRYSTAL_SEMI_HUGE_MISSILE, pos, PlayEffect: false);
             obj.transform.rotation = Quaternion.Euler(0, 0, rot);
             
             BasicProjectile semiHugeMissile = obj.GetComponent<BasicProjectile>();
@@ -74,7 +74,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3 {
         protected CrystalRay SpawnRay(float radius, float angularVelocity, float offsetDegrees, Vector2? pos = null, bool effect = false) {
             Vector2 mapSize = MapManager.instance.GetMapSize();
             
-            GameObject    ultRayObj = UObject.Get(RayPoolKey, pos ?? new Vector2(0, mapSize.y / 2), PlayEffect: true);
+            GameObject    ultRayObj = UObject.Get(CRYSTAL_ULT_RAY, pos ?? new Vector2(0, mapSize.y / 2), PlayEffect: true);
             CrystalRay ray    = ultRayObj.GetComponent<CrystalRay>();
             ray.owner           = crystal;
             ray.radius          = radius;

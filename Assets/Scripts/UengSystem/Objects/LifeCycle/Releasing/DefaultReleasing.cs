@@ -5,7 +5,6 @@ namespace UengSystem.Objects.LifeCycle {
 
 		// 인스턴스 프로퍼티
 		private Color InitialColor;
-		private Sprite InitialSprite;
 
 		// 인스턴스 메서드
 		public DefaultReleasing(UObject Target) : base(Target) { }
@@ -14,16 +13,14 @@ namespace UengSystem.Objects.LifeCycle {
 		protected override void OnStartEffect() {
 			if (target.spriteRenderer) {
 				InitialColor = target.spriteRenderer.color;
-				InitialSprite = target.spriteRenderer.sprite;
-				target.spriteRenderer.sprite = target.whiteSpawnSprite ? target.whiteSpawnSprite : InitialSprite;
 			}
 			target.FreezeAnimator();
 		}
 
 		protected override void OnEffectRoutine(float DeltaTime) {
 			if (!target.spriteRenderer) return;
-			Color Color = GameManager.instance ? GameManager.instance.spawnColor : Color.white;
-			Color.a = duration <= 0 ? 0 : 1 - Mathf.Clamp01(elapsed / duration);
+			Color Color = InitialColor;
+			Color.a *= duration <= 0 ? 0 : 1 - Mathf.Clamp01(elapsed / duration);
 			target.spriteRenderer.color = Color;
 		}
 
@@ -31,7 +28,6 @@ namespace UengSystem.Objects.LifeCycle {
 			if (!hasStartedEffect) return;
 			if (target.spriteRenderer) {
 				target.spriteRenderer.color = InitialColor;
-				target.spriteRenderer.sprite = InitialSprite;
 			}
 			target.UnfreezeAnimator();
 		}

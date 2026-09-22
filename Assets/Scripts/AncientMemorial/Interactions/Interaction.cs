@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using AncientMemorial.Entities;
 using UengSystem.Events;
 using UengSystem.Objects;
-using UengSystem.UAction;
+using UengSystem.UActions;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
 using UengSystem.UI.UTexts;
@@ -27,7 +27,7 @@ namespace AncientMemorial.Interactions {
 	public class Interaction : UObject {
 
 		// 정적 프로퍼티
-		private static readonly int InteractUIPrefabId = "InteractUI".GetHash();
+		private static readonly int INTERACT_UI = "InteractUI".GetHash();
 		public static List<Interaction> InteractableInteractions = new ();
 
 		// 인스턴스 프로퍼티
@@ -95,7 +95,7 @@ namespace AncientMemorial.Interactions {
 
 		protected virtual void Targetted() {
 			if (showInteractUI && !interactUI) {
-				interactUI = UUI.Get(InteractUIPrefabId, canvas, Configure: Ui => {
+				interactUI = UUI.Get(INTERACT_UI, canvas, Configure: Ui => {
                 _uInteractProgressValue ??= new UInteractProgressValue { interactObject = new UPureObject { pureValue = this } };
                 	
                 USliderAction sliderAction = Ui.GetAction<USliderAction>("Bar");
@@ -118,7 +118,7 @@ namespace AncientMemorial.Interactions {
 
 		protected virtual void Untargetted() {
 			if (interactUI) {
-				if (interactUI.lifeNumber == InteractUiLife) interactUI.Release(PlayEffect: true);
+				if (interactUI.Matches(InteractUiLife)) interactUI.Release(PlayEffect: true);
 				interactUI = null;
 			}
 			
@@ -214,7 +214,7 @@ namespace AncientMemorial.Interactions {
 			base.Uninitialize();
 
 			if (!interactUI) return;
-			if (interactUI.lifeNumber == InteractUiLife) interactUI.Release(PlayEffect: false);
+			if (interactUI.Matches(InteractUiLife)) interactUI.Release(PlayEffect: false);
 			interactUI = null;
 		}
 

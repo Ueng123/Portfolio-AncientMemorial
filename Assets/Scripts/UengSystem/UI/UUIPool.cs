@@ -14,7 +14,6 @@ namespace UengSystem.UI {
 	public class UUIPool : Manager<UUIPool> {
 
 		// 인스턴스 프로퍼티
-		[FormerlySerializedAs("UIData")] [FormerlySerializedAs("prefabData")] [SerializeField]
 		public GameObject[] prefabList;
 		private readonly Dictionary<int, ObjectPool<GameObject>> pools            = new (15);
 		private readonly Dictionary<int, Transform>              roots            = new (15);
@@ -33,6 +32,7 @@ namespace UengSystem.UI {
 			if (!Canvas) throw new ArgumentNullException(nameof(Canvas));
 			if (!pools.TryGetValue(PrefabId, out ObjectPool<GameObject> Pool))
 				throw new KeyNotFoundException("Unregistered UI prefab ID: " + PrefabId);
+			
 			UUI Target = Pool.Get().GetComponent<UUI>();
 			Target.transform.SetParent(Canvas.transform, false);
 			Target.canvas = Canvas;
@@ -83,7 +83,7 @@ namespace UengSystem.UI {
 						obj.SetActive(false);
 						UUI Target = obj.GetComponent<UUI>();
 						Target.OnFirstGet();
-						Target.BindPool(Item => ReturnToPool(PrefabId, (UUI)Item));
+						Target.SetPoolReturnMethod(Item => ReturnToPool(PrefabId, (UUI)Item));
 						Owned.Add(Target);
 						return obj;
 					},

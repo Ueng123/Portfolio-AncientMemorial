@@ -22,7 +22,7 @@ namespace UengSystem.Managers {
 		public virtual void Initialize()   { }
 		public virtual void Uninitialize() { }
 
-		public virtual void ManagerUpdate() { }
+		public virtual void ManagerRoutine() { }
 		public virtual void ManagerFixedUpdate() { }
 	}
 }

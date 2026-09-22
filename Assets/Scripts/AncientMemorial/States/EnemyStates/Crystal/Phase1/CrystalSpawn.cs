@@ -12,8 +12,8 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase1 {
 	public class CrystalSpawn : CrystalAttack {
 
 		// 정적 프로퍼티
-		private static readonly int SkeletonWarriorCPrefabId = "SkeletonWarriorC".GetHash();
-		private static readonly int SkeletonArcherCPrefabId = "SkeletonArcherC".GetHash();
+		private static readonly int SKELETON_WARRIOR_C = "SkeletonWarriorC".GetHash();
+		private static readonly int SKELETON_ARCHER_C = "SkeletonArcherC".GetHash();
 		private static          int CRYSTAL_ENEMY_DEAD = "CrystalEnemyDead".GetHash();
 		private static readonly int ATTACKING          = "attacking".GetHash();
 
@@ -43,7 +43,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase1 {
 		}
 
 		public void SpawnCrystalSkeleton() {
-			int spawnEntityID = Random.Range(0, 2) == 0 ? SkeletonWarriorCPrefabId : SkeletonArcherCPrefabId;
+			int spawnEntityID = Random.Range(0, 2) == 0 ? SKELETON_WARRIOR_C : SKELETON_ARCHER_C;
 			Vector3 spawnPosOffset = new (Random.Range(2, 6) * (Random.Range(0, 2) == 0 ? 1 : -1), Random.Range(1, 1.5f));
 			GameObject entityObject = UObject.Get(spawnEntityID, crystal.transform.position + spawnPosOffset, PlayEffect: true);
 			entityObject.GetComponent<UObject>().Category = "CrystalEnemy";

@@ -5,7 +5,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack {
 	public class CrystalFinalE : CrystalPhase3Attack {
 
 		// 정적 프로퍼티
-		private static readonly int CrystalDeathClipId = "crystalDeath".GetHash();
+		private static readonly int CRYSTAL_DEATH = "crystalDeath".GetHash();
 
 		// 인스턴스 프로퍼티
 		public override float attackTime => 10f;
@@ -16,7 +16,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase3.FinalAttack {
 
 			SetMoveMode(CrystalMoveMode.Death);
 			crystal.animator.Play("Death");
-			AudioManager.instance.PlaySFX(CrystalDeathClipId);
+			AudioManager.instance.PlaySFX(CRYSTAL_DEATH);
 			
 			SpawnRay(-3.5f, 0, 30, effect:true);
 			SpawnRay(-3.5f, 0, 90);

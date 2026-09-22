@@ -69,7 +69,7 @@ namespace UengSystem.VisualScripting.Tasks {
 		private static bool IsValidOwner(UObject owner, bool hasOwner, long life, bool releasing) {
 			if (UObject.isStoppingLifeCycles) return false;
 			if (!hasOwner) return true;
-			return owner && owner.lifeNumber == life && !owner.isReleased && !owner.lifeCycle.isShuttingDown
+			return owner && owner.Matches(life) && !owner.isNotWorking
 			       && (releasing || owner.lifeCycle.phase != LifeCyclePhase.Releasing);
 		}
 	}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AncientMemorial.Cameras;
 using UengSystem.VisualScripting.UValues;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace UengSystem.VisualScripting.Tasks {
 
 		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
-			CameraBrain.instance.ZoomLerp(zoomOffset.value, speed.value);
+			CameraManager.instance.ZoomLerp(zoomOffset.value, speed.value);
 		}
 	}
 }

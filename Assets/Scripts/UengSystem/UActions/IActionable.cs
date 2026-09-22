@@ -1,4 +1,4 @@
-﻿namespace UengSystem.UAction {
+﻿namespace UengSystem.UActions {
 	public interface IActionable {
 
 		// 인스턴스 메서드

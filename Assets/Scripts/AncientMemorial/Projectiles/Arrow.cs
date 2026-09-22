@@ -4,7 +4,7 @@ using AncientMemorial.Objects;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.UAction;
+using UengSystem.UActions;
 using UengSystem.Utility;
 using UnityEngine;
 
@@ -12,18 +12,18 @@ namespace AncientMemorial.Projectiles {
 	public class Arrow : Projectile {
 
 		// 정적 프로퍼티
-		private static readonly int ArrowDebrisPrefabId = "ArrowDebris".GetHash();
-		private static readonly int ArrowHitEffectPrefabId = "ArrowHitEffect".GetHash();
+		private static readonly int ARROW_DEBRIS = "ArrowDebris".GetHash();
+		private static readonly int ARROW_HIT_EFFECT = "ArrowHitEffect".GetHash();
 
 		// 인스턴스 프로퍼티
 		private TrailRenderer trailRenderer;
 
 		// 인스턴스 메서드
 		private void Break(Transform parent = null, bool isEntity = false) {
-			GameObject obj = UObject.Get(ArrowDebrisPrefabId, transform.position, PlayEffect: false);
+			GameObject obj = UObject.Get(ARROW_DEBRIS, transform.position, PlayEffect: false);
 			
 			if (isEntity) {
-				GameObject eff = UObject.Get(ArrowHitEffectPrefabId, transform.position, PlayEffect: false);
+				GameObject eff = UObject.Get(ARROW_HIT_EFFECT, transform.position, PlayEffect: false);
 				eff.transform.rotation = transform.rotation;
 			}
 			

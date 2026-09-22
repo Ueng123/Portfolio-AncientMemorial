@@ -88,24 +88,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   canvas: {fileID: 0}
   rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 0, y: 0, z: 0}
   openTime: 0.001
   closeTime: 0.001
+  GettingAnimation: open
   actions:
   - key: GameMenu
     action:
@@ -140,6 +141,7 @@ MonoBehaviour:
       data:
         TargetUUI: {fileID: 776431297840088385, guid: defa62083355c194fb8addb8a987ac2f, type: 3}
         canvas: {fileID: 0}
+        PlayEffect: 1
         ID:
           rid: -2
         Category:
@@ -149,7 +151,7 @@ MonoBehaviour:
       data:
         component: {fileID: 0}
         actionType: 2001
-        pressType: 1
+        inputState: 1
         taskOnClicked:
           useRealTime: 1
           tasks:

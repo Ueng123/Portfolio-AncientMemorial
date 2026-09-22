@@ -23,7 +23,7 @@ namespace AncientMemorial.Objects {
 
 		public Entity attacker;
 		private long AttackerLife;
-		private bool hasActiveAttacker => attacker && attacker.isActive && attacker.lifeNumber == AttackerLife;
+		private bool hasActiveAttacker => attacker && attacker.isActive && attacker.Matches(AttackerLife);
 		public float  damageMult;
 		public int    maxTargetNum;
 		public bool   ignoreInvincible;
@@ -95,7 +95,7 @@ namespace AncientMemorial.Objects {
 		}
 
 		protected override void OnRelease() {
-			if (attacker && attacker.lifeNumber == AttackerLife) attacker.UnregisterAttackArea(this);
+			if (attacker && attacker.Matches(AttackerLife)) attacker.UnregisterAttackArea(this);
 			base.OnRelease();
 		}
 	}

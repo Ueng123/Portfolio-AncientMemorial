@@ -50,8 +50,8 @@ namespace UengSystem.UI {
 		public float closeTime;
 		[SerializeField] private string GettingAnimation = "open";
 		public string gettingAnimation => GettingAnimation;
-		public override float gettingDuration => openTime;
-		public override float releasingDuration => closeTime;
+		public override float usingGettingDuration => openTime;
+		public override float usingReleasingDuration => closeTime;
 		public override float lifeCycleDeltaTime => Time.unscaledDeltaTime;
 		
 		[Header("UUI")]
@@ -67,9 +67,9 @@ namespace UengSystem.UI {
 		}
 
 		public static GameObject Get(int PrefabId, UCanvas Canvas, bool PlayEffect = true, Action<UUI> Configure = null) {
-			CheckAcquisitionAllowed();
+			CheckAcquireAllowed();
 			UUI Target = UUIPool.instance.Acquire(PrefabId, Canvas);
-			Target.BeginLife(PlayEffect, Obj => Configure?.Invoke((UUI)Obj));
+			Target.BeginLife(PlayEffect, Obj => Configure?.Invoke(Obj.To<UUI>()));
 			return Target.gameObject;
 		}
 
@@ -92,12 +92,12 @@ namespace UengSystem.UI {
 		public virtual void OnClose() { }
 
 		public T GetAction<T>(string key) where T : UUIAction {
-			if (actionDict.TryGetValue(key, out UUIAction action)) return (T)action;
+			if (actionDict.TryGetValue(key, out UUIAction action)) return action.To<T>();
 			throw new KeyNotFoundException(key);
 		}
 		
 		public T GetAction<T>(int index) where T : UUIAction {
-			return (T)actions[index].action;
+			return actions[index].action.To<T>();
 		}
 
 		// 오버라이드 메서드
@@ -144,6 +144,5 @@ namespace UengSystem.UI {
 			UCategory = null;
 			base.OnRelease();
 		}
-
 	}
 }

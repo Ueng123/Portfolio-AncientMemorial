@@ -1,4 +1,4 @@
-﻿using UengSystem.Utility;
+using UengSystem.Utility;
 using System;
 using AncientMemorial.Cameras;
 using AncientMemorial.States.EnemyStates;
@@ -11,10 +11,10 @@ namespace AncientMemorial.Entities.Enemies {
 	public class SkeletonTank : Skeleton {
 
 		// 정적 프로퍼티
-		private static readonly int TankDeathClipId = "tankDeath".GetHash();
-		private static readonly int TankCriticalClipId = "tankCritical".GetHash();
-		private static readonly int TankHitClipId = "tankHit".GetHash();
-		private static readonly int TankFootStepClipId = "tankFootStep".GetHash();
+		private static readonly int TANK_DEATH = "tankDeath".GetHash();
+		private static readonly int TANK_CRITICAL = "tankCritical".GetHash();
+		private static readonly int TANK_HIT = "tankHit".GetHash();
+		private static readonly int TANK_FOOT_STEP = "tankFootStep".GetHash();
 
 		// 인스턴스 프로퍼티
 		private int        attackPhase = 0;
@@ -22,7 +22,7 @@ namespace AncientMemorial.Entities.Enemies {
 		private EnemyState energyBurst;
 		private EnemyState skeletonSpawn;
 
-		protected override int footstepClipId => TankFootStepClipId;
+		protected override int footstepClipId => TANK_FOOT_STEP;
 
 		// 오버라이드 메서드
 		public override void OnFirstGet() {
@@ -70,21 +70,21 @@ namespace AncientMemorial.Entities.Enemies {
 			else ShowDamageUI(damage);
 			
 			if (stat.HP > 0) {
-				PlaySFX(groggy ? TankCriticalClipId : TankHitClipId);
+				PlaySFX(groggy ? TANK_CRITICAL : TANK_HIT);
 				
 				if (attacker != player) return;
 				GameManager.SetTimeScale(0f, 0.05f);
-				CameraBrain.instance.ShakeLerp(1f, 10f);
-				CameraBrain.instance.ZoomLerp(-0.1f);
+				CameraManager.instance.ShakeLerp(1f, 10f);
+				CameraManager.instance.ZoomLerp(-0.1f);
 			}
 		}
 
 		protected override void Death() {
-			PlaySFX(TankDeathClipId);
+			PlaySFX(TANK_DEATH);
 
 			GameManager.SetTimeScale(0.25f, 1f);
-			CameraBrain.instance.ShakeLerp(5f, 10);
-			CameraBrain.instance.ZoomLerp(-1f);
+			CameraManager.instance.ShakeLerp(5f, 10);
+			CameraManager.instance.ZoomLerp(-1f);
 
 			base.Death();
 		}

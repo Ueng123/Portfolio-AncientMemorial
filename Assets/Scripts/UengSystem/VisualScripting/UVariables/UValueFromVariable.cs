@@ -29,5 +29,9 @@ namespace UengSystem.VisualScripting.UVariables {
 			VariableId = null;
 		}
 
+		public override void OnAfterDeserialize() {
+			base.OnAfterDeserialize();
+			VariableId = null;
+		}
 	}
 }

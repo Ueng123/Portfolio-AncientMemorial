@@ -11,9 +11,9 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 	public class FallStrike : PlayerWeaponAttack {
 
 		// 정적 프로퍼티
-		private static readonly int Explode3PrefabId = "Explode3".GetHash();
-		private static readonly int ShieldFallAttackClipId = "shieldFallAttack".GetHash();
-		private static readonly int ShieldSweepClipId = "shieldSweep".GetHash();
+		private static readonly int EXPLODE_3 = "Explode3".GetHash();
+		private static readonly int SHIELD_FALL_ATTACK = "shieldFallAttack".GetHash();
+		private static readonly int SHIELD_SWEEP = "shieldSweep".GetHash();
 
 		// 인스턴스 프로퍼티
 		private AttackArea attackAction;
@@ -38,7 +38,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 			player.rigidbody2D.linearVelocity = Vector2.zero;
 			
 			player.FreezeRigidbody2D();
-			player.PlaySFX(ShieldFallAttackClipId);
+			player.PlaySFX(SHIELD_FALL_ATTACK);
 			player.animator.Play((player.lookingLeft?"SFallAttackB":"SFallAttack"), 0);
 			
 			RaycastHit2D hit       = Physics2D.Raycast(player.transform.position, downDir, MapManager.instance.GetMapSize().y, LayerMask.GetMask("Map"));
@@ -66,11 +66,11 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Shield {
 				}
 
 				player.transform.position = targetPos;
-				player.PlaySFX(ShieldSweepClipId);
-				UObject.Get(Explode3PrefabId, player.groundChecker.transform.position + Vector3.up * 0.25f, PlayEffect: false);
+				player.PlaySFX(SHIELD_SWEEP);
+				UObject.Get(EXPLODE_3, player.groundChecker.transform.position + Vector3.up * 0.25f, PlayEffect: false);
 
-				CameraBrain.instance.ShakeLerp(2f, 10f);
-				CameraBrain.instance.ZoomLerp(-1f);
+				CameraManager.instance.ShakeLerp(2f, 10f);
+				CameraManager.instance.ZoomLerp(-1f);
 
 				step = 1;
 			}

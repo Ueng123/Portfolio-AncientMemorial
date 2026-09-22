@@ -4,7 +4,7 @@ using UengSystem.Managers;
 using UengSystem.Utility;
 using UnityEngine;
 
-namespace UengSystem.UAction {
+namespace UengSystem.UActions {
 	public class DelayedAction : UAction {
 
 		// 정적 프로퍼티

@@ -8,7 +8,7 @@ namespace AncientMemorial.States.PlayerStates {
 	public class Dash : PlayerState {
 
 		// 정적 프로퍼티
-		private static readonly int PlayerDashClipId = "playerDash".GetHash();
+		private static readonly int PLAYER_DASH = "playerDash".GetHash();
 
 		
 		private static readonly int Moving   = Animator.StringToHash("moving");
@@ -27,7 +27,7 @@ namespace AncientMemorial.States.PlayerStates {
 		// 오버라이드 메서드
 		public override void OnEnter() {
 			player.SendEvent(EventType.Entity_Player_Dash, EventPriority.Action);
-			player.PlaySFX(PlayerDashClipId);
+			player.PlaySFX(PLAYER_DASH);
 			player.Invincible(dashTime+0.3f);
 			
 			player.animator.SetBool(Moving, true);

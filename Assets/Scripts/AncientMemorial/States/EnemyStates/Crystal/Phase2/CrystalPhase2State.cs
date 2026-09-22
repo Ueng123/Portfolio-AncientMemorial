@@ -12,7 +12,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 	public class CrystalPhase2State : CrystalState {
 
 		// 정적 프로퍼티
-		private static readonly int CrystalHugeMissilePrefabId = "CrystalHugeMissile".GetHash();
+		private static readonly int CRYSTAL_HUGE_MISSILE = "CrystalHugeMissile".GetHash();
 		private static readonly int               ATTACKING          = "attacking".GetHash();
 
 		// 인스턴스 프로퍼티
@@ -32,7 +32,7 @@ namespace AncientMemorial.States.EnemyStates.Crystal.Phase2 {
 		protected void ShootHugeMissile(Vector2 hitboxPos, Vector2 hitboxSize) {
 			Vector2 mapSize = MapManager.instance.GetTargetMapSize();
 			
-			GameObject      obj = UObject.Get(CrystalHugeMissilePrefabId, new Vector2(hitboxPos.x, mapSize.y-2), PlayEffect: false);
+			GameObject      obj = UObject.Get(CRYSTAL_HUGE_MISSILE, new Vector2(hitboxPos.x, mapSize.y-2), PlayEffect: false);
 			BasicProjectile hugeMissile = obj.GetComponent<BasicProjectile>();
 			hugeMissile.Category = "crystalMissile";
 			

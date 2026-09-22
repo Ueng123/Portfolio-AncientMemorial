@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialObject: 1
-  ID: MainCamera
+  ID: UCamera
   Category: IMPORTANT
 --- !u!114 &108502713
 MonoBehaviour:
@@ -932,7 +932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialObject: 1
-  ID: CAMERABRAIN
+  ID: CAMERAMANAGER
   Category: IMPORNTANT
 --- !u!114 &519420037
 MonoBehaviour:
@@ -958,9 +958,8 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  currCamera: {fileID: 108502714}
   cameraBrain: {fileID: 519420035}
-  mainCamera: {fileID: 108502713}
+  uCamera: {fileID: 108502713}
   references:
     version: 2
     RefIds: []
@@ -1113,7 +1112,7 @@ MonoBehaviour:
   Crystal: {fileID: 185566328}
   mainScreenCanvas: {fileID: 1794307683}
   mainWorldCanvas: {fileID: 761098657}
-  mainCamera: {fileID: 108502713}
+  uCamera: {fileID: 108502713}
   sceneHider: {fileID: 2131371067}
   weapons:
   - {fileID: 11400000, guid: cbabb7fefac006d4aac5f875c7d06071, type: 2}

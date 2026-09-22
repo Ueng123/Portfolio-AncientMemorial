@@ -9,7 +9,7 @@ using AncientMemorial.Objects;
 using UengSystem.Audio;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
-using UengSystem.UAction;
+using UengSystem.UActions;
 using UengSystem.UDebug;
 using UengSystem.Utility;
 using UengSystem.VisualScripting.Tasks;
@@ -28,8 +28,8 @@ namespace UengSystem.Objects {
 		public WhenInitialize whenInitialize;
 
 		
-		[Header("Identify")] private string _ID;
-		private                      string _Category;
+		private string _ID;
+		private string _Category;
 
 		public string ID {
 			get => _ID;
@@ -52,7 +52,7 @@ namespace UengSystem.Objects {
 				OnIdChanged(value);
 			}
 		}
-
+		
 		public string Category {
 			get => _Category;
 			set {
@@ -76,22 +76,14 @@ namespace UengSystem.Objects {
 				OnCategoryChanged(value);
 			}
 		}
-
-		public Sprite whiteSpawnSprite;
-		public Sprite colorSpawnSprite;
-		public bool isReleased => lifeCycle.phase == UengSystem.Objects.LifeCycle.LifeCyclePhase.Released;
-
 		
-		
-		private readonly List<UAction.UAction> runningActions = new();
-		
+		private readonly List<UAction> runningActions = new();
 		
 		[HideInInspector] public Rigidbody2D    rigidbody2D;
 		[HideInInspector] public SpriteRenderer spriteRenderer;
 		[HideInInspector] public Animator       animator;
 		
 		private Dictionary<GameObject, ObjectInitializeData> objectInitializeData = new();
-		
 
 		private bool                   isRigidbody2DFrozen = false;
 		private Vector2                linearVelocityBeforeFreeze;
@@ -142,22 +134,20 @@ namespace UengSystem.Objects {
 												 loop);
 		}
 
-		public void RegisterAction(UAction.UAction action) {
+		public void RegisterAction(UAction action) {
 			if (!canStartOwnedWork) { action.Cancel(); return; }
 			runningActions.Add(action);
 		}
 		
-		public void UnregisterAction(UAction.UAction action) {
+		public void UnregisterAction(UAction action) {
 			runningActions.Remove(action);
 		}
 
 		public void StopAllUActions() {
-			UAction.UAction[] Actions = runningActions.ToArray();
+			UAction[] Actions = runningActions.ToArray();
 			runningActions.Clear();
-			foreach (UAction.UAction Action in Actions) Action.Cancel();
+			foreach (UAction Action in Actions) Action.Cancel();
 		}
-
-
 		
 		public void SendEvent(EventType type, EventPriority layer, IEventData data = null) {
 			EventManager.instance.AddEvent(new Event(type, this, data), layer);

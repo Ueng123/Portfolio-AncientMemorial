@@ -11,8 +11,8 @@ namespace UengSystem.Objects {
 		public AnimationClip InitializeClip;
 		public AnimationClip ReleaseClip;
 
-		public override float gettingDuration => GetClip ? GetClip.length : 0;
-		public override float releasingDuration => ReleaseClip ? ReleaseClip.length : 0;
+		public override float usingGettingDuration => GetClip ? GetClip.length : 0;
+		public override float usingReleasingDuration => ReleaseClip ? ReleaseClip.length : 0;
 
 		// 오버라이드 메서드
 		public override void OnFirstGet() {

@@ -13,10 +13,10 @@ namespace AncientMemorial.Waves {
 	public class WaveManager : Manager<WaveManager> {
 
 		// 정적 프로퍼티
-		private static readonly int ClearUIPrefabId = "ClearUI".GetHash();
-		private static readonly int DieUIPrefabId = "DieUI".GetHash();
-		private static readonly int ClearClipId = "clear".GetHash();
-		private static readonly int DeadClipId = "Dead".GetHash();
+		private static readonly int CLEAR_UI = "ClearUI".GetHash();
+		private static readonly int DIE_UI = "DieUI".GetHash();
+		private static readonly int CLEAR = "clear".GetHash();
+		private static readonly int DEAD = "Dead".GetHash();
 
 		// 인스턴스 프로퍼티
 		private int TIME_ELAPSED = "timeElapsed".GetHash();
@@ -46,19 +46,19 @@ namespace AncientMemorial.Waves {
 		}
 		
 		public void GameEnd() {
-			AudioManager.instance.PlaySFX(ClearClipId);
+			AudioManager.instance.PlaySFX(CLEAR);
 			currentWave.waveTasks.CancelTasks();
 			currentWave = null;
 			GameManager.SetTimeScale(0);
 			AudioManager.instance.StopAllSFX();
-			UUI.Get(ClearUIPrefabId, GameManager.instance.mainScreenCanvas);
+			UUI.Get(CLEAR_UI, GameManager.instance.mainScreenCanvas);
 		}
 		
 		public void GameOver() {
-			UUI.Get(DieUIPrefabId, GameManager.instance.mainScreenCanvas);
+			UUI.Get(DIE_UI, GameManager.instance.mainScreenCanvas);
 			currentWave.waveTasks.CancelTasks();
 			currentWave = null;
-			AudioManager.instance.SetBGM(DeadClipId);
+			AudioManager.instance.SetBGM(DEAD);
 			AudioManager.instance.StopAllSFX();
 			GameManager.SetTimeScale(0);
 		}
@@ -70,7 +70,7 @@ namespace AncientMemorial.Waves {
 			PlayWave();
 		}
 		
-		public override void ManagerUpdate() {
+		public override void ManagerRoutine() {
 			if (!currentWave) return;
 			
 			UPureFloat.AddValue(TIME_ELAPSED, Time.deltaTime);

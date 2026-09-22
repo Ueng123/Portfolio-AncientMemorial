@@ -14,8 +14,8 @@ namespace AncientMemorial.Entities.Enemies {
 	public class CrystalPhase2 : CrystalBoss {
 
 		// 정적 프로퍼티
-		private static readonly int CrystalPhase3PrefabId = "CrystalPhase3".GetHash();
-		private static readonly int CrystalP3UIPrefabId = "CrystalP3UI".GetHash();
+		private static readonly int CRYSTAL_PHASE_3 = "CrystalPhase3".GetHash();
+		private static readonly int CRYSTAL_P3_UI = "CrystalP3UI".GetHash();
 
 		// 인스턴스 프로퍼티
 		private          int          attackPhase = 0;
@@ -58,7 +58,7 @@ namespace AncientMemorial.Entities.Enemies {
 		}
 		
 		protected override void Death() {
-			CrystalBoss crystal = UObject.Get(CrystalPhase3PrefabId, transform.position, PlayEffect: false).GetComponent<CrystalBoss>();
+			CrystalBoss crystal = UObject.Get(CRYSTAL_PHASE_3, transform.position, PlayEffect: false).GetComponent<CrystalBoss>();
 
 			if (!string.IsNullOrEmpty(ID)) {
 				string id = ID;
@@ -68,7 +68,7 @@ namespace AncientMemorial.Entities.Enemies {
 			
 			if (UUI.TryGetUUI("CrystalBossBar", out UUI bossBar)) {
 				bossBar.Release(PlayEffect: true);
-				UUI newBossBar = UUI.Get(CrystalP3UIPrefabId, GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
+				UUI newBossBar = UUI.Get(CRYSTAL_P3_UI, GameManager.instance.mainScreenCanvas).GetComponent<UUI>();
 				newBossBar.ID = "CrystalBossBar";
 			}
 			

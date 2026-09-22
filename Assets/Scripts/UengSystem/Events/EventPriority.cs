@@ -10,7 +10,6 @@
 		
 		Action = 3,
 		
-		Hit = 4,
-		Death = 5,
+		Hit = 4
 	}
 }

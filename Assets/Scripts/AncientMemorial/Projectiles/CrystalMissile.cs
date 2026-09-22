@@ -10,7 +10,7 @@ namespace AncientMemorial.Projectiles {
 	public class CrystalMissile : Projectile {
 
 		// 정적 프로퍼티
-		private static readonly int LockOnEffectPrefabId = "LockOnEffect".GetHash();
+		private static readonly int LOCK_ON_EFFECT = "LockOnEffect".GetHash();
 
 		// 인스턴스 프로퍼티
 		public float TimeBeforeLockOn;
@@ -24,7 +24,7 @@ namespace AncientMemorial.Projectiles {
 				if (value == _lockOn) return;
 
 				if (value) {
-					GameObject eff = UObject.Get(LockOnEffectPrefabId, transform.position, PlayEffect: false);
+					GameObject eff = UObject.Get(LOCK_ON_EFFECT, transform.position, PlayEffect: false);
 					eff.transform.rotation = transform.rotation;
 				}
 

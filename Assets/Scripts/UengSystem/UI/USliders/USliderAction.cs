@@ -41,17 +41,18 @@ namespace UengSystem.UI.USliders {
 			slider.SetValue(initialValue?.value??0);
 			slider.valueChanged = false;
 			
-			// if (GameManager.UValueFloatVariables.TryGetValue("SliderValue", out UValue<float> v)) {
-			// 	sliderValueVariable = (UPureFloat)v;
-			// } 
-			// else {
-			// 	GameManager.UValueFloatVariables["SliderValue"] = new UPureFloat {
-			// 		dynamicType = DynamicType.Dynamic,
-			// 		pureValue    = 0
-			// 	};
-			//
-			// 	sliderValueVariable = (UPureFloat)GameManager.UValueFloatVariables["SliderValue"];
-			// }
+			if (GameManager.UValueFloatVariables.TryGetValue("SliderValue", out UValue<float> v)) {
+				sliderValueVariable = (UPureFloat)v;
+			} 
+			else {
+				GameManager.UValueFloatVariables["SliderValue"] = new UPureFloat {
+					dynamicType = DynamicType.Dynamic,
+					pureValue    = 0
+				};
+			
+				sliderValueVariable = (UPureFloat)GameManager.UValueFloatVariables["SliderValue"];
+			}
+			
 			sliderValueVariable ??= UPureFloat.GetPureValue(SLIDER_VALUE).SetDynamicCache(DynamicType.Dynamic).To<UPureFloat>();
 		}
 

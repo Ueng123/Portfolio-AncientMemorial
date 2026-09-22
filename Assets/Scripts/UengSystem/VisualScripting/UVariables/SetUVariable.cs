@@ -25,6 +25,11 @@ namespace UengSystem.VisualScripting.UVariables {
 			}
 		}
 
+		public override void OnAfterDeserialize() {
+			base.OnAfterDeserialize();
+			VariableId = null;
+		}
+		
 		[SerializeReference] [SubclassSelector]
 		public UValue<T> value;
 

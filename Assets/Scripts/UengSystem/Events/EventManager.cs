@@ -9,9 +9,7 @@ namespace UengSystem.Events {
 	public class EventManager : Manager<EventManager> {
 
 		// 인스턴스 프로퍼티
-		[Header("EventManager")]	
-		public readonly List<List<Event>> events = new (6);
-
+		public readonly List<List<Event>> events = new (5);
 		private Dictionary<EventType, SyncList<Action<Event>>> EventActions = new ();
 
 		// 인스턴스 메서드
@@ -67,7 +65,7 @@ namespace UengSystem.Events {
 		// 오버라이드 메서드
 		public override void Initialize() {
 			base.Initialize();
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < 5; i++) {
 				events.Add(new List<Event>());
 			}
 		}

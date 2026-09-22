@@ -619,25 +619,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   canvas: {fileID: 0}
   rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
   initialScale: {x: 1, y: 1, z: 1}
   openTime: 1
-  GettingAnimation: open
   closeTime: 1
+  GettingAnimation: open
   actions:
   - key: NameInputField
     action:
@@ -895,6 +895,7 @@ MonoBehaviour:
     - rid: 5909658922870112827
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
+        PlayEffect: 1
         closeThis: 1
         TargetUUI:
           rid: -2
@@ -938,6 +939,7 @@ MonoBehaviour:
     - rid: 5909658922870112831
       type: {class: CloseUI, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
       data:
+        PlayEffect: 1
         closeThis: 1
         TargetUUI:
           rid: -2
@@ -1115,7 +1117,7 @@ MonoBehaviour:
       data:
         component: {fileID: 7475100594887984490}
         actionType: 2001
-        pressType: 1
+        inputState: 1
         taskOnClicked:
           useRealTime: 0
           tasks:
@@ -1129,7 +1131,7 @@ MonoBehaviour:
       data:
         component: {fileID: 756965298986846859}
         actionType: 0
-        pressType: 0
+        inputState: 0
         taskOnClicked:
           useRealTime: 0
           tasks:
@@ -1543,18 +1545,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   button: {fileID: 6855445542204106448}
   clicked: 0
@@ -1788,18 +1790,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85aa368679c480aa36f4599e852a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   inputField: {fileID: 0}
   textChanged: 0
@@ -1906,18 +1908,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 3094555492419509823}
   valueChanged: 0
@@ -2102,18 +2104,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 5032251816970889573}
   valueChanged: 0
@@ -2726,18 +2728,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 2754060398431066406}
   valueChanged: 0
@@ -3850,18 +3852,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 204646946781606586}
   valueChanged: 0
@@ -3968,18 +3970,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 5513400489631693035}
   valueChanged: 0
@@ -4085,18 +4087,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 6972919623650733675}
   valueChanged: 0
@@ -4411,18 +4413,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
   ReleaseTask:
     useRealTime: 0
     tasks: []
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   button: {fileID: 8343575308739342519}
   clicked: 0

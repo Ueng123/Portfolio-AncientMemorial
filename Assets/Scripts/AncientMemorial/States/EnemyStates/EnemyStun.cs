@@ -7,7 +7,7 @@ namespace AncientMemorial.States.EnemyStates {
 	public class EnemyStun : EnemyState {
 
 		// 정적 프로퍼티
-		private static readonly int StunEffectPrefabId = "StunEffect".GetHash();
+		private static readonly int STUN_EFFECT = "StunEffect".GetHash();
 
 		// 인스턴스 프로퍼티
 		private GameObject stunEffect;
@@ -28,7 +28,7 @@ namespace AncientMemorial.States.EnemyStates {
 		public override void OnEnter() {
 			enemy.rigidbody2D.linearVelocityX = 0;
 			
-			stunEffect = UObject.Get(StunEffectPrefabId, enemy.transform.position + Vector3.up * enemy.markYPos, PlayEffect: false);
+			stunEffect = UObject.Get(STUN_EFFECT, enemy.transform.position + Vector3.up * enemy.markYPos, PlayEffect: false);
 			stunEffect.transform.SetParent(enemy.transform);
 		}
 

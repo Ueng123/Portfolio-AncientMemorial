@@ -12,9 +12,9 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 	public abstract class CrossbowAttack : PlayerWeaponAttack {
 
 		// 정적 프로퍼티
-		private static readonly int ArrowDebrisPrefabId = "ArrowDebris".GetHash();
-		private static readonly int ArrowTailPrefabId = "ArrowTail".GetHash();
-		private static readonly int CrossbowShootClipId = "crossbowShoot".GetHash();
+		private static readonly int ARROW_DEBRIS = "ArrowDebris".GetHash();
+		private static readonly int ARROW_TAIL = "ArrowTail".GetHash();
+		private static readonly int CROSSBOW_SHOOT = "crossbowShoot".GetHash();
 
 		protected static readonly int Attacking = Animator.StringToHash("attacking");
 		
@@ -29,7 +29,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 
 		// 인스턴스 메서드
 		protected GameObject GetArrowDebris(Vector2 position, float angle) {
-			GameObject obj = UObject.Get(ArrowDebrisPrefabId, position, PlayEffect: false);
+			GameObject obj = UObject.Get(ARROW_DEBRIS, position, PlayEffect: false);
 			obj.transform.rotation = Quaternion.Euler(0, 0, angle);
 
 			return obj;
@@ -41,7 +41,7 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 			Vector2 dir = (endPos - startPos);
 			float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 			
-			GameObject obj = UObject.Get(ArrowTailPrefabId, pos, PlayEffect: false);
+			GameObject obj = UObject.Get(ARROW_TAIL, pos, PlayEffect: false);
 			obj.transform.localScale = new Vector3(dir.magnitude, 0.05f, 1);
 			
 			obj.transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -57,9 +57,9 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Crossbow {
 		}
 
 		protected void HitEffect() {
-			player.PlaySFX(CrossbowShootClipId);
-			CameraBrain.instance.ShakeLerp(0.5f, 7.5f);
-			CameraBrain.instance.ZoomLerp(-0.2f);
+			player.PlaySFX(CROSSBOW_SHOOT);
+			CameraManager.instance.ShakeLerp(0.5f, 7.5f);
+			CameraManager.instance.ZoomLerp(-0.2f);
 		}
 
 		protected void Shoot(float attackDamage, float angleOffset = 0f) {

@@ -10,6 +10,7 @@ namespace UengSystem.UDebug {
 		// 인스턴스 프로퍼티
 		public bool debugMode = true;
 		public bool Logging   = true;
+		public bool LogExceptions = true;
 
 		// 정적 메서드
 		[Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
@@ -25,10 +26,12 @@ namespace UengSystem.UDebug {
 		}
 		
 		public static void LogException(Exception Error, UnityEngine.Object Context) {
+			if (instance && instance.LogExceptions) return;
 			Debug.LogException(Error, Context);
 		}
 
 		public static void LogError(string message, Exception _e, GameObject obj) {
+			if (instance && instance.LogExceptions) return;
 			Debug.LogError($"<color=#fda><size=15><b>{message}</b></size></color>");
 			Debug.LogException(_e, obj);
 		}

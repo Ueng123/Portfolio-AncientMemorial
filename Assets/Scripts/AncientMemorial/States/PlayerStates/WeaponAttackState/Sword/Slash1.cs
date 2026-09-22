@@ -8,8 +8,8 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 	public class Slash1 : PlayerWeaponAttack {
 
 		// 정적 프로퍼티
-		private static readonly int SlashEffectPrefabId = "SlashEffect".GetHash();
-		private static readonly int SwordSlash1ClipId = "swordSlash1".GetHash();
+		private static readonly int SLASH_EFFECT = "SlashEffect".GetHash();
+		private static readonly int SWORD_SLASH_1 = "swordSlash1".GetHash();
 
 		// 인스턴스 프로퍼티
 		private float oldAnimatorSpeed;
@@ -34,14 +34,14 @@ namespace AncientMemorial.States.PlayerStates.WeaponAttackState.Sword {
 			
 				Vector2 hitboxSize = new (1.5f, 0.3f);
 				
-				GameObject obj = UObject.Get(SlashEffectPrefabId, (Vector2)player.transform.position + new Vector2(0.6f*(player.lookingLeft?-1:1)+Random.Range(-0.2f, 0.2f),-0.1f+Random.Range(-0.2f, 0.2f)), PlayEffect: false);
+				GameObject obj = UObject.Get(SLASH_EFFECT, (Vector2)player.transform.position + new Vector2(0.6f*(player.lookingLeft?-1:1)+Random.Range(-0.2f, 0.2f),-0.1f+Random.Range(-0.2f, 0.2f)), PlayEffect: false);
                 obj.transform.rotation   = Quaternion.Euler(0, 0, 90 + Random.Range(-1f, 1f));
                 obj.transform.localScale = new Vector3(1, 1.2f);
 				
                 float     randomDamage    = Random.Range(-0.1f, 0.1f);
                 const int maxTargetEntity = 1;
                 Entity.AttackAreaNoEffect(player, 2f+randomDamage, 0, hitboxPos, hitboxSize, 0, maxTargetEntity);
-                player.PlaySFX(SwordSlash1ClipId);
+                player.PlaySFX(SWORD_SLASH_1);
 
 				step = 1;
 			}

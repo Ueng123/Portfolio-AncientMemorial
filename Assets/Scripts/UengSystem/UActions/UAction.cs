@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace UengSystem.UAction {
+namespace UengSystem.UActions {
 	public abstract class UAction {
 
 		// 정적 프로퍼티

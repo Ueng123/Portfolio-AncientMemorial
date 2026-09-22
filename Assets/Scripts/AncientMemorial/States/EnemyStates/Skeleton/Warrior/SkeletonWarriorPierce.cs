@@ -7,7 +7,7 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Warrior {
 	public class SkeletonWarriorPierce : SkeletonAttack {
 
 		// 정적 프로퍼티
-		private static readonly int SwordSlash2ClipId = "swordSlash2".GetHash();
+		private static readonly int SWORD_SLASH_2 = "swordSlash2".GetHash();
 
 		private const float attackProgress = 6f / 11f;
 
@@ -46,7 +46,7 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Warrior {
 			enemy.rigidbody2D.linearVelocityX = 0;
 			
 			if (step == 0 && isProgress(attackProgress)) {
-				enemy.PlaySFX(SwordSlash2ClipId);
+				enemy.PlaySFX(SWORD_SLASH_2);
 				step = 1;
 			}
 

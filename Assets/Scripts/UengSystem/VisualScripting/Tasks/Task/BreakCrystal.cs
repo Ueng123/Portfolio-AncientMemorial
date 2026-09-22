@@ -3,7 +3,7 @@ using System;
 using AncientMemorial.Interactions;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
-using UengSystem.UAction;
+using UengSystem.UActions;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,7 +12,7 @@ namespace UengSystem.VisualScripting.Tasks {
 	public class BreakCrystal : TaskComponent {
 
 		// 정적 프로퍼티
-		private static readonly int CrystalDebrisPrefabId = "crystalDebris".GetHash();
+		private static readonly int CRYSTAL_DEBRIS = "crystalDebris".GetHash();
 
 		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
@@ -22,9 +22,9 @@ namespace UengSystem.VisualScripting.Tasks {
 			Target.animator.Play("break");
 			Target.UnInteractable();
 			new DelayedAction(5, () => {
-				if (!Target || Target.lifeNumber != Life || !Target.isActive) return;
+				if (!Target || !Target.Matches(Life) || !Target.isActive) return;
 				for (int Index = 0; Index < 20; Index++) {
-					UObject.Get(CrystalDebrisPrefabId, Position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), PlayEffect: false);
+					UObject.Get(CRYSTAL_DEBRIS, Position + new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), PlayEffect: false);
 				}
 				Target.crystalModel.SetActive(false);
 			}, executor: Target).ExecuteDA();

@@ -12,7 +12,6 @@ using UengSystem.Objects.LifeCycle;
 using System.Linq;
 using UengSystem.Managers;
 using UengSystem.States;
-using UengSystem.UAction;
 using UengSystem.UDebug;
 using UengSystem.UI;
 using UengSystem.UI.USliders;
@@ -31,13 +30,13 @@ using EventType = UengSystem.Events.EventType;
 using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Entities {
-	public abstract class Entity : UObject, IStateObject {
+	public abstract class Entity : UObject {
 
 		// 정적 프로퍼티
-		private static readonly int EntityUIPrefabId = "EntityUI".GetHash();
-		private static readonly int AttackAwarePrefabId = "AttackAware".GetHash();
-		private static readonly int HealUIPrefabId = "HealUI".GetHash();
-		private static readonly int DamageUIPrefabId = "DamageUI".GetHash();
+		private static readonly int ENTITY_UI = "EntityUI".GetHash();
+		private static readonly int ATTACK_AWARE = "AttackAware".GetHash();
+		private static readonly int HEAL_UI = "HealUI".GetHash();
+		private static readonly int DAMAGE_UI = "DamageUI".GetHash();
 		public static           Player               player;
 		public static           SyncList<Entity> entities = new SyncList<Entity>();
 		protected static readonly int                Falling  = Animator.StringToHash("falling");
@@ -83,7 +82,7 @@ namespace AncientMemorial.Entities {
 
 		private bool HitSubscribed;
 		private bool EntityRegistered;
-		public override float releasingDuration => 2;
+		public override float usingReleasingDuration => 2;
 		
 		private readonly StopWatch debrisCheckTimer = new StopWatch();
 
@@ -167,29 +166,32 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected virtual void OpenEntityUI() {
-			entityUI = UUI.Get(EntityUIPrefabId, entityUICanvas, Configure: Ui => {
-			Ui.rectTransform.anchoredPosition = new Vector3(0, entityUIHeight, 0);
-			
-			UTextAction   entityTextAction = Ui.GetAction<UTextAction>("EntityName");
-			USliderAction entityHPAction   = Ui.GetAction<USliderAction>("EntityHP");
-			
-			entityTextAction.text = new UPureString {pureValue = data.name};
-			
-			entityHPAction.component.GetComponent<RectTransform>().sizeDelta = new Vector2(100*Mathf.Log(data.HP, 2) , 30);
-			entityHPAction.value = new UDiv {
-				dynamicType = DynamicType.Dynamic,
-				A = new UEntityStat {
-					dynamicType  = DynamicType.Dynamic,
-					targetEntity = new UEntityByUObject { obj = new UPureObject { pureValue = this } },
-					type         = EntityDataType.HP
-				},
-				B = new UEntityStat {
-					dynamicType  = DynamicType.Dynamic,
-					targetEntity = new UEntityByUObject { obj = new UPureObject { pureValue = this } },
-					type         = EntityDataType.MAXHP
-				},
-			};
+			entityUI = UUI.Get(ENTITY_UI, entityUICanvas, Configure: Ui => {
+				
+				Ui.rectTransform.anchoredPosition = new Vector3(0, entityUIHeight, 0);
+				
+				UTextAction   entityTextAction = Ui.GetAction<UTextAction>("EntityName");
+				USliderAction entityHPAction   = Ui.GetAction<USliderAction>("EntityHP");
+				
+				entityTextAction.text = new UPureString {pureValue = data.name};
+				
+				entityHPAction.component.GetComponent<RectTransform>().sizeDelta = new Vector2(100*Mathf.Log(data.HP, 2) , 30);
+				entityHPAction.value = new UDiv {
+					dynamicType = DynamicType.Dynamic,
+					A = new UEntityStat {
+						dynamicType  = DynamicType.Dynamic,
+						targetEntity = new UEntityByUObject { obj = new UPureObject { pureValue = this } },
+						type         = EntityDataType.HP
+					},
+					B = new UEntityStat {
+						dynamicType  = DynamicType.Dynamic,
+						targetEntity = new UEntityByUObject { obj = new UPureObject { pureValue = this } },
+						type         = EntityDataType.MAXHP
+					},
+				};
+				
 			}).GetComponent<UUI>();
+			
 			EntityUiLife = entityUI.lifeNumber;
 		}
 
@@ -201,7 +203,7 @@ namespace AncientMemorial.Entities {
 
 			float UIScale = 1 + Mathf.Log(damage, 100);
 			
-			UUI.Get(isHeal ? HealUIPrefabId : DamageUIPrefabId, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
+			UUI.Get(isHeal ? HEAL_UI : DAMAGE_UI, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
 			DamageUi.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			DamageUi.rectTransform.localScale = Vector3.one*UIScale;
 			UTextAction textAction  = DamageUi.GetAction<UTextAction>("DamageDisplay");
@@ -221,7 +223,7 @@ namespace AncientMemorial.Entities {
 			
 			float UIScale = (1 + Mathf.Log(damage, 100))*1.2f;
 			
-			UUI.Get(isHeal ? HealUIPrefabId : DamageUIPrefabId, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
+			UUI.Get(isHeal ? HEAL_UI : DAMAGE_UI, GameManager.instance.mainWorldCanvas, Configure: DamageUi => {
 			DamageUi.rectTransform.anchoredPosition = (transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0))*80;
 			DamageUi.rectTransform.localScale = Vector3.one*UIScale;
 			UTextAction textAction  = DamageUi.GetAction<UTextAction>("DamageDisplay");
@@ -234,7 +236,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected virtual AttackArea AttackArea(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool awareLerpX = true, bool awareLerpY = false, bool ignoreInvincible = false) {
-			GameObject awareObject = UObject.Get(AttackAwarePrefabId, hitboxPos, PlayEffect: false, Configure: Obj => {
+			GameObject awareObject = Get(ATTACK_AWARE, hitboxPos, PlayEffect: false, Configure: Obj => {
 			AttackArea attackArea = (AttackArea)Obj;
 			attackArea.InitializeColor(new Color(0.509434f, 0.1850303f, 0.1850303f, 0));
 			
@@ -256,7 +258,7 @@ namespace AncientMemorial.Entities {
 		}
 		
 		protected AttackArea AttackAreaNoEffect(float damageMult, float delay, Vector2 hitboxPos, Vector2 hitboxSize, float angle = 0, int maxTargetNum = -1, bool ignoreInvincible = false) {
-			GameObject awareObject = UObject.Get(AttackAwarePrefabId, hitboxPos, PlayEffect: false, Configure: Obj => {
+			GameObject awareObject = UObject.Get(ATTACK_AWARE, hitboxPos, PlayEffect: false, Configure: Obj => {
 			AttackArea attackArea = (AttackArea)Obj;
 			attackArea.targetSize          = new Vector2(hitboxSize.x, hitboxSize.y);
 			attackArea.transform.rotation  = Quaternion.Euler(0, 0, angle);
@@ -286,7 +288,7 @@ namespace AncientMemorial.Entities {
 		public abstract bool isAttackTarget(Entity entity);
 		
 		protected virtual void Death() {
-			if (entityUI && entityUI.lifeNumber == EntityUiLife && entityUI.isActive)
+			if (entityUI && entityUI.Matches(EntityUiLife) && entityUI.isActive)
 				entityUI.GetAction<USliderAction>("EntityHP").GetComponent<USlider>().SetValue(0);
 			Release(PlayEffect: true);
 		}
@@ -378,8 +380,8 @@ namespace AncientMemorial.Entities {
 		
 		public override void OnGet() {
 			data = GetData();
-			
-			stat      = new EntityStat(
+
+			stat = new EntityStat(
 				data.HP,
 				data.moveSpeed,
 				data.jumpPower,
@@ -391,8 +393,8 @@ namespace AncientMemorial.Entities {
 				data.groundBoxOffsetX,
 				data.groundBoxOffsetY
 			);
-			
-			groundBoxSize   = new Vector2(
+
+			groundBoxSize = new Vector2(
 				data.groundBoxSizeX,
 				data.groundBoxSizeY
 			);
@@ -403,13 +405,13 @@ namespace AncientMemorial.Entities {
 		protected override void OnRelease() {
 			entityState = null;
 			foreach (var Entry in AttackAreas.ToArray()) {
-				if (Entry.Key && Entry.Key.lifeNumber == Entry.Value) Entry.Key.Release(false);
+				if (Entry.Key && Entry.Key.Matches(Entry.Value)) Entry.Key.Release(false);
 			}
 			AttackAreas.Clear();
 			
 			if (HitSubscribed) { EventType.Entity_Hit.RemoveListener(hitEvent); HitSubscribed = false; }
 			
-			if (entityUI && entityUI.lifeNumber == EntityUiLife) entityUI.Release(PlayEffect: true);
+			if (entityUI && entityUI.Matches(EntityUiLife)) entityUI.Release(PlayEffect: true);
 			entityUI = null;
 			
 			foreach (AttatchObject debris in debrisAttached) {
@@ -457,32 +459,6 @@ namespace AncientMemorial.Entities {
 			if (groundBoxSize != Vector2.zero) isGround = groundChecker.isThereStandable;
 			
 			entityState?.OnFixedRoutine();
-		}
-
-		// 중첩 타입
-		private sealed class EntityReleasing : Releasing {
-
-			// 인스턴스 프로퍼티
-			private Color InitialColor;
-
-			// 인스턴스 메서드
-			public EntityReleasing(Entity Target) : base(Target) { }
-
-			// 오버라이드 메서드
-			protected override void OnStartEffect() {
-				if (target.spriteRenderer) {
-					InitialColor = target.spriteRenderer.color;
-					Color Color = InitialColor;
-					Color.a = 0;
-					target.spriteRenderer.color = Color;
-				}
-				target.FreezeAnimator();
-			}
-			protected override void ClearEffect() {
-				if (!hasStartedEffect) return;
-				if (target.spriteRenderer) target.spriteRenderer.color = InitialColor;
-				target.UnfreezeAnimator();
-			}
 		}
 	}
 }

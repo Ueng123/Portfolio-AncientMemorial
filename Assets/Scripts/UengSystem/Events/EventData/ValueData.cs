@@ -4,7 +4,7 @@ using UengSystem.Objects;
 
 namespace UengSystem.Events {
 	[Serializable]
-	public struct ValueData<T> : ILifetimeEventData {
+	public struct ValueData<T> : IEventData {
 
 		// 인스턴스 프로퍼티
 		public T value;

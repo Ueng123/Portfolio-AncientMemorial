@@ -9,7 +9,7 @@ namespace UengSystem.Managers {
 		public static List<IManager> instances = new List<IManager>(16);
 
 		// 인스턴스 메서드
-		public void ManagerUpdate();
+		public void ManagerRoutine();
 		public void ManagerFixedUpdate();
 	}
 }

@@ -10,8 +10,8 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 	public class TankStomp : SkeletonTankAttack {
 
 		// 정적 프로퍼티
-		private static readonly int Explode3PrefabId = "Explode3".GetHash();
-		private static readonly int TankAttack1ClipId = "tankAttack1".GetHash();
+		private static readonly int EXPLODE_3 = "Explode3".GetHash();
+		private static readonly int TANK_ATTACK_1 = "tankAttack1".GetHash();
 
 		// 인스턴스 프로퍼티
 		public override float attackTime => 3f;
@@ -48,12 +48,12 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Tank {
 
 			if (step == 1 && isProgress(attackPercent)) {
 				Vector2 effectPos = (Vector2)enemy.transform.position + new Vector2(0, -0.985f);
-				UObject.Get(Explode3PrefabId, effectPos, PlayEffect: false);
+				UObject.Get(EXPLODE_3, effectPos, PlayEffect: false);
 				
-				enemy.PlaySFX(TankAttack1ClipId);
+				enemy.PlaySFX(TANK_ATTACK_1);
 				
-				CameraBrain.instance.ShakeLerp(5f, 10);
-				CameraBrain.instance.ZoomLerp(-0.25f);
+				CameraManager.instance.ShakeLerp(5f, 10);
+				CameraManager.instance.ZoomLerp(-0.25f);
 				
 				step = 2;
 			}

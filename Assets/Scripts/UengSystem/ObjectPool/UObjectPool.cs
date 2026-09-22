@@ -77,7 +77,7 @@ namespace UengSystem.ObjectPool {
 							obj.SetActive(false);
 							UObject Target = obj.GetComponent<UObject>();
 							Target.OnFirstGet();
-							Target.BindPool(Item => ReturnToPool(PrefabId, Item));
+							Target.SetPoolReturnMethod(Item => ReturnToPool(PrefabId, Item));
 							Owned.Add(Target);
 							return obj;
 						},
