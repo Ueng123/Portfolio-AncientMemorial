@@ -500,26 +500,23 @@ namespace UengSystem.Objects {
 		protected virtual void FixedRoutine() { }
 		
 		public void AddProcessToUpdate(Action Process) {
-			if (isActive)
-				ProcessToUpdate.Enqueue(Process);
+			if (!isActive) return;
+			ProcessToUpdate.Enqueue(Process);
 		}
 
 		protected void AddProcessToFixedUpdate(Action Process) {
-			if (isActive)
-				ProcessToFixedUpdate.Enqueue(Process);
+			if (!isActive) return;
+			ProcessToFixedUpdate.Enqueue(Process);
 		}
 
 		private void ExecuteProcesses(Queue<Action> Processes) {
 			long Life = lifeNumber;
 			int Count = Processes.Count;
 			
-			while (
-				Count-- > 0 &&
-				isActive &&
-				Matches(Life) &&
-				Processes.Count > 0
-			)
+			while (Processes.Count>0) {
+				if (!isActive) return;
+				if (!Matches(Life)) return;
 				Processes.Dequeue().Invoke();
-		}
+			}
 	}
 }
