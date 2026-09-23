@@ -109,7 +109,6 @@ namespace UengSystem.Objects {
 			
 			for (int Index = 0; Index < InitialCount; Index++) {
 				if (isStoppingLifeCycles) break;
-				if (RoutineObjects.Count == 0) break; // 리스트 강제 초기화 방어
 
 				RoutineEntry Entry = RoutineObjects[Index];
 				
