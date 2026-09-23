@@ -12,7 +12,6 @@ namespace UengSystem.Objects.LifeCycle {
 		protected virtual float duration => 0;
 		
 		public long executionNumber { get; private set; }
-		private long CallbackExecution;
 		
 		public bool isComplete { get; private set; }
 		
@@ -24,7 +23,7 @@ namespace UengSystem.Objects.LifeCycle {
 
 		// 인스턴스 메서드
 		protected LifeCycleState(UObject Target) {
-			target = Target ?? throw new ArgumentNullException(nameof(Target));
+			target = Target
 		}
 
 		public void PrepareExecution(LifeCycleStateMachine Machine, long Execution, bool PlayEffect) {
@@ -35,7 +34,6 @@ namespace UengSystem.Objects.LifeCycle {
 			isComplete = false;
 			isEffectCleared = false;
 			hasStartedEffect = false;
-			CallbackExecution = 0;
 			HasExited = false;
 		}
 
@@ -43,23 +41,13 @@ namespace UengSystem.Objects.LifeCycle {
 			if (isComplete || !Machine.IsCurrent(this, executionNumber)) return;
 			elapsed += DeltaTime;
 
-			long Execution = executionNumber;
-			CallbackExecution = Execution;
-			
 			// 유효성 검사
 			if (elapsed >= duration) {
-				Complete();
+				Machine.RequestComplete(this, executionNumber);
 				return;
 			}
 			
 			OnEffectRoutine(DeltaTime);
-		
-			// 다른 상태 실행중이면 초기화 X
-			if (Machine.IsCurrent(this, Execution)) CallbackExecution = 0;
-		}
-		
-		protected void Complete() {
-			if (CallbackExecution != 0) Machine.RequestComplete(this, CallbackExecution);
 		}
 
 		public void MarkComplete() => isComplete = true;
@@ -80,14 +68,7 @@ namespace UengSystem.Objects.LifeCycle {
 		public override void OnEnter() {
 			if (!playEffect) return;
 			hasStartedEffect = true;
-
-			long Execution = executionNumber;
-			CallbackExecution = Execution;
-			
 			OnStartEffect();
-			
-			// 다른 상태 실행중이면 초기화 X
-			if (Machine.IsCurrent(this, Execution)) CallbackExecution = 0;
 		}
 
 		public override void OnExit() {
