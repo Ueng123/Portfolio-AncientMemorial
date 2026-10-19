@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6704163628231694005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3135169718631346879}
+  - component: {fileID: 2253059686092880187}
+  m_Layer: 0
+  m_Name: TableInteract
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3135169718631346879
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6704163628231694005}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.45084, y: 0.76046, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2253059686092880187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6704163628231694005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe2d8f85a19c2294d9e69fb5f1bc86cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
+  GettingDuration: 1
+  ReleasingDuration: 1
+  GetTask:
+    useRealTime: 0
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 350172655104033066
+    - time: 2
+      tasks:
+      - rid: 350172655104033069
+      - rid: 350172655104033071
+      - rid: 350172655104033074
+  ReleaseTask:
+    useRealTime: 0
+    tasks: []
+  whenInitialize: 0
+  whiteSpawnSprite: {fileID: 0}
+  colorSpawnSprite: {fileID: 0}
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 350172655104033066
+      type: {class: AddInfoMessage, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        message:
+          rid: 350172655104033067
+    - rid: 350172655104033067
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: "\uD14C\uC774\uBE14\uC744 \uAC00\uC838\uAC14\uB2E4."
+    - rid: 350172655104033069
+      type: {class: AddInfoMessage, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        message:
+          rid: 350172655104033070
+    - rid: 350172655104033070
+      type: {class: UPureString, ns: UengSystem.VisualScripting.UValues.UStrings, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: "\uC624, \uC774\uB7F0. \uC8FC\uBA38\uB2C8\uC5D0\uB294 \uD14C\uC774\uBE14\uC774
+          \uB4E4\uC5B4\uAC00\uC9C0 \uC54A\uB294\uB2E4\uB294 \uC0AC\uC2E4\uC744 \uC78A\uACE0
+          \uC788\uC5C8\uB2E4."
+    - rid: 350172655104033071
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 9102818910195590066, guid: 22646f086fe93f741a5dab3d4560ab0a, type: 3}
+        position:
+          rid: 350172655104033072
+        PlayEffect: 0
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 350172655104033072
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 350172655104033073
+    - rid: 350172655104033073
+      type: {class: UPlayerObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+    - rid: 350172655104033074
+      type: {class: ReleaseObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        PlayEffect: 0
+        releaseThis: 1
+        TargetObject:
+          rid: -2
