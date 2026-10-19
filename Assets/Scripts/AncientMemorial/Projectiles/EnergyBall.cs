@@ -19,18 +19,16 @@ namespace AncientMemorial.Projectiles {
 
 		// 인스턴스 메서드
 		private void Boom() {
-			UObject.Get(BIG_IMPACT, transform.position, PlayEffect: false);
+			Get(BIG_IMPACT, transform.position, PlayEffect: false);
 			Release(PlayEffect: false);
 		}
 
 		// 오버라이드 메서드
 		protected override void FixedRoutine() {
-			if (isHitPending) return;
 			rigidbody2D.linearVelocity = Vector2.right*(10*(boomTime-stopWatch.Tock())*(spriteRenderer.flipX?1:-1)/boomTime);
 		}
 		
 		protected override void EarlyRoutine() {
-			if (isHitPending) return;
 			if (stopWatch.CheckIn(boomTime)) return;
 			Boom();
 		}
@@ -38,9 +36,7 @@ namespace AncientMemorial.Projectiles {
 		protected override void Routine() { }
 
 		protected override void LateRoutine() {
-			base.LateRoutine();
-			if (!isActive) return;
-			CameraManager.instance.ShakeLerp(2, 0);
+			CameraManager.instance.ShakeLerp(2, 5);
 		}
 
 		public override void Initialize() {
@@ -53,7 +49,7 @@ namespace AncientMemorial.Projectiles {
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner && !owner.isAttackTarget(entity)) return;
 
-			SendCollisionHit(entity, damage, Boom);
+			SendAttackMultiplyEvent(entity, 1, useProcess: false, OnHit: Boom);
 		}
 
 		protected override void OnCollideObject(UObject obj) {

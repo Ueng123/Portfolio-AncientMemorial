@@ -53,14 +53,5 @@ namespace UengSystem.Utility {
 		public void Clear() {
 			actualList.Clear();
 		}
-
-		public void ClearImmediately() {
-			mainList.Clear();
-			actualList.Clear();
-		}
-
-		public bool Contains(T item) {
-			return actualList.Contains(item);
-		}
 	}
 }

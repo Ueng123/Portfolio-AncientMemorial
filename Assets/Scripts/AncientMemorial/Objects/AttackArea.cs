@@ -22,7 +22,7 @@ namespace AncientMemorial.Objects {
 		public float duration = 1;
 
 		public Entity attacker;
-		private long AttackerLife;
+		private int AttackerLife;
 		private bool hasActiveAttacker => attacker && attacker.isActive && attacker.Matches(AttackerLife);
 		public float  damageMult;
 		public int    maxTargetNum;

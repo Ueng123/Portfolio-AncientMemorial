@@ -18,7 +18,12 @@ namespace UengSystem.VisualScripting.Tasks {
 		private float elapsed;
 
 		public void Execute(ITaskable self, UObject coroutineRunner = null) {
+			if (UObject.isStoppingLifeCycles) return;
+
 			this.coroutineRunner = coroutineRunner ?? GlobalObject.instance;
+			if (!this.coroutineRunner) return;
+			if (!this.coroutineRunner.gameObject.activeInHierarchy) return;
+
 			elapsed = 0f;
 			runningTask = this.coroutineRunner.StartCoroutine(ExecuteEnumerator(self));
 		}
@@ -28,9 +33,9 @@ namespace UengSystem.VisualScripting.Tasks {
 
 			elapsed = 0f;
 			UObject owner = self as UObject;
-			bool hasOwner = owner && owner.lifeCycle.isPrepared;
-			long life = owner ? owner.lifeNumber : 0;
-			bool releasing = owner && owner.lifeCycle.phase == LifeCyclePhase.Releasing;
+			bool hasOwner = owner && owner.lifeStateMachine.isPrepared;
+			int life = owner ? owner.lifeNumber : 0;
+			bool releasing = owner && owner.lifeStateMachine.phase == LifePhase.Releasing;
 
 			foreach (TaskListItem taskItem in tasks) {
 				if (!IsValidOwner(owner, hasOwner, life, releasing)) yield break;
@@ -53,7 +58,6 @@ namespace UengSystem.VisualScripting.Tasks {
 			}
 		}
 
-
 		public void CancelTasks() {
 			if (runningTask == null) return;
 			foreach (TaskListItem taskItem in tasks) {
@@ -66,11 +70,11 @@ namespace UengSystem.VisualScripting.Tasks {
 			runningTask = null;
 		}
 		
-		private static bool IsValidOwner(UObject owner, bool hasOwner, long life, bool releasing) {
+		private static bool IsValidOwner(UObject owner, bool hasOwner, int life, bool releasing) {
 			if (UObject.isStoppingLifeCycles) return false;
 			if (!hasOwner) return true;
-			return owner && owner.Matches(life) && !owner.isNotWorking
-			       && (releasing || owner.lifeCycle.phase != LifeCyclePhase.Releasing);
+			return owner && owner.Matches(life) && !owner.OutGame
+			       && (releasing || owner.lifeStateMachine.phase != LifePhase.Releasing);
 		}
 	}
 }

@@ -20,10 +20,10 @@ namespace AncientMemorial.Projectiles {
 
 		// 인스턴스 메서드
 		private void Break(Transform parent = null, bool isEntity = false) {
-			GameObject obj = UObject.Get(ARROW_DEBRIS, transform.position, PlayEffect: false);
+			GameObject obj = Get(ARROW_DEBRIS, transform.position, PlayEffect: false);
 			
 			if (isEntity) {
-				GameObject eff = UObject.Get(ARROW_HIT_EFFECT, transform.position, PlayEffect: false);
+				GameObject eff = Get(ARROW_HIT_EFFECT, transform.position, PlayEffect: false);
 				eff.transform.rotation = transform.rotation;
 			}
 			
@@ -32,15 +32,14 @@ namespace AncientMemorial.Projectiles {
 				obj.transform.SetParent(parent, true);
 			}
 			
-			new DelayedAction(10, () => obj.GetComponent<UObject>().Release(PlayEffect: false), () => { }, obj.GetComponent<UObject>())
-				.ExecuteDA();
+			new DelayedAction(10, () => obj.GetComponent<UObject>().Release(PlayEffect: false), () => { }, obj.GetComponent<UObject>()).ExecuteDA();
 			
 			obj.transform.rotation = transform.rotation;
 			Release(PlayEffect: false);
 		}
 
 		// 오버라이드 메서드
-		public override void OnGet() {
+		protected override void OnGet() {
 			base.OnGet();
 			rigidbody2D.centerOfMass = new Vector2(0.3f, 0);
 			trailRenderer = GetComponent<TrailRenderer>();
@@ -53,14 +52,13 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		protected override void FixedRoutine() {
-			if (isHitPending) return;
 			transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rigidbody2D.linearVelocity.y, rigidbody2D.linearVelocity.x)*Mathf.Rad2Deg);
 		}
 
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner && !owner.isAttackTarget(entity)) return;
 			
-			SendCollisionHit(entity, damage, () => Break(entity.transform, true));
+			SendAttackMultiplyEvent(entity, damage, useProcess: true, OnHit: () => Break(entity.transform, true));
 		}
 		
 		protected override void OnCollideObject(UObject obj) {

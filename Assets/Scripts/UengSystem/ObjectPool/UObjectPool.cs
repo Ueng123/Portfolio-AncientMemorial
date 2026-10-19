@@ -16,22 +16,20 @@ namespace UengSystem.ObjectPool {
 
 		private          Dictionary<int, ObjectPool<GameObject>> pools;
 		private          Dictionary<int, Transform>              roots;
-		private readonly HashSet<UObject>                        Owned = new();
+		private readonly List<UObject>                           Owned = new();
 		private          bool                                    ShuttingDown;
 
 		// 인스턴스 메서드
-		public bool Contains(string PrefabKey) => PrefabKey != null && Contains(PrefabKey.GetHash());
-		public bool Contains(int PrefabId) => pools != null && pools.ContainsKey(PrefabId);
+		public bool Contains(string PrefabKey) => Contains(PrefabKey.GetHash());
+		public bool Contains(int PrefabId) => pools.ContainsKey(PrefabId);
 
-		public UObject Acquire(string PrefabKey, Vector2 Position) {
-			if (PrefabKey == null) throw new ArgumentNullException(nameof(PrefabKey));
-			return Acquire(PrefabKey.GetHash(), Position);
+		public UObject Get(string PrefabKey, Vector2 Position) {
+			return Get(PrefabKey.GetHash(), Position);
 		}
 
-		public UObject Acquire(int PrefabId, Vector2 Position) {
+		public UObject Get(int PrefabId, Vector2 Position) {
 			if (ShuttingDown) throw new InvalidOperationException("UObjectPool is shutting down.");
-			if (pools == null || !pools.TryGetValue(PrefabId, out ObjectPool<GameObject> Pool))
-				throw new KeyNotFoundException("Unregistered UObject prefab ID: " + PrefabId);
+			if (!pools.TryGetValue(PrefabId, out ObjectPool<GameObject> Pool)) throw new KeyNotFoundException("Unregistered UObject prefab ID: " + PrefabId);
 			
 			GameObject Obj = Pool.Get();
 			Obj.transform.SetParent(transform);
@@ -39,8 +37,10 @@ namespace UengSystem.ObjectPool {
 			return Obj.GetComponent<UObject>();
 		}
 
-		private void ReturnToPool(int PrefabId, UObject Target) {
-			if (ShuttingDown || Target.lifeCycle.isShuttingDown || Target.lifeCycle.isFaulted) return;
+		private void Release(int PrefabId, UObject Target) {
+			if (ShuttingDown) return;
+			if (Target.lifeStateMachine.isShuttingDown) return;
+			
 			Target.gameObject.SetActive(false);
 			Target.transform.SetParent(roots[PrefabId]);
 			pools[PrefabId].Release(Target.gameObject);
@@ -49,6 +49,7 @@ namespace UengSystem.ObjectPool {
 		// 오버라이드 메서드
 		public override void Initialize() {
 			if (pools != null) throw new InvalidOperationException("UObjectPool is already initialized.");
+			
 			Dictionary<int, string> Keys = new ();
 			foreach (GameObject Prefab in prefabs) {
 				if (!Prefab || !Prefab.GetComponent<UObject>() || Prefab.GetComponent<UI.UUI>())
@@ -77,7 +78,7 @@ namespace UengSystem.ObjectPool {
 							obj.SetActive(false);
 							UObject Target = obj.GetComponent<UObject>();
 							Target.OnFirstGet();
-							Target.SetPoolReturnMethod(Item => ReturnToPool(PrefabId, Item));
+							Target.SetPoolReturnMethod(Item => Release(PrefabId, Item));
 							Owned.Add(Target);
 							return obj;
 						},
@@ -93,7 +94,7 @@ namespace UengSystem.ObjectPool {
 
 		public override void Uninitialize() {
 			ShuttingDown = true;
-			foreach (UObject Target in Owned) if (Target) Target.lifeCycle.Shutdown();
+			foreach (UObject Target in Owned) if (Target) Target.lifeStateMachine.Shutdown();
 			base.Uninitialize();
 		}
 	}

@@ -4851,13 +4851,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whenInitialize: 3
-  GettingDuration: 1
-  ReleasingDuration: 1
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GettingDuration: 0
+  ReleasingDuration: 0
   GetTask:
     useRealTime: 0
     tasks:
@@ -4950,6 +4948,14 @@ PrefabInstance:
     - target: {fileID: 4168969846195652150, guid: ddfd93a9ff0f039449c5d0b9fbc31b77, type: 3}
       propertyPath: m_Name
       value: SmallImpact
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334242923113385818, guid: ddfd93a9ff0f039449c5d0b9fbc31b77, type: 3}
+      propertyPath: GettingDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334242923113385818, guid: ddfd93a9ff0f039449c5d0b9fbc31b77, type: 3}
+      propertyPath: ReleasingDuration
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

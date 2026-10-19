@@ -619,6 +619,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24ff23890d74664ab85ed23e92c57d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UUI
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -627,10 +631,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   canvas: {fileID: 0}
   rectTransform: {fileID: 0}
   initialPosition: {x: 0, y: 0}
@@ -1545,6 +1545,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -1553,10 +1557,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   button: {fileID: 6855445542204106448}
   clicked: 0
@@ -1763,7 +1763,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: "\uC774\uB155\uC774"
+  m_Text: "\uCCAD\uAC15\uBB38\uD654\uC0B0\uC5C5\uB300\uD559\uAD50"
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -1790,6 +1790,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85aa368679c480aa36f4599e852a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -1798,10 +1802,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   inputField: {fileID: 0}
   textChanged: 0
@@ -1908,6 +1908,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -1916,10 +1920,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 3094555492419509823}
   valueChanged: 0
@@ -2104,6 +2104,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -2112,10 +2116,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 5032251816970889573}
   valueChanged: 0
@@ -2402,7 +2402,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC774\uB155\uC774\u200B"
+  m_text: "\uCCAD\uAC15\uBB38\uD654\uC0B0\uC5C5\uB300\uD559\uAD50\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f29fa83ee46a96a4b810b91002a82fc9, type: 2}
   m_sharedMaterial: {fileID: 4143440930881732704, guid: f29fa83ee46a96a4b810b91002a82fc9, type: 2}
@@ -2728,6 +2728,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -2736,10 +2740,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 2754060398431066406}
   valueChanged: 0
@@ -3852,6 +3852,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b3760032f4a8f80748d7008545f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.USliders.UVolumeSlider
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -3860,10 +3864,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   slider: {fileID: 204646946781606586}
   valueChanged: 0
@@ -3970,6 +3970,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -3978,10 +3982,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 5513400489631693035}
   valueChanged: 0
@@ -4087,6 +4087,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acd6b4393d047fd9cbece9cd85b91fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UI.UToggles.UToggle
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -4095,10 +4099,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   toggle: {fileID: 6972919623650733675}
   valueChanged: 0
@@ -4413,6 +4413,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bbff18995c4c30a6dbbd5ec81d2eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -4421,10 +4425,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   parent: {fileID: 356775662148244375}
   button: {fileID: 8343575308739342519}
   clicked: 0

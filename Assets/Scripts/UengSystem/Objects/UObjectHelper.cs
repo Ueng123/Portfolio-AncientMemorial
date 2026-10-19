@@ -23,7 +23,8 @@ namespace UengSystem.Objects {
 			if (!InitialObject) return;
 			if (ID       != "") script.ID       = ID;
 			if (Category != "") script.Category = Category;
-			script.Get(PlayEffect: false);
+			
+			script.HelperInitialize();
 		}
 	}
 }

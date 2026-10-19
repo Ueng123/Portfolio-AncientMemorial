@@ -72,7 +72,7 @@ namespace AncientMemorial.Interactions {
 			base.OnFirstGet();
 		}
 
-		public override void OnGet() {
+		protected override void OnGet() {
 			selected = false;
 			base.OnGet();
 		}
@@ -87,13 +87,14 @@ namespace AncientMemorial.Interactions {
 			public UpgradeReleasing(PlayerUpgradeObject Target) : base(Target) { }
 
 			// 오버라이드 메서드
-			protected override void OnStartEffect() {
+			public override void OnEnter() {
+				base.OnEnter();
 				InitialSpeed = target.animator.speed;
 				target.animator.speed = duration > 0 ? 1 / duration : 1;
 				target.animator.Play(((PlayerUpgradeObject)target).selected ? "select" : "break", 0, 0);
 			}
 			protected override void ClearEffect() {
-				if (hasStartedEffect && target.animator) target.animator.speed = InitialSpeed;
+				if (entered && target.animator) target.animator.speed = InitialSpeed;
 				((PlayerUpgradeObject)target).selected = false;
 			}
 		}

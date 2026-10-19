@@ -113,8 +113,8 @@ GameObject:
   - component: {fileID: 5197001877767548499}
   - component: {fileID: 445266042285712816}
   - component: {fileID: 827049445419491292}
-  - component: {fileID: -7196851070278143718}
   - component: {fileID: -6947518095727087325}
+  - component: {fileID: 4883556862866018922}
   m_Layer: 0
   m_Name: CrystalMissile
   m_TagString: Untagged
@@ -363,131 +363,6 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!114 &-7196851070278143718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5453708619528034099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b50f9dacde541fbb9329b6564a1c570, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whenInitialize: 2
-  GettingDuration: 1
-  ReleasingDuration: 1
-  whiteSpawnSprite: {fileID: -3652470903748484028, guid: 86b75d544ec6132488539d9186c21221, type: 3}
-  colorSpawnSprite: {fileID: -3652470903748484028, guid: 86b75d544ec6132488539d9186c21221, type: 3}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  GetTask:
-    useRealTime: 0
-    tasks:
-    - time: 0
-      tasks:
-      - rid: 5909659015183860073
-      - rid: 5909659015183860075
-  ReleaseTask:
-    useRealTime: 0
-    tasks:
-    - time: 0
-      tasks:
-      - rid: 5909659015183860077
-      - rid: 5909659015183860079
-  owner: {fileID: 0}
-  damage: 0
-  TimeBeforeLockOn: 0
-  LockOnDuration: 0
-  initialSpeed: 0
-  expectAttack: 0
-  noLockOn: 0
-  offset: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 5909659015183860073
-      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
-      data:
-        clip: {fileID: 8300000, guid: c2514edb11211f44cacd950a80964872, type: 3}
-        playOnThis: 1
-        audioPlayer:
-          rid: -2
-        volume:
-          rid: -2
-        pitch:
-          rid: -2
-        pan:
-          rid: -2
-        spread:
-          rid: -2
-        loop:
-          rid: -2
-    - rid: 5909659015183860075
-      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
-        position:
-          rid: 5909659015183860122
-        PlayEffect: 0
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 5909659015183860077
-      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
-      data:
-        TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
-        position:
-          rid: 5909659015183860474
-        PlayEffect: 0
-        ID:
-          rid: -2
-        Category:
-          rid: -2
-    - rid: 5909659015183860079
-      type: {class: CameraShakeLerp, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
-      data:
-        intensity:
-          rid: 5909659015183860081
-        speed:
-          rid: 5909659015183860085
-    - rid: 5909659015183860081
-      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        pureValue: 0.25
-    - rid: 5909659015183860085
-      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        pureValue: 10
-    - rid: 5909659015183860122
-      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetObject:
-          rid: 5909659015183860124
-    - rid: 5909659015183860124
-      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        pureValue: {fileID: -7196851070278143718}
-    - rid: 5909659015183860474
-      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        targetObject:
-          rid: 5909659015183860476
-    - rid: 5909659015183860476
-      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
-      data:
-        dynamicType: 0
-        pureValue: {fileID: -7196851070278143718}
 --- !u!50 &-6947518095727087325
 Rigidbody2D:
   serializedVersion: 5
@@ -515,3 +390,124 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4883556862866018922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5453708619528034099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7223664e5ad406eaa68878565ed2b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Projectiles.CrystalMissile
+  whenInitialize: 3
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GettingDuration: 0
+  ReleasingDuration: 0
+  GetTask:
+    useRealTime: 0
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 350173108815790347
+      - rid: 350173108815790285
+  ReleaseTask:
+    useRealTime: 0
+    tasks:
+    - time: 0
+      tasks:
+      - rid: 350173108815790287
+      - rid: 350173108815790307
+  owner: {fileID: 0}
+  damage: 0
+  TimeBeforeLockOn: 0
+  LockOnDuration: 0
+  initialSpeed: 0
+  offset: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 350173108815790285
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
+        position:
+          rid: 350173108815790291
+        PlayEffect: 1
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 350173108815790287
+      type: {class: GetObject, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        TargetObject: {fileID: 2507578616167794662, guid: ca67756e60ee6b64cb5c782796f0bebd, type: 3}
+        position:
+          rid: 350173108815790293
+        PlayEffect: 1
+        ID:
+          rid: -2
+        Category:
+          rid: -2
+    - rid: 350173108815790291
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 350173108815790297
+    - rid: 350173108815790293
+      type: {class: UObjectPosition, ns: UengSystem.VisualScripting.UValues.UVector2s, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        targetObject:
+          rid: 350173108815790295
+    - rid: 350173108815790295
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: {fileID: 4883556862866018922}
+    - rid: 350173108815790297
+      type: {class: UPureObject, ns: UengSystem.VisualScripting.UValues.UObjects, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: {fileID: 4883556862866018922}
+    - rid: 350173108815790307
+      type: {class: CameraShakeLerp, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        intensity:
+          rid: 350173108815790311
+        speed:
+          rid: 350173108815790309
+    - rid: 350173108815790309
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 10
+    - rid: 350173108815790311
+      type: {class: UPureFloat, ns: UengSystem.VisualScripting.UValues.UFloats, asm: Assembly-CSharp}
+      data:
+        dynamicType: 0
+        pureValue: 1
+    - rid: 350173108815790347
+      type: {class: PlaySFX, ns: UengSystem.VisualScripting.Tasks, asm: Assembly-CSharp}
+      data:
+        clip: {fileID: 8300000, guid: c2514edb11211f44cacd950a80964872, type: 3}
+        playOnThis: 1
+        audioPlayer:
+          rid: -2
+        volume:
+          rid: -2
+        pitch:
+          rid: -2
+        pan:
+          rid: -2
+        spread:
+          rid: -2
+        loop:
+          rid: -2

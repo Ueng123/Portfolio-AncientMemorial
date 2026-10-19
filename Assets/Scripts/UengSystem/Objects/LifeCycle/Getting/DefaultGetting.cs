@@ -12,13 +12,14 @@ namespace UengSystem.Objects.LifeCycle {
 		// 인스턴스 프로퍼티
 		private Color InitialColor;
 		private UObject SpawnEffect;
-		private long SpawnLife;
+		private int SpawnLife;
 
 		// 인스턴스 메서드
 		public DefaultGetting(UObject Target) : base(Target) { }
 
 		// 오버라이드 메서드
-		protected override void OnStartEffect() {
+		public override void OnEnter() {
+			base.OnEnter();
 			SpawnEffect = null;
 			if (target.spriteRenderer) {
 				InitialColor = target.spriteRenderer.color;
@@ -41,7 +42,7 @@ namespace UengSystem.Objects.LifeCycle {
 		}
 
 		protected override void ClearEffect() {
-			if (!hasStartedEffect) return;
+			if (!entered) return;
 			if (SpawnEffect && SpawnEffect.Matches(SpawnLife)) SpawnEffect.Release(false);
 			SpawnEffect = null;
 			if (target.spriteRenderer) {

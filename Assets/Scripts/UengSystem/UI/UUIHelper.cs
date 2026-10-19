@@ -21,7 +21,8 @@ namespace UengSystem.UI {
 			script.Category  = "UI";
 			script.UCategory = Category;
 			script.canvas = GetComponentInParent<UCanvas>();
-			script.Get(PlayEffect: false);
+			
+			script.HelperInitialize();
 		}
 	}
 }

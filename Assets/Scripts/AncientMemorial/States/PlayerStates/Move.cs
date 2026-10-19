@@ -58,7 +58,7 @@ namespace AncientMemorial.States.PlayerStates {
 											 -player.stat.moveSpeed,
 											 player.stat.moveSpeed);
 
-			bool isVelocityAlmostZero = newVelocityX is >= -0.05f and <= 0.05f;
+			bool isVelocityAlmostZero = newVelocityX is >= -0.3f and <= 0.3f;
 			player.rigidbody2D.linearVelocityX = moveDir == 0 && isVelocityAlmostZero ? 0 : newVelocityX;
 		}
 

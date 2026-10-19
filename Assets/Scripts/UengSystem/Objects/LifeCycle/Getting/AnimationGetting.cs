@@ -17,15 +17,16 @@ namespace UengSystem.Objects.LifeCycle {
 		}
 
 		// 오버라이드 메서드
-		protected override void OnStartEffect() {
+		public override void OnEnter() {
+			base.OnEnter();
 			if (!target.animator) return;
 			InitialSpeed = target.animator.speed;
 			target.animator.speed = AnimationLength > 0 && duration > 0 ? AnimationLength / duration : 1;
 			target.animator.Play(AnimationName, 0, 0);
 		}
 		protected override void ClearEffect() {
-			if (hasStartedEffect && target.animator) target.animator.speed = InitialSpeed;
-			if (isComplete && target.animator && ActiveAnimation != null) target.animator.Play(ActiveAnimation, 0, 0);
+			if (entered && target.animator) target.animator.speed = InitialSpeed;
+			if (completed && target.animator && ActiveAnimation != null) target.animator.Play(ActiveAnimation, 0, 0);
 		}
 	}
 }

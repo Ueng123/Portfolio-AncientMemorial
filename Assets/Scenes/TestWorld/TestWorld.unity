@@ -260,11 +260,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
@@ -272,6 +272,9 @@ MonoBehaviour:
     useRealTime: 0
     tasks: []
   cam: {fileID: 108502714}
+  cameraManager: {fileID: 0}
+  mapManager: {fileID: 0}
+  noiseComponent: {fileID: 0}
   AlignTypeX: 0
   AlignTypeY: 0
   SizingType: 2
@@ -420,6 +423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UDebug.DebugManager
   debugMode: 1
   Logging: 0
+  LogExceptions: 1
 --- !u!114 &185566328 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3793273603714431931, guid: c8bbf66898738cb4ab1bd3f67c47f2e6, type: 3}
@@ -768,7 +772,6 @@ GameObject:
   - component: {fileID: 519420030}
   - component: {fileID: 519420035}
   - component: {fileID: 519420037}
-  - component: {fileID: 519420036}
   - component: {fileID: 519420038}
   m_Layer: 0
   m_Name: CameraManager
@@ -919,21 +922,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
---- !u!114 &519420036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 463a4df1b258d7d4cacf1bdc5a52bdfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InitialObject: 1
-  ID: CAMERAMANAGER
-  Category: IMPORNTANT
 --- !u!114 &519420037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -946,23 +934,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1e89ad6c9621345af005c4476c2f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  GetTask:
-    useRealTime: 0
-    tasks: []
-  ReleaseTask:
-    useRealTime: 0
-    tasks: []
-  cameraBrain: {fileID: 519420035}
   uCamera: {fileID: 108502713}
-  references:
-    version: 2
-    RefIds: []
+  cameraBrain: {fileID: 519420035}
 --- !u!81 &519420038
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1073,8 +1046,8 @@ GameObject:
   m_Component:
   - component: {fileID: 554919044}
   - component: {fileID: 554919045}
-  - component: {fileID: 554919046}
   - component: {fileID: 554919047}
+  - component: {fileID: 554919048}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1123,33 +1096,6 @@ MonoBehaviour:
   currentUpdatePhase: 0
   currentFixedUpdatePhase: 0
   initializeID: 0
---- !u!114 &554919046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554919043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6df24da7f8a949449e332fe702e2837, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  GetTask:
-    useRealTime: 0
-    tasks: []
-  ReleaseTask:
-    useRealTime: 0
-    tasks: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &554919047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1165,6 +1111,33 @@ MonoBehaviour:
   InitialObject: 1
   ID: 
   Category: 
+--- !u!114 &554919048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554919043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08b159cbf28a44aa832204c3235e54b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Managers.GlobalObject
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
+  GetTask:
+    useRealTime: 0
+    tasks: []
+  ReleaseTask:
+    useRealTime: 0
+    tasks: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &562574004
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,11 +1307,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
@@ -1889,11 +1862,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
@@ -4322,11 +4295,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []
@@ -5485,11 +5458,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks: []

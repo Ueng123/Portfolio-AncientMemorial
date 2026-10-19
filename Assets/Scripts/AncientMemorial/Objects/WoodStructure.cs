@@ -15,7 +15,7 @@ namespace AncientMemorial.Objects {
 		}
 
 		// 오버라이드 메서드
-		public override void OnGet() {
+		protected override void OnGet() {
 			MatchWithMapSize();
 		}
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UengSystem.ObjectPool;
 using UengSystem.Objects;
 using UengSystem.Objects.LifeCycle;
 using UengSystem.Utility;
@@ -12,7 +13,6 @@ namespace UengSystem.UI {
 		// 정적 프로퍼티
 		private static readonly Dictionary<string, List<UUI>> UCategoryTable = new ();
 		private static readonly int                           Close          = Animator.StringToHash("Close");
-		private static readonly int                           Open           = Animator.StringToHash("Open");
 
 		// 인스턴스 프로퍼티
 		[Header("Identify")] 
@@ -46,13 +46,12 @@ namespace UengSystem.UI {
 			}
 		}
 
-		public float openTime;
-		public float closeTime;
-		[SerializeField] private string GettingAnimation = "open";
-		public string gettingAnimation => GettingAnimation;
-		public override float usingGettingDuration => openTime;
-		public override float usingReleasingDuration => closeTime;
-		public override float lifeCycleDeltaTime => Time.unscaledDeltaTime;
+		public             float  openTime;
+		public             float  closeTime;
+		public             string gettingAnimation = "open";
+		public override    float  usingGettingDuration   => openTime;
+		public override    float  usingReleasingDuration => closeTime;
+		protected override float  DeltaTime              => Time.unscaledDeltaTime;
 		
 		[Header("UUI")]
 		public UUIActionListItem[] actions;
@@ -67,9 +66,8 @@ namespace UengSystem.UI {
 		}
 
 		public static GameObject Get(int PrefabId, UCanvas Canvas, bool PlayEffect = true, Action<UUI> Configure = null) {
-			CheckAcquireAllowed();
-			UUI Target = UUIPool.instance.Acquire(PrefabId, Canvas);
-			Target.BeginLife(PlayEffect, Obj => Configure?.Invoke(Obj.To<UUI>()));
+			UUI Target = UUIPool.instance.Get(PrefabId, Canvas);
+			Target.StartGet(PlayEffect, Obj => Configure?.Invoke(Obj.To<UUI>()));
 			return Target.gameObject;
 		}
 
@@ -93,7 +91,7 @@ namespace UengSystem.UI {
 
 		public T GetAction<T>(string key) where T : UUIAction {
 			if (actionDict.TryGetValue(key, out UUIAction action)) return action.To<T>();
-			throw new KeyNotFoundException(key);
+			throw new KeyNotFoundException($"{key} action not found");
 		}
 		
 		public T GetAction<T>(int index) where T : UUIAction {
@@ -109,13 +107,12 @@ namespace UengSystem.UI {
 			foreach (UUIActionListItem Item in actions) actionDict.Add(Item.key, Item.action);
 		}
 
-		protected override void PrepareContext() {
+		protected override void ObjectConfigure() {
 			rectTransform.anchoredPosition = initialPosition;
 			rectTransform.localScale = initialScale;
 			Opened = false;
 			if (animator) {
 				animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-				animator.ResetTrigger(Close);
 			}
 		}
 		
@@ -126,11 +123,11 @@ namespace UengSystem.UI {
 			}
 		}
 
-		public override void OnGet() {
+		protected override void OnGet() {
 			foreach (UUIActionListItem action in actions) {
 				InitializedActions.Add(action.action);
 				action.action.Initialize(this);
-				if (lifeCycle.phase != LifeCyclePhase.Getting) return;
+				if (lifeStateMachine.phase != LifePhase.Getting) return;
 			}
 			Opened = true;
 			OnOpen();

@@ -1,5 +1,5 @@
 namespace UengSystem.Objects.LifeCycle {
-	public enum LifeCyclePhase {
+	public enum LifePhase {
 		Released,
 		Getting,
 		Active,

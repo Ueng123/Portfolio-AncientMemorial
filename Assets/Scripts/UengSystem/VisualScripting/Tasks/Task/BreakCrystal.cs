@@ -17,7 +17,7 @@ namespace UengSystem.VisualScripting.Tasks {
 		// 오버라이드 메서드
 		public override void Execute(ITaskable self) {
 			Crystal Target = GameManager.instance.Crystal;
-			long Life = Target.lifeNumber;
+			int Life = Target.lifeNumber;
 			Vector2 Position = Target.crystalModel.transform.position;
 			Target.animator.Play("break");
 			Target.UnInteractable();

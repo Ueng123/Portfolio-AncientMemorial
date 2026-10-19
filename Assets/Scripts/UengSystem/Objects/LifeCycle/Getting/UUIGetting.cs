@@ -12,7 +12,8 @@ namespace UengSystem.Objects.LifeCycle {
 		public UUIGetting(UUI Target) : base(Target) { }
 
 		// 오버라이드 메서드
-		protected override void OnStartEffect() {
+		public override void OnEnter() {
+			base.OnEnter();
 			if (!target.animator) return;
 			AnimatorSpeed              = target.animator.speed;
 			target.animator.updateMode = AnimatorUpdateMode.UnscaledTime;
@@ -20,8 +21,8 @@ namespace UengSystem.Objects.LifeCycle {
 			target.animator.Play(ui.gettingAnimation, 0, 0);
 		}
 		protected override void ClearEffect() {
-			if (hasStartedEffect && target.animator) target.animator.speed = AnimatorSpeed;
-			if (isComplete       && target.animator) target.animator.Play(ui.gettingAnimation, 0, 1);
+			if (entered && target.animator) target.animator.speed = AnimatorSpeed;
+			if (completed && target.animator) target.animator.Play(ui.gettingAnimation, 0, 1);
 		}
 	}
 }

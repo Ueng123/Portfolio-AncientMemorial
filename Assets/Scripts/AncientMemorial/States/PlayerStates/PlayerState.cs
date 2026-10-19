@@ -1,6 +1,7 @@
 ﻿using AncientMemorial.Entities;
 using UengSystem.Inputs;
 using UengSystem.States;
+using UnityEngine;
 
 namespace AncientMemorial.States.PlayerStates {
 	public abstract class PlayerState : UState {
@@ -23,7 +24,7 @@ namespace AncientMemorial.States.PlayerStates {
 			}
 			
 			float moveDir = InputManager.GetValue(ActionType.Move);
-			bool  moving  = moveDir != 0 || Entity.player.rigidbody2D.linearVelocityX != 0;
+			bool  moving  = moveDir != 0 || Mathf.Abs(Entity.player.rigidbody2D.linearVelocityX) >= 0.05f;
 			
 			return moving ? move : idle;
 		}

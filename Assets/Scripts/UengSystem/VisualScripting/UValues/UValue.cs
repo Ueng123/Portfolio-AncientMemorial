@@ -10,7 +10,7 @@ namespace UengSystem.VisualScripting.UValues {
 
 		protected abstract bool  getIsDynamic { get; }
 		private            bool? isDynamicCache = null;
-		private            bool  isDynamicAuto {
+		private bool  isDynamicAuto {
 			get {
 				isDynamicCache ??= getIsDynamic;
 				return (bool)isDynamicCache;
@@ -24,7 +24,7 @@ namespace UengSystem.VisualScripting.UValues {
 		protected abstract        T    getValue     { get; }
 		private T    valueCache;
 		private bool isValueCached = false;
-		public          T value {
+		public T value {
 			get {
 				if (isDynamic) return getValue;
 				if (isValueCached) return valueCache;

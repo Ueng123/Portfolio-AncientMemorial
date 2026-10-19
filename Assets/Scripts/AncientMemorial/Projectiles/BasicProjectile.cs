@@ -1,4 +1,5 @@
-﻿using AncientMemorial.Entities;
+﻿using System;
+using AncientMemorial.Entities;
 using UengSystem.Events;
 using UengSystem.ObjectPool;
 using UengSystem.Objects;
@@ -11,7 +12,6 @@ namespace AncientMemorial.Projectiles {
 
 		// 인스턴스 프로퍼티
 		private int BreakPrefabId;
-
 		private int HitPrefabId;
 
 		public float rotateOffset;
@@ -29,12 +29,17 @@ namespace AncientMemorial.Projectiles {
 
 		// 인스턴스 메서드
 		private void Break() {
-			if (breakObject) UObject.Get(BreakPrefabId, transform.position, PlayEffect: false);
+			if (breakObject) Get(BreakPrefabId, transform.position, PlayEffect: false);
 			Release(PlayEffect: false);
 		}
 
+		private void Hit() {
+			if (hitObject) Get(HitPrefabId, transform.position, PlayEffect: false);
+			if (breakOnHit && --hitableNum == 0) Break();
+		}
+
 		// 오버라이드 메서드
-		public override void OnGet() {
+		protected override void OnGet() {
 			base.OnGet();
 			trailRenderer = GetComponent<TrailRenderer>();
 		}
@@ -51,10 +56,9 @@ namespace AncientMemorial.Projectiles {
 
 		protected override void Routine() { }
 
-		protected override void LateRoutine() { base.LateRoutine(); }
+		protected override void LateRoutine() { }
 		
 		protected override void FixedRoutine() {
-			if (isHitPending) return;
 			transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rigidbody2D.linearVelocity.y, rigidbody2D.linearVelocity.x)*Mathf.Rad2Deg + rotateOffset);
 		}
 
@@ -66,15 +70,10 @@ namespace AncientMemorial.Projectiles {
 				bool isTargetPlayer = targetPlayer && entity == Entity.player;
 				bool isTargetEntity = targetEnemy  && entity != Entity.player;
 				if (!isTargetPlayer && !isTargetEntity) return;
-				
 			}
-
-			// 같은 물리 구간에서 예약된 타격도 관통 잔여 횟수에 포함함.
-			bool CanPierce = !breakOnHit || hitableNum <= 0 || hitableNum > pendingHitCount + 1;
-			SendCollisionHit(entity, damage, () => {
-				if (breakOnHit && --hitableNum == 0) { Break(); return; }
-				if (hitObject) Get(HitPrefabId, transform.position, PlayEffect: false);
-			}, CanPierce);
+			
+			if (owner) SendAttackMultiplyEvent(entity, damage, useProcess: false, OnHit: Hit);
+			else SendAttackEvent(entity, damage, useProcess: false, OnHit: Hit);
 		}
 		
 		protected override void OnCollideObject(UObject obj) {

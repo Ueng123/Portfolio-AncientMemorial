@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 6918952140135283904}
   - component: {fileID: 5489796778055620440}
-  - component: {fileID: -2564494186122865244}
   - component: {fileID: 1560819583185935469}
   - component: {fileID: 2284199902172197644}
   - component: {fileID: 2929653901941194751}
   - component: {fileID: 3126473925666463179}
   - component: {fileID: -7411709669297331531}
   - component: {fileID: 8930089724241691349}
+  - component: {fileID: 990886418279986974}
   m_Layer: 0
   m_Name: EnergyBall
   m_TagString: Untagged
@@ -99,39 +99,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &-2564494186122865244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2655812561381937923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e3c7e7a9add4f39997409cde8325628, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whenInitialize: 2
-  GettingDuration: 1
-  ReleasingDuration: 1
-  whiteSpawnSprite: {fileID: 5916503560728448396, guid: 66cb19d676f5c9a4682aadf5c30e2370, type: 3}
-  colorSpawnSprite: {fileID: 5916503560728448396, guid: 66cb19d676f5c9a4682aadf5c30e2370, type: 3}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  GetTask:
-    useRealTime: 0
-    tasks: []
-  ReleaseTask:
-    useRealTime: 0
-    tasks: []
-  owner: {fileID: 0}
-  damage: 0
-  boomTime: 5
-  hitboxSize: {x: 0, y: 0}
-  references:
-    version: 2
-    RefIds: []
 --- !u!95 &1560819583185935469
 Animator:
   serializedVersion: 7
@@ -5103,3 +5070,33 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 0.8}
   m_EdgeRadius: 0
+--- !u!114 &990886418279986974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2655812561381937923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d326648b3a24a308438ad08b173383b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Projectiles.EnergyBall
+  whenInitialize: 3
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GettingDuration: 0
+  ReleasingDuration: 0
+  GetTask:
+    useRealTime: 0
+    tasks: []
+  ReleaseTask:
+    useRealTime: 0
+    tasks: []
+  owner: {fileID: 0}
+  damage: 0
+  boomTime: 5
+  references:
+    version: 2
+    RefIds: []

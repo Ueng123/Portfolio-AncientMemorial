@@ -11,7 +11,8 @@ namespace UengSystem.Objects.LifeCycle {
 		public EntityReleasing(Entity Target) : base(Target) { }
 
 		// 오버라이드 메서드
-		protected override void OnStartEffect() {
+		public override void OnEnter() {
+			base.OnEnter();
 			if (target.spriteRenderer) {
 				InitialColor = target.spriteRenderer.color;
 				Color Color = InitialColor;
@@ -22,7 +23,7 @@ namespace UengSystem.Objects.LifeCycle {
 		}
 		
 		protected override void ClearEffect() {
-			if (!hasStartedEffect) return;
+			if (!entered) return;
 			if (target.spriteRenderer) target.spriteRenderer.color = InitialColor;
 			target.UnfreezeAnimator();
 		}

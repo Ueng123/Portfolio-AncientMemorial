@@ -48,8 +48,8 @@ namespace AncientMemorial.Entities {
 		public bool       Friendly;
 
 		public UUI     entityUI;
-		private long EntityUiLife;
-		private readonly Dictionary<AttackArea, long> AttackAreas = new();
+		private int EntityUiLife;
+		private readonly Dictionary<AttackArea, int> AttackAreas = new();
 		public UCanvas entityUICanvas;
 		public int     entityUIHeight;
 
@@ -326,7 +326,8 @@ namespace AncientMemorial.Entities {
 		protected abstract void OnHeal(float amount);
 		protected abstract float GetRealDamage(float rawDamage);
 		private void HitEvent(Event e) {
-			if (!isActive || !e.isValid || e.data is not HitData { isValid: true } hitData) return;
+			if (!isActive) return;
+			if (e.data is not HitData hitData) return;
 			if (hitData.reciever != this) return;
 			if (invincible && !hitData.ignoreInvincible) return;
 					
@@ -377,8 +378,8 @@ namespace AncientMemorial.Entities {
 			
 			base.Uninitialize();
 		}
-		
-		public override void OnGet() {
+
+		protected override void OnGet() {
 			data = GetData();
 
 			stat = new EntityStat(

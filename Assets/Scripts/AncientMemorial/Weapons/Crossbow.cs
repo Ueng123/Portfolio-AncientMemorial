@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections;
-using AncientMemorial.Cameras;
-using AncientMemorial.Entities;
-using AncientMemorial.Map;
-using AncientMemorial.Objects;
-using AncientMemorial.States;
 using AncientMemorial.States.PlayerStates.WeaponAttackState;
 using UengSystem.Events;
-using UengSystem.Inputs;
-using UengSystem.ObjectPool;
-using UengSystem.Objects;
 using UengSystem.States;
-using UengSystem.Utility;
 using UnityEngine;
 using Event = UengSystem.Events.Event;
 using EventType = UengSystem.Events.EventType;
-using Random = UnityEngine.Random;
 
 namespace AncientMemorial.Weapons {
 	[CreateAssetMenu(fileName = "Crossbow", menuName = "Weapons/Crossbow")]

@@ -68,8 +68,8 @@ namespace UengSystem.UI.UUIQueues {
 				queueItem.data.Initialize(Ui);
 			});
 			UUI        itemUI     = itemObject.GetComponent<UUI>();
-			long Life = itemUI.lifeNumber;
-			while (itemUI && itemUI.Matches(Life) && itemUI.lifeCycle.phase == Objects.LifeCycle.LifeCyclePhase.Getting) yield return null;
+			int Life = itemUI.lifeNumber;
+			while (itemUI && itemUI.Matches(Life) && itemUI.lifeStateMachine.phase == Objects.LifeCycle.LifePhase.Getting) yield return null;
 
 			float elapsed = 0f;
 			while (itemUI && itemUI.Matches(Life) && itemUI.isActive && elapsed < queueItem.duration) {

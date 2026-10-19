@@ -11240,6 +11240,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3261c435cc2439caa307c603a914d53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
   GettingDuration: 1
   ReleasingDuration: 1
   GetTask:
@@ -11248,12 +11252,6 @@ MonoBehaviour:
   ReleaseTask:
     useRealTime: 0
     tasks: []
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
   interactable: 0
   showInteractUI: 0
   interactString: 
@@ -11297,8 +11295,8 @@ GameObject:
   m_Component:
   - component: {fileID: 953298737}
   - component: {fileID: 953298739}
-  - component: {fileID: 953298738}
   - component: {fileID: 953298740}
+  - component: {fileID: 953298741}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11321,35 +11319,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 543482100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &953298738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953298736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6df24da7f8a949449e332fe702e2837, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GettingDuration: 1
-  ReleasingDuration: 1
-  GetTask:
-    useRealTime: 0
-    tasks: []
-  ReleaseTask:
-    useRealTime: 0
-    tasks: []
-  whenInitialize: 0
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &953298739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11365,7 +11334,7 @@ MonoBehaviour:
   Crystal: {fileID: 950771752}
   mainScreenCanvas: {fileID: 146586513}
   mainWorldCanvas: {fileID: 0}
-  mainCamera: {fileID: 0}
+  uCamera: {fileID: 0}
   sceneHider: {fileID: 2050291713}
   weapons: []
   audioMixer: {fileID: 24100000, guid: e724f4956278b70468ab9c32adb85938, type: 2}
@@ -11388,6 +11357,33 @@ MonoBehaviour:
   InitialObject: 1
   ID: 
   Category: 
+--- !u!114 &953298741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953298736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08b159cbf28a44aa832204c3235e54b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Managers.GlobalObject
+  whenInitialize: 0
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
+  GetTask:
+    useRealTime: 0
+    tasks: []
+  ReleaseTask:
+    useRealTime: 0
+    tasks: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1299156863
 GameObject:
   m_ObjectHideFlags: 0
@@ -12845,6 +12841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.UDebug.DebugManager
   debugMode: 0
   Logging: 0
+  LogExceptions: 1
 --- !u!1 &2037826778
 GameObject:
   m_ObjectHideFlags: 0

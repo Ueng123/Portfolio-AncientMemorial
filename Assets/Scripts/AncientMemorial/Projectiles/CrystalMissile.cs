@@ -70,7 +70,7 @@ namespace AncientMemorial.Projectiles {
 		}
 
 		// 오버라이드 메서드
-		public override void OnGet() {
+		protected override void OnGet() {
 			base.OnGet();
 			rigidbody2D.centerOfMass = new Vector2(0.3f, 0);
 			trailRenderer = GetComponent<TrailRenderer>();
@@ -88,16 +88,14 @@ namespace AncientMemorial.Projectiles {
 
 		protected override void EarlyRoutine() { }
 		protected override void Routine() {
-			if (isHitPending) return;
 			lockOn = stopWatch.CheckOut(LockOnDuration + TimeBeforeLockOn);
 			if (stopWatch.CheckIn(LockOnDuration + TimeBeforeLockOn) && stopWatch.CheckOut(TimeBeforeLockOn)) { LockOn(); }
 			
 			rigidbody2D.linearVelocity = transform.up * GetVelocity();
 		}
 
-		protected override void LateRoutine() { base.LateRoutine(); }
+		protected override void LateRoutine() { }
 		protected override void FixedRoutine() {
-			if (isHitPending) return;
 			if (locking) return;
 			transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rigidbody2D.linearVelocity.y, rigidbody2D.linearVelocity.x)*Mathf.Rad2Deg);
 		}
@@ -105,7 +103,7 @@ namespace AncientMemorial.Projectiles {
 		protected override void OnCollideEntity(Entity entity) {
 			if (owner && !owner.isAttackTarget(entity)) return;
 			
-			SendCollisionHit(entity, damage, Break);
+			SendAttackEvent(entity, damage, useProcess: false, OnHit: Break);
 		}
 		
 		protected override void OnCollideObject(UObject obj) {

@@ -1,5 +1,5 @@
 namespace UengSystem.Objects.LifeCycle {
-	public abstract class Getting : LifeCycleState {
+	public abstract class Getting : LifeState {
 
 		// 인스턴스 프로퍼티
 		protected override float duration => target.usingGettingDuration;

@@ -129,13 +129,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whenInitialize: 0
-  GettingDuration: 1
-  ReleasingDuration: 1
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
   GetTask:
     useRealTime: 0
     tasks:
@@ -5059,13 +5057,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UengSystem.Objects.UObject
   whenInitialize: 0
-  GettingDuration: 1
-  ReleasingDuration: 1
-  whiteSpawnSprite: {fileID: 0}
-  colorSpawnSprite: {fileID: 0}
   rigidbody2D: {fileID: 0}
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
+  GettingDuration: 0
+  ReleasingDuration: 0
   GetTask:
     useRealTime: 0
     tasks:

@@ -34,7 +34,7 @@ namespace AncientMemorial.Interactions {
 		public  DelayedAction         interactAction;
 		private UInteractProgressValue _uInteractProgressValue;
 		private UUI                   interactUI;
-		private long InteractUiLife;
+		private int InteractUiLife;
 
 		[Header("Interaction")]
 		[SerializeField]

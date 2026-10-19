@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2592165681077879734}
   - component: {fileID: 3654110578135942427}
-  - component: {fileID: 657181609626956567}
   - component: {fileID: 2891024948586709338}
   - component: {fileID: 5502359945501102263}
   - component: {fileID: 1508549775567394518}
+  - component: {fileID: 964765107853736140}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -96,37 +96,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &657181609626956567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5201704342810090500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584f66e49477ee445a2140217208e5f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whenInitialize: 3
-  GettingDuration: 1
-  ReleasingDuration: 1
-  whiteSpawnSprite: {fileID: -4346244404228752641, guid: 72bb809dc42d4a044b48e68f668009e4, type: 3}
-  colorSpawnSprite: {fileID: -4346244404228752641, guid: 72bb809dc42d4a044b48e68f668009e4, type: 3}
-  rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  GetTask:
-    useRealTime: 0
-    tasks: []
-  ReleaseTask:
-    useRealTime: 0
-    tasks: []
-  owner: {fileID: 0}
-  damage: 1
-  references:
-    version: 2
-    RefIds: []
 --- !u!61 &2891024948586709338
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -319,3 +288,32 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &964765107853736140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5201704342810090500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61b25488443b45429c2ee566b6cf5d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AncientMemorial.Projectiles.Arrow
+  whenInitialize: 3
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  GettingDuration: 1
+  ReleasingDuration: 1
+  GetTask:
+    useRealTime: 0
+    tasks: []
+  ReleaseTask:
+    useRealTime: 0
+    tasks: []
+  owner: {fileID: 0}
+  damage: 1
+  references:
+    version: 2
+    RefIds: []

@@ -1,5 +1,5 @@
 namespace UengSystem.Objects.LifeCycle {
-	public abstract class Releasing : LifeCycleState {
+	public abstract class Releasing : LifeState {
 
 		// 인스턴스 프로퍼티
 		protected override float duration => target.usingReleasingDuration;

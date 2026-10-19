@@ -6,33 +6,31 @@ using UnityEngine;
 namespace UengSystem.Events {
 	[Serializable]
 	public struct HitData : IEventData {
-
-		// 인스턴스 프로퍼티
+		
 		public Entity     attackedEntity;
 		public Projectile attackedProjectile;
+		public Entity     attacker;
+		
 		public Entity     reciever;
+		
 		public float      damage;
 		public Vector2?   pushDir;
 		public bool       ignoreInvincible;
-		// 대상이 피해 처리와 OnHit을 마친 뒤 호출함. 무적/무효 타격에는 호출하지 않음.
-		public Action onHit { get; set; }
+
+
+		public Action onHit;
 		
-		private readonly EventObjectLifetime EntityLifetime;
-		private readonly EventObjectLifetime ProjectileLifetime;
-		private readonly EventObjectLifetime ReceiverLifetime;
-		private readonly EventObjectLifetime AttackerLifetime;
+		private readonly EventValid EntityLifetime;
+		private readonly EventValid ProjectileLifetime;
+		private readonly EventValid ReceiverLifetime;
+		private readonly EventValid AttackerLifetime;
 		
-		public Entity attacker { get; }
 		
-		public long attackedEntityLifeNumber => EntityLifetime.lifeNumber;
-		public long attackedProjectileLifeNumber => ProjectileLifetime.lifeNumber;
-		public long recieverLifeNumber => ReceiverLifetime.lifeNumber;
-		public long attackerLifeNumber => AttackerLifetime.lifeNumber;
 		public bool isValid => reciever 
-							   && ReceiverLifetime.Matches(reciever) 
-							   && EntityLifetime.Matches(attackedEntity)
-							   && ProjectileLifetime.Matches(attackedProjectile) 
-							   && AttackerLifetime.Matches(attacker);
+							   && ReceiverLifetime.Match(reciever)
+							   && EntityLifetime.Match(attackedEntity)
+							   && ProjectileLifetime.Match(attackedProjectile) 
+							   && AttackerLifetime.Match(attacker);
 
 		// 인스턴스 메서드
 		public HitData(Entity attackedEntity, Projectile attackedProjectile, Entity reciever, float damage, Vector2? pushDir = null, bool ignoreInvincible = false) {
@@ -43,12 +41,14 @@ namespace UengSystem.Events {
 			this.pushDir            = pushDir;
 			this.ignoreInvincible   = ignoreInvincible;
 			onHit = null;
+			
 			Entity Attacker = attackedEntity ? attackedEntity : attackedProjectile ? attackedProjectile.owner : null;
 			attacker           = Attacker;
-			EntityLifetime     = new EventObjectLifetime(attackedEntity);
-			ProjectileLifetime = new EventObjectLifetime(attackedProjectile);
-			ReceiverLifetime   = new EventObjectLifetime(reciever);
-			AttackerLifetime   = new EventObjectLifetime(Attacker);
+			
+			EntityLifetime     = new EventValid(attackedEntity);
+			ProjectileLifetime = new EventValid(attackedProjectile);
+			ReceiverLifetime   = new EventValid(reciever);
+			AttackerLifetime   = new EventValid(Attacker);
 		}
 	}
 }

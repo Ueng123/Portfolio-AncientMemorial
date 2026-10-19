@@ -8,7 +8,6 @@ namespace UengSystem.VisualScripting.Tasks {
 	[Serializable]
 	public class RepeatTask : TaskComponent {
 		public bool delayFirst;
-		public bool waitForTask;
 
 		[SerializeReference] [SubclassSelector]
 		public UValue<float> delay;
@@ -26,8 +25,7 @@ namespace UengSystem.VisualScripting.Tasks {
 						: CacheManager.WaitForSecondsCeiling(delay.value);
 				}
 
-				if (waitForTask) yield return task.ExecuteEnumerator(self);
-				else task.Execute(self);
+				yield return task.ExecuteEnumerator(self);
 
 				if (!delayFirst) {
 					// 반복 간격은 누락되지 않아야 하므로 Ceiling 캐시 사용.

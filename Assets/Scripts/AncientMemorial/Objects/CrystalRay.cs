@@ -141,7 +141,8 @@ namespace AncientMemorial.Objects {
 			public RayReleasing(CrystalRay Target) : base(Target) { }
 
 			// 오버라이드 메서드
-			protected override void OnStartEffect() {
+			public override void OnEnter() {
+				base.OnEnter();
 				if (ray.showEffect && CameraManager.instance) CameraManager.instance.ZoomLerp(0.15f, 1);
 				ray.rayAnimator.SetTrigger(End);
 			}

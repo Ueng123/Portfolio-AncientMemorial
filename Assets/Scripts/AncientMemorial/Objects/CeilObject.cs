@@ -11,7 +11,7 @@ namespace AncientMemorial.Objects {
 		public float offsetY;
 
 		// 오버라이드 메서드
-		public override void OnGet() {
+		protected override void OnGet() {
 			transform.SetParent(MapManager.instance.mapObjects.ceilTR, true);
 			transform.localPosition = new Vector3(transform.localPosition.x, offsetY, 0);
 		}

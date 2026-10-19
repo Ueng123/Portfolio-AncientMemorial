@@ -13,12 +13,9 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Archer {
 		private static readonly int ARROW = "Arrow".GetHash();
 		private static readonly int BOW_SHOOT = "bowShoot".GetHash();
 
-		private const float attackProgress = 6f / 11f;
-
 		// 인스턴스 프로퍼티
 		public override float attackTime => 1.5f;
 		
-		private bool    isFlipped;
 		private float   oldAnimSpeed;
 		private Vector2 hitboxPos;
 		private Vector2 hitboxSize;
@@ -73,9 +70,6 @@ namespace AncientMemorial.States.EnemyStates.Skeleton.Archer {
 		// 오버라이드 메서드
 		public override void OnEnter() {
 			base.OnEnter();
-			Entity target = stateMachine.getTarget.Invoke();
-			
-			isFlipped    = (int)Mathf.Sign(target.transform.position.x - enemy.transform.position.x) == -1;
 			
 			oldAnimSpeed         = enemy.animator.speed;
 			enemy.animator.speed = enemy.stat.attackSpeed;

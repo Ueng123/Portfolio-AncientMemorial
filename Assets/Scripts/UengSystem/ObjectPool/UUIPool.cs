@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UengSystem.Managers;
-using System;
-using UengSystem.Objects;
-using UengSystem.ObjectPool;
-using UengSystem.UDebug;
+using UengSystem.UI;
 using UengSystem.UI.UUIQueues;
 using UengSystem.Utility;
 using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.Serialization;
 
-namespace UengSystem.UI {
+namespace UengSystem.ObjectPool {
 	public class UUIPool : Manager<UUIPool> {
 
 		// 인스턴스 프로퍼티
@@ -22,12 +19,12 @@ namespace UengSystem.UI {
 		private bool ShuttingDown;
 
 		// 인스턴스 메서드
-		public UUI Acquire(string PrefabKey, UCanvas Canvas) {
+		public UUI Get(string PrefabKey, UCanvas Canvas) {
 			if (PrefabKey == null) throw new ArgumentNullException(nameof(PrefabKey));
-			return Acquire(PrefabKey.GetHash(), Canvas);
+			return Get(PrefabKey.GetHash(), Canvas);
 		}
 
-		public UUI Acquire(int PrefabId, UCanvas Canvas) {
+		public UUI Get(int PrefabId, UCanvas Canvas) {
 			if (ShuttingDown) throw new InvalidOperationException("UUIPool is shutting down.");
 			if (!Canvas) throw new ArgumentNullException(nameof(Canvas));
 			if (!pools.TryGetValue(PrefabId, out ObjectPool<GameObject> Pool))
@@ -39,10 +36,12 @@ namespace UengSystem.UI {
 			return Target;
 		}
 		
-		private void ReturnToPool(int Key, UUI Target) {
-			if (ShuttingDown || Target.lifeCycle.isShuttingDown || Target.lifeCycle.isFaulted) return;
+		private void Release(int Key, UUI Target) {
+			if (ShuttingDown || Target.lifeStateMachine.isShuttingDown) return;
+			
 			Target.gameObject.SetActive(false);
 			Target.transform.SetParent(roots[Key], false);
+			
 			pools[Key].Release(Target.gameObject);
 		}
 
@@ -64,6 +63,7 @@ namespace UengSystem.UI {
 					throw new InvalidOperationException($"Duplicate UI prefab ID {PrefabId}: '{ExistingName}' and '{Prefab.name}'.");
 				Keys.Add(PrefabId, Prefab.name);
 			}
+			
 			pools.Clear();
 			roots.Clear();
 			uuiQueue.Clear();
@@ -83,7 +83,7 @@ namespace UengSystem.UI {
 						obj.SetActive(false);
 						UUI Target = obj.GetComponent<UUI>();
 						Target.OnFirstGet();
-						Target.SetPoolReturnMethod(Item => ReturnToPool(PrefabId, (UUI)Item));
+						Target.SetPoolReturnMethod(Item => Release(PrefabId, (UUI)Item));
 						Owned.Add(Target);
 						return obj;
 					},
@@ -99,7 +99,7 @@ namespace UengSystem.UI {
 
 		public override void Uninitialize() {
 			ShuttingDown = true;
-			foreach (UUI Target in Owned) if (Target) Target.lifeCycle.Shutdown();
+			foreach (UUI Target in Owned) if (Target) Target.lifeStateMachine.Shutdown();
 			foreach (UUIQueue Queue in uuiQueue.Values) Queue.Cancel();
 			uuiQueue.Clear();
 			base.Uninitialize();

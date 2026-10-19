@@ -48,7 +48,7 @@ namespace AncientMemorial.Entities {
 		public Weapon weapon;
 
 		private UUI playerUI;
-		private long PlayerUiLife;
+		private int PlayerUiLife;
 		private bool WeaponInitialized;
 		
 		private bool _lookingLeft;
@@ -282,7 +282,7 @@ namespace AncientMemorial.Entities {
 			return data;
 		}
 
-		public override void OnGet() {
+		protected override void OnGet() {
 			hand.SetActive(false);
 			if (player) throw new InvalidOperationException("ALREADY PLAYER EXIST WHY U TRYING TO MAKE SAME PEOPLE AGAIN 🥀🥀");
 			player = this;
